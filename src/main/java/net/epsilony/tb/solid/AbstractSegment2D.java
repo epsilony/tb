@@ -86,16 +86,6 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public void setRear(Node rear) {
-        succ.setHead(rear);
-    }
-
-    @Override
-    public void setRearCoord(double[] coord) {
-        getRear().coord = coord;
-    }
-
-    @Override
     public void setSucc(Segment2D succ) {
         this.succ = succ;
     }

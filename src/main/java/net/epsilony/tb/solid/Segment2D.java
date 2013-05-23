@@ -30,9 +30,5 @@ public interface Segment2D extends IntIdentity, UnivarArrayFunction {
 
     void setPred(Segment2D pred);
 
-    void setRear(Node rear);
-
-    void setRearCoord(double[] coord);
-
     void setSucc(Segment2D succ);
 }
