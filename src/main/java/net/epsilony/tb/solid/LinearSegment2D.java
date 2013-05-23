@@ -20,24 +20,6 @@ public class LinearSegment2D extends AbstractSegment2D {
         return Math2D.distance(getStartCoord(), getEndCoord());
     }
 
-    public double[] midPoint(double[] result) {
-        double[] start = getStart().coord;
-        double[] end = getEnd().coord;
-        double x = (start[0] + end[0]) / 2;
-        double y = (start[1] + end[1]) / 2;
-        if (null == result) {
-            return new double[]{x, y};
-        } else {
-            result[0] = x;
-            result[1] = y;
-            return result;
-        }
-    }
-
-    public double[] midPoint() {
-        return midPoint(null);
-    }
-
     @Override
     public LinearSegment2D bisectionAndReturnNewSuccessor() {
         LinearSegment2D newSucc = newInstance();
@@ -50,7 +32,7 @@ public class LinearSegment2D extends AbstractSegment2D {
     }
 
     protected Node bisectionNode() {
-        return new Node(midPoint());
+        return new Node(Segment2DUtils.chordMidPoint(this, null));
     }
 
     @Override
@@ -58,12 +40,6 @@ public class LinearSegment2D extends AbstractSegment2D {
         String endStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
         String startStr = (null == start) ? "NULL" : start.toString();
         return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
-    }
-
-    public double[] outNormal() {
-        double[] result = Math2D.subs(getEnd().coord, start.coord, null);
-        Math2D.normalize(result, result);
-        return result;
     }
 
     protected LinearSegment2D newInstance() {
