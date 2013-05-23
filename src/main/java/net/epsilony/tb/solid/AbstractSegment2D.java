@@ -15,8 +15,6 @@ public abstract class AbstractSegment2D implements Segment {
     protected Segment pred;
     protected Segment succ;
 
-    public abstract double distanceTo(double x, double y);
-
     @Override
     public int getDiffOrder() {
         return diffOrder;

@@ -40,7 +40,6 @@ public class ArcSegment2D extends AbstractSegment2D {
         return result;
     }
 
-    @Override
     public double distanceTo(double x, double y) {
         double[] center = calcCenter(null);
         double[] startCoord = getStartCoord();

@@ -163,7 +163,7 @@ public class Polygon2D implements Iterable<LinearSegment2D> {
 
         double inf = Double.POSITIVE_INFINITY;
         for (LinearSegment2D seg : this) {
-            double dst = seg.distanceTo(x, y);
+            double dst = Segment2DUtils.distanceToChord(seg, x, y);
             if (dst < inf) {
                 inf = dst;
             }
