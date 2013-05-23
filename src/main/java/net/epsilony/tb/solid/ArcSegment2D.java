@@ -16,7 +16,7 @@ public class ArcSegment2D extends AbstractSegment2D {
         if (null == result) {
             result = new double[2];
         }
-        double[] headCoord = getHeadCoord();
+        double[] headCoord = getStartCoord();
         double[] rearCoord = getRearCoord();
         double dx = rearCoord[0] - headCoord[0];
         double dy = rearCoord[1] - headCoord[1];
@@ -43,7 +43,7 @@ public class ArcSegment2D extends AbstractSegment2D {
     @Override
     public double distanceTo(double x, double y) {
         double[] center = calcCenter(null);
-        double[] headCoord = getHeadCoord();
+        double[] headCoord = getStartCoord();
         double[] rearCoord = getRearCoord();
         double vecX = x - center[0];
         double vecY = y - center[1];
@@ -66,7 +66,7 @@ public class ArcSegment2D extends AbstractSegment2D {
         double[] midPoint = values(0.5, null);
         setDiffOrder(diffOrderBack);
         ArcSegment2D newSucc = new ArcSegment2D();
-        newSucc.setHead(new Node(midPoint));
+        newSucc.setStart(new Node(midPoint));
         newSucc.setSucc(succ);
         succ.setPred(newSucc);
         succ = newSucc;
@@ -107,7 +107,7 @@ public class ArcSegment2D extends AbstractSegment2D {
     }
 
     public double calcCenterAngle(double centerX, double centerY) {
-        double[] headCoord = getHeadCoord();
+        double[] headCoord = getStartCoord();
         double[] rearCoord = getRearCoord();
         double chordLengthSquare = Math2D.distanceSquare(headCoord, rearCoord);
         double centerAngleCosine = (2 * radius * radius - chordLengthSquare) / 2 / (radius * radius);
@@ -130,7 +130,7 @@ public class ArcSegment2D extends AbstractSegment2D {
     }
 
     public double calcHeadAmplitudeAngle(double centerX, double centerY) {
-        double[] headCoord = getHeadCoord();
+        double[] headCoord = getStartCoord();
         return Math.atan2(headCoord[1] - centerY, headCoord[0] - centerX);
     }
 

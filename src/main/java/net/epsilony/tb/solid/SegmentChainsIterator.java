@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class SegmentChainsIterator<T extends Segment2D> implements Iterator<T> {
+public class SegmentChainsIterator<T extends Segment> implements Iterator<T> {
 
     Iterator<T> headIterator;
     T seg;

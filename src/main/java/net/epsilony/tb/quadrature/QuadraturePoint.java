@@ -1,7 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import net.epsilony.tb.solid.Segment2D;
+import net.epsilony.tb.solid.Segment;
 
 /**
  *
@@ -11,7 +11,7 @@ public class QuadraturePoint {
 
     public double weight;
     public double[] coord;
-    public Segment2D segment;
+    public Segment segment;
     public double segmentParameter;
 
     QuadraturePoint(double weight, double x, double y) {

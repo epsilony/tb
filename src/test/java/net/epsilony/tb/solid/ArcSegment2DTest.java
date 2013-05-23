@@ -22,7 +22,7 @@ public class ArcSegment2DTest {
         double yTrans = 2.2;
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
-        arc.setHead(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
+        arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
         arc.setSucc(new LinearSegment2D(new Node(
                 radius * cos(PI / 3) + xTrans,
                 radius * sin(PI / 3) + yTrans)));
@@ -52,13 +52,13 @@ public class ArcSegment2DTest {
             ArcSegment2D arc = new ArcSegment2D();
             arc.setCenterOnChordLeft(onChordLeft);
             arc.setRadius(radius);
-            arc.setHead(new Node(radius * cos(headAngle) + xTrans, radius * sin(headAngle) + yTrans));
+            arc.setStart(new Node(radius * cos(headAngle) + xTrans, radius * sin(headAngle) + yTrans));
             arc.setSucc(new LinearSegment2D(new Node(
                     radius * cos(rearAngle) + xTrans,
                     radius * sin(rearAngle) + yTrans)));
             double[] samples = new double[]{0, 1, 0.5, 0.35};
             double[][] exps = new double[][]{
-                {arc.getHeadCoord()[0], arc.getHeadCoord()[1]},
+                {arc.getStartCoord()[0], arc.getStartCoord()[1]},
                 {arc.getRearCoord()[0], arc.getRearCoord()[1]},
                 {radius * cos((headAngle + rearAngle) / 2) + xTrans,
                     radius * sin((headAngle + rearAngle) / 2) + yTrans},
@@ -90,7 +90,7 @@ public class ArcSegment2DTest {
             ArcSegment2D arc = new ArcSegment2D();
             arc.setCenterOnChordLeft(false);
             arc.setRadius(radius);
-            arc.setHead(new Node(radius * cos(headAngle) + xTrans, radius * sin(headAngle) + yTrans));
+            arc.setStart(new Node(radius * cos(headAngle) + xTrans, radius * sin(headAngle) + yTrans));
             arc.setSucc(new LinearSegment2D(new Node(
                     radius * cos(rearAngle) + xTrans,
                     radius * sin(rearAngle) + yTrans)));
@@ -116,7 +116,7 @@ public class ArcSegment2DTest {
         double yTrans = 2.2;
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
-        arc.setHead(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
+        arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
         arc.setSucc(new LinearSegment2D(new Node(
                 radius * cos(PI / 3) + xTrans,
                 radius * sin(PI / 3) + yTrans)));
@@ -133,7 +133,7 @@ public class ArcSegment2DTest {
         x = sampleRad * cos(sampleAmpAngles) + xTrans;
         y = sampleRad * sin(sampleAmpAngles) + yTrans;
         act = arc.distanceTo(x, y);
-        exp = Math2D.distance(x, y, arc.getHeadCoord()[0], arc.getHeadCoord()[1]);
+        exp = Math2D.distance(x, y, arc.getStartCoord()[0], arc.getStartCoord()[1]);
         assertEquals(exp, act, 1e-14);
     }
 
@@ -155,11 +155,11 @@ public class ArcSegment2DTest {
             ArcSegment2D arc = new ArcSegment2D();
             arc.setCenterOnChordLeft(centerOnChordLeft);
             arc.setRadius(radius);
-            arc.setHead(new Node(radius * cos(headAmpAngle) + xTrans, radius * sin(headAmpAngle) + yTrans));
+            arc.setStart(new Node(radius * cos(headAmpAngle) + xTrans, radius * sin(headAmpAngle) + yTrans));
             arc.setSucc(new LinearSegment2D(new Node(
                     radius * cos(rearAmpAngle) + xTrans,
                     radius * sin(rearAmpAngle) + yTrans)));
-            Segment2D rawTail = arc.getSucc();
+            Segment rawTail = arc.getSucc();
             ArcSegment2D newSucc = arc.bisectionAndReturnNewSuccessor();
 
             assertTrue(arc.getSucc() == newSucc);

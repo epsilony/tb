@@ -24,7 +24,7 @@ public class QuadrangleAdaptiveCell extends AdaptiveCellAdapter<QuadrangleAdapti
             AdaptiveCellEdge[] newChildEdges = new AdaptiveCellEdge[NUM_OF_EDGES];
             newChildEdges[i] = edges[i];
             newChildEdges[(i + 3) % NUM_OF_EDGES] = edges[i].getPred();
-            newChildEdges[(i + 1) % NUM_OF_EDGES] = new AdaptiveCellEdge(edges[i].getRear());
+            newChildEdges[(i + 1) % NUM_OF_EDGES] = new AdaptiveCellEdge(edges[i].getEnd());
             newChildEdges[(i + 2) % NUM_OF_EDGES] = new AdaptiveCellEdge(centerNode);
             children[i] = new QuadrangleAdaptiveCell();
             children[i].setEdges(newChildEdges);

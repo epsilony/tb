@@ -59,7 +59,7 @@ public class Polygon2DTest {
         for (LinearSegment2D seg : pg) {
             double[][][] coordChains = coords.get(0);
             double[] coord = coordChains[i][j];
-            assertArrayEquals(coord, seg.getHead().coord, 1e-14);
+            assertArrayEquals(coord, seg.getStart().coord, 1e-14);
             j++;
             if (j >= coordChains[i].length) {
                 i++;
@@ -79,7 +79,7 @@ public class Polygon2DTest {
             ListIterator<Node> csIter = cs.listIterator(cs.size());
             boolean getHere = false;
             do {
-                Node actNd = seg.pred.getHead();
+                Node actNd = seg.pred.getStart();
                 Node expNd = csIter.previous();
                 assertArrayEquals(expNd.coord, actNd.coord, 1e-14);
                 seg = (LinearSegment2D) seg.pred;

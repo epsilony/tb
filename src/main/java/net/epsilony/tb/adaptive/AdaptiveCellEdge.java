@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import net.epsilony.tb.solid.LinearSegment2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Segment2D;
+import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.Math2D;
 
 /**
@@ -64,9 +64,9 @@ public class AdaptiveCellEdge extends LinearSegment2D {
             List<AdaptiveCellEdge> oppositesBak = opposites;
             opposites = new ArrayList<>(maxSizeRatioToOpposites);
             boolean succOpposite = false;
-            Node newMidNode = getRear();
+            Node newMidNode = getEnd();
             for (AdaptiveCellEdge oppEdge : oppositesBak) {
-                if (oppEdge.getRear() == newMidNode) {
+                if (oppEdge.getEnd() == newMidNode) {
                     succOpposite = true;
                 }
                 if (succOpposite) {
@@ -86,14 +86,14 @@ public class AdaptiveCellEdge extends LinearSegment2D {
         if (numOpposites() <= 1) {
             return super.bisectionNode();
         } else if (numOpposites() == maxSizeRatioToOpposites) {
-            return getOpposite(maxSizeRatioToOpposites / 2 - 1).getHead();
+            return getOpposite(maxSizeRatioToOpposites / 2 - 1).getStart();
         } else {
-            double[] midPoint = Math2D.pointOnSegment(head.getCoord(), getRear().getCoord(), 0.5, null);
+            double[] midPoint = Math2D.pointOnSegment(head.getCoord(), getEnd().getCoord(), 0.5, null);
             Node midNode = null;
             double lengthErr = length() / (1 + maxSizeRatioToOpposites);
             for (int i = 0; i < numOpposites() - 1; i++) {
-                if (Math2D.distance(midPoint, opposites.get(i).getHead().getCoord()) < lengthErr) {
-                    midNode = opposites.get(i).getHead();
+                if (Math2D.distance(midPoint, opposites.get(i).getStart().getCoord()) < lengthErr) {
+                    midNode = opposites.get(i).getStart();
                     break;
                 }
             }
@@ -133,7 +133,7 @@ public class AdaptiveCellEdge extends LinearSegment2D {
     }
 
     public boolean isAbleToMerge(AdaptiveCellEdge successor) {
-        if (getRear() != successor.getHead() || numOpposites() > 1 || successor.numOpposites() > 1) {
+        if (getEnd() != successor.getStart() || numOpposites() > 1 || successor.numOpposites() > 1) {
             return false;
         } else {
             return true;
@@ -179,7 +179,7 @@ public class AdaptiveCellEdge extends LinearSegment2D {
     }
 
     @Override
-    public void setPred(Segment2D pred) {
+    public void setPred(Segment pred) {
         super.setPred((AdaptiveCellEdge) pred);
     }
 
@@ -189,7 +189,7 @@ public class AdaptiveCellEdge extends LinearSegment2D {
     }
 
     @Override
-    public void setSucc(Segment2D succ) {
+    public void setSucc(Segment succ) {
         super.setSucc((AdaptiveCellEdge) succ);
     }
 

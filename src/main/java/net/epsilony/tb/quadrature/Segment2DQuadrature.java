@@ -2,7 +2,7 @@
 package net.epsilony.tb.quadrature;
 
 import java.util.Iterator;
-import net.epsilony.tb.solid.Segment2D;
+import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.ArrvarFunction;
 
 /**
@@ -11,17 +11,17 @@ import net.epsilony.tb.ArrvarFunction;
  */
 public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
 
-    Segment2D segment = null;
+    Segment segment = null;
     int degree;
     double[] points;
     double[] weights;
 
-    public void setSegment(Segment2D segment) {
+    public void setSegment(Segment segment) {
         this.segment = segment;
         prepare();
     }
 
-    public Segment2DQuadrature(Segment2D segment, int degree) {
+    public Segment2DQuadrature(Segment segment, int degree) {
         this.segment = segment;
         this.degree = degree;
         prepare();

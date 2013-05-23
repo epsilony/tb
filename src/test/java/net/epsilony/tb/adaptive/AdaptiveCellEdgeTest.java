@@ -47,7 +47,7 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 1);
         assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == newSucc);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == sampleEdge);
-        assertTrue(sampleEdge.getRear() == sampleData.oppositeSideEdges.get(1).getHead());
+        assertTrue(sampleEdge.getEnd() == sampleData.oppositeSideEdges.get(1).getStart());
     }
 
     void testOneOneBisection() {
@@ -129,8 +129,8 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == sample);
         assertTrue(sampleData.oppositeSideEdges.get(3).numOpposites() == 1);
         assertTrue(sampleData.oppositeSideEdges.get(3).getOpposite(0) == sample);
-        assertTrue(sample.getHeadCoord() == sampleData.oppositeSideEdges.get(3).getRearCoord());
-        assertTrue(sample.getRearCoord() == sampleData.oppositeSideEdges.get(0).getHeadCoord());
+        assertTrue(sample.getStartCoord() == sampleData.oppositeSideEdges.get(3).getRearCoord());
+        assertTrue(sample.getRearCoord() == sampleData.oppositeSideEdges.get(0).getStartCoord());
     }
 
     public void testMergeEdgesWithTwoOpposites() {
@@ -184,8 +184,8 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sample.getOpposite(0) == commonOpposite);
         assertTrue(commonOpposite.numOpposites() == 1);
         assertTrue(commonOpposite.getOpposite(0) == sample);
-        assertTrue(sample.getHeadCoord() == commonOpposite.getRearCoord());
-        assertTrue(sample.getRearCoord() == commonOpposite.getHeadCoord());
+        assertTrue(sample.getStartCoord() == commonOpposite.getRearCoord());
+        assertTrue(sample.getRearCoord() == commonOpposite.getStartCoord());
     }
 
     public SampleData genSample(

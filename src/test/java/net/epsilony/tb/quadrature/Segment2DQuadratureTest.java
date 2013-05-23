@@ -93,7 +93,7 @@ public class Segment2DQuadratureTest {
         double radius = 33;
         double exp = Math.PI * (0.55 - 0.33) * radius;
         ArcSegment2D arc = new ArcSegment2D();
-        arc.setHead(new Node(xTrans + radius * Math.cos(startAngle), yTrans + radius * Math.sin(startAngle)));
+        arc.setStart(new Node(xTrans + radius * Math.cos(startAngle), yTrans + radius * Math.sin(startAngle)));
         arc.setRadius(radius);
         arc.setSucc(new LinearSegment2D(
                 new Node(

@@ -47,7 +47,7 @@ public abstract class AbstractAdaptiveCellTest {
         for (AdaptiveCell cell : cells) {
             AdaptiveCellEdge[] edges = cell.getEdges();
             for (AdaptiveCellEdge eg : edges) {
-                double[] xy = eg.getHeadCoord();
+                double[] xy = eg.getStartCoord();
                 if (xy[0] > maxX) {
                     maxX = xy[0];
                 }
@@ -123,8 +123,8 @@ public abstract class AbstractAdaptiveCellTest {
                 continue;
             }
             for (AdaptiveCellEdge eg : edges) {
-                nodes.add(eg.getHead());
-                nodes.add(eg.getRear());
+                nodes.add(eg.getStart());
+                nodes.add(eg.getEnd());
                 double length = eg.length();
                 if (length < minEdgeLength) {
                     minEdgeLength = length;

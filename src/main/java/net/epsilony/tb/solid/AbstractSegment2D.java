@@ -7,13 +7,13 @@ import net.epsilony.tb.IntIdentityMap;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractSegment2D implements Segment2D {
+public abstract class AbstractSegment2D implements Segment {
 
     protected int diffOrder = 0;
     protected Node head;
     public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
-    protected Segment2D pred;
-    protected Segment2D succ;
+    protected Segment pred;
+    protected Segment succ;
 
     public abstract double distanceTo(double x, double y);
 
@@ -23,12 +23,12 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public Node getHead() {
+    public Node getStart() {
         return head;
     }
 
     @Override
-    public double[] getHeadCoord() {
+    public double[] getStartCoord() {
         return head.coord;
     }
 
@@ -38,22 +38,22 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public Segment2D getPred() {
+    public Segment getPred() {
         return pred;
     }
 
     @Override
-    public Node getRear() {
-        return succ.getHead();
+    public Node getEnd() {
+        return succ.getStart();
     }
 
     @Override
     public double[] getRearCoord() {
-        return getRear().coord;
+        return getEnd().coord;
     }
 
     @Override
-    public Segment2D getSucc() {
+    public Segment getSucc() {
         return succ;
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public void setHead(Node head) {
+    public void setStart(Node head) {
         this.head = head;
     }
 
@@ -76,12 +76,12 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public void setPred(Segment2D pred) {
+    public void setPred(Segment pred) {
         this.pred = pred;
     }
 
     @Override
-    public void setSucc(Segment2D succ) {
+    public void setSucc(Segment succ) {
         this.succ = succ;
     }
 }

@@ -18,8 +18,8 @@ public class LinearSegment2D extends AbstractSegment2D {
 
     @Override
     public double distanceTo(double x, double y) {
-        double[] v1 = getHead().coord;
-        double[] v2 = getRear().coord;
+        double[] v1 = getStart().coord;
+        double[] v2 = getEnd().coord;
         double d12_x = v2[0] - v1[0];
         double d12_y = v2[1] - v1[1];
         double len12 = Math.sqrt(d12_x * d12_x + d12_y * d12_y);
@@ -38,12 +38,12 @@ public class LinearSegment2D extends AbstractSegment2D {
     }
 
     public double length() {
-        return Math2D.distance(getHeadCoord(), getRearCoord());
+        return Math2D.distance(getStartCoord(), getRearCoord());
     }
 
     public double[] midPoint(double[] result) {
-        double[] start = getHead().coord;
-        double[] end = getRear().coord;
+        double[] start = getStart().coord;
+        double[] end = getEnd().coord;
         double x = (start[0] + end[0]) / 2;
         double y = (start[1] + end[1]) / 2;
         if (null == result) {
@@ -62,7 +62,7 @@ public class LinearSegment2D extends AbstractSegment2D {
     @Override
     public LinearSegment2D bisectionAndReturnNewSuccessor() {
         LinearSegment2D newSucc = newInstance();
-        newSucc.setHead(bisectionNode());
+        newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
         this.succ.setPred(newSucc);
@@ -76,13 +76,13 @@ public class LinearSegment2D extends AbstractSegment2D {
 
     @Override
     public String toString() {
-        String rearStr = (null == succ || null == getRear()) ? "NULL" : getRear().toString();
+        String rearStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
         String headStr = (null == head) ? "NULL" : head.toString();
         return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, headStr, rearStr);
     }
 
     public double[] outNormal() {
-        double[] result = Math2D.subs(getRear().coord, head.coord, null);
+        double[] result = Math2D.subs(getEnd().coord, head.coord, null);
         Math2D.normalize(result, result);
         return result;
     }
@@ -96,7 +96,7 @@ public class LinearSegment2D extends AbstractSegment2D {
         if (null == results) {
             results = new double[diffOrder * 2];
         }
-        double[] headCoord = getHeadCoord();
+        double[] headCoord = getStartCoord();
         double[] rearCoord = getRearCoord();
         Math2D.pointOnSegment(headCoord, rearCoord, t, results);
         if (diffOrder >= 1) {

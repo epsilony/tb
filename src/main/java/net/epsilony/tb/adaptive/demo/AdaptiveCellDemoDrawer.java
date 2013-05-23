@@ -47,9 +47,9 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         AdaptiveCellEdge[] edges = cell.getEdges();
         if (edges != null) {
             GeneralPath path = new GeneralPath();
-            path.moveTo(edges[0].getHeadCoord()[0], edges[0].getHeadCoord()[1]);
+            path.moveTo(edges[0].getStartCoord()[0], edges[0].getStartCoord()[1]);
             for (int i = 0; i < edges.length; i++) {
-                path.lineTo(edges[i].getHeadCoord()[0], edges[i].getHeadCoord()[1]);
+                path.lineTo(edges[i].getStartCoord()[0], edges[i].getStartCoord()[1]);
             }
             path.closePath();
             shape = path;
@@ -72,7 +72,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
             return;
         }
         for (AdaptiveCellEdge edge : cell.getEdges()) {
-            nodeDrawer.setNode(edge.getHead());
+            nodeDrawer.setNode(edge.getStart());
             nodeDrawer.drawModel(g2);
             if (showOppositeMarks) {
                 drawEdgeOpposite(g2, edge);
@@ -85,7 +85,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         if (edge.numOpposites() == 0) {
             return;
         }
-        double[] headCoord = edge.getHeadCoord();
+        double[] headCoord = edge.getStartCoord();
         double[] rearCoord = edge.getRearCoord();
         double[] midPoint = Math2D.pointOnSegment(headCoord, rearCoord, 0.5, null);
         modelToComponentTransform.transform(midPoint, 0, midPoint, 0, 1);
@@ -99,7 +99,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         g2.setColor(oppositeMarkColor);
         for (int i = 0; i < edge.numOpposites(); i++) {
             AdaptiveCellEdge opp = edge.getOpposite(i);
-            double[] oppositeMid = Math2D.pointOnSegment(opp.getHeadCoord(), opp.getRearCoord(), 0.5, null);
+            double[] oppositeMid = Math2D.pointOnSegment(opp.getStartCoord(), opp.getRearCoord(), 0.5, null);
             modelToComponentTransform.transform(oppositeMid, 0, oppositeMid, 0, 1);
             path.moveTo(midPoint[0] + markVec[0], midPoint[1] + markVec[1]);
             path.lineTo(oppositeMid[0], oppositeMid[1]);
