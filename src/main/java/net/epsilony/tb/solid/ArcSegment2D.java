@@ -7,7 +7,7 @@ import net.epsilony.tb.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class ArcSegment2D extends AbstractSegment2D {
+public class ArcSegment2D extends AbstractSegment {
 
     double radius;
     boolean centerOnChordLeft = true;//chord is a linear segment start from start node and end at end node

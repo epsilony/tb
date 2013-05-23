@@ -7,7 +7,7 @@ import net.epsilony.tb.IntIdentityMap;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractSegment2D implements Segment {
+public abstract class AbstractSegment implements Segment {
 
     protected int diffOrder = 0;
     protected Node start;

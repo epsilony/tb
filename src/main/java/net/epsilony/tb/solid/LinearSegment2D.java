@@ -7,7 +7,7 @@ import net.epsilony.tb.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class LinearSegment2D extends AbstractSegment2D {
+public class LinearSegment2D extends AbstractSegment {
 
     public LinearSegment2D() {
     }
