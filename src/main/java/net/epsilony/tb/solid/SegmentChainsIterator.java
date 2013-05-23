@@ -10,15 +10,15 @@ import java.util.List;
  */
 public class SegmentChainsIterator<T extends Segment> implements Iterator<T> {
 
-    Iterator<T> headIterator;
+    Iterator<T> startIterator;
     T seg;
     T last;
-    T head;
+    T start;
 
     public SegmentChainsIterator(List<T> chainsHeads) {
-        headIterator = chainsHeads.iterator();
-        seg = headIterator.hasNext() ? headIterator.next() : null;
-        head = seg;
+        startIterator = chainsHeads.iterator();
+        seg = startIterator.hasNext() ? startIterator.next() : null;
+        start = seg;
     }
 
     @Override
@@ -34,13 +34,13 @@ public class SegmentChainsIterator<T extends Segment> implements Iterator<T> {
         if (seg.getPred() != res || seg.getPred() == seg) {
             throw new IllegalStateException("Meet broken Segment2D link, may cause self ring");
         }
-        if (seg == head) {
-            if (headIterator.hasNext()) {
-                seg = headIterator.next();
+        if (seg == start) {
+            if (startIterator.hasNext()) {
+                seg = startIterator.next();
             } else {
                 seg = null;
             }
-            head = seg;
+            start = seg;
         }
         last = res;
         return res;

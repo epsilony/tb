@@ -26,13 +26,13 @@ public class AdaptiveCellEdgeTest {
 
     public void testBisectionWithTwoOpposites() {
         double[][] coords = new double[][]{{0, 0}, {-1, 0}, {-2, 0}};
-        int[] sampleEdgesHeadsIndes = new int[]{0, 2};
-        int[] oppositesEdgesHeadsIndes = new int[]{2, 1, 0};
+        int[] sampleEdgesStartsIndes = new int[]{0, 2};
+        int[] oppositesEdgesStartsIndes = new int[]{2, 1, 0};
         int[][] sampleSideOppsitesIndes = new int[][]{{1, 0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{0}, {0}};
 
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
         AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
         AdaptiveCellEdge newSucc = sampleEdge.bisectionAndReturnNewSuccessor();
@@ -52,20 +52,20 @@ public class AdaptiveCellEdgeTest {
 
     void testOneOneBisection() {
         double[][] coords = new double[][]{{0, 0}, {-1, 1}, {-2, 0}};
-        int[] sampleEdgesHeadsIndes = new int[]{0, 1, 2};
-        int[] oppositesEdgesHeadsIndes = new int[]{2, 1, 0};
+        int[] sampleEdgesStartsIndes = new int[]{0, 1, 2};
+        int[] oppositesEdgesStartsIndes = new int[]{2, 1, 0};
         int[][] sampleSideOppsitesIndes = new int[][]{{1}, {0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{1}, {0}};
 
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
         AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
         AdaptiveCellEdge newSucc = sampleEdge.bisectionAndReturnNewSuccessor();
         assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 2);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == newSucc);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(1) == sampleEdge);
-        assertArrayEquals(new double[]{-0.5, 0.5}, sampleEdge.getRearCoord(), 1e-14);
+        assertArrayEquals(new double[]{-0.5, 0.5}, sampleEdge.getEndCoord(), 1e-14);
         assertTrue(sampleEdge.numOpposites() == 1);
         assertTrue(sampleEdge.getOpposite(0) == sampleData.oppositeSideEdges.get(1));
         assertTrue(newSucc.numOpposites() == 1);
@@ -78,13 +78,13 @@ public class AdaptiveCellEdgeTest {
 
     public void testBisectionOneOppositeToABiggerOne() {
         double[][] coords = new double[][]{{0, 0}, {-1, 1}, {-2, 0}};
-        int[] sampleEdgesHeadsIndes = new int[]{0, 1, 2};
-        int[] oppositesEdgesHeadsIndes = new int[]{2, 0};
+        int[] sampleEdgesStartsIndes = new int[]{0, 1, 2};
+        int[] oppositesEdgesStartsIndes = new int[]{2, 0};
         int[][] sampleSideOppsitesIndes = new int[][]{{0}, {0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{1, 0}};
         AdaptiveCellEdge.DEFAULT_MAX_SIZE_RATIO_TO_OPPOSITES = 2;
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
         AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
         System.out.println("sampleEdge.isAbleToBisection() = " + sampleEdge.isAbleToBisection());
@@ -110,13 +110,13 @@ public class AdaptiveCellEdgeTest {
         double[][] coords = new double[][]{
             {-1, 0}, {0, 0}, {1, 0}, {0, 1}, {0, -1}
         };
-        int[] sampleEdgesHeadsIndes = new int[]{2, 1, 4, 1, 0};
-        int[] oppositesEdgesHeadsIndes = new int[]{0, 1, 3, 1, 2};
+        int[] sampleEdgesStartsIndes = new int[]{2, 1, 4, 1, 0};
+        int[] oppositesEdgesStartsIndes = new int[]{0, 1, 3, 1, 2};
         int[][] sampleSideOppsitesIndes = new int[][]{{3}, {}, {}, {0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{3}, {}, {}, {0}};
 
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
 
         AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
@@ -129,21 +129,21 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == sample);
         assertTrue(sampleData.oppositeSideEdges.get(3).numOpposites() == 1);
         assertTrue(sampleData.oppositeSideEdges.get(3).getOpposite(0) == sample);
-        assertTrue(sample.getStartCoord() == sampleData.oppositeSideEdges.get(3).getRearCoord());
-        assertTrue(sample.getRearCoord() == sampleData.oppositeSideEdges.get(0).getStartCoord());
+        assertTrue(sample.getStartCoord() == sampleData.oppositeSideEdges.get(3).getEndCoord());
+        assertTrue(sample.getEndCoord() == sampleData.oppositeSideEdges.get(0).getStartCoord());
     }
 
     public void testMergeEdgesWithTwoOpposites() {
         double[][] coords = new double[][]{
             {0, 0}, {-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-2, -2}, {-1, 1}, {-2, 1}, {-3, 1}
         };
-        int[] sampleEdgesHeadsIndes = new int[]{0, 2, 5, 2, 4};
-        int[] oppositesEdgesHeadsIndes = new int[]{4, 3, 8, 3, 2, 7, 2, 1, 6, 1, 0};
+        int[] sampleEdgesStartsIndes = new int[]{0, 2, 5, 2, 4};
+        int[] oppositesEdgesStartsIndes = new int[]{4, 3, 8, 3, 2, 7, 2, 1, 6, 1, 0};
         int[][] sampleSideOppsitesIndes = new int[][]{{9, 6}, {}, {}, {3, 0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{3}, {}, {}, {3}, {}, {}, {0}, {}, {}, {0}};
 
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
 
         AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
@@ -165,13 +165,13 @@ public class AdaptiveCellEdgeTest {
         double[][] coords = new double[][]{
             {-1, 0}, {0, 0}, {1, 0}, {0, 1}, {0, -1}
         };
-        int[] sampleEdgesHeadsIndes = new int[]{0, 1, 4, 1, 2};
-        int[] oppositesEdgesHeadsIndes = new int[]{2, 0};
+        int[] sampleEdgesStartsIndes = new int[]{0, 1, 4, 1, 2};
+        int[] oppositesEdgesStartsIndes = new int[]{2, 0};
         int[][] sampleSideOppsitesIndes = new int[][]{{0}, {}, {}, {0}};
         int[][] oppositeSideOppositedIndes = new int[][]{{3, 0}};
 
         SampleData sampleData = genSample(coords,
-                sampleEdgesHeadsIndes, oppositesEdgesHeadsIndes,
+                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
 
         AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
@@ -184,8 +184,8 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sample.getOpposite(0) == commonOpposite);
         assertTrue(commonOpposite.numOpposites() == 1);
         assertTrue(commonOpposite.getOpposite(0) == sample);
-        assertTrue(sample.getStartCoord() == commonOpposite.getRearCoord());
-        assertTrue(sample.getRearCoord() == commonOpposite.getStartCoord());
+        assertTrue(sample.getStartCoord() == commonOpposite.getEndCoord());
+        assertTrue(sample.getEndCoord() == commonOpposite.getStartCoord());
     }
 
     public SampleData genSample(
@@ -210,12 +210,12 @@ public class AdaptiveCellEdgeTest {
         return result;
     }
 
-    public List<AdaptiveCellEdge> genSequentEdgesFromNodesAndHeadNodesIndes(Node[] nodes, int[] headIndes) {
-        ArrayList<AdaptiveCellEdge> edges = new ArrayList<>(headIndes.length);
-        for (int i = 0; i < headIndes.length; i++) {
-            edges.add(new AdaptiveCellEdge(nodes[headIndes[i]]));
+    public List<AdaptiveCellEdge> genSequentEdgesFromNodesAndHeadNodesIndes(Node[] nodes, int[] startIndes) {
+        ArrayList<AdaptiveCellEdge> edges = new ArrayList<>(startIndes.length);
+        for (int i = 0; i < startIndes.length; i++) {
+            edges.add(new AdaptiveCellEdge(nodes[startIndes[i]]));
         }
-        for (int i = 0; i < headIndes.length - 1; i++) {
+        for (int i = 0; i < startIndes.length - 1; i++) {
             edges.get(i).setSucc(edges.get(i + 1));
             edges.get(i + 1).setPred(edges.get(i));
         }

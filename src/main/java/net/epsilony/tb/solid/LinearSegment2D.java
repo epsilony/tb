@@ -12,8 +12,8 @@ public class LinearSegment2D extends AbstractSegment2D {
     public LinearSegment2D() {
     }
 
-    public LinearSegment2D(Node head) {
-        this.head = head;
+    public LinearSegment2D(Node start) {
+        this.start = start;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class LinearSegment2D extends AbstractSegment2D {
     }
 
     public double length() {
-        return Math2D.distance(getStartCoord(), getRearCoord());
+        return Math2D.distance(getStartCoord(), getEndCoord());
     }
 
     public double[] midPoint(double[] result) {
@@ -76,13 +76,13 @@ public class LinearSegment2D extends AbstractSegment2D {
 
     @Override
     public String toString() {
-        String rearStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
-        String headStr = (null == head) ? "NULL" : head.toString();
-        return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, headStr, rearStr);
+        String endStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
+        String startStr = (null == start) ? "NULL" : start.toString();
+        return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
     }
 
     public double[] outNormal() {
-        double[] result = Math2D.subs(getEnd().coord, head.coord, null);
+        double[] result = Math2D.subs(getEnd().coord, start.coord, null);
         Math2D.normalize(result, result);
         return result;
     }
@@ -96,12 +96,12 @@ public class LinearSegment2D extends AbstractSegment2D {
         if (null == results) {
             results = new double[diffOrder * 2];
         }
-        double[] headCoord = getStartCoord();
-        double[] rearCoord = getRearCoord();
-        Math2D.pointOnSegment(headCoord, rearCoord, t, results);
+        double[] startCoord = getStartCoord();
+        double[] endCoord = getEndCoord();
+        Math2D.pointOnSegment(startCoord, endCoord, t, results);
         if (diffOrder >= 1) {
-            results[2] = rearCoord[0] - headCoord[0];
-            results[3] = rearCoord[1] - headCoord[1];
+            results[2] = endCoord[0] - startCoord[0];
+            results[3] = endCoord[1] - startCoord[1];
         }
         return results;
     }

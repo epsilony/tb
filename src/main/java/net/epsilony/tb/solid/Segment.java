@@ -20,7 +20,7 @@ public interface Segment extends IntIdentity, UnivarArrayFunction {
 
     Node getEnd();
 
-    double[] getRearCoord();
+    double[] getEndCoord();
 
     Segment getSucc();
 

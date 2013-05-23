@@ -43,7 +43,7 @@ public class Polygon2D implements Iterable<LinearSegment2D> {
             LinearSegment2D chainHead = new LinearSegment2D();
             LinearSegment2D seg = chainHead;
             for (Node nd : nds) {
-                seg.head = nd;
+                seg.start = nd;
                 LinearSegment2D succ = new LinearSegment2D();
                 seg.succ = succ;
                 succ.pred = seg;
@@ -113,15 +113,15 @@ public class Polygon2D implements Iterable<LinearSegment2D> {
     public char rayCrossing(double x, double y) {
         int rCross = 0, lCross = 0;
         for (LinearSegment2D seg : this) {
-            Node head = seg.getStart();
-            double x1 = head.coord[0];
-            double y1 = head.coord[1];
+            Node start = seg.getStart();
+            double x1 = start.coord[0];
+            double y1 = start.coord[1];
             if (x1 == x && y1 == y) {
                 return 'v';
             }
-            Node rear = seg.getEnd();
-            double x2 = rear.coord[0];
-            double y2 = rear.coord[1];
+            Node end = seg.getEnd();
+            double x2 = end.coord[0];
+            double y2 = end.coord[1];
 
             boolean rStrad = (y1 > y) != (y2 > y);
             boolean lStrad = (y1 < y) != (y2 < y);

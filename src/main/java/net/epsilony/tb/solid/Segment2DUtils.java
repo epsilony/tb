@@ -10,20 +10,20 @@ import net.epsilony.tb.Math2D;
 public class Segment2DUtils {
 
     public static double chordLength(Segment seg) {
-        return Math2D.distance(seg.getStartCoord(), seg.getRearCoord());
+        return Math2D.distance(seg.getStartCoord(), seg.getEndCoord());
     }
 
     public static double[] chordMidPoint(Segment seg, double[] result) {
-        return Math2D.pointOnSegment(seg.getStartCoord(), seg.getRearCoord(), 0.5, result);
+        return Math2D.pointOnSegment(seg.getStartCoord(), seg.getEndCoord(), 0.5, result);
     }
 
     public static boolean isPointStrictlyAtChordLeft(Segment seg, double[] xy) {
-        double[] headCoord = seg.getStart().coord;
-        double[] rearCoord = seg.getEnd().coord;
-        double dhrX = rearCoord[0] - headCoord[0];
-        double dhrY = rearCoord[1] - headCoord[1];
-        double dx = xy[0] - headCoord[0];
-        double dy = xy[1] - headCoord[1];
+        double[] startCoord = seg.getStart().coord;
+        double[] endCoord = seg.getEnd().coord;
+        double dhrX = endCoord[0] - startCoord[0];
+        double dhrY = endCoord[1] - startCoord[1];
+        double dx = xy[0] - startCoord[0];
+        double dy = xy[1] - startCoord[1];
         double cross = Math2D.cross(dhrX, dhrY, dx, dy);
         return cross > 0 ? true : false;
     }

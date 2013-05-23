@@ -85,11 +85,11 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         if (edge.numOpposites() == 0) {
             return;
         }
-        double[] headCoord = edge.getStartCoord();
-        double[] rearCoord = edge.getRearCoord();
-        double[] midPoint = Math2D.pointOnSegment(headCoord, rearCoord, 0.5, null);
+        double[] startCoord = edge.getStartCoord();
+        double[] endCoord = edge.getEndCoord();
+        double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.5, null);
         modelToComponentTransform.transform(midPoint, 0, midPoint, 0, 1);
-        double[] edgeVec = Math2D.subs(rearCoord, headCoord, null);
+        double[] edgeVec = Math2D.subs(endCoord, startCoord, null);
         double[] markVec = new double[]{-edgeVec[1], edgeVec[0]};
         UIUtils.transformVector(modelToComponentTransform, markVec, markVec);
         Math2D.normalize(markVec, markVec);
@@ -99,7 +99,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         g2.setColor(oppositeMarkColor);
         for (int i = 0; i < edge.numOpposites(); i++) {
             AdaptiveCellEdge opp = edge.getOpposite(i);
-            double[] oppositeMid = Math2D.pointOnSegment(opp.getStartCoord(), opp.getRearCoord(), 0.5, null);
+            double[] oppositeMid = Math2D.pointOnSegment(opp.getStartCoord(), opp.getEndCoord(), 0.5, null);
             modelToComponentTransform.transform(oppositeMid, 0, oppositeMid, 0, 1);
             path.moveTo(midPoint[0] + markVec[0], midPoint[1] + markVec[1]);
             path.lineTo(oppositeMid[0], oppositeMid[1]);

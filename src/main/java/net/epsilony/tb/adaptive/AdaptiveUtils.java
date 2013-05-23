@@ -48,13 +48,13 @@ public class AdaptiveUtils {
 
     public static boolean isPointRestrictlyInsideCell(AdaptiveCell cell, double x, double y) {
         for (AdaptiveCellEdge edge : cell.getEdges()) {
-            double[] headCoord = edge.getStart().getCoord();
-            double[] rearCoord = edge.getEnd().getCoord();
+            double[] startCoord = edge.getStart().getCoord();
+            double[] endCoord = edge.getEnd().getCoord();
             double cross = Math2D.cross(
-                    rearCoord[0] - headCoord[0],
-                    rearCoord[1] - headCoord[1],
-                    x - headCoord[0],
-                    y - headCoord[1]);
+                    endCoord[0] - startCoord[0],
+                    endCoord[1] - startCoord[1],
+                    x - startCoord[0],
+                    y - startCoord[1]);
             if (cross <= 0) {
                 return false;
             }

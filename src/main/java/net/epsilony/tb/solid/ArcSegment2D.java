@@ -10,16 +10,16 @@ import net.epsilony.tb.Math2D;
 public class ArcSegment2D extends AbstractSegment2D {
 
     double radius;
-    boolean centerOnChordLeft = true;//chord is a linear segment start from head node and end at rear node
+    boolean centerOnChordLeft = true;//chord is a linear segment start from start node and end at end node
 
     public double[] calcCenter(double[] result) {
         if (null == result) {
             result = new double[2];
         }
-        double[] headCoord = getStartCoord();
-        double[] rearCoord = getRearCoord();
-        double dx = rearCoord[0] - headCoord[0];
-        double dy = rearCoord[1] - headCoord[1];
+        double[] startCoord = getStartCoord();
+        double[] endCoord = getEndCoord();
+        double dx = endCoord[0] - startCoord[0];
+        double dy = endCoord[1] - startCoord[1];
         double midToCenterX, midToCenterY;
         if (centerOnChordLeft) {
             midToCenterX = -dy;
@@ -33,8 +33,8 @@ public class ArcSegment2D extends AbstractSegment2D {
         double tScale = centerToMidDistance / tLength;
         midToCenterX *= tScale;
         midToCenterY *= tScale;
-        double midX = (rearCoord[0] + headCoord[0]) / 2;
-        double midY = (rearCoord[1] + headCoord[1]) / 2;
+        double midX = (endCoord[0] + startCoord[0]) / 2;
+        double midY = (endCoord[1] + startCoord[1]) / 2;
         result[0] = midX + midToCenterX;
         result[1] = midY + midToCenterY;
         return result;
@@ -43,19 +43,19 @@ public class ArcSegment2D extends AbstractSegment2D {
     @Override
     public double distanceTo(double x, double y) {
         double[] center = calcCenter(null);
-        double[] headCoord = getStartCoord();
-        double[] rearCoord = getRearCoord();
+        double[] startCoord = getStartCoord();
+        double[] endCoord = getEndCoord();
         double vecX = x - center[0];
         double vecY = y - center[1];
-        double crossToHead = Math2D.cross(vecX, vecY, headCoord[0] - center[0], headCoord[1] - center[1]);
-        double crossToRear = Math2D.cross(vecX, vecY, rearCoord[0] - center[0], rearCoord[1] - center[1]);
-        boolean betwean = crossToHead * crossToRear < 0;
+        double crossToStart = Math2D.cross(vecX, vecY, startCoord[0] - center[0], startCoord[1] - center[1]);
+        double crossToEnd = Math2D.cross(vecX, vecY, endCoord[0] - center[0], endCoord[1] - center[1]);
+        boolean betwean = crossToStart * crossToEnd < 0;
         if (betwean) {
             return radius - Math.sqrt(vecX * vecX + vecY * vecY);
         } else {
             return Math.min(
-                    Math2D.distance(x, y, headCoord[0], headCoord[1]),
-                    Math2D.distance(x, y, rearCoord[0], rearCoord[1]));
+                    Math2D.distance(x, y, startCoord[0], startCoord[1]),
+                    Math2D.distance(x, y, endCoord[0], endCoord[1]));
         }
     }
 
@@ -86,8 +86,8 @@ public class ArcSegment2D extends AbstractSegment2D {
         double centerX = results[0];
         double centerY = results[1];
         double centerAngle = calcCenterAngle(centerX, centerY);
-        double headAmplitudeAngle = calcHeadAmplitudeAngle(centerX, centerY);
-        double resultAmplitudeAngle = headAmplitudeAngle + centerAngle * t;
+        double startAmplitudeAngle = calcStartAmplitudeAngle(centerX, centerY);
+        double resultAmplitudeAngle = startAmplitudeAngle + centerAngle * t;
         double vX = radius * Math.cos(resultAmplitudeAngle);
         double vY = radius * Math.sin(resultAmplitudeAngle);
         double resultX = vX + centerX;
@@ -107,9 +107,9 @@ public class ArcSegment2D extends AbstractSegment2D {
     }
 
     public double calcCenterAngle(double centerX, double centerY) {
-        double[] headCoord = getStartCoord();
-        double[] rearCoord = getRearCoord();
-        double chordLengthSquare = Math2D.distanceSquare(headCoord, rearCoord);
+        double[] startCoord = getStartCoord();
+        double[] endCoord = getEndCoord();
+        double chordLengthSquare = Math2D.distanceSquare(startCoord, endCoord);
         double centerAngleCosine = (2 * radius * radius - chordLengthSquare) / 2 / (radius * radius);
         if (Math.abs(centerAngleCosine) > 1) {
             throw new IllegalStateException(
@@ -124,14 +124,14 @@ public class ArcSegment2D extends AbstractSegment2D {
         return centerAngle;
     }
 
-    public double calcHeadAmplitudeAngle() {
+    public double calcStartAmplitudeAngle() {
         double[] center = calcCenter(null);
-        return calcHeadAmplitudeAngle(center[0], center[1]);
+        return calcStartAmplitudeAngle(center[0], center[1]);
     }
 
-    public double calcHeadAmplitudeAngle(double centerX, double centerY) {
-        double[] headCoord = getStartCoord();
-        return Math.atan2(headCoord[1] - centerY, headCoord[0] - centerX);
+    public double calcStartAmplitudeAngle(double centerX, double centerY) {
+        double[] startCoord = getStartCoord();
+        return Math.atan2(startCoord[1] - centerY, startCoord[0] - centerX);
     }
 
     public double getRadius() {
@@ -143,7 +143,7 @@ public class ArcSegment2D extends AbstractSegment2D {
     }
 
     /**
-     * chord is a linear segment start from head node and end at rear node
+     * chord is a linear segment start from start node and end at end node
      *
      * @return
      */
@@ -152,7 +152,7 @@ public class ArcSegment2D extends AbstractSegment2D {
     }
 
     /**
-     * chord is a linear segment start from head node and end at rear node
+     * chord is a linear segment start from start node and end at end node
      *
      * @return
      */

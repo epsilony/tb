@@ -23,8 +23,8 @@ public class AdaptiveCellEdge extends LinearSegment2D {
     public AdaptiveCellEdge() {
     }
 
-    public AdaptiveCellEdge(Node head) {
-        super(head);
+    public AdaptiveCellEdge(Node start) {
+        super(start);
     }
 
     public int numOpposites() {
@@ -88,7 +88,7 @@ public class AdaptiveCellEdge extends LinearSegment2D {
         } else if (numOpposites() == maxSizeRatioToOpposites) {
             return getOpposite(maxSizeRatioToOpposites / 2 - 1).getStart();
         } else {
-            double[] midPoint = Math2D.pointOnSegment(head.getCoord(), getEnd().getCoord(), 0.5, null);
+            double[] midPoint = Math2D.pointOnSegment(start.getCoord(), getEnd().getCoord(), 0.5, null);
             Node midNode = null;
             double lengthErr = length() / (1 + maxSizeRatioToOpposites);
             for (int i = 0; i < numOpposites() - 1; i++) {

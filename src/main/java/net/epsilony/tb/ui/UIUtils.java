@@ -68,18 +68,18 @@ public class UIUtils {
 
     public static List<LinearSegment2D> pathIteratorToSegment2DChains(PathIterator pathIterator) {
         List<LinearSegment2D> result = new LinkedList<>();
-        LinearSegment2D head = null;
-        LinearSegment2D current = head;
+        LinearSegment2D start = null;
+        LinearSegment2D current = start;
         double[] coords = new double[6];
         while (!pathIterator.isDone()) {
             int type = pathIterator.currentSegment(coords);
             switch (type) {
                 case PathIterator.SEG_MOVETO:
-                    if (null != head) {
-                        result.add(head);
+                    if (null != start) {
+                        result.add(start);
                     }
-                    head = new LinearSegment2D(new Node(coords[0], coords[1]));
-                    current = head;
+                    start = new LinearSegment2D(new Node(coords[0], coords[1]));
+                    current = start;
                     break;
                 case PathIterator.SEG_LINETO:
                     LinearSegment2D newSeg = new LinearSegment2D(new Node(coords[0], coords[1]));
@@ -87,9 +87,9 @@ public class UIUtils {
                     current = newSeg;
                     break;
                 case PathIterator.SEG_CLOSE:
-                    Segment2DUtils.link(current, head);
-                    result.add(head);
-                    head = null;
+                    Segment2DUtils.link(current, start);
+                    result.add(start);
+                    start = null;
                     current = null;
                     break;
                 default:
@@ -97,8 +97,8 @@ public class UIUtils {
             }
             pathIterator.next();
         }
-        if (head != null) {
-            result.add(head);
+        if (start != null) {
+            result.add(start);
         }
         return result;
     }

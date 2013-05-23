@@ -10,7 +10,7 @@ import net.epsilony.tb.IntIdentityMap;
 public abstract class AbstractSegment2D implements Segment {
 
     protected int diffOrder = 0;
-    protected Node head;
+    protected Node start;
     public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
     protected Segment pred;
     protected Segment succ;
@@ -24,12 +24,12 @@ public abstract class AbstractSegment2D implements Segment {
 
     @Override
     public Node getStart() {
-        return head;
+        return start;
     }
 
     @Override
     public double[] getStartCoord() {
-        return head.coord;
+        return start.coord;
     }
 
     @Override
@@ -48,7 +48,7 @@ public abstract class AbstractSegment2D implements Segment {
     }
 
     @Override
-    public double[] getRearCoord() {
+    public double[] getEndCoord() {
         return getEnd().coord;
     }
 
@@ -66,8 +66,8 @@ public abstract class AbstractSegment2D implements Segment {
     }
 
     @Override
-    public void setStart(Node head) {
-        this.head = head;
+    public void setStart(Node start) {
+        this.start = start;
     }
 
     @Override

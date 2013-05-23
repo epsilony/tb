@@ -97,8 +97,8 @@ public class Math2D {
         return 0.5 * cross(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
     }
 
-    public static boolean isSegmentsIntersecting(double[] head1, double[] rear1, double[] head2, double[] rear2) {
-        return isSegmentsIntersecting(head1[0], head1[1], rear1[0], rear1[1], head2[0], head2[1], rear2[0], rear2[1]);
+    public static boolean isSegmentsIntersecting(double[] start1, double[] end1, double[] start2, double[] end2) {
+        return isSegmentsIntersecting(start1[0], start1[1], end1[0], end1[1], start2[0], start2[1], end2[0], end2[1]);
     }
 
     public static boolean isSegmentsIntersecting(
@@ -147,35 +147,35 @@ public class Math2D {
         return true;
     }
 
-    public static double[] pointOnSegment(double[] head, double[] rear, double t, double[] result) {
+    public static double[] pointOnSegment(double[] start, double[] end, double t, double[] result) {
         if (null == result) {
             result = new double[2];
         }
-        result[0] = head[0] * (1 - t) + rear[0] * t;
-        result[1] = head[1] * (1 - t) + rear[1] * t;
+        result[0] = start[0] * (1 - t) + end[0] * t;
+        result[1] = start[1] * (1 - t) + end[1] * t;
         return result;
     }
 
     public static double[] intersectionPoint(
-            double[] headA, double[] rearA,
-            double[] headB, double[] rearB,
+            double[] startA, double[] endA,
+            double[] startB, double[] endB,
             double[] result) {
-        double deltaAx = rearA[0] - headA[0];
-        double deltaAy = rearA[1] - headA[1];
-        double deltaBx = rearB[0] - headB[0];
-        double deltaBy = rearB[1] - headB[1];
+        double deltaAx = endA[0] - startA[0];
+        double deltaAy = endA[1] - startA[1];
+        double deltaBx = endB[0] - startB[0];
+        double deltaBy = endB[1] - startB[1];
 
         double crossDelta = cross(deltaAx, deltaAy, deltaBx, deltaBy);
         if (crossDelta == 0) {
             throw new IllegalArgumentException(
                     "the two segments are colinear or parrallel or one of them has zero length: "
-                    + "SegA :" + Arrays.toString(headA) + "-" + Arrays.toString(rearA) + " "
-                    + "SegB :" + Arrays.toString(headB) + "-" + Arrays.toString(rearB));
+                    + "SegA :" + Arrays.toString(startA) + "-" + Arrays.toString(endA) + " "
+                    + "SegB :" + Arrays.toString(startB) + "-" + Arrays.toString(endB));
         }
 
-        double uA = cross(headB[0] - headA[0], headB[1] - headA[1], deltaBx, deltaBy) / crossDelta;
+        double uA = cross(startB[0] - startA[0], startB[1] - startA[1], deltaBx, deltaBy) / crossDelta;
 
-        return pointOnSegment(headA, rearA, uA, result);
+        return pointOnSegment(startA, endA, uA, result);
     }
 
     public static double cos(double x1, double y1, double x2, double y2) {
@@ -184,11 +184,11 @@ public class Math2D {
 
     public static boolean isAnticlockwise(Iterable<double[]> simplePolygonVertes) {
         Iterator<double[]> iter = simplePolygonVertes.iterator();
-        double[] firstSegmentHead = iter.next();
-        double[] firstSegmentRear = iter.next();
+        double[] firstSegmentStart = iter.next();
+        double[] firstSegmentEnd = iter.next();
         double[] p1;
-        double[] p2 = firstSegmentHead;
-        double[] p3 = firstSegmentRear;
+        double[] p2 = firstSegmentStart;
+        double[] p3 = firstSegmentEnd;
         double angle = 0;
         int tailRun = 2;
         while (true) {
@@ -201,9 +201,9 @@ public class Math2D {
                     break;
                 }
                 if (tailRun == 2) {
-                    p3 = firstSegmentHead;
+                    p3 = firstSegmentStart;
                 } else {
-                    p3 = firstSegmentRear;
+                    p3 = firstSegmentEnd;
                 }
                 tailRun--;
             }
