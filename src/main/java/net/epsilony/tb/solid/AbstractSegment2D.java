@@ -71,11 +71,6 @@ public abstract class AbstractSegment2D implements Segment2D {
     }
 
     @Override
-    public void setHeadCoord(double[] coord) {
-        head.coord = coord;
-    }
-
-    @Override
     public void setId(int id) {
         this.id = id;
     }
