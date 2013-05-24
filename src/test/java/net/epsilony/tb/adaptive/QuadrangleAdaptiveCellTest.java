@@ -28,8 +28,8 @@ public class QuadrangleAdaptiveCellTest extends AbstractAdaptiveCellTest {
     @Override
     protected double getCellArea(AdaptiveCell cell) {
         AdaptiveCellEdge[] edges = cell.getEdges();
-        double[] vetes = edges[0].getStartCoord();
-        double[] vetes2 = edges[2].getStartCoord();
+        double[] vetes = edges[0].getStart().getCoord();
+        double[] vetes2 = edges[2].getStart().getCoord();
         double cellArea = (vetes[0] - vetes2[0]) * (vetes[1] - vetes2[1]);
         cellArea = Math.abs(cellArea);
         return cellArea;

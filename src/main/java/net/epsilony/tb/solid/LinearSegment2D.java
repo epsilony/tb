@@ -17,7 +17,7 @@ public class LinearSegment2D extends AbstractSegment {
     }
 
     public double length() {
-        return Math2D.distance(getStartCoord(), getEndCoord());
+        return Math2D.distance(getStart().getCoord(), getEnd().getCoord());
     }
 
     @Override
@@ -51,8 +51,8 @@ public class LinearSegment2D extends AbstractSegment {
         if (null == results) {
             results = new double[diffOrder * 2];
         }
-        double[] startCoord = getStartCoord();
-        double[] endCoord = getEndCoord();
+        double[] startCoord = getStart().getCoord();
+        double[] endCoord = getEnd().getCoord();
         Math2D.pointOnSegment(startCoord, endCoord, t, results);
         if (diffOrder >= 1) {
             results[2] = endCoord[0] - startCoord[0];

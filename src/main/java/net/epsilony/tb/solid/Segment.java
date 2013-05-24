@@ -14,13 +14,9 @@ public interface Segment extends IntIdentity, UnivarArrayFunction {
 
     Node getStart();
 
-    double[] getStartCoord();
-
     Segment getPred();
 
     Node getEnd();
-
-    double[] getEndCoord();
 
     Segment getSucc();
 

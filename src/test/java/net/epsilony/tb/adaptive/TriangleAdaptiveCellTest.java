@@ -27,9 +27,9 @@ public class TriangleAdaptiveCellTest extends AbstractAdaptiveCellTest {
     @Override
     protected double getCellArea(AdaptiveCell cell) {
         AdaptiveCellEdge[] edges = cell.getEdges();
-        double[] c1 = edges[0].getStartCoord();
-        double[] c2 = edges[1].getStartCoord();
-        double[] c3 = edges[2].getStartCoord();
+        double[] c1 = edges[0].getStart().getCoord();
+        double[] c2 = edges[1].getStart().getCoord();
+        double[] c3 = edges[2].getStart().getCoord();
         double cross = Math2D.cross(c2[0] - c1[0], c2[1] - c1[1], c3[0] - c1[0], c3[1] - c1[1]);
         return 0.5 * Math.abs(cross);
     }

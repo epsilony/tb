@@ -65,7 +65,7 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 2);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == newSucc);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(1) == sampleEdge);
-        assertArrayEquals(new double[]{-0.5, 0.5}, sampleEdge.getEndCoord(), 1e-14);
+        assertArrayEquals(new double[]{-0.5, 0.5}, sampleEdge.getEnd().getCoord(), 1e-14);
         assertTrue(sampleEdge.numOpposites() == 1);
         assertTrue(sampleEdge.getOpposite(0) == sampleData.oppositeSideEdges.get(1));
         assertTrue(newSucc.numOpposites() == 1);
@@ -129,8 +129,8 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == sample);
         assertTrue(sampleData.oppositeSideEdges.get(3).numOpposites() == 1);
         assertTrue(sampleData.oppositeSideEdges.get(3).getOpposite(0) == sample);
-        assertTrue(sample.getStartCoord() == sampleData.oppositeSideEdges.get(3).getEndCoord());
-        assertTrue(sample.getEndCoord() == sampleData.oppositeSideEdges.get(0).getStartCoord());
+        assertTrue(sample.getStart().getCoord() == sampleData.oppositeSideEdges.get(3).getEnd().getCoord());
+        assertTrue(sample.getEnd().getCoord() == sampleData.oppositeSideEdges.get(0).getStart().getCoord());
     }
 
     public void testMergeEdgesWithTwoOpposites() {
@@ -184,8 +184,8 @@ public class AdaptiveCellEdgeTest {
         assertTrue(sample.getOpposite(0) == commonOpposite);
         assertTrue(commonOpposite.numOpposites() == 1);
         assertTrue(commonOpposite.getOpposite(0) == sample);
-        assertTrue(sample.getStartCoord() == commonOpposite.getEndCoord());
-        assertTrue(sample.getEndCoord() == commonOpposite.getStartCoord());
+        assertTrue(sample.getStart().getCoord() == commonOpposite.getEnd().getCoord());
+        assertTrue(sample.getEnd().getCoord() == commonOpposite.getStart().getCoord());
     }
 
     public SampleData genSample(

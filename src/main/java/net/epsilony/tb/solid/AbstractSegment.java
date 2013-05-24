@@ -25,7 +25,6 @@ public abstract class AbstractSegment implements Segment {
         return start;
     }
 
-    @Override
     public double[] getStartCoord() {
         return start.coord;
     }
@@ -45,7 +44,6 @@ public abstract class AbstractSegment implements Segment {
         return succ.getStart();
     }
 
-    @Override
     public double[] getEndCoord() {
         return getEnd().coord;
     }

@@ -10,11 +10,11 @@ import net.epsilony.tb.Math2D;
 public class Segment2DUtils {
 
     public static double chordLength(Segment seg) {
-        return Math2D.distance(seg.getStartCoord(), seg.getEndCoord());
+        return Math2D.distance(seg.getStart().getCoord(), seg.getEnd().getCoord());
     }
 
     public static double[] chordMidPoint(Segment seg, double[] result) {
-        return Math2D.pointOnSegment(seg.getStartCoord(), seg.getEndCoord(), 0.5, result);
+        return Math2D.pointOnSegment(seg.getStart().getCoord(), seg.getEnd().getCoord(), 0.5, result);
     }
 
     public static boolean isPointStrictlyAtChordLeft(Segment seg, double[] xy) {

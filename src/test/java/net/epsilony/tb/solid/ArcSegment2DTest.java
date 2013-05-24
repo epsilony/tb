@@ -58,8 +58,8 @@ public class ArcSegment2DTest {
                     radius * sin(endAngle) + yTrans)));
             double[] samples = new double[]{0, 1, 0.5, 0.35};
             double[][] exps = new double[][]{
-                {arc.getStartCoord()[0], arc.getStartCoord()[1]},
-                {arc.getEndCoord()[0], arc.getEndCoord()[1]},
+                {arc.getStart().getCoord()[0], arc.getStart().getCoord()[1]},
+                {arc.getEnd().getCoord()[0], arc.getEnd().getCoord()[1]},
                 {radius * cos((startAngle + endAngle) / 2) + xTrans,
                     radius * sin((startAngle + endAngle) / 2) + yTrans},
                 {radius * cos(startAngle * (1 - 0.35) + endAngle * 0.35) + xTrans,
@@ -133,7 +133,7 @@ public class ArcSegment2DTest {
         x = sampleRad * cos(sampleAmpAngles) + xTrans;
         y = sampleRad * sin(sampleAmpAngles) + yTrans;
         act = arc.distanceTo(x, y);
-        exp = Math2D.distance(x, y, arc.getStartCoord()[0], arc.getStartCoord()[1]);
+        exp = Math2D.distance(x, y, arc.getStart().getCoord()[0], arc.getStart().getCoord()[1]);
         assertEquals(exp, act, 1e-14);
     }
 
