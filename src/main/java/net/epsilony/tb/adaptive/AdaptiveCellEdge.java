@@ -4,7 +4,7 @@ package net.epsilony.tb.adaptive;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import net.epsilony.tb.solid.LinearSegment2D;
+import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.Math2D;
@@ -13,7 +13,7 @@ import net.epsilony.tb.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class AdaptiveCellEdge extends LinearSegment2D {
+public class AdaptiveCellEdge extends Line2D {
 
     public static int DEFAULT_MAX_SIZE_RATIO_TO_OPPOSITES = 2;
     protected int maxSizeRatioToOpposites = DEFAULT_MAX_SIZE_RATIO_TO_OPPOSITES;

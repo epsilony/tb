@@ -7,12 +7,12 @@ import net.epsilony.tb.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class LinearSegment2D extends AbstractSegment {
+public class Line2D extends AbstractSegment {
 
-    public LinearSegment2D() {
+    public Line2D() {
     }
 
-    public LinearSegment2D(Node start) {
+    public Line2D(Node start) {
         this.start = start;
     }
 
@@ -22,7 +22,7 @@ public class LinearSegment2D extends AbstractSegment {
 
     @Override
     public void bisect() {
-        LinearSegment2D newSucc = newInstance();
+        Line2D newSucc = newInstance();
         newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
@@ -41,8 +41,8 @@ public class LinearSegment2D extends AbstractSegment {
         return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
     }
 
-    protected LinearSegment2D newInstance() {
-        return new LinearSegment2D();
+    protected Line2D newInstance() {
+        return new Line2D();
     }
 
     @Override

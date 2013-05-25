@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.LinearSegment2D;
+import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
@@ -66,10 +66,10 @@ public class UIUtils {
         return result;
     }
 
-    public static List<LinearSegment2D> pathIteratorToSegment2DChains(PathIterator pathIterator) {
-        List<LinearSegment2D> result = new LinkedList<>();
-        LinearSegment2D start = null;
-        LinearSegment2D current = start;
+    public static List<Line2D> pathIteratorToSegment2DChains(PathIterator pathIterator) {
+        List<Line2D> result = new LinkedList<>();
+        Line2D start = null;
+        Line2D current = start;
         double[] coords = new double[6];
         while (!pathIterator.isDone()) {
             int type = pathIterator.currentSegment(coords);
@@ -78,11 +78,11 @@ public class UIUtils {
                     if (null != start) {
                         result.add(start);
                     }
-                    start = new LinearSegment2D(new Node(coords[0], coords[1]));
+                    start = new Line2D(new Node(coords[0], coords[1]));
                     current = start;
                     break;
                 case PathIterator.SEG_LINETO:
-                    LinearSegment2D newSeg = new LinearSegment2D(new Node(coords[0], coords[1]));
+                    Line2D newSeg = new Line2D(new Node(coords[0], coords[1]));
                     Segment2DUtils.link(current, newSeg);
                     current = newSeg;
                     break;
