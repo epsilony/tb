@@ -32,15 +32,17 @@ public class AdaptiveCellEdge extends LinearSegment2D {
     }
 
     @Override
-    public AdaptiveCellEdge bisectionAndReturnNewSuccessor() {
+    public void bisect() {
         if (!isAbleToBisection()) {
             throw new IllegalStateException();
         }
         if (maxSizeRatioToOpposites > 2) {
-            return bisectionAndReturnNewSuccessorWithHighSizeRatioLimit();
+            bisectionAndReturnNewSuccessorWithHighSizeRatioLimit();
+            return;
         }
 
-        AdaptiveCellEdge newSucc = (AdaptiveCellEdge) super.bisectionAndReturnNewSuccessor();
+        super.bisect();
+        AdaptiveCellEdge newSucc = (AdaptiveCellEdge) super.getSucc();
 
         if (numOpposites() == 1) {
             getOpposite(0).addOpposite(0, newSucc);
@@ -50,11 +52,11 @@ public class AdaptiveCellEdge extends LinearSegment2D {
             newSucc.addOpposite(0, getOpposite(1));
             this.removeOpposite(1);
         }
-        return newSucc;
     }
 
     private AdaptiveCellEdge bisectionAndReturnNewSuccessorWithHighSizeRatioLimit() {
-        AdaptiveCellEdge newSucc = (AdaptiveCellEdge) super.bisectionAndReturnNewSuccessor();
+        super.bisect();
+        AdaptiveCellEdge newSucc = (AdaptiveCellEdge) super.getSucc();
 
         if (numOpposites() == 1) {
             int index = getOpposite(0).opposites.indexOf(this);

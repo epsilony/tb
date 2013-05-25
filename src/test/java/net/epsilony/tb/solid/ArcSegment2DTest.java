@@ -160,7 +160,8 @@ public class ArcSegment2DTest {
                     radius * cos(endAmpAngle) + xTrans,
                     radius * sin(endAmpAngle) + yTrans)));
             Segment rawTail = arc.getSucc();
-            ArcSegment2D newSucc = arc.bisectionAndReturnNewSuccessor();
+            arc.bisect();
+            ArcSegment2D newSucc = (ArcSegment2D) arc.getSucc();
 
             assertTrue(arc.getSucc() == newSucc);
             assertTrue(newSucc.getPred() == arc);

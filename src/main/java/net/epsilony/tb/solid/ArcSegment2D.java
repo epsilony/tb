@@ -59,7 +59,7 @@ public class ArcSegment2D extends AbstractSegment {
     }
 
     @Override
-    public ArcSegment2D bisectionAndReturnNewSuccessor() {
+    public void bisect() {
         int diffOrderBack = getDiffOrder();
         setDiffOrder(0);
         double[] midPoint = values(0.5, null);
@@ -73,7 +73,6 @@ public class ArcSegment2D extends AbstractSegment {
         newSucc.setDiffOrder(diffOrder);
         newSucc.setRadius(radius);
         newSucc.setCenterOnChordLeft(centerOnChordLeft);
-        return newSucc;
     }
 
     @Override

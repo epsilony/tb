@@ -180,7 +180,7 @@ public class Polygon2D implements Iterable<LinearSegment2D> {
             LinearSegment2D seg = cHead;
             do {
                 while (seg.length() > lenUpBnd) {
-                    seg.bisectionAndReturnNewSuccessor();
+                    seg.bisect();
                 }
                 seg = (LinearSegment2D) seg.succ;
             } while (seg != cHead);

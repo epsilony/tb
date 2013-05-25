@@ -21,14 +21,13 @@ public class LinearSegment2D extends AbstractSegment {
     }
 
     @Override
-    public LinearSegment2D bisectionAndReturnNewSuccessor() {
+    public void bisect() {
         LinearSegment2D newSucc = newInstance();
         newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
         this.succ.setPred(newSucc);
         this.succ = newSucc;
-        return newSucc;
     }
 
     protected Node bisectionNode() {

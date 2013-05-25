@@ -12,7 +12,7 @@ public abstract class AdaptiveCellAdapter<T extends AdaptiveCellAdapter> impleme
 
     protected void bisectionAllEdges() {
         for (int i = 0; i < edges.length; i++) {
-            edges[i].bisectionAndReturnNewSuccessor();
+            edges[i].bisect();
         }
     }
 

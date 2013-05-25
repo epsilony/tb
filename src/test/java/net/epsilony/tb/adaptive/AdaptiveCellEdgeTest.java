@@ -35,7 +35,8 @@ public class AdaptiveCellEdgeTest {
                 sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
         AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
-        AdaptiveCellEdge newSucc = sampleEdge.bisectionAndReturnNewSuccessor();
+        sampleEdge.bisect();
+        AdaptiveCellEdge newSucc = sampleEdge.getSucc();
         assertTrue(newSucc == sampleEdge.getSucc());
         assertTrue(newSucc.numOpposites() == 1);
         assertTrue(sampleEdge.numOpposites() == 1);
@@ -61,7 +62,8 @@ public class AdaptiveCellEdgeTest {
                 sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
                 sampleSideOppsitesIndes, oppositeSideOppositedIndes);
         AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
-        AdaptiveCellEdge newSucc = sampleEdge.bisectionAndReturnNewSuccessor();
+        sampleEdge.bisect();
+        AdaptiveCellEdge newSucc = sampleEdge.getSucc();
         assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 2);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == newSucc);
         assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(1) == sampleEdge);
@@ -92,7 +94,7 @@ public class AdaptiveCellEdgeTest {
         assertTrue(!sampleEdge.isAbleToBisection());
         boolean catched = false;
         try {
-            AdaptiveCellEdge newSucc = sampleEdge.bisectionAndReturnNewSuccessor();
+            sampleEdge.bisect();
         } catch (IllegalStateException e) {
             catched = true;
         }
