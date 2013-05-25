@@ -32,7 +32,9 @@ public class Segment2DQuadratureTest {
         double exp = 5 * val;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
-            Segment2DQuadrature sq = new Segment2DQuadrature(seg, deg);
+            Segment2DQuadrature sq = new Segment2DQuadrature();
+            sq.setDegree(deg);
+            sq.setSegment(seg);
             double act = sq.quadrate(func);
             assertEquals(exp, act, 1e-12);
             getHere = true;
@@ -54,7 +56,9 @@ public class Segment2DQuadratureTest {
         double exp = -2.5;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
-            Segment2DQuadrature sq = new Segment2DQuadrature(seg, deg);
+            Segment2DQuadrature sq = new Segment2DQuadrature();
+            sq.setDegree(deg);
+            sq.setSegment(seg);
             double act = sq.quadrate(func);
             assertEquals(exp, act, 1e-12);
             getHere = true;
@@ -76,7 +80,9 @@ public class Segment2DQuadratureTest {
         double exp = 20;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
-            Segment2DQuadrature sq = new Segment2DQuadrature(seg, deg);
+            Segment2DQuadrature sq = new Segment2DQuadrature();
+            sq.setDegree(deg);
+            sq.setSegment(seg);
             double act = sq.quadrate(func);
             assertEquals(exp, act, 1e-12);
             getHere = true;
@@ -99,7 +105,8 @@ public class Segment2DQuadratureTest {
                 new Node(
                 xTrans + radius * Math.cos(endAngle),
                 yTrans + radius * Math.sin(endAngle))));
-        Segment2DQuadrature sq = new Segment2DQuadrature(1);
+        Segment2DQuadrature sq = new Segment2DQuadrature();
+        sq.setDegree(1);
         boolean beenHere = false;
         for (int deg = 3; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
             sq.setDegree(deg);

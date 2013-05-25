@@ -12,24 +12,12 @@ import net.epsilony.tb.ArrvarFunction;
 public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
 
     Segment segment = null;
-    int degree;
+    int degree = -1;
     double[] points;
     double[] weights;
 
     public void setSegment(Segment segment) {
         this.segment = segment;
-        prepare();
-    }
-
-    public Segment2DQuadrature(Segment segment, int degree) {
-        this.segment = segment;
-        this.degree = degree;
-        prepare();
-    }
-
-    public Segment2DQuadrature(int degree) {
-        this.degree = degree;
-        prepare();
     }
 
     public Segment2DQuadrature() {
@@ -37,6 +25,9 @@ public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
 
     public void setDegree(int degree) {
         this.degree = degree;
+        double[][] pws = GaussLegendre.pointsWeightsByDegree(degree);
+        points = pws[0];
+        weights = pws[1];
     }
 
     public int getDegree() {
@@ -45,13 +36,10 @@ public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
 
     @Override
     public Iterator<QuadraturePoint> iterator() {
+        if(degree<0){
+            throw new IllegalStateException("quadrature degree must be set to a nonnegative one, not "+degree);
+        }
         return new MyIterator();
-    }
-
-    private void prepare() {
-        double[][] pws = GaussLegendre.pointsWeightsByDegree(degree);
-        points = pws[0];
-        weights = pws[1];
     }
 
     private class MyIterator implements Iterator<QuadraturePoint> {
