@@ -177,6 +177,10 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
         this.y3 = y3;
     }
 
+    public void setTriangle(double[] vertes) {
+        setTriangle(vertes[0], vertes[1], vertes[2], vertes[3], vertes[4], vertes[5]);
+    }
+
     public void setPower(int power) {
         this.power = power;
     }

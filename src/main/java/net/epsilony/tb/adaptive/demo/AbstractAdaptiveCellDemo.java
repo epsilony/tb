@@ -35,7 +35,9 @@ public abstract class AbstractAdaptiveCellDemo {
         }
         for (int i = 0; i < cells.length; i++) {
             for (int j = 0; j < cells[i].length; j++) {
-                mainPanel.addAndSetupModelDrawer(new AdaptiveCellDemoDrawer(cells[i][j]));
+                AdaptiveCellDemoDrawer drawer = new AdaptiveCellDemoDrawer();
+                drawer.setCell(cells[i][j]);
+                mainPanel.addAndSetupModelDrawer(drawer);
             }
         }
         JCheckBox recursiveBox = new JCheckBox("recursively", true);

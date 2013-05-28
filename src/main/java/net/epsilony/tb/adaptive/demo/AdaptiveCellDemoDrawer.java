@@ -4,16 +4,14 @@ package net.epsilony.tb.adaptive.demo;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
+import java.util.Iterator;
 import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.adaptive.AdaptiveUtils;
-import net.epsilony.tb.adaptive.QuadrangleAdaptiveCell;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.Math2D;
 import net.epsilony.tb.ui.SingleModelShapeDrawer;
@@ -33,28 +31,25 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
     private Color oppositeMarkColor = DEFAULT_OPPOSITE_MARK_COLOR;
     public static boolean showOppositeMarks = true;
 
-    public AdaptiveCellDemoDrawer(AdaptiveCell cell) {
-        _setQuadrangleAdaptiveCell(cell);
-    }
+    public void setCell(AdaptiveCell cell) {
+        this.cell = cell;
+        Path2D path = new Path2D.Double();
+        Iterator<AdaptiveCellEdge> edgeIter = cell.iterator();
+        if (!edgeIter.hasNext()) {
+            return;
+        }
+        AdaptiveCellEdge edge = edgeIter.next();
+        path.moveTo(edge.getStart().getCoord()[0], edge.getStart().getCoord()[1]);
+        while (edgeIter.hasNext()) {
+            edge = edgeIter.next();
+            path.lineTo(edge.getStart().getCoord()[0], edge.getStart().getCoord()[1]);
+        }
+        path.closePath();
 
-    public void setCell(QuadrangleAdaptiveCell cell) {
-        _setQuadrangleAdaptiveCell(cell);
+        setShape(path);
     }
 
     protected final void _setQuadrangleAdaptiveCell(AdaptiveCell cell) {
-        this.cell = cell;
-        Shape shape = null;
-        AdaptiveCellEdge[] edges = cell.getEdges();
-        if (edges != null) {
-            GeneralPath path = new GeneralPath();
-            path.moveTo(edges[0].getStart().getCoord()[0], edges[0].getStart().getCoord()[1]);
-            for (int i = 0; i < edges.length; i++) {
-                path.lineTo(edges[i].getStart().getCoord()[0], edges[i].getStart().getCoord()[1]);
-            }
-            path.closePath();
-            shape = path;
-        }
-        _setShape(shape);
     }
 
     public Color getNodeColor() {
@@ -68,10 +63,8 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
     @Override
     public void drawModel(Graphics2D g2) {
         super.drawModel(g2);
-        if (cell.getEdges() == null) {
-            return;
-        }
-        for (AdaptiveCellEdge edge : cell.getEdges()) {
+
+        for (AdaptiveCellEdge edge : cell) {
             nodeDrawer.setNode(edge.getStart());
             nodeDrawer.drawModel(g2);
             if (showOppositeMarks) {
@@ -82,12 +75,12 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
 
     private void drawEdgeOpposite(Graphics2D g2, AdaptiveCellEdge edge) {
 
-        if (edge.numOpposites() == 0) {
+        if (edge.getOpposite() == null) {
             return;
         }
         double[] startCoord = edge.getStart().getCoord();
         double[] endCoord = edge.getEnd().getCoord();
-        double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.5, null);
+        double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.25, null);
         modelToComponentTransform.transform(midPoint, 0, midPoint, 0, 1);
         double[] edgeVec = Math2D.subs(endCoord, startCoord, null);
         double[] markVec = new double[]{-edgeVec[1], edgeVec[0]};
@@ -97,13 +90,13 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         Path2D path = new Path2D.Double();
 
         g2.setColor(oppositeMarkColor);
-        for (int i = 0; i < edge.numOpposites(); i++) {
-            AdaptiveCellEdge opp = edge.getOpposite(i);
-            double[] oppositeMid = Math2D.pointOnSegment(opp.getStart().getCoord(), opp.getEnd().getCoord(), 0.5, null);
-            modelToComponentTransform.transform(oppositeMid, 0, oppositeMid, 0, 1);
-            path.moveTo(midPoint[0] + markVec[0], midPoint[1] + markVec[1]);
-            path.lineTo(oppositeMid[0], oppositeMid[1]);
-        }
+
+        AdaptiveCellEdge opp = edge.getOpposite();
+        double[] oppositeMid = Math2D.pointOnSegment(opp.getStart().getCoord(), opp.getEnd().getCoord(), 0.25, null);
+        modelToComponentTransform.transform(oppositeMid, 0, oppositeMid, 0, 1);
+        path.moveTo(midPoint[0] + markVec[0], midPoint[1] + markVec[1]);
+        path.lineTo(oppositeMid[0], oppositeMid[1]);
+
         g2.draw(path);
     }
 
@@ -127,13 +120,8 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         if (cell == null) {
             return false;
         }
-        AdaptiveCellEdge[] edges = cell.getEdges();
-        if (edges == null) {
-            return false;
-        }
         Point2D pt;
         pt = modelToComponentTransform.inverseTransform(new Point2D.Double(x, y), null);
-
         return AdaptiveUtils.isPointRestrictlyInsideCell(cell, pt.getX(), pt.getY());
     }
 }

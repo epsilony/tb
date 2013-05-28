@@ -1,16 +1,19 @@
-/* (c) Copyright by Man YUAN */
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package net.epsilony.tb.adaptive;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.solid.Node;
-import static org.junit.Assert.*;
+import net.epsilony.tb.solid.Segment2DUtils;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
+ * @author epsilon
  */
 public class AdaptiveCellEdgeTest {
 
@@ -18,229 +21,71 @@ public class AdaptiveCellEdgeTest {
     }
 
     @Test
-    public void testBisectionAndReturnNewSuccessor() {
-        testBisectionWithTwoOpposites();
-        testOneOneBisection();
-        testBisectionOneOppositeToABiggerOne();
-    }
-
-    public void testBisectionWithTwoOpposites() {
-        double[][] coords = new double[][]{{0, 0}, {-1, 0}, {-2, 0}};
-        int[] sampleEdgesStartsIndes = new int[]{0, 2};
-        int[] oppositesEdgesStartsIndes = new int[]{2, 1, 0};
-        int[][] sampleSideOppsitesIndes = new int[][]{{1, 0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{0}, {0}};
-
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-        AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
-        sampleEdge.bisect();
-        AdaptiveCellEdge newSucc = sampleEdge.getSucc();
-        assertTrue(newSucc == sampleEdge.getSucc());
-        assertTrue(newSucc.numOpposites() == 1);
-        assertTrue(sampleEdge.numOpposites() == 1);
-        assertTrue(newSucc.getOpposite(0) == sampleData.oppositeSideEdges.get(0));
-        assertTrue(sampleEdge.getOpposite(0) == sampleData.oppositeSideEdges.get(1));
-        assertTrue(sampleData.sampleSideEdges.get(1) == newSucc.getSucc());
-        assertTrue(sampleData.sampleSideEdges.get(1).getPred() == newSucc);
-        assertTrue(sampleData.oppositeSideEdges.get(0).numOpposites() == 1);
-        assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 1);
-        assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == newSucc);
-        assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == sampleEdge);
-        assertTrue(sampleEdge.getEnd() == sampleData.oppositeSideEdges.get(1).getStart());
-    }
-
-    void testOneOneBisection() {
-        double[][] coords = new double[][]{{0, 0}, {-1, 1}, {-2, 0}};
-        int[] sampleEdgesStartsIndes = new int[]{0, 1, 2};
-        int[] oppositesEdgesStartsIndes = new int[]{2, 1, 0};
-        int[][] sampleSideOppsitesIndes = new int[][]{{1}, {0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{1}, {0}};
-
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-        AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
-        sampleEdge.bisect();
-        AdaptiveCellEdge newSucc = sampleEdge.getSucc();
-        assertTrue(sampleData.oppositeSideEdges.get(1).numOpposites() == 2);
-        assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(0) == newSucc);
-        assertTrue(sampleData.oppositeSideEdges.get(1).getOpposite(1) == sampleEdge);
-        assertArrayEquals(new double[]{-0.5, 0.5}, sampleEdge.getEnd().getCoord(), 1e-14);
-        assertTrue(sampleEdge.numOpposites() == 1);
-        assertTrue(sampleEdge.getOpposite(0) == sampleData.oppositeSideEdges.get(1));
-        assertTrue(newSucc.numOpposites() == 1);
-        assertTrue(newSucc.getOpposite(0) == sampleEdge.getOpposite(0));
-        assertTrue(newSucc.getSucc() == sampleData.sampleSideEdges.get(1));
-        assertTrue(sampleData.sampleSideEdges.get(1).getPred() == newSucc);
-        assertTrue(newSucc.getPred() == sampleEdge);
-        assertTrue(sampleEdge.getSucc() == newSucc);
-    }
-
-    public void testBisectionOneOppositeToABiggerOne() {
-        double[][] coords = new double[][]{{0, 0}, {-1, 1}, {-2, 0}};
-        int[] sampleEdgesStartsIndes = new int[]{0, 1, 2};
-        int[] oppositesEdgesStartsIndes = new int[]{2, 0};
-        int[][] sampleSideOppsitesIndes = new int[][]{{0}, {0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{1, 0}};
-        AdaptiveCellEdge.DEFAULT_MAX_SIZE_RATIO_TO_OPPOSITES = 2;
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-        AdaptiveCellEdge sampleEdge = sampleData.sampleSideEdges.get(0);
-        System.out.println("sampleEdge.isAbleToBisection() = " + sampleEdge.isAbleToBisection());
-
-        assertTrue(!sampleEdge.isAbleToBisection());
-        boolean catched = false;
-        try {
-            sampleEdge.bisect();
-        } catch (IllegalStateException e) {
-            catched = true;
-        }
-        assertTrue(catched);
+    public void testBisectWithoutOpposite() {
+        AdaptiveCellEdge edge = new AdaptiveCellEdge();
+        edge.setStart(new Node(1, -1));
+        edge.setSucc(new AdaptiveCellEdge());
+        edge.getSucc().setStart(new Node(3, 4));
+        edge.bisect();
+        assertArrayEquals(edge.getEnd().getCoord(), new double[]{2, 1.5}, 1e-13);
+        assertTrue(edge.getSucc().getPred() == edge);
+        assertArrayEquals(edge.getSucc().getEnd().getCoord(), new double[]{3, 4}, 1e-14);
+        assertTrue(edge.getSucc().getSucc().getPred() == edge.getSucc());
     }
 
     @Test
-    public void testMergeWithGivenSuccessor() {
-        testMergeOneOne();
-        testMergeEdgesWithSameOpposite();
-        testMergeEdgesWithTwoOpposites();
+    public void testBisect() {
+        double[][] coordsA = new double[][]{{-1, 1}, {0, 1}, {0, -1}, {-1, -1}};
+        double[][] coordsB = new double[][]{{1, -1}, {0, -1}, {0, 1}, {1, 1}};
+        List<AdaptiveCellEdge> chainA = genEdgeChain(coordsA);
+        List<AdaptiveCellEdge> chainB = genEdgeChain(coordsB);
+
+        AdaptiveCellEdge a = chainA.get(1);
+        AdaptiveCellEdge b = chainB.get(1);
+        final TriangleAdaptiveCell cellA = new TriangleAdaptiveCell();
+        a.setCell(cellA);
+        final QuadrangleAdaptiveCell cellB = new QuadrangleAdaptiveCell();
+        b.setCell(cellB);
+
+        a.setOpposite(b);
+        b.setOpposite(a);
+
+        a.bisect();
+
+        assertTrue(a.getPred() == chainA.get(0));
+        assertTrue(a.getSucc().getPred() == a);
+        assertTrue(chainA.get(0).getSucc() == a);
+        assertTrue(a.getSucc().getOpposite() == b);
+        assertTrue(a.getSucc() == b.getOpposite());
+        assertTrue(a.getSucc().getSucc() == chainA.get(2));
+        assertTrue(a.getSucc().getSucc().getPred() == a.getSucc());
+        assertTrue(a.getCell()==cellA);
+        assertTrue(a.getSucc().getCell()==cellA);
+
+        assertTrue(b.getPred() == chainB.get(0));
+        assertTrue(b.getPred().getSucc() == b);
+        assertTrue(b.getSucc().getPred() == b);
+        assertTrue(b.getSucc().getOpposite() == a);
+        assertTrue(b.getSucc() == a.getOpposite());
+        assertTrue(b.getSucc().getSucc() == chainB.get(2));
+        assertTrue(b.getSucc().getSucc().getPred() == b.getSucc());
+        assertTrue(b.getCell()==cellB);
+        assertTrue(b.getSucc().getCell()==cellB);
+
+        assertArrayEquals(b.getEnd().getCoord(), new double[]{0, 0}, 1e-14);
     }
 
-    public void testMergeOneOne() {
-        double[][] coords = new double[][]{
-            {-1, 0}, {0, 0}, {1, 0}, {0, 1}, {0, -1}
-        };
-        int[] sampleEdgesStartsIndes = new int[]{2, 1, 4, 1, 0};
-        int[] oppositesEdgesStartsIndes = new int[]{0, 1, 3, 1, 2};
-        int[][] sampleSideOppsitesIndes = new int[][]{{3}, {}, {}, {0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{3}, {}, {}, {0}};
+    public static List<AdaptiveCellEdge> genEdgeChain(double[][] coords) {
 
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-
-        AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
-        AdaptiveCellEdge successor = sampleData.sampleSideEdges.get(3);
-        sample.mergeWithGivenSuccessor(successor);
-        assertTrue(sample.numOpposites() == 2);
-        assertTrue(sample.getOpposite(0) == sampleData.oppositeSideEdges.get(3));
-        assertTrue(sample.getOpposite(1) == sampleData.oppositeSideEdges.get(0));
-        assertTrue(sampleData.oppositeSideEdges.get(0).numOpposites() == 1);
-        assertTrue(sampleData.oppositeSideEdges.get(0).getOpposite(0) == sample);
-        assertTrue(sampleData.oppositeSideEdges.get(3).numOpposites() == 1);
-        assertTrue(sampleData.oppositeSideEdges.get(3).getOpposite(0) == sample);
-        assertTrue(sample.getStart().getCoord() == sampleData.oppositeSideEdges.get(3).getEnd().getCoord());
-        assertTrue(sample.getEnd().getCoord() == sampleData.oppositeSideEdges.get(0).getStart().getCoord());
-    }
-
-    public void testMergeEdgesWithTwoOpposites() {
-        double[][] coords = new double[][]{
-            {0, 0}, {-1, 0}, {-2, 0}, {-3, 0}, {-4, 0}, {-2, -2}, {-1, 1}, {-2, 1}, {-3, 1}
-        };
-        int[] sampleEdgesStartsIndes = new int[]{0, 2, 5, 2, 4};
-        int[] oppositesEdgesStartsIndes = new int[]{4, 3, 8, 3, 2, 7, 2, 1, 6, 1, 0};
-        int[][] sampleSideOppsitesIndes = new int[][]{{9, 6}, {}, {}, {3, 0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{3}, {}, {}, {3}, {}, {}, {0}, {}, {}, {0}};
-
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-
-        AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
-        AdaptiveCellEdge successor = sampleData.sampleSideEdges.get(3);
-        assertTrue(!sample.isAbleToMerge(successor));
-
-        List<AdaptiveCellEdge> backOpposites = successor.opposites;
-        successor.opposites = new LinkedList<>();
-        assertTrue(!sample.isAbleToMerge(successor));
-        successor.opposites = backOpposites;
-
-        backOpposites = sample.opposites;
-        sample.opposites = new LinkedList<>();
-        assertTrue(!sample.isAbleToMerge(successor));
-        sample.opposites = backOpposites;
-    }
-
-    public void testMergeEdgesWithSameOpposite() {
-        double[][] coords = new double[][]{
-            {-1, 0}, {0, 0}, {1, 0}, {0, 1}, {0, -1}
-        };
-        int[] sampleEdgesStartsIndes = new int[]{0, 1, 4, 1, 2};
-        int[] oppositesEdgesStartsIndes = new int[]{2, 0};
-        int[][] sampleSideOppsitesIndes = new int[][]{{0}, {}, {}, {0}};
-        int[][] oppositeSideOppositedIndes = new int[][]{{3, 0}};
-
-        SampleData sampleData = genSample(coords,
-                sampleEdgesStartsIndes, oppositesEdgesStartsIndes,
-                sampleSideOppsitesIndes, oppositeSideOppositedIndes);
-
-        AdaptiveCellEdge sample = sampleData.sampleSideEdges.get(0);
-        AdaptiveCellEdge successor = sampleData.sampleSideEdges.get(3);
-
-        sample.mergeWithGivenSuccessor(successor);
-
-        assertTrue(sample.numOpposites() == 1);
-        AdaptiveCellEdge commonOpposite = sampleData.oppositeSideEdges.get(0);
-        assertTrue(sample.getOpposite(0) == commonOpposite);
-        assertTrue(commonOpposite.numOpposites() == 1);
-        assertTrue(commonOpposite.getOpposite(0) == sample);
-        assertTrue(sample.getStart().getCoord() == commonOpposite.getEnd().getCoord());
-        assertTrue(sample.getEnd().getCoord() == commonOpposite.getStart().getCoord());
-    }
-
-    public SampleData genSample(
-            double[][] coords,
-            int[] sampleEdgesNodesIndes,
-            int[] oppositesEdgesNodesIndes,
-            int[][] sampleSideOppsitesIndes,
-            int[][] oppositeSideOppositedIndes) {
-        Node[] nodes = new Node[coords.length];
-        for (int i = 0; i < coords.length; i++) {
-            nodes[i] = new Node(coords[i]);
+        List<AdaptiveCellEdge> result = new ArrayList<>(coords.length);
+        for (double[] coord : coords) {
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
+            newEdge.setStart(new Node(coord));
+            result.add(newEdge);
         }
-        List<AdaptiveCellEdge> sampleSideEdges =
-                genSequentEdgesFromNodesAndHeadNodesIndes(nodes, sampleEdgesNodesIndes);
-        List<AdaptiveCellEdge> oppositeSideEdges =
-                genSequentEdgesFromNodesAndHeadNodesIndes(nodes, oppositesEdgesNodesIndes);
-        fillOpposites(sampleSideEdges, oppositeSideEdges, sampleSideOppsitesIndes);
-        fillOpposites(oppositeSideEdges, sampleSideEdges, oppositeSideOppositedIndes);
-        SampleData result = new SampleData();
-        result.sampleSideEdges = sampleSideEdges;
-        result.oppositeSideEdges = oppositeSideEdges;
+        for (int i = 0; i < result.size() - 1; i++) {
+            Segment2DUtils.link(result.get(i), result.get(i + 1));
+        }
         return result;
-    }
-
-    public List<AdaptiveCellEdge> genSequentEdgesFromNodesAndHeadNodesIndes(Node[] nodes, int[] startIndes) {
-        ArrayList<AdaptiveCellEdge> edges = new ArrayList<>(startIndes.length);
-        for (int i = 0; i < startIndes.length; i++) {
-            edges.add(new AdaptiveCellEdge(nodes[startIndes[i]]));
-        }
-        for (int i = 0; i < startIndes.length - 1; i++) {
-            edges.get(i).setSucc(edges.get(i + 1));
-            edges.get(i + 1).setPred(edges.get(i));
-        }
-        return edges;
-    }
-
-    private void fillOpposites(
-            List<AdaptiveCellEdge> thisSideEdges,
-            List<AdaptiveCellEdge> oppositeSideEdges,
-            int[][] oppsiteSideEdgesIndes) {
-        for (int i = 0; i < oppsiteSideEdgesIndes.length; i++) {
-            int[] oppsiteIndes = oppsiteSideEdgesIndes[i];
-            for (int j = 0; j < oppsiteIndes.length; j++) {
-                thisSideEdges.get(i).opposites.add(oppositeSideEdges.get(oppsiteIndes[j]));
-
-
-            }
-        }
-    }
-
-    public static class SampleData {
-
-        List<AdaptiveCellEdge> sampleSideEdges;
-        List<AdaptiveCellEdge> oppositeSideEdges;
     }
 }

@@ -19,11 +19,11 @@ public class QuadrangleAdaptiveCellFactory {
             QuadrangleAdaptiveCell[] resultRow = result[rowIndex];
             for (int colIndex = 0; colIndex < resultRow.length; colIndex++) {
                 resultRow[colIndex] = produce(new Node[]{
-                            nodeGrid[rowIndex + 1][colIndex],
-                            nodeGrid[rowIndex + 1][colIndex + 1],
-                            nodeGrid[rowIndex][colIndex + 1],
-                            nodeGrid[rowIndex][colIndex]
-                        });
+                    nodeGrid[rowIndex + 1][colIndex],
+                    nodeGrid[rowIndex + 1][colIndex + 1],
+                    nodeGrid[rowIndex][colIndex + 1],
+                    nodeGrid[rowIndex][colIndex]
+                });
             }
         }
         linkCellGridOpposites(result);
@@ -35,15 +35,15 @@ public class QuadrangleAdaptiveCellFactory {
             QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
             QuadrangleAdaptiveCell[] nextRow = cellGrid[i + 1];
             for (int j = 0; j < gridRow.length; j++) {
-                gridRow[j].edges[0].addOpposite(0, nextRow[j].edges[2]);
-                nextRow[j].edges[2].addOpposite(0, gridRow[j].edges[0]);
+                gridRow[j].cornerEdges[0].setOpposite(nextRow[j].cornerEdges[2]);
+                nextRow[j].cornerEdges[2].setOpposite(gridRow[j].cornerEdges[0]);
             }
         }
         for (int i = 0; i < cellGrid.length; i++) {
             QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
             for (int j = 0; j < gridRow.length - 1; j++) {
-                gridRow[j].edges[1].addOpposite(0, gridRow[j + 1].edges[3]);
-                gridRow[j + 1].edges[3].addOpposite(0, gridRow[j].edges[1]);
+                gridRow[j].cornerEdges[1].setOpposite(gridRow[j + 1].cornerEdges[3]);
+                gridRow[j + 1].cornerEdges[3].setOpposite(gridRow[j].cornerEdges[1]);
             }
         }
     }
@@ -58,16 +58,19 @@ public class QuadrangleAdaptiveCellFactory {
         return result;
     }
 
-    public static QuadrangleAdaptiveCell produce(Node[] counterClockwiseVetes) {
+    private static QuadrangleAdaptiveCell produce(Node[] counterClockwiseVetes) {
         if (counterClockwiseVetes.length != 4) {
             throw new IllegalArgumentException();
         }
         QuadrangleAdaptiveCell result = new QuadrangleAdaptiveCell();
-        AdaptiveCellEdge[] edges = new AdaptiveCellEdge[QuadrangleAdaptiveCell.NUM_OF_EDGES];
+        AdaptiveCellEdge[] edges = new AdaptiveCellEdge[4];
         for (int i = 0; i < counterClockwiseVetes.length; i++) {
-            edges[i] = new AdaptiveCellEdge(counterClockwiseVetes[i]);
+            edges[i] = new AdaptiveCellEdge();
+            edges[i].setStart(counterClockwiseVetes[i]);
         }
-        result.setEdges(edges);
+        result.setCornerEdges(edges);
+        AdaptiveUtils.linkCornerEdges(result);
+        AdaptiveUtils.linkEdgeAndCell(result);
         return result;
     }
 }

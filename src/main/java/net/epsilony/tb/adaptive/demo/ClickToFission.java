@@ -21,6 +21,7 @@ import net.epsilony.tb.ui.ModelDrawer;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ClickToFission extends MouseAdapter {
+
     BasicModelPanel basicPanel;
     private final JCheckBox recursivelyFissionCheckBox;
 
@@ -64,15 +65,12 @@ public class ClickToFission extends MouseAdapter {
 
     private void fission(AdaptiveCell cell, Collection<ModelDrawer> newDrawers) {
         LinkedList<AdaptiveCell> newCells = new LinkedList<>();
-        if (recursivelyFissionCheckBox.isSelected()) {
-            AdaptiveUtils.recursivelyFission(cell, newCells);
-        } else if (cell.isAbleToFissionToChildren()) {
-            cell.fissionToChildren();
-            newCells.addAll(Arrays.asList(cell.getChildren()));
-        }
+        AdaptiveUtils.fission(cell, recursivelyFissionCheckBox.isSelected(), newCells);
+        
         for (AdaptiveCell newCell : newCells) {
-            newDrawers.add(new AdaptiveCellDemoDrawer(newCell));
+            AdaptiveCellDemoDrawer drawer = new AdaptiveCellDemoDrawer();
+            drawer.setCell(newCell);
+            newDrawers.add(drawer);
         }
     }
-    
 }

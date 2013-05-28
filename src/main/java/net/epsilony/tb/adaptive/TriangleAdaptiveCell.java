@@ -1,59 +1,60 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
+import net.epsilony.tb.solid.Segment2DUtils;
+
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleAdaptiveCell extends AdaptiveCellAdapter<TriangleAdaptiveCell> {
-
-    public static final int NUM_OF_EDGES = 3;
-    public static final int NUM_OF_CHILDREN = 4;
+public class TriangleAdaptiveCell extends AbstractAdaptiveCell {
 
     @Override
-    protected void createChildrenFromBisectionedEdges() {
-        children = new TriangleAdaptiveCell[NUM_OF_CHILDREN];
+    protected void genChildren(AdaptiveCellEdge[] midEdges) {
+        final int sideNum = getSideNum();
+        children = new TriangleAdaptiveCell[sideNum + 1];
 
-        for (int i = 0; i < NUM_OF_EDGES; i++) {
-            TriangleAdaptiveCell cell = new TriangleAdaptiveCell();
-            children[i] = cell;
-            AdaptiveCellEdge[] childEdges = new AdaptiveCellEdge[NUM_OF_EDGES];
-            childEdges[i] = edges[i];
-            childEdges[(i + 1) % NUM_OF_EDGES] = new AdaptiveCellEdge(edges[i].getEnd());
-            childEdges[(i + 2) % NUM_OF_EDGES] = edges[i].getPred();
-            cell.setEdges(childEdges);
+
+        for (int side = 0; side < midEdges.length; side++) {
+            TriangleAdaptiveCell newChild = new TriangleAdaptiveCell();
+            children[side] = newChild;
+            AdaptiveCellEdge[] childEdges = new AdaptiveCellEdge[sideNum];
+            newChild.setCornerEdges(childEdges);
+            childEdges[side] = cornerEdges[side];
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
+            newEdge.setStart(midEdges[side].getEnd());
+            childEdges[(side + 1) % sideNum] = newEdge;
+            childEdges[(side + 2) % sideNum] = midEdges[(side + 2) % sideNum].getSucc();
         }
 
-        children[3] = new TriangleAdaptiveCell();
-        children[3].setEdges(new AdaptiveCellEdge[]{
-            new AdaptiveCellEdge(children[0].edges[2].getStart()),
-            new AdaptiveCellEdge(children[1].edges[0].getStart()),
-            new AdaptiveCellEdge(children[2].edges[1].getStart())
-        });
-    }
+        for (int side = 0; side < midEdges.length; side++) {
+            AdaptiveCell child = children[side];
+            Segment2DUtils.link(midEdges[side], child.getCornerEdges()[(side + 1) % sideNum]);
+            Segment2DUtils.link(child.getCornerEdges()[(side + 1) % sideNum], child.getCornerEdges()[(side + 2) % sideNum]);
+        }
 
-    @Override
-    protected void fillInnerOppositeForNewChildren() {
-        for (int i = 0; i < NUM_OF_EDGES; i++) {
-            AdaptiveCellEdge outerEdge = children[i].edges[(i + 1) % NUM_OF_EDGES];
-            AdaptiveCellEdge innerEdge = children[3].edges[i];
-            outerEdge.addOpposite(innerEdge);
-            innerEdge.addOpposite(outerEdge);
+        TriangleAdaptiveCell lastChild = new TriangleAdaptiveCell();
+        children[sideNum] = lastChild;
+        AdaptiveCellEdge[] lastChildEdges = new AdaptiveCellEdge[sideNum];
+        lastChild.setCornerEdges(lastChildEdges);
+        for (int side = 0; side < lastChildEdges.length; side++) {
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
+            lastChildEdges[side] = newEdge;
+            AdaptiveCellEdge opposite = children[side].getCornerEdges()[(side + 1) % sideNum];
+            newEdge.setStart(opposite.getEnd());
+            AdaptiveUtils.linkAsOpposite(newEdge, opposite);
+        }
+
+        AdaptiveUtils.linkCornerEdges(lastChild);
+
+        for (int i = 0; i < children.length; i++) {
+            AdaptiveUtils.linkEdgeAndCell(children[i]);
+            children[i].setLevel(level + 1);
         }
     }
 
     @Override
-    public void fusionFromChildren() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected int getNumOfEdges() {
-        return NUM_OF_EDGES;
-    }
-
-    @Override
-    protected int getNumOfChildren() {
-        return NUM_OF_CHILDREN;
+    public int getSideNum() {
+        return 3;
     }
 }

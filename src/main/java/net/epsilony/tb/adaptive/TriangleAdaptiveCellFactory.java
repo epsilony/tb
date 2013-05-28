@@ -53,21 +53,31 @@ public class TriangleAdaptiveCellFactory {
             TriangleAdaptiveCell[] triangleRow = triangleCells[i];
             for (int j = 0; j < triangleRow.length; j++) {
                 if (rowMod == 0 && j % 2 == 0 || rowMod == 1 && j % 2 == 1) {
-                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[]{
-                        new AdaptiveCellEdge(nodes[i][j / 2 + rowMod]),
-                        new AdaptiveCellEdge(nodes[i + 1][j / 2 + 1]),
-                        new AdaptiveCellEdge(nodes[i + 1][j / 2])};
+                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[3];
+                    edges[0] = new AdaptiveCellEdge();
+                    edges[0].setStart(nodes[i][j / 2 + rowMod]);
+                    edges[1] = new AdaptiveCellEdge();
+                    edges[1].setStart(nodes[i + 1][j / 2 + 1]);
+                    edges[2] = new AdaptiveCellEdge();
+                    edges[2].setStart(nodes[i + 1][j / 2]);
                     TriangleAdaptiveCell cell = newTriangleAdaptiveCellInstance();
-                    cell.setEdges(edges);
+                    cell.setCornerEdges(edges);
+                    AdaptiveUtils.linkCornerEdges(cell);
+                    AdaptiveUtils.linkEdgeAndCell(cell);
                     triangleRow[j] = cell;
                 } else {
-                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[]{
-                        new AdaptiveCellEdge(nodes[i + 1][j / 2 + rowMod * -1 + 1]),
-                        new AdaptiveCellEdge(nodes[i][j / 2]),
-                        new AdaptiveCellEdge(nodes[i][j / 2 + 1])
-                    };
+                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[3];
+                    edges[0] = new AdaptiveCellEdge();
+                    edges[0].setStart(nodes[i + 1][j / 2 + rowMod * -1 + 1]);
+                    edges[1] = new AdaptiveCellEdge();
+                    edges[1].setStart(nodes[i][j / 2]);
+                    edges[2] = new AdaptiveCellEdge();
+                    edges[2].setStart(nodes[i][j / 2 + 1]);
+
                     TriangleAdaptiveCell cell = newTriangleAdaptiveCellInstance();
-                    cell.setEdges(edges);
+                    cell.setCornerEdges(edges);
+                    AdaptiveUtils.linkCornerEdges(cell);
+                    AdaptiveUtils.linkEdgeAndCell(cell);
                     triangleRow[j] = cell;
                 }
             }
@@ -84,16 +94,16 @@ public class TriangleAdaptiveCellFactory {
             final int rowMod = i % 2;
             for (int j = 0; j < triangles[i].length - 1; j++) {
                 if (j % 2 == 0 && rowMod == 0 || j % 2 == 1 && rowMod == 1) {
-                    AdaptiveUtils.link(triangles[i][j].edges[0], triangles[i][j + 1].edges[0]);
+                    AdaptiveUtils.linkAsOpposite(triangles[i][j].cornerEdges[0], triangles[i][j + 1].cornerEdges[0]);
                 } else {
-                    AdaptiveUtils.link(triangles[i][j].edges[2], triangles[i][j + 1].edges[2]);
+                    AdaptiveUtils.linkAsOpposite(triangles[i][j].cornerEdges[2], triangles[i][j + 1].cornerEdges[2]);
                 }
             }
         }
         for (int i = 0; i < triangles.length - 1; i++) {
             final int startJ = i % 2;
             for (int j = 0; j < triangles[i].length; j += 2) {
-                AdaptiveUtils.link(triangles[i][j + startJ].edges[1], triangles[i + 1][j + startJ].edges[1]);
+                AdaptiveUtils.linkAsOpposite(triangles[i][j + startJ].cornerEdges[1], triangles[i + 1][j + startJ].cornerEdges[1]);
             }
         }
     }
