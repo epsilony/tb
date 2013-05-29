@@ -1,7 +1,6 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
-import net.epsilony.tb.implicit.TriangleContourCell;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
