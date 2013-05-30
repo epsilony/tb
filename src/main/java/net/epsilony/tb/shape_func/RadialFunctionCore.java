@@ -1,7 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.shape_func;
 
-import net.epsilony.tb.UnivarArrayFunction;
+import net.epsilony.tb.analysis.UnivarArrayFunction;
 import net.epsilony.tb.synchron.SynchronizedClonable;
 
 /**

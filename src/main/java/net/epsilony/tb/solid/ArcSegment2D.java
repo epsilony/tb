@@ -1,7 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 
 /**
  *

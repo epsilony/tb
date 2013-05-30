@@ -3,7 +3,7 @@ package net.epsilony.tb.quadrature;
 
 import java.util.Iterator;
 import net.epsilony.tb.solid.Segment;
-import net.epsilony.tb.ArrvarFunction;
+import net.epsilony.tb.analysis.ArrvarFunction;
 
 /**
  *

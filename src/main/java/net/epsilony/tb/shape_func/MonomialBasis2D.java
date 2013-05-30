@@ -2,7 +2,7 @@
 package net.epsilony.tb.shape_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
-import net.epsilony.tb.WithDiffOrderUtil;
+import net.epsilony.tb.analysis.WithDiffOrderUtil;
 
 /**
  *

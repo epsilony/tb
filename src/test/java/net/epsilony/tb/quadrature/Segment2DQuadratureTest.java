@@ -4,7 +4,7 @@ package net.epsilony.tb.quadrature;
 import net.epsilony.tb.solid.ArcSegment2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line2D;
-import net.epsilony.tb.ArrvarFunction;
+import net.epsilony.tb.analysis.ArrvarFunction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

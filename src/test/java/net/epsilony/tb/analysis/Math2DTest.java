@@ -1,5 +1,5 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb;
+package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
 import static org.junit.Assert.*;

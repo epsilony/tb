@@ -1,6 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb;
 
+import net.epsilony.tb.analysis.Math2D;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;

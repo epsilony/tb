@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.TestTool;
 import static org.junit.Assert.*;
 import org.junit.Test;

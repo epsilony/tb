@@ -3,9 +3,9 @@ package net.epsilony.tb.shape_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import java.util.List;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.MiscellaneousUtils;
-import net.epsilony.tb.WithDiffOrderUtil;
+import net.epsilony.tb.analysis.WithDiffOrderUtil;
 import net.epsilony.tb.synchron.SynchronizedClonable;
 import org.ejml.alg.dense.decomposition.lu.LUDecompositionAlt;
 import org.ejml.alg.dense.linsol.lu.LinearSolverLu;

@@ -1,8 +1,8 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
-import net.epsilony.tb.GenericFunction;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.GenericFunction;
+import net.epsilony.tb.analysis.Math2D;
 import org.junit.Ignore;
 
 /**

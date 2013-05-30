@@ -1,7 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import net.epsilony.tb.ArrvarFunction;
+import net.epsilony.tb.analysis.ArrvarFunction;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

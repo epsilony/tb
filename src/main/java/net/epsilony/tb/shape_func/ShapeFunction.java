@@ -3,7 +3,7 @@ package net.epsilony.tb.shape_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import java.util.List;
-import net.epsilony.tb.WithDiffOrder;
+import net.epsilony.tb.analysis.WithDiffOrder;
 import net.epsilony.tb.synchron.SynchronizedClonable;
 
 /**

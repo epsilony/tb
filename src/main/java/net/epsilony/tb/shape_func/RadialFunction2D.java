@@ -3,8 +3,8 @@ package net.epsilony.tb.shape_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import net.epsilony.tb.MiscellaneousUtils;
-import net.epsilony.tb.WithDiffOrder;
-import net.epsilony.tb.WithDiffOrderUtil;
+import net.epsilony.tb.analysis.WithDiffOrder;
+import net.epsilony.tb.analysis.WithDiffOrderUtil;
 import net.epsilony.tb.common_func.TripleSpline;
 import net.epsilony.tb.synchron.SynchronizedClonable;
 

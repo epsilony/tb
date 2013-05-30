@@ -2,7 +2,7 @@
 package net.epsilony.tb.solid;
 
 import net.epsilony.tb.IntIdentity;
-import net.epsilony.tb.UnivarArrayFunction;
+import net.epsilony.tb.analysis.UnivarArrayFunction;
 
 /**
  *

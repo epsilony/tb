@@ -2,7 +2,7 @@
 package net.epsilony.tb.adaptive;
 
 import java.util.Iterator;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.SegmentIterator;
 
 /**

@@ -13,7 +13,7 @@ import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.adaptive.AdaptiveUtils;
 import net.epsilony.tb.solid.ui.NodeDrawer;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.ui.SingleModelShapeDrawer;
 import net.epsilony.tb.ui.UIUtils;
 

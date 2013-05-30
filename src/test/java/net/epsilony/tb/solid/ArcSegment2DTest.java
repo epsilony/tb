@@ -4,7 +4,7 @@ package net.epsilony.tb.solid;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static java.lang.Math.*;
-import net.epsilony.tb.Math2D;
+import net.epsilony.tb.analysis.Math2D;
 
 /**
  *
