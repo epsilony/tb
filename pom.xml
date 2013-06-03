@@ -59,5 +59,11 @@
             <artifactId>ejml</artifactId>
             <version>0.22</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge</groupId>
+            <artifactId>py4j</artifactId>
+            <version>0.7</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 </project>
