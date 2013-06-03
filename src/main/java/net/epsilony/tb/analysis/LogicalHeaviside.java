@@ -48,6 +48,9 @@ public class LogicalHeaviside implements UnivarDifferentiableDoubleFunction, Uni
     }
 
     public void setK(double k) {
+        if (k <= 0) {
+            throw new IllegalArgumentException("k must be positive, not " + k);
+        }
         this.k = k;
     }
 
@@ -59,6 +62,7 @@ public class LogicalHeaviside implements UnivarDifferentiableDoubleFunction, Uni
             throw new IllegalArgumentException("err should be in (0,0.5), not " + err);
         }
         k = Math.log(1 / err - 1) / 2 / Math.abs(x);
+        k = Math.ceil(k);
     }
 
     public double getErr(double x) {
