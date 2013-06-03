@@ -47,5 +47,8 @@ public class LogicalHeavisideTest {
         lh.setK(1, 0.15);
         assertEquals(0.15, lh.getErr(1), 1e-14);
         assertEquals(0.15, lh.getErr(-1), 1e-14);
+        lh.setK(1, 0.15, true);
+        assertTrue(0.15 >= lh.getErr(1));
+        assertTrue(0.15 >= lh.getErr(-1));
     }
 }

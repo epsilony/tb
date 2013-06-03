@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
@@ -10,7 +7,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author epsilon
+ * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class LogicalMinimumTest {
 
@@ -86,7 +83,7 @@ public class LogicalMinimumTest {
     @Test
     public void test1D() {
         LogicalMinimum lm = new LogicalMinimum();
-        lm.setK(1.5, 1e-4);
+        lm.setK(1.5, 1e-4, true);//k=4
 
         lm.setFunctions(new FunA_1D(), new FunB_1D());
         lm.setDiffOrder(1);
@@ -178,7 +175,7 @@ public class LogicalMinimumTest {
     @Test
     public void test2D() {
         LogicalMinimum lm = new LogicalMinimum();
-        lm.setK(1.5, 1e-4);  //k=4;
+        lm.setK(1.5, 1e-4, true);  //k=4;
 
         lm.setFunctions(new FunA_2D(), new FunB_2D());
         lm.setDiffOrder(1);

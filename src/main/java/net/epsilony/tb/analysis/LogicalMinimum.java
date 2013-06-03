@@ -100,6 +100,10 @@ public class LogicalMinimum implements DifferentiableFunction<double[], double[]
         heaviside.setK(x, err);
     }
 
+    public void setK(double x, double err, boolean ceilRound) {
+        heaviside.setK(x, err, ceilRound);
+    }
+
     public double getErr(double x) {
         return heaviside.getErr(x);
     }
