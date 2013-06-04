@@ -17,20 +17,20 @@ import net.epsilony.tb.solid.Segment2DUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Circle implements ArrvarFunction, DifferentiableFunction<double[], double[]> {
+public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction<double[], double[]> {
 
     int diffOrder = 0;
     double radius;
     double centerX, centerY;
     boolean concrete = true;
 
-    public Circle(double centerX, double centerY, double radius) {
+    public CircleLevelSet(double centerX, double centerY, double radius) {
         this.radius = radius;
         this.centerX = centerX;
         this.centerY = centerY;
     }
 
-    public Circle() {
+    public CircleLevelSet() {
     }
 
     @Override
