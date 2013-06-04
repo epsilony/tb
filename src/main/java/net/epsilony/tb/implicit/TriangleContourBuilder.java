@@ -27,6 +27,7 @@ public class TriangleContourBuilder {
     protected LinkedList<Line2D> openRingHeadSegments;
     protected Iterator<TriangleContourCell> cellsIterator;
     IntIdentityMap<Node, double[]> nodesValuesMap = new IntIdentityMap<>();
+    NewtonSolver newtonSolver = null;
 
     public void setCells(List<TriangleContourCell> cells) {
         this.cells = cells;
@@ -168,6 +169,14 @@ public class TriangleContourBuilder {
     }
 
     private Node genContourNode(Line2D contourSourceEdge) {
+        if (null != newtonSolver) {
+            return genContourNodeByNewtonMethod(contourSourceEdge);
+        } else {
+            return genContourNodeByLinearInterpolate(contourSourceEdge);
+        }
+    }
+
+    private Node genContourNodeByLinearInterpolate(Line2D contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
         double startValue = nodesValuesMap.get(contourSourceEdge.getStart())[0];
@@ -175,6 +184,17 @@ public class TriangleContourBuilder {
         double t = startValue / (startValue - endValue);
         double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
         return new Node(resultCoord);
+    }
+
+    private Node genContourNodeByNewtonMethod(Line2D contourSourceEdge) {
+        double[] startCoord = contourSourceEdge.getStart().getCoord();
+        double[] endCoord = contourSourceEdge.getEnd().getCoord();
+        double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.5, null);
+        if (newtonSolver.solve(midPoint)) {
+            return new Node(newtonSolver.getSolution());
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line2D segment) {
@@ -206,11 +226,20 @@ public class TriangleContourBuilder {
         return contourLevel;
     }
 
-    public GenericFunction<double[], double[]> getLevelSetFunction() {
+    public DifferentiableFunction<double[], double[]> getLevelSetFunction() {
         return levelSetFunction;
     }
 
     public IntIdentityMap<Node, double[]> getNodesValuesMap() {
         return nodesValuesMap;
+    }
+
+    public NewtonSolver getNewtonSolver() {
+        return newtonSolver;
+    }
+
+    public void setNewtonSolver(NewtonSolver newtonSolver) {
+        this.newtonSolver = newtonSolver;
+        newtonSolver.setFunction(levelSetFunction);
     }
 }
