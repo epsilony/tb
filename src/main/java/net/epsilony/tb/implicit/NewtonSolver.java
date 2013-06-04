@@ -30,10 +30,6 @@ public class NewtonSolver {
     SolutionStatus solutionStatus;
     private boolean checkFunctionValue = DEFAULT_CHECK_FUNCTION_VALUE;
 
-    public void setFunctionValue(double[] functionValue) {
-        this.functionValue = functionValue;
-    }
-
     private boolean isCheckFunctionValue() {
         return checkFunctionValue;
     }
