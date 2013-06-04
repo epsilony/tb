@@ -5,7 +5,6 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import net.epsilony.tb.solid.ArcSegment2D;
 import net.epsilony.tb.analysis.ArrvarFunction;
-import net.epsilony.tb.analysis.GenericFunction;
 import net.epsilony.tb.analysis.Math2D;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
@@ -36,7 +35,7 @@ public class Circle implements ArrvarFunction, DifferentiableFunction<double[], 
 
     @Override
     public double value(double[] vec) {
-        double result = radius - Math2D.distance(vec[0], vec[1], centerX, centerY);
+        double result = radius * radius - Math2D.distanceSquare(vec[0], vec[1], centerX, centerY);
         if (!concrete) {
             result = -result;
         }
@@ -82,9 +81,20 @@ public class Circle implements ArrvarFunction, DifferentiableFunction<double[], 
     @Override
     public double[] value(double[] input, double[] output) {
         if (null == output) {
-            output = new double[]{value(input)};
-        } else {
-            output[0] = value(input);
+            output = new double[]{2 * diffOrder + 1};
+        }
+        double v = value(input);
+        output[0] = v;
+        if (diffOrder >= 1) {
+            double x = input[0];
+            double y = input[1];
+            if (concrete) {
+                output[0] = -2 * (x - centerX);
+                output[1] = -2 * (y - centerY);
+            } else {
+                output[0] = 2 * (x - centerX);
+                output[1] = 2 * (y - centerY);
+            }
         }
         return output;
     }
@@ -142,5 +152,6 @@ public class Circle implements ArrvarFunction, DifferentiableFunction<double[], 
         if (diffOrder < 0 || diffOrder > 1) {
             throw new IllegalArgumentException("only support 0 or 1, not " + diffOrder);
         }
+        this.diffOrder = diffOrder;
     }
 }
