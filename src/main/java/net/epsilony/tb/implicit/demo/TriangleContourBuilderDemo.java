@@ -19,8 +19,10 @@ import javax.swing.SwingUtilities;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
-import net.epsilony.tb.analysis.GenericFunction;
 import net.epsilony.tb.MiscellaneousUtils;
+import net.epsilony.tb.analysis.DifferentiableFunction;
+import net.epsilony.tb.analysis.LogicalMinimum;
+import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
@@ -45,6 +47,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public static final double HOLD_RADIUS_SUP = 40;
     double dragX, dragY;
     int dragStatus;
+    SampleFunction sampleFunction = new SampleFunction();
 
     private void genPolygonizer() {
         TriangleContourCellFactory fatory = new TriangleContourCellFactory();
@@ -53,27 +56,60 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         MiscellaneousUtils.addToList(coverRectangle, cells);
         polygonizer = new TriangleContourBuilder();
         polygonizer.setCells(cells);
-        polygonizer.setLevelSetFunction(new SampleFunction());
+        polygonizer.setLevelSetFunction(sampleFunction);
     }
 
-    class SampleFunction implements GenericFunction<double[], double[]> {
+    public class SampleFunction implements DifferentiableFunction<double[], double[]> {
+
+        int diffOrder = 0;
+        LogicalMinimum logMin = new LogicalMinimum();
+        CircleLevelSet outerFun = new CircleLevelSet();
+        CircleLevelSet innerFun = new CircleLevelSet();
+
+        public SampleFunction() {
+            logMin.setK(1, 1e-10, false);
+            logMin.setFunctions(outerFun, innerFun);
+            outerFun.setCenterX(outerX);
+            outerFun.setCenterY(outerY);
+            outerFun.setRadius(outerRadius);
+            outerFun.setConcrete(true);
+            innerFun.setCenterX(holeX);
+            innerFun.setCenterY(holeY);
+            innerFun.setRadius(holeRadius);
+            innerFun.setConcrete(false);
+        }
+
+        public void setOuterRadius(double r) {
+            outerFun.setRadius(r);
+        }
+
+        public void setInnerRadius(double r) {
+            innerFun.setRadius(r);
+        }
+
+        @Override
+        public int getInputDimension() {
+            return logMin.getInputDimension();
+        }
+
+        @Override
+        public int getOutputDimension() {
+            return logMin.getOutputDimension();
+        }
 
         @Override
         public double[] value(double[] input, double[] output) {
-            if (null == output) {
-                output = new double[1];
-            }
-            double x = input[0];
-            double y = input[1];
-            double distanceToDiskCenter = Math.pow(x - outerX, 2) + Math.pow(y - outerY, 2);
-            distanceToDiskCenter = Math.sqrt(distanceToDiskCenter);
-            double outerValue = outerRadius - distanceToDiskCenter;
+            return logMin.value(input, output);
+        }
 
-            double distanceToHoleCenter = (x - holeX) * (x - holeX) + (y - holeY) * (y - holeY);
-            distanceToHoleCenter = Math.sqrt(distanceToHoleCenter);
-            double holeValue = distanceToHoleCenter - holeRadius;
-            output[0] = Math.min(outerValue, holeValue);
-            return output;
+        @Override
+        public int getDiffOrder() {
+            return logMin.getDiffOrder();
+        }
+
+        @Override
+        public void setDiffOrder(int diffOrder) {
+            logMin.setDiffOrder(diffOrder);
         }
     }
 
@@ -141,6 +177,10 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         if (outerRadius < 0) {
             outerRadius = 0;
         }
+
+        sampleFunction.setInnerRadius(holeRadius);
+        sampleFunction.setOuterRadius(outerRadius);
+
         polygonizer.genContour();
         panel.repaint();
     }
