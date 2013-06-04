@@ -10,6 +10,7 @@ import net.epsilony.tb.analysis.Math2D;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
+import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 
@@ -17,8 +18,9 @@ import net.epsilony.tb.solid.Segment2DUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Circle implements ArrvarFunction, GenericFunction<double[], double[]> {
+public class Circle implements ArrvarFunction, DifferentiableFunction<double[], double[]> {
 
+    int diffOrder = 0;
     double radius;
     double centerX, centerY;
     boolean concrete = true;
@@ -118,5 +120,27 @@ public class Circle implements ArrvarFunction, GenericFunction<double[], double[
             i++;
         }
         return headArc;
+    }
+
+    @Override
+    public int getInputDimension() {
+        return 2;
+    }
+
+    @Override
+    public int getOutputDimension() {
+        return 1;
+    }
+
+    @Override
+    public int getDiffOrder() {
+        return diffOrder;
+    }
+
+    @Override
+    public void setDiffOrder(int diffOrder) {
+        if (diffOrder < 0 || diffOrder > 1) {
+            throw new IllegalArgumentException("only support 0 or 1, not " + diffOrder);
+        }
     }
 }

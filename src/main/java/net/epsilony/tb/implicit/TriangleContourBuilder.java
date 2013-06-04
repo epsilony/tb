@@ -8,8 +8,8 @@ import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
-import net.epsilony.tb.analysis.GenericFunction;
 import net.epsilony.tb.IntIdentityMap;
+import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
@@ -21,7 +21,7 @@ public class TriangleContourBuilder {
     public static double DEFAULT_CONTOUR_LEVEL = 0;
     protected List<TriangleContourCell> cells;
     protected double contourLevel = DEFAULT_CONTOUR_LEVEL;
-    protected GenericFunction<double[], double[]> levelSetFunction;
+    protected DifferentiableFunction<double[], double[]> levelSetFunction;
     protected List<Line2D> contourHeads;
     protected LinkedList<TriangleContourCell> openRingHeadCells;
     protected LinkedList<Line2D> openRingHeadSegments;
@@ -36,7 +36,15 @@ public class TriangleContourBuilder {
         this.contourLevel = contourLevel;
     }
 
-    public void setLevelSetFunction(GenericFunction<double[], double[]> levelSetFunction) {
+    public void setLevelSetFunction(DifferentiableFunction<double[], double[]> levelSetFunction) {
+        if (levelSetFunction.getOutputDimension() != 1) {
+            throw new IllegalArgumentException("output should be 1d only, not"
+                    + levelSetFunction.getOutputDimension());
+        }
+        if (levelSetFunction.getInputDimension() != 2) {
+            throw new IllegalArgumentException("input should be 2d only, not"
+                    + levelSetFunction.getInputDimension());
+        }
         this.levelSetFunction = levelSetFunction;
     }
 
@@ -149,7 +157,7 @@ public class TriangleContourBuilder {
     }
 
     private void setupFunctionData(TriangleContourCell cell) {
-        for (AdaptiveCellEdge edge:cell) {
+        for (AdaptiveCellEdge edge : cell) {
             Node nd = edge.getStart();
             double[] nodeValue = nodesValuesMap.get(nd);
             if (null == nodeValue) {
