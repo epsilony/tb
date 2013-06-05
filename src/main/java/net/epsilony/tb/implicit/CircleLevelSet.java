@@ -81,7 +81,7 @@ public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction<do
     @Override
     public double[] value(double[] input, double[] output) {
         if (null == output) {
-            output = new double[]{2 * diffOrder + 1};
+            output = new double[2 * diffOrder + 1];
         }
         double v = value(input);
         output[0] = v;
@@ -89,11 +89,11 @@ public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction<do
             double x = input[0];
             double y = input[1];
             if (concrete) {
-                output[0] = -2 * (x - centerX);
-                output[1] = -2 * (y - centerY);
+                output[1] = -2 * (x - centerX);
+                output[2] = -2 * (y - centerY);
             } else {
-                output[0] = 2 * (x - centerX);
-                output[1] = 2 * (y - centerY);
+                output[1] = 2 * (x - centerX);
+                output[2] = 2 * (y - centerY);
             }
         }
         return output;
