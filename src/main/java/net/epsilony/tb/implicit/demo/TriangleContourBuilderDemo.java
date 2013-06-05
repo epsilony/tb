@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
@@ -14,6 +16,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.implicit.TriangleContourCell;
@@ -23,6 +26,7 @@ import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMinimum;
 import net.epsilony.tb.implicit.CircleLevelSet;
+import net.epsilony.tb.implicit.NewtonSolver;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
@@ -48,6 +52,20 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     double dragX, dragY;
     int dragStatus;
     SampleFunction sampleFunction = new SampleFunction();
+    JCheckBox useNewton = new JCheckBox("Use Newton's method");
+    NewtonSolver newtonSolver = new NewtonSolver();
+
+    public class UseNewtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (useNewton.isSelected()) {
+                polygonizer.setNewtonSolver(newtonSolver);
+            } else {
+                polygonizer.setNewtonSolver(null);
+            }
+        }
+    }
 
     private void genPolygonizer() {
         TriangleContourCellFactory fatory = new TriangleContourCellFactory();
@@ -57,6 +75,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         polygonizer = new TriangleContourBuilder();
         polygonizer.setCells(cells);
         polygonizer.setLevelSetFunction(sampleFunction);
+
+        newtonSolver.setMaxEval(200);
     }
 
     public class SampleFunction implements DifferentiableFunction<double[], double[]> {
@@ -212,6 +232,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         frame.getMainPanel().addMouseMotionListener(this);
         frame.getMainPanel().addAndSetupModelDrawer(new DraggingDrawer());
         frame.getContentPane().add(new JLabel("Draw with right key or +SHILF"));
+        useNewton.setSelected(false);
+        useNewton.addActionListener(new UseNewtonListener());
+        frame.getContentPane().add(useNewton);
         frame.getContentPane().setLayout(new FlowLayout());
         frame.pack();
         frame.setVisible(true);
