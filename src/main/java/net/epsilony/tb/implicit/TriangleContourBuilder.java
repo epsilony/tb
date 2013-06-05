@@ -4,50 +4,21 @@ package net.epsilony.tb.implicit;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
-import net.epsilony.tb.IntIdentityMap;
-import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleContourBuilder {
+public class TriangleContourBuilder extends AbstractTriangleContourBuilder {
 
-    public static double DEFAULT_CONTOUR_LEVEL = 0;
-    protected List<TriangleContourCell> cells;
-    protected double contourLevel = DEFAULT_CONTOUR_LEVEL;
-    protected DifferentiableFunction<double[], double[]> levelSetFunction;
     protected List<Line2D> contourHeads;
     protected LinkedList<TriangleContourCell> openRingHeadCells;
     protected LinkedList<Line2D> openRingHeadSegments;
     protected Iterator<TriangleContourCell> cellsIterator;
-    IntIdentityMap<Node, double[]> nodesValuesMap = new IntIdentityMap<>();
-    NewtonSolver newtonSolver = null;
-
-    public void setCells(List<TriangleContourCell> cells) {
-        this.cells = cells;
-    }
-
-    public void setContourLevel(double contourLevel) {
-        this.contourLevel = contourLevel;
-    }
-
-    public void setLevelSetFunction(DifferentiableFunction<double[], double[]> levelSetFunction) {
-        if (levelSetFunction.getOutputDimension() != 1) {
-            throw new IllegalArgumentException("output should be 1d only, not"
-                    + levelSetFunction.getOutputDimension());
-        }
-        if (levelSetFunction.getInputDimension() != 2) {
-            throw new IllegalArgumentException("input should be 2d only, not"
-                    + levelSetFunction.getInputDimension());
-        }
-        this.levelSetFunction = levelSetFunction;
-    }
 
     public void genContour() {
         prepareGenContour();
@@ -65,26 +36,7 @@ public class TriangleContourBuilder {
     }
 
     private void prepareGenContour() {
-        for (TriangleContourCell cell : cells) {
-            cell.setVisited(false);
-            for (AdaptiveCellEdge edge : cell) {
-                edge.getStart().setId(-1);
-            }
-        }
-
-        int nodesNum = 0;
-        for (TriangleContourCell cell : cells) {
-            for (AdaptiveCellEdge edge : cell) {
-                Node start = edge.getStart();
-                if (start.getId() > -1) {
-                    continue;
-                }
-                start.setId(nodesNum++);
-            }
-        }
-
-        nodesValuesMap.clear();
-        nodesValuesMap.appendNullValues(nodesNum);
+        prepareCellAndNodes();
 
         contourHeads = new LinkedList<>();
         openRingHeadCells = new LinkedList<>();
@@ -157,17 +109,6 @@ public class TriangleContourBuilder {
         }
     }
 
-    private void setupFunctionData(TriangleContourCell cell) {
-        for (AdaptiveCellEdge edge : cell) {
-            Node nd = edge.getStart();
-            double[] nodeValue = nodesValuesMap.get(nd);
-            if (null == nodeValue) {
-                nodesValuesMap.put(nd, levelSetFunction.value(edge.getStart().getCoord(), null));
-            }
-        }
-        cell.updateStatus(contourLevel, nodesValuesMap);
-    }
-
     private Node genContourNode(Line2D contourSourceEdge) {
         if (null != newtonSolver) {
             return genContourNodeByNewtonMethod(contourSourceEdge);
@@ -219,30 +160,5 @@ public class TriangleContourBuilder {
             }
         }
         return findAndRemove;
-    }
-
-    public List<TriangleContourCell> getCells() {
-        return cells;
-    }
-
-    public double getContourLevel() {
-        return contourLevel;
-    }
-
-    public DifferentiableFunction<double[], double[]> getLevelSetFunction() {
-        return levelSetFunction;
-    }
-
-    public IntIdentityMap<Node, double[]> getNodesValuesMap() {
-        return nodesValuesMap;
-    }
-
-    public NewtonSolver getNewtonSolver() {
-        return newtonSolver;
-    }
-
-    public void setNewtonSolver(NewtonSolver newtonSolver) {
-        this.newtonSolver = newtonSolver;
-        newtonSolver.setFunction(levelSetFunction);
     }
 }
