@@ -34,6 +34,13 @@ public class LogicalHeaviside implements UnivarDifferentiableDoubleFunction, Uni
             results = new double[diffOrder + 1];
         }
         double ev = Math.exp(-2 * k * x);
+        if (Double.isInfinite(ev)) {
+            results[0] = 0;
+            if (diffOrder >= 1) {
+                results[1] = 0;
+            }
+            return results;
+        }
         results[0] = 1 / (1 + ev);
         if (diffOrder >= 1) {
             double t = 1 + ev;
