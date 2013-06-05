@@ -52,11 +52,11 @@ public class TriangleContourBuilder {
     public void genContour() {
         prepareGenContour();
         while (true) {
-            TriangleContourCell headCell = nextHeadCell();
+            TriangleContourCell headCell = nextUnvisitedCellWithContour();
             if (null == headCell) {
                 break;
             }
-            genContourFromHeadCell(headCell);
+            genContourFromCell(headCell);
         }
     }
 
@@ -92,7 +92,7 @@ public class TriangleContourBuilder {
         cellsIterator = cells.iterator();
     }
 
-    private TriangleContourCell nextHeadCell() {
+    private TriangleContourCell nextUnvisitedCellWithContour() {
         TriangleContourCell result = null;
         while (cellsIterator.hasNext()) {
             TriangleContourCell cell = cellsIterator.next();
@@ -112,7 +112,7 @@ public class TriangleContourBuilder {
         return result;
     }
 
-    private void genContourFromHeadCell(TriangleContourCell headCell) {
+    private void genContourFromCell(TriangleContourCell headCell) {
         headCell.setVisited(true);
         Line2D chainHead = new Line2D(genContourNode(headCell.getContourSourceEdge()));
         contourHeads.add(chainHead);
