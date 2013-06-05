@@ -5,6 +5,7 @@ import java.util.List;
 import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.analysis.DifferentiableFunction;
+import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Node;
 
 /**
@@ -19,6 +20,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     protected DifferentiableFunction<double[], double[]> levelSetFunction;
     NewtonSolver newtonSolver = null;
     IntIdentityMap<Node, double[]> nodesValuesMap = new IntIdentityMap<>();
+    protected List<Line2D> contourHeads;
 
     @Override
     public List<TriangleContourCell> getCells() {
@@ -102,5 +104,10 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         }
         nodesValuesMap.clear();
         nodesValuesMap.appendNullValues(nodesNum);
+    }
+
+    @Override
+    public List<Line2D> getContourHeads() {
+        return contourHeads;
     }
 }

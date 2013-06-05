@@ -14,8 +14,6 @@ import net.epsilony.tb.analysis.Math2D;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
-
-    protected List<Line2D> contourHeads;
     protected LinkedList<TriangleContourCell> openRingHeadCells;
     protected LinkedList<Line2D> openRingHeadSegments;
     protected Iterator<TriangleContourCell> cellsIterator;
@@ -30,11 +28,6 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
             }
             genContourFromCell(headCell);
         }
-    }
-
-    @Override
-    public List<Line2D> getContourHeads() {
-        return contourHeads;
     }
 
     private void prepareGenContour() {
