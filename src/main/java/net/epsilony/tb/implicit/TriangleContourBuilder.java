@@ -177,20 +177,23 @@ public class TriangleContourBuilder {
     }
 
     private Node genContourNodeByLinearInterpolate(Line2D contourSourceEdge) {
+        double[] resultCoord = genContourNodeCoordByLinearInterpolate(contourSourceEdge);
+        return new Node(resultCoord);
+    }
+
+    private double[] genContourNodeCoordByLinearInterpolate(Line2D contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
         double startValue = nodesValuesMap.get(contourSourceEdge.getStart())[0];
         double endValue = nodesValuesMap.get(contourSourceEdge.getEnd())[0];
         double t = startValue / (startValue - endValue);
         double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
-        return new Node(resultCoord);
+        return resultCoord;
     }
 
     private Node genContourNodeByNewtonMethod(Line2D contourSourceEdge) {
-        double[] startCoord = contourSourceEdge.getStart().getCoord();
-        double[] endCoord = contourSourceEdge.getEnd().getCoord();
-        double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.5, null);
-        if (newtonSolver.solve(midPoint)) {
+        double[] startPoint = genContourNodeCoordByLinearInterpolate(contourSourceEdge);
+        if (newtonSolver.solve(startPoint)) {
             return new Node(newtonSolver.getSolution());
         } else {
             throw new IllegalStateException();
