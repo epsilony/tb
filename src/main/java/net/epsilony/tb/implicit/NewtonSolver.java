@@ -2,6 +2,7 @@
 package net.epsilony.tb.implicit;
 
 import java.util.Arrays;
+import java.util.Random;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 
 /**
@@ -133,6 +134,13 @@ public class NewtonSolver {
             if (Math.abs(functionValue[0]) <= absoluteError) {
                 solutionStatus = SolutionStatus.GOOD;
             } else {
+                if (eval < maxEval) {
+                    Random rand = new Random();
+                    for (int i = 0; i < solution.length; i++) {
+                        solution[i] += rand.nextDouble() * 4 - 2 * absoluteError;
+                    }
+                    return true;
+                }
                 solutionStatus = SolutionStatus.DIVERGENT;
             }
             return false;
