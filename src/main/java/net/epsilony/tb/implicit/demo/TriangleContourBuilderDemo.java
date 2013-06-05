@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
+import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
 import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMinimum;
@@ -72,7 +73,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         TriangleContourCell[][] coverRectangle = fatory.coverRectangle(new Rectangle2D.Double(0, 0, 100, 100), 5);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(coverRectangle, cells);
-        polygonizer = new TriangleContourBuilder();
+        polygonizer = new MarchingTriangleContourBuilder();
         polygonizer.setCells(cells);
         polygonizer.setLevelSetFunction(sampleFunction);
 

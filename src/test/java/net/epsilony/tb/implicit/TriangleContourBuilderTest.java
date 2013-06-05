@@ -31,11 +31,11 @@ public class TriangleContourBuilderTest {
         TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(cellsGrid, cells);
-        TriangleContourBuilder builder = new TriangleContourBuilder();
-        builder.cells = cells;
-        builder.levelSetFunction = levelsetFunction;
+        TriangleContourBuilder builder = new MarchingTriangleContourBuilder();
+        builder.setCells(cells);
+        builder.setLevelSetFunction(levelsetFunction);
         builder.genContour();
-        List<Line2D> contourHeads = builder.contourHeads;
+        List<Line2D> contourHeads = builder.getContourHeads();
 
         assertEquals(expChainsSize, contourHeads.size());
 
