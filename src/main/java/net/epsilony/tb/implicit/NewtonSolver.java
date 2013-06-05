@@ -65,6 +65,7 @@ public class NewtonSolver {
     }
 
     public boolean solve(double[] start) {
+        function.setDiffOrder(1);
         solution = Arrays.copyOf(start, start.length);
         eval = 0;
         do {
