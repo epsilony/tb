@@ -1,10 +1,12 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
+import java.util.Iterator;
 import java.util.List;
 import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.analysis.DifferentiableFunction;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Node;
 
@@ -21,6 +23,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     NewtonSolver newtonSolver = null;
     IntIdentityMap<Node, double[]> nodesValuesMap = new IntIdentityMap<>();
     protected List<Line2D> contourHeads;
+    protected Iterator<TriangleContourCell> cellsIterator;
 
     @Override
     public List<TriangleContourCell> getCells() {
@@ -109,5 +112,34 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     @Override
     public List<Line2D> getContourHeads() {
         return contourHeads;
+    }
+
+    protected TriangleContourCell nextUnvisitedCellWithContour() {
+        TriangleContourCell result = null;
+        while (cellsIterator.hasNext()) {
+            TriangleContourCell cell = cellsIterator.next();
+            if (cell.isVisited()) {
+                continue;
+            }
+            setupFunctionData(cell);
+            Line2D sourceEdge = cell.getContourSourceEdge();
+            if (sourceEdge == null) {
+                cell.setVisited(true);
+                continue;
+            }
+            result = cell;
+            break;
+        }
+        return result;
+    }
+
+    protected double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
+        double[] startCoord = contourSourceEdge.getStart().getCoord();
+        double[] endCoord = contourSourceEdge.getEnd().getCoord();
+        double startValue = nodesValuesMap.get(contourSourceEdge.getStart())[0];
+        double endValue = nodesValuesMap.get(contourSourceEdge.getEnd())[0];
+        double t = startValue / (startValue - endValue);
+        double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
+        return resultCoord;
     }
 }

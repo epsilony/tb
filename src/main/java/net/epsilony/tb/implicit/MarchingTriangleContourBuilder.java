@@ -3,11 +3,9 @@ package net.epsilony.tb.implicit;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
-import net.epsilony.tb.analysis.Math2D;
 
 /**
  *
@@ -16,7 +14,6 @@ import net.epsilony.tb.analysis.Math2D;
 public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
     protected LinkedList<TriangleContourCell> openRingHeadCells;
     protected LinkedList<Line2D> openRingHeadSegments;
-    protected Iterator<TriangleContourCell> cellsIterator;
 
     @Override
     public void genContour() {
@@ -37,26 +34,6 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         openRingHeadCells = new LinkedList<>();
         openRingHeadSegments = new LinkedList<>();
         cellsIterator = cells.iterator();
-    }
-
-    private TriangleContourCell nextUnvisitedCellWithContour() {
-        TriangleContourCell result = null;
-        while (cellsIterator.hasNext()) {
-            TriangleContourCell cell = cellsIterator.next();
-            if (cell.isVisited()) {
-                continue;
-            }
-            setupFunctionData(cell);
-
-            Line2D sourceEdge = cell.getContourSourceEdge();
-            if (sourceEdge == null) {
-                cell.setVisited(true);
-                continue;
-            }
-            result = cell;
-            break;
-        }
-        return result;
     }
 
     private void genContourFromCell(TriangleContourCell headCell) {
@@ -113,22 +90,12 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
     }
 
     private Node genContourNodeByLinearInterpolate(Line2D contourSourceEdge) {
-        double[] resultCoord = genContourNodeCoordByLinearInterpolate(contourSourceEdge);
+        double[] resultCoord = genLinearInterpolateContourPoint(contourSourceEdge);
         return new Node(resultCoord);
     }
 
-    private double[] genContourNodeCoordByLinearInterpolate(Line2D contourSourceEdge) {
-        double[] startCoord = contourSourceEdge.getStart().getCoord();
-        double[] endCoord = contourSourceEdge.getEnd().getCoord();
-        double startValue = nodesValuesMap.get(contourSourceEdge.getStart())[0];
-        double endValue = nodesValuesMap.get(contourSourceEdge.getEnd())[0];
-        double t = startValue / (startValue - endValue);
-        double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
-        return resultCoord;
-    }
-
     private Node genContourNodeByNewtonMethod(Line2D contourSourceEdge) {
-        double[] startPoint = genContourNodeCoordByLinearInterpolate(contourSourceEdge);
+        double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
         if (newtonSolver.solve(startPoint)) {
             return new Node(newtonSolver.getSolution());
         } else {
