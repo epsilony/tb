@@ -2,6 +2,7 @@
 package net.epsilony.tb.implicit;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
@@ -107,6 +108,9 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         }
         nodesValuesMap.clear();
         nodesValuesMap.appendNullValues(nodesNum);
+        
+        contourHeads = new LinkedList<>();
+        cellsIterator = cells.iterator();
     }
 
     @Override

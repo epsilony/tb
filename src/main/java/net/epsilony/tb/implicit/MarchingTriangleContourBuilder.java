@@ -12,6 +12,7 @@ import net.epsilony.tb.solid.Segment2DUtils;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
+
     protected LinkedList<TriangleContourCell> openRingHeadCells;
     protected LinkedList<Line2D> openRingHeadSegments;
 
@@ -28,12 +29,10 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
     }
 
     private void prepareGenContour() {
-        prepareCellAndNodes();
-
-        contourHeads = new LinkedList<>();
+        prepareCellAndNodes();       
         openRingHeadCells = new LinkedList<>();
         openRingHeadSegments = new LinkedList<>();
-        cellsIterator = cells.iterator();
+
     }
 
     private void genContourFromCell(TriangleContourCell headCell) {
