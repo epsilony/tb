@@ -11,10 +11,10 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
+import net.epsilony.tb.implicit.ContourNode;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.solid.ui.NodeDrawer;
-import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
 /**
@@ -40,11 +40,9 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
     NodeDrawer nodeDrawer = new NodeDrawer();
     Color nodeDataNullColor = DEFAULT_NODE_NULL_DATA_COLOR;
     boolean nodesVisible;
-    IntIdentityMap<Node, double[]> nodesValuesMap;
 
-    public TriangleContourCellDemoDrawer(TriangleContourCell cell, IntIdentityMap<Node, double[]> nodesValuesMap) {
+    public TriangleContourCellDemoDrawer(TriangleContourCell cell) {
         this.cell = cell;
-        this.nodesValuesMap = nodesValuesMap;
         genSegmentsPathInModelSpace();
     }
 
@@ -83,10 +81,10 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
             for (AdaptiveCellEdge edge : cell) {
                 nodeDrawer.setNode(edge.getStart());
                 Node node = edge.getStart();
-                double[] data = nodesValuesMap.get(node);
-                if (null == data) {
+                double[] funcValue = ((ContourNode) node).getFunctionValue();
+                if (null == funcValue) {
                     continue;
-                } else if (data[0] < value) {
+                } else if (funcValue[0] < value) {
                     nodeDrawer.setColor(below);
                 } else {
                     nodeDrawer.setColor(above);

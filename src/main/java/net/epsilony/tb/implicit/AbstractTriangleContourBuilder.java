@@ -4,7 +4,6 @@ package net.epsilony.tb.implicit;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
@@ -22,7 +21,6 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     protected double contourLevel = DEFAULT_CONTOUR_LEVEL;
     protected DifferentiableFunction<double[], double[]> levelSetFunction;
     NewtonSolver newtonSolver = null;
-    IntIdentityMap<Node, double[]> nodesValuesMap = new IntIdentityMap<>();
     protected List<Line2D> contourHeads;
     protected Iterator<TriangleContourCell> cellsIterator;
 
@@ -39,11 +37,6 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     @Override
     public NewtonSolver getNewtonSolver() {
         return newtonSolver;
-    }
-
-    @Override
-    public IntIdentityMap<Node, double[]> getNodesValuesMap() {
-        return nodesValuesMap;
     }
 
     @Override
@@ -75,13 +68,13 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
 
     protected void setupFunctionData(TriangleContourCell cell) {
         for (AdaptiveCellEdge edge : cell) {
-            Node nd = edge.getStart();
-            double[] nodeValue = nodesValuesMap.get(nd);
+            ContourNode nd = (ContourNode) edge.getStart();
+            double[] nodeValue = nd.getFunctionValue();
             if (null == nodeValue) {
-                nodesValuesMap.put(nd, levelSetFunction.value(edge.getStart().getCoord(), null));
+                nd.setFunctionValue(levelSetFunction.value(edge.getStart().getCoord(), null));
             }
         }
-        cell.updateStatus(contourLevel, nodesValuesMap);
+        cell.updateStatus(contourLevel);
     }
 
     @Override
@@ -100,15 +93,23 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         for (TriangleContourCell cell : cells) {
             for (AdaptiveCellEdge edge : cell) {
                 Node start = edge.getStart();
+
                 if (start.getId() > -1) {
                     continue;
+                }
+                if (!(start instanceof ContourNode)) {
+                    ContourNode newNode = new ContourNode();
+                    newNode.setCoord(start.getCoord());
+                    edge.setStart(newNode);
+                    start = newNode;
+                } else {
+                    ContourNode cStart = (ContourNode) start;
+                    cStart.setFunctionValue(null);
                 }
                 start.setId(nodesNum++);
             }
         }
-        nodesValuesMap.clear();
-        nodesValuesMap.appendNullValues(nodesNum);
-        
+
         contourHeads = new LinkedList<>();
         cellsIterator = cells.iterator();
     }
@@ -140,8 +141,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     protected double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
-        double startValue = nodesValuesMap.get(contourSourceEdge.getStart())[0];
-        double endValue = nodesValuesMap.get(contourSourceEdge.getEnd())[0];
+        double startValue = ((ContourNode) contourSourceEdge.getStart()).getFunctionValue()[0];
+        double endValue = ((ContourNode) contourSourceEdge.getEnd()).getFunctionValue()[0];
         double t = startValue / (startValue - endValue);
         double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
         return resultCoord;

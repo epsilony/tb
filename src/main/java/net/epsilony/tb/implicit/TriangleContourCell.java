@@ -3,8 +3,6 @@ package net.epsilony.tb.implicit;
 
 import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.solid.Line2D;
-import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.IntIdentityMap;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 
 /**
@@ -26,11 +24,11 @@ public class TriangleContourCell extends TriangleAdaptiveCell {
         this.visited = polygonized;
     }
 
-    public void updateStatus(double contourLevel, IntIdentityMap<Node, double[]> nodesValuesMap) {
+    public void updateStatus(double contourLevel) {
         double w = 1;
         status = 0;
         for (AdaptiveCellEdge edge : this) {
-            double[] funcValues = nodesValuesMap.get(edge.getStart());
+            double[] funcValues = ((ContourNode) edge.getStart()).getFunctionValue();
             if (funcValues[0] >= contourLevel) {
                 status += w;
             }

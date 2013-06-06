@@ -21,8 +21,6 @@ public interface TriangleContourBuilder {
 
     NewtonSolver getNewtonSolver();
 
-    IntIdentityMap<Node, double[]> getNodesValuesMap();
-
     void setCells(List<TriangleContourCell> cells);
 
     void setContourLevel(double contourLevel);
