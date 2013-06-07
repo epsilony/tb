@@ -63,7 +63,9 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     @Override
     public void setNewtonSolver(NewtonSolver newtonSolver) {
         this.newtonSolver = newtonSolver;
-        newtonSolver.setFunction(levelSetFunction);
+        if (null != newtonSolver) {
+            newtonSolver.setFunction(levelSetFunction);
+        }
     }
 
     protected void setupFunctionData(TriangleContourCell cell) {
@@ -138,7 +140,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return result;
     }
 
-    protected double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
+    public static double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
         double startValue = ((ContourNode) contourSourceEdge.getStart()).getFunctionValue()[0];
