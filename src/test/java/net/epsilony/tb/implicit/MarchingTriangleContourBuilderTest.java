@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleContourBuilderTest {
+public class MarchingTriangleContourBuilderTest {
 
-    public TriangleContourBuilderTest() {
+    public MarchingTriangleContourBuilderTest() {
     }
 
     @Test
