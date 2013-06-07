@@ -78,6 +78,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         polygonizer.setLevelSetFunction(sampleFunction);
 
         newtonSolver.setMaxEval(200);
+        polygonizer.setNewtonSolver(newtonSolver);
     }
 
     public class SampleFunction implements DifferentiableFunction<double[], double[]> {
@@ -233,7 +234,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         frame.getMainPanel().addMouseMotionListener(this);
         frame.getMainPanel().addAndSetupModelDrawer(new DraggingDrawer());
         frame.getContentPane().add(new JLabel("Draw with right key or +SHILF"));
-        useNewton.setSelected(false);
+        useNewton.setSelected(true);
         useNewton.addActionListener(new UseNewtonListener());
         frame.getContentPane().add(useNewton);
         frame.getContentPane().setLayout(new FlowLayout());
