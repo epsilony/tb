@@ -25,7 +25,7 @@ import net.epsilony.tb.implicit.TriangleContourBuilder;
 import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
 import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
-import net.epsilony.tb.analysis.LogicalMinimum;
+import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.implicit.NewtonSolver;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -84,13 +84,13 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public class SampleFunction implements DifferentiableFunction<double[], double[]> {
 
         int diffOrder = 0;
-        LogicalMinimum logMin = new LogicalMinimum();
+        LogicalMaximum logMax = new LogicalMaximum();
         CircleLevelSet outerFun = new CircleLevelSet();
         CircleLevelSet innerFun = new CircleLevelSet();
 
         public SampleFunction() {
-            logMin.setK(1, 1e-10, false);
-            logMin.setFunctions(outerFun, innerFun);
+            logMax.setK(1, 1e-10, false);
+            logMax.setFunctions(outerFun, innerFun);
             outerFun.setCenterX(outerX);
             outerFun.setCenterY(outerY);
             outerFun.setRadius(outerRadius);
@@ -111,27 +111,27 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
         @Override
         public int getInputDimension() {
-            return logMin.getInputDimension();
+            return logMax.getInputDimension();
         }
 
         @Override
         public int getOutputDimension() {
-            return logMin.getOutputDimension();
+            return logMax.getOutputDimension();
         }
 
         @Override
         public double[] value(double[] input, double[] output) {
-            return logMin.value(input, output);
+            return logMax.value(input, output);
         }
 
         @Override
         public int getDiffOrder() {
-            return logMin.getDiffOrder();
+            return logMax.getDiffOrder();
         }
 
         @Override
         public void setDiffOrder(int diffOrder) {
-            logMin.setDiffOrder(diffOrder);
+            logMax.setDiffOrder(diffOrder);
         }
     }
 

@@ -54,8 +54,8 @@ public class CircleLevelSetTest {
 
 
         double[][] testDatas = new double[][]{
-            {centerX, centerY - radius, 0, 0, 2 * radius},
-            {centerX + 2, centerY + 1, 11, -4, -2}
+            {centerX, centerY - radius, 0, 0, -2 * radius},
+            {centerX + 2, centerY + 1, -11, 4, 2}
         };
 
         for (double[] data : testDatas) {

@@ -35,7 +35,7 @@ public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction<do
 
     @Override
     public double value(double[] vec) {
-        double result = radius * radius - Math2D.distanceSquare(vec[0], vec[1], centerX, centerY);
+        double result = Math2D.distanceSquare(vec[0], vec[1], centerX, centerY) - radius * radius;
         if (!concrete) {
             result = -result;
         }
@@ -89,11 +89,11 @@ public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction<do
             double x = input[0];
             double y = input[1];
             if (concrete) {
-                output[1] = -2 * (x - centerX);
-                output[2] = -2 * (y - centerY);
-            } else {
                 output[1] = 2 * (x - centerX);
                 output[2] = 2 * (y - centerY);
+            } else {
+                output[1] = -2 * (x - centerX);
+                output[2] = -2 * (y - centerY);
             }
         }
         return output;

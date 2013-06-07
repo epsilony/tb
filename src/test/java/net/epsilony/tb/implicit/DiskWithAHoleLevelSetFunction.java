@@ -18,9 +18,9 @@ public class DiskWithAHoleLevelSetFunction implements DifferentiableFunction<dou
 
     @Override
     public double[] value(double[] input, double[] output) {
-        double diskValue = diskRad - Math2D.distance(diskX, diskY, input[0], input[1]);
-        double holeValue = Math2D.distance(holeX, holeY, input[0], input[1]) - holeRad;
-        double value = Math.min(diskValue, holeValue);
+        double diskValue = Math2D.distance(diskX, diskY, input[0], input[1]) - diskRad;
+        double holeValue = holeRad - Math2D.distance(holeX, holeY, input[0], input[1]);
+        double value = Math.max(diskValue, holeValue);
         if (output == null) {
             return new double[]{value};
         } else {
