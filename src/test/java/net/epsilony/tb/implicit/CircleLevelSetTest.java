@@ -1,6 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
+import java.util.Arrays;
 import net.epsilony.tb.solid.ArcSegment2D;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -38,5 +39,30 @@ public class CircleLevelSetTest {
             }
         }
         assertEquals(expArcNum, arcNum);
+    }
+
+    @Test
+    public void testFunction() {
+        double centerX = -22.3;
+        double centerY = 3.7;
+        double radius = 4;
+        CircleLevelSet circle = new CircleLevelSet();
+        circle.setCenterX(centerX);
+        circle.setCenterY(centerY);
+        circle.setRadius(radius);
+        circle.setDiffOrder(1);
+
+
+        double[][] testDatas = new double[][]{
+            {centerX, centerY - radius, 0, 0, 2 * radius},
+            {centerX + 2, centerY + 1, 11, -4, -2}
+        };
+
+        for (double[] data : testDatas) {
+            double[] coord = Arrays.copyOfRange(data, 0, 2);
+            double[] exps = Arrays.copyOfRange(data, 2, 5);
+            double[] acts = circle.value(coord, null);
+            assertArrayEquals(exps, acts, 1e-6);
+        }
     }
 }
