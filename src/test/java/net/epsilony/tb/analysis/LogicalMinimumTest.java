@@ -100,6 +100,13 @@ public class LogicalMinimumTest {
             double err = x_exp_err[x_exp_err.length - 1];
             assertArrayEquals(exps, acts, err);
         }
+
+        double x = 10;//a far point
+        FunA_1D funcA = new FunA_1D();
+        funcA.setDiffOrder(1);
+        double[] exps = funcA.value(new double[]{x}, null);
+        double[] acts = lm.value(new double[]{x}, null);
+        assertArrayEquals(exps, acts, 1e-14);
     }
 
     public static class FunA_2D implements DifferentiableFunction<double[], double[]> {
