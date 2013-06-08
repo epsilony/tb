@@ -21,6 +21,10 @@ public class TriangleContourCell extends TriangleAdaptiveCell {
     private int status = -1;
     List<Line2D> passByContourLines;
 
+    public int getStatus() {
+        return status;
+    }
+
     public List<Line2D> getPassByContourLines() {
         return passByContourLines;
     }
