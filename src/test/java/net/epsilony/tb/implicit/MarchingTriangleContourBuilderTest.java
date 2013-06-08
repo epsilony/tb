@@ -7,6 +7,7 @@ import java.util.List;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.MiscellaneousUtils;
+import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.solid.SegmentStartCoordIterable;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -20,14 +21,56 @@ public class MarchingTriangleContourBuilderTest {
     public MarchingTriangleContourBuilderTest() {
     }
 
+    public class RawOneDiskWithAHole implements DifferentiableFunction<double[], double[]> {
+
+        int diffOrder = 0;
+        double diskX = 50, diskY = 50, diskRad = 40;
+        double holeX = 44, holeY = 42, holeRad = 15;
+
+        @Override
+        public double[] value(double[] input, double[] output) {
+            double diskValue = Math2D.distance(diskX, diskY, input[0], input[1]) - diskRad;
+            double holeValue = holeRad - Math2D.distance(holeX, holeY, input[0], input[1]);
+            double value = Math.max(diskValue, holeValue);
+            if (output == null) {
+                return new double[]{value};
+            } else {
+                output[0] = value;
+                return output;
+            }
+        }
+
+        @Override
+        public int getInputDimension() {
+            return 2;
+        }
+
+        @Override
+        public int getOutputDimension() {
+            return 1;
+        }
+
+        @Override
+        public int getDiffOrder() {
+            return diffOrder;
+        }
+
+        @Override
+        public void setDiffOrder(int diffOrder) {
+            if (diffOrder != 0) {
+                throw new IllegalArgumentException("only support 0, not " + diffOrder);
+            }
+        }
+    }
+
     @Test
-    public void testDiskWithAHole() {
+    public void testDiskWithAHoleWithoutNewtonMethod() {
         TriangleContourCellFactory factory = new TriangleContourCellFactory();
         Rectangle2D range = new Rectangle2D.Double(0, 0, 100, 100);
         double edgeLength = 5;
         int expChainsSize = 2;
         double errRatio = 0.05;
-        DiskWithAHoleLevelSetFunction levelsetFunction = new DiskWithAHoleLevelSetFunction();
+        RawOneDiskWithAHole levelsetFunction = new RawOneDiskWithAHole();
         TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(cellsGrid, cells);
