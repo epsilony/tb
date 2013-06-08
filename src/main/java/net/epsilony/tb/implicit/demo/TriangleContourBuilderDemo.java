@@ -28,6 +28,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.implicit.NewtonSolver;
+import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
@@ -54,7 +55,19 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     int dragStatus;
     SampleFunction sampleFunction = new SampleFunction();
     JCheckBox useNewton = new JCheckBox("Use Newton's method");
+    JCheckBox useTrack = new JCheckBox("track");
     NewtonSolver newtonSolver = new NewtonSolver();
+    private CommonFrame frame;
+    private TriangleContourBuilderDemoDrawer mainDrawer;
+
+    public TriangleContourBuilderDemo() {
+        useNewton.setSelected(true);
+        useNewton.addActionListener(new UseNewtonListener());
+        useTrack.setSelected(true);
+        useTrack.addActionListener(new UseTrackListener());
+
+        newtonSolver.setMaxEval(200);
+    }
 
     public class UseNewtonListener implements ActionListener {
 
@@ -65,6 +78,25 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             } else {
                 polygonizer.setNewtonSolver(null);
             }
+            polygonizer.genContour();
+            frame.getMainPanel().repaint();
+        }
+    }
+
+    public class UseTrackListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.getMainPanel().getModelDrawers().remove(mainDrawer);
+            genPolygonizer();
+            mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+            frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
+            polygonizer.genContour();
+            frame.getMainPanel().repaint();
+            useNewton.setEnabled(!useTrack.isSelected());
+            if (useTrack.isSelected()) {
+                useNewton.setSelected(true);
+            }
         }
     }
 
@@ -73,11 +105,14 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         TriangleContourCell[][] coverRectangle = fatory.coverRectangle(new Rectangle2D.Double(0, 0, 100, 100), 5);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(coverRectangle, cells);
-        polygonizer = new MarchingTriangleContourBuilder();
+        if (useTrack.isSelected()) {
+            polygonizer = new TrackContourBuilder();
+        } else {
+            polygonizer = new MarchingTriangleContourBuilder();
+        }
         polygonizer.setCells(cells);
         polygonizer.setLevelSetFunction(sampleFunction);
 
-        newtonSolver.setMaxEval(200);
         polygonizer.setNewtonSolver(newtonSolver);
     }
 
@@ -89,7 +124,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         CircleLevelSet innerFun = new CircleLevelSet();
 
         public SampleFunction() {
-            logMax.setK(1, 1e-10, false);
+            logMax.setK(10, 0.25, false);
             logMax.setFunctions(outerFun, innerFun);
             outerFun.setCenterX(outerX);
             outerFun.setCenterY(outerY);
@@ -203,6 +238,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         sampleFunction.setInnerRadius(holeRadius);
         sampleFunction.setOuterRadius(outerRadius);
 
+        System.out.println("holeRadius = " + holeRadius);
+        System.out.println("outerRadius = " + outerRadius);
         polygonizer.genContour();
         panel.repaint();
     }
@@ -227,15 +264,15 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         } catch (Throwable e) {
             System.out.println("e = " + e);
         }
-        CommonFrame frame = new CommonFrame();
-        frame.getMainPanel().addAndSetupModelDrawer(new TriangleContourBuilderDemoDrawer(polygonizer));
+        frame = new CommonFrame();
+        mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+        frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
         frame.getMainPanel().setPreferredSize(new Dimension(800, 600));
         frame.getMainPanel().addMouseListener(this);
         frame.getMainPanel().addMouseMotionListener(this);
         frame.getMainPanel().addAndSetupModelDrawer(new DraggingDrawer());
         frame.getContentPane().add(new JLabel("Draw with right key or +SHILF"));
-        useNewton.setSelected(true);
-        useNewton.addActionListener(new UseNewtonListener());
+        frame.getContentPane().add(useTrack);
         frame.getContentPane().add(useNewton);
         frame.getContentPane().setLayout(new FlowLayout());
         frame.pack();
