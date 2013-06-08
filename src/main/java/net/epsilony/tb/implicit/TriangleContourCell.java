@@ -83,4 +83,26 @@ public class TriangleContourCell extends TriangleAdaptiveCell {
         }
         return null;
     }
+
+    public List<TriangleContourCell> getEdgesNeighbours() {
+        List<TriangleContourCell> result = new LinkedList<>();
+        for (AdaptiveCellEdge edge : this) {
+            AdaptiveCellEdge opposite = edge.getOpposite();
+            if (null == opposite) {
+                continue;
+            }
+            result.add((TriangleContourCell) opposite.getCell());
+        }
+        return result;
+    }
+
+    public Set<TriangleContourCell> getNodesNeighbours() {
+        List<TriangleContourCell> edgeNeighbours = getEdgesNeighbours();
+        Set<TriangleContourCell> nodesNeighbours = new HashSet<>(20);
+        nodesNeighbours.addAll(edgeNeighbours);
+        for(TriangleContourCell neibour:edgeNeighbours){
+            nodesNeighbours.addAll(neibour.getEdgesNeighbours());
+        }
+        return nodesNeighbours;
+    }
 }
