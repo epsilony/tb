@@ -1,6 +1,10 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
@@ -15,6 +19,15 @@ public class TriangleContourCell extends TriangleAdaptiveCell {
     private static final int[] STATUS_CONTOUR_SRC_EDGE_INDEX_MAP = new int[]{-1, 2, 0, 2, 1, 1, 0, -1};
     boolean visited = false;
     private int status = -1;
+    List<Line2D> passByContourLines;
+
+    public List<Line2D> getPassByContourLines() {
+        return passByContourLines;
+    }
+
+    public void getPassByContourLines(List<Line2D> passBySegs) {
+        this.passByContourLines = passBySegs;
+    }
 
     public boolean isVisited() {
         return visited;
