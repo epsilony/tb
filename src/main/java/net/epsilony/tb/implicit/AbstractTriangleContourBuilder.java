@@ -16,13 +16,17 @@ import net.epsilony.tb.solid.Node;
  */
 public abstract class AbstractTriangleContourBuilder implements TriangleContourBuilder {
 
+<<<<<<< Updated upstream
     public static double DEFAULT_CONTOUR_LEVEL = 0;
+=======
+>>>>>>> Stashed changes
     protected List<TriangleContourCell> cells;
     protected double contourLevel = DEFAULT_CONTOUR_LEVEL;
     protected DifferentiableFunction<double[], double[]> levelSetFunction;
-    NewtonSolver newtonSolver = null;
-    protected List<Line2D> contourHeads;
+    protected NewtonSolver newtonSolver = null;
+    protected List<Line2D> contourHeads = new LinkedList<>();
     protected Iterator<TriangleContourCell> cellsIterator;
+    protected List<Line2D> openRingsHeads = new LinkedList<>();
 
     @Override
     public List<TriangleContourCell> getCells() {
@@ -84,7 +88,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return contourLevel;
     }
 
-    protected void prepareCellAndNodes() {
+    protected void prepareToGenContour() {
         for (TriangleContourCell cell : cells) {
             cell.setVisited(false);
             for (AdaptiveCellEdge edge : cell) {
@@ -112,7 +116,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
             }
         }
 
-        contourHeads = new LinkedList<>();
+        contourHeads.clear();
+        openRingsHeads.clear();
         cellsIterator = cells.iterator();
     }
 

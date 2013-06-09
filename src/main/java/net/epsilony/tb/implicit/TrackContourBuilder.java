@@ -18,7 +18,6 @@ import net.epsilony.tb.solid.Segment2DUtils;
 public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     TrackContourSpecification specification = new TrackContourSpecification();
-    List<Line2D> openRingsHeads = new LinkedList<>();
 
     @Override
     public void genContour() {
@@ -44,8 +43,14 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         }
     }
 
+<<<<<<< Updated upstream
     private void prepareToGenContour() {
         prepareCellAndNodes();
+=======
+    @Override
+    public void prepareToGenContour() {
+        super.prepareToGenContour();
+>>>>>>> Stashed changes
         openRingsHeads.clear();
         for (TriangleContourCell cell : cells) {
             cell.getPassByContourLines(null);

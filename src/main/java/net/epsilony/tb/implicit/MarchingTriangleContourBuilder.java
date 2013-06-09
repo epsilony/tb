@@ -3,6 +3,7 @@ package net.epsilony.tb.implicit;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
@@ -13,12 +14,12 @@ import net.epsilony.tb.solid.Segment2DUtils;
  */
 public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
 
-    protected LinkedList<TriangleContourCell> openRingHeadCells;
-    protected LinkedList<Line2D> openRingHeadSegments;
+    protected List<TriangleContourCell> openRingsHeadsCells = new LinkedList<>();
+
 
     @Override
     public void genContour() {
-        prepareGenContour();
+        prepareToGenContour();
         while (true) {
             TriangleContourCell headCell = nextUnvisitedCellWithContour();
             if (null == headCell) {
@@ -28,11 +29,18 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         }
     }
 
+<<<<<<< Updated upstream
     private void prepareGenContour() {
         prepareCellAndNodes();       
-        openRingHeadCells = new LinkedList<>();
-        openRingHeadSegments = new LinkedList<>();
+        openRingsHeadsCells = new LinkedList<>();
+        openRingsHeads = new LinkedList<>();
 
+=======
+    @Override
+    public void prepareToGenContour() {
+        super.prepareToGenContour();
+        openRingsHeadsCells.clear();
+>>>>>>> Stashed changes
     }
 
     private void genContourFromCell(TriangleContourCell headCell) {
@@ -40,8 +48,8 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         Line2D chainHead = new Line2D(genContourNode(headCell.getContourSourceEdge()));
         contourHeads.add(chainHead);
 
-        openRingHeadCells.add(headCell);
-        openRingHeadSegments.add(chainHead);
+        openRingsHeadsCells.add(headCell);
+        openRingsHeads.add(chainHead);
         TriangleContourCell contourCell = headCell;
 
         Line2D segment = chainHead;
@@ -57,8 +65,8 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
 
             if (contourCell == headCell) {
                 Segment2DUtils.link(segment, chainHead);
-                openRingHeadCells.remove(headCell);
-                openRingHeadSegments.remove(chainHead);
+                openRingsHeadsCells.remove(headCell);
+                openRingsHeads.remove(chainHead);
                 break;
             }
 
@@ -103,8 +111,8 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
     }
 
     private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line2D segment) {
-        Iterator<TriangleContourCell> openHeadCellIter = openRingHeadCells.descendingIterator();
-        Iterator<Line2D> openHeadSegIter = openRingHeadSegments.descendingIterator();
+        Iterator<TriangleContourCell> openHeadCellIter = openRingsHeadsCells.iterator();
+        Iterator<Line2D> openHeadSegIter = openRingsHeads.iterator();
         boolean findAndRemove = false;
         while (openHeadCellIter.hasNext()) {
             TriangleContourCell cell = openHeadCellIter.next();
