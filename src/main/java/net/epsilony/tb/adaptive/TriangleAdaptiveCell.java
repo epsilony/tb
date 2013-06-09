@@ -1,6 +1,10 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
@@ -56,5 +60,28 @@ public class TriangleAdaptiveCell extends AbstractAdaptiveCell {
     @Override
     public int getSideNum() {
         return 3;
+    }
+    
+    
+    public List<TriangleAdaptiveCell> getEdgesNeighbours() {
+        List<TriangleAdaptiveCell> result = new LinkedList<>();
+        for (AdaptiveCellEdge edge : this) {
+            AdaptiveCellEdge opposite = edge.getOpposite();
+            if (null == opposite) {
+                continue;
+            }
+            result.add((TriangleAdaptiveCell) opposite.getCell());
+        }
+        return result;
+    }
+
+    public Set<TriangleAdaptiveCell> getNodesNeighbours() {
+        List<TriangleAdaptiveCell> edgeNeighbours = getEdgesNeighbours();
+        Set<TriangleAdaptiveCell> nodesNeighbours = new HashSet<>(20);
+        nodesNeighbours.addAll(edgeNeighbours);
+        for(TriangleAdaptiveCell neibour:edgeNeighbours){
+            nodesNeighbours.addAll(neibour.getEdgesNeighbours());
+        }
+        return nodesNeighbours;
     }
 }

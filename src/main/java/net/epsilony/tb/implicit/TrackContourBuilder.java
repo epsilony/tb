@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
+import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
@@ -92,10 +93,10 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             }
         }
 
-        Set<TriangleContourCell> nodesNeighbours = headCell.getNodesNeighbours();
+        Set<TriangleAdaptiveCell> nodesNeighbours = headCell.getNodesNeighbours();
 
-        for (TriangleContourCell neighbour : nodesNeighbours) {
-            List<Line2D> passBySegs = neighbour.getPassByContourLines();
+        for (TriangleAdaptiveCell neighbour : nodesNeighbours) {
+            List<Line2D> passBySegs = ((TriangleContourCell) neighbour).getPassByContourLines();
             if (null == passBySegs) {
                 continue;
             }

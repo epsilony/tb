@@ -1,10 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.adaptive.AdaptiveCellEdge;
@@ -99,27 +96,5 @@ public class TriangleContourCell extends TriangleAdaptiveCell {
             i++;
         }
         return null;
-    }
-
-    public List<TriangleContourCell> getEdgesNeighbours() {
-        List<TriangleContourCell> result = new LinkedList<>();
-        for (AdaptiveCellEdge edge : this) {
-            AdaptiveCellEdge opposite = edge.getOpposite();
-            if (null == opposite) {
-                continue;
-            }
-            result.add((TriangleContourCell) opposite.getCell());
-        }
-        return result;
-    }
-
-    public Set<TriangleContourCell> getNodesNeighbours() {
-        List<TriangleContourCell> edgeNeighbours = getEdgesNeighbours();
-        Set<TriangleContourCell> nodesNeighbours = new HashSet<>(20);
-        nodesNeighbours.addAll(edgeNeighbours);
-        for(TriangleContourCell neibour:edgeNeighbours){
-            nodesNeighbours.addAll(neibour.getEdgesNeighbours());
-        }
-        return nodesNeighbours;
     }
 }
