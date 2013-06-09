@@ -28,18 +28,10 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         }
     }
 
-<<<<<<< Updated upstream
-    private void prepareGenContour() {
-        prepareCellAndNodes();
-        openRingsHeadsCells = new LinkedList<>();
-        openRingsHeads = new LinkedList<>();
-
-=======
     @Override
     public void prepareToGenContour() {
         super.prepareToGenContour();
         openRingsHeadsCells.clear();
->>>>>>> Stashed changes
     }
 
     private void genContourFromCell(TriangleContourCell headCell) {
