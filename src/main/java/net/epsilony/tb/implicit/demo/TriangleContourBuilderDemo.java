@@ -14,8 +14,6 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -33,6 +31,8 @@ import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 import net.epsilony.tb.ui.ModelTransform;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 /**
  *
@@ -40,6 +40,8 @@ import net.epsilony.tb.ui.ModelTransform;
  */
 public class TriangleContourBuilderDemo extends MouseAdapter {
 
+    public static Logger logger = LoggerFactory.getLogger(TriangleContourBuilderDemo.class);
+    //
     public static final int DRAG_OUTER = 1;
     public static final int DRAG_HOLE = 2;
     public static final int DRAG_NOTHING = 0;
@@ -47,9 +49,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public double holeRadius = 15;
     public double holeX = 44;
     public double holeY = 42;
-    public double outerRadius = 30;
-    public double outerX = 50;
-    public double outerY = 50;
+    public double diskRadius = 30;
+    public double diskX = 50;
+    public double diskY = 50;
     public static final double HOLD_RADIUS_SUP = 40;
     double dragX, dragY;
     int dragStatus;
@@ -67,19 +69,29 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         useTrack.addActionListener(new UseTrackListener());
 
         newtonSolver.setMaxEval(200);
+        logger.info(newtonSolver.toString());
     }
 
     public class UseNewtonListener implements ActionListener {
 
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent event) {
             if (useNewton.isSelected()) {
                 polygonizer.setNewtonSolver(newtonSolver);
             } else {
                 polygonizer.setNewtonSolver(null);
             }
-            polygonizer.genContour();
+            genContour();
             frame.getMainPanel().repaint();
+        }
+    }
+
+    public void genContour() {
+        try {
+            logger.debug("hole radius: {}, disk radius: {}", holeRadius, diskRadius);
+            polygonizer.genContour();
+        } catch (Throwable e) {
+            logger.error("", e);
         }
     }
 
@@ -91,7 +103,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             genPolygonizer();
             mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
             frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
-            polygonizer.genContour();
+            genContour();
             frame.getMainPanel().repaint();
             useNewton.setEnabled(!useTrack.isSelected());
             if (useTrack.isSelected()) {
@@ -120,28 +132,28 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
         int diffOrder = 0;
         LogicalMaximum logMax = new LogicalMaximum();
-        CircleLevelSet outerFun = new CircleLevelSet();
-        CircleLevelSet innerFun = new CircleLevelSet();
+        CircleLevelSet diskFun = new CircleLevelSet();
+        CircleLevelSet holeFun = new CircleLevelSet();
 
         public SampleFunction() {
             logMax.setK(10, 0.25, false);
-            logMax.setFunctions(outerFun, innerFun);
-            outerFun.setCenterX(outerX);
-            outerFun.setCenterY(outerY);
-            outerFun.setRadius(outerRadius);
-            outerFun.setConcrete(true);
-            innerFun.setCenterX(holeX);
-            innerFun.setCenterY(holeY);
-            innerFun.setRadius(holeRadius);
-            innerFun.setConcrete(false);
+            logMax.setFunctions(diskFun, holeFun);
+            diskFun.setCenterX(diskX);
+            diskFun.setCenterY(diskY);
+            diskFun.setRadius(diskRadius);
+            diskFun.setConcrete(true);
+            holeFun.setCenterX(holeX);
+            holeFun.setCenterY(holeY);
+            holeFun.setRadius(holeRadius);
+            holeFun.setConcrete(false);
         }
 
-        public void setOuterRadius(double r) {
-            outerFun.setRadius(r);
+        public void setDiskRadius(double r) {
+            diskFun.setRadius(r);
         }
 
-        public void setInnerRadius(double r) {
-            innerFun.setRadius(r);
+        public void setHoleRadius(double r) {
+            holeFun.setRadius(r);
         }
 
         @Override
@@ -190,21 +202,21 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        dragStatus = genDragStatus(e);
+    public void mouseDragged(MouseEvent event) {
+        dragStatus = genDragStatus(event);
         if (dragStatus == DRAG_NOTHING) {
             return;
         }
 
-        BasicModelPanel panel = (BasicModelPanel) e.getComponent();
+        BasicModelPanel panel = (BasicModelPanel) event.getComponent();
         ModelTransform modelToComponentTransform = panel.getModelToComponentTransform();
         double[] oriVector = new double[]{dragX, dragY};
-        double[] dragedVector = new double[]{e.getX(), e.getY()};
+        double[] dragedVector = new double[]{event.getX(), event.getY()};
         try {
             modelToComponentTransform.inverseTransform(oriVector, 0, oriVector, 0, 1);
             modelToComponentTransform.inverseTransform(dragedVector, 0, dragedVector, 0, 1);
         } catch (NoninvertibleTransformException ex) {
-            Logger.getLogger(TriangleContourBuilderDemo.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error("", ex);
         }
 
         double centerX, centerY;
@@ -212,8 +224,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             centerX = holeX;
             centerY = holeY;
         } else {
-            centerX = outerX;
-            centerY = outerY;
+            centerX = diskX;
+            centerY = diskY;
         }
 
         double oriR = Math.sqrt(Math.pow(oriVector[0] - centerX, 2) + Math.pow(oriVector[1] - centerY, 2));
@@ -222,25 +234,23 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         if (dragStatus == DRAG_HOLE) {
             holeRadius += radiusDelta;
         } else {
-            outerRadius += radiusDelta;
+            diskRadius += radiusDelta;
         }
-        dragX = e.getX();
-        dragY = e.getY();
+        dragX = event.getX();
+        dragY = event.getY();
 
         if (holeRadius < 0) {
             holeRadius = 0;
         }
 
-        if (outerRadius < 0) {
-            outerRadius = 0;
+        if (diskRadius < 0) {
+            diskRadius = 0;
         }
 
-        sampleFunction.setInnerRadius(holeRadius);
-        sampleFunction.setOuterRadius(outerRadius);
+        sampleFunction.setHoleRadius(holeRadius);
+        sampleFunction.setDiskRadius(diskRadius);
 
-        System.out.println("holeRadius = " + holeRadius);
-        System.out.println("outerRadius = " + outerRadius);
-        polygonizer.genContour();
+        genContour();
         panel.repaint();
     }
 
@@ -259,11 +269,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
     public void genUI() {
         genPolygonizer();
-        try {
-            polygonizer.genContour();
-        } catch (Throwable e) {
-            System.out.println("e = " + e);
-        }
+        genContour();
         frame = new CommonFrame();
         mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
         frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
@@ -293,8 +299,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             }
             double centerX, centerY;
             if (dragStatus == DRAG_OUTER) {
-                centerX = outerX;
-                centerY = outerY;
+                centerX = diskX;
+                centerY = diskY;
             } else {
                 centerX = holeX;
                 centerY = holeY;
