@@ -17,10 +17,6 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-/**
- *
- * @author epsilon
- */
 public class TrackContourBuilderTest {
 
     public TrackContourBuilderTest() {

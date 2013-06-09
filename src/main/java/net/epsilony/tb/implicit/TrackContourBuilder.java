@@ -163,7 +163,6 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         }
         ContourNode next = trackNextNode(distance, ndB, true);
         if (null == next) {
-            trackNextNode(distance, ndB, true);
             throw new IllegalStateException();
         }
         Line2D result = new Line2D(next);
