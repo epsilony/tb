@@ -16,7 +16,6 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
 
     protected List<TriangleContourCell> openRingsHeadsCells = new LinkedList<>();
 
-
     @Override
     public void genContour() {
         prepareToGenContour();
@@ -31,7 +30,7 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
 
 <<<<<<< Updated upstream
     private void prepareGenContour() {
-        prepareCellAndNodes();       
+        prepareCellAndNodes();
         openRingsHeadsCells = new LinkedList<>();
         openRingsHeads = new LinkedList<>();
 
