@@ -9,7 +9,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class NewtonSolver {
+public class NewtonSolver implements ImplicitFunctionSolver {
 
     private double gradSq;
 
@@ -31,10 +31,12 @@ public class NewtonSolver {
     SolutionStatus solutionStatus;
     private double functionAbsoluteTolerence = DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE;
 
+    @Override
     public DifferentiableFunction<double[], double[]> getFunction() {
         return function;
     }
 
+    @Override
     public void setFunction(DifferentiableFunction<double[], double[]> function) {
 
         if (1 != function.getOutputDimension()) {
@@ -45,22 +47,27 @@ public class NewtonSolver {
         funcInputDimension = function.getInputDimension();
     }
 
+    @Override
     public double getSolutionAbsoluteTolerence() {
         return solutionAbsoluteTolerence;
     }
 
+    @Override
     public void setSolutionAbsoluteTolerence(double solutionAbsoluteTolerence) {
         this.solutionAbsoluteTolerence = solutionAbsoluteTolerence;
     }
 
+    @Override
     public int getMaxEval() {
         return maxEval;
     }
 
+    @Override
     public void setMaxEval(int maxEval) {
         this.maxEval = maxEval;
     }
 
+    @Override
     public boolean solve(double[] start) {
         function.setDiffOrder(1);
         functionValue = null;
@@ -78,6 +85,7 @@ public class NewtonSolver {
         }
     }
 
+    @Override
     public double[] getSolution() {
         return solution;
     }
@@ -106,14 +114,17 @@ public class NewtonSolver {
         solutionStep = Math.sqrt(solutionStep);
     }
 
+    @Override
     public double[] getFunctionValue() {
         return functionValue;
     }
 
+    @Override
     public int getEvalTimes() {
         return eval;
     }
 
+    @Override
     public double getSolutionError() {
         return solutionStep;
     }
@@ -157,10 +168,12 @@ public class NewtonSolver {
         return true;
     }
 
+    @Override
     public double getFunctionAbsoluteTolerence() {
         return functionAbsoluteTolerence;
     }
 
+    @Override
     public void setFunctionAbsoluteTolerence(double functionAbsoluteTolerence) {
         this.functionAbsoluteTolerence = functionAbsoluteTolerence;
     }
