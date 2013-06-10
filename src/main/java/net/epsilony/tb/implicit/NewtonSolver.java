@@ -17,23 +17,19 @@ public class NewtonSolver {
 
         GOOD, DIVERGENT
     };
-    public static double DEFAULT_ABSOLUTE_ERROR = 1E-6;
+    public static double DEFAULT_SOLUTION_ABSOLUTE_TOLERENCE = 1E-6;
     public static int DEFAULT_MAX_EVAL = 10000;
-    public static boolean DEFAULT_CHECK_FUNCTION_VALUE = false;
+    public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = -1;
     DifferentiableFunction<double[], double[]> function;
-    double absoluteError = DEFAULT_ABSOLUTE_ERROR;
+    double solutionAbsoluteTolerence = DEFAULT_SOLUTION_ABSOLUTE_TOLERENCE;
     int maxEval = DEFAULT_MAX_EVAL;
     private double[] solution;
-    private double solutionError;
+    private double solutionStep;
     private double[] functionValue;
     private int funcInputDimension;
     int eval;
     SolutionStatus solutionStatus;
-    private boolean checkFunctionValue = DEFAULT_CHECK_FUNCTION_VALUE;
-
-    private boolean isCheckFunctionValue() {
-        return checkFunctionValue;
-    }
+    private double functionAbsoluteTolerence = DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE;
 
     public DifferentiableFunction<double[], double[]> getFunction() {
         return function;
@@ -49,12 +45,12 @@ public class NewtonSolver {
         funcInputDimension = function.getInputDimension();
     }
 
-    public double getAbsoluteError() {
-        return absoluteError;
+    public double getSolutionAbsoluteTolerence() {
+        return solutionAbsoluteTolerence;
     }
 
-    public void setAbsoluteError(double absoluteError) {
-        this.absoluteError = absoluteError;
+    public void setSolutionAbsoluteTolerence(double solutionAbsoluteTolerence) {
+        this.solutionAbsoluteTolerence = solutionAbsoluteTolerence;
     }
 
     public int getMaxEval() {
@@ -93,7 +89,7 @@ public class NewtonSolver {
     private void iterate() {
         functionValue = function.value(solution, functionValue);
 
-        solutionError = 0;
+        solutionStep = 0;
         if (functionValue[0] == 0) {
             return;
         }
@@ -104,10 +100,10 @@ public class NewtonSolver {
         double value = -functionValue[0];
         for (int i = 0; i < funcInputDimension; i++) {
             double d = value / gradSq * functionValue[i + 1];
-            solutionError += d * d;
+            solutionStep += d * d;
             solution[i] += d;
         }
-        solutionError = Math.sqrt(solutionError);
+        solutionStep = Math.sqrt(solutionStep);
     }
 
     public double[] getFunctionValue() {
@@ -119,7 +115,7 @@ public class NewtonSolver {
     }
 
     public double getSolutionError() {
-        return solutionError;
+        return solutionStep;
     }
 
     private double calcGradientSq() {
@@ -133,13 +129,13 @@ public class NewtonSolver {
 
     private boolean keepIteration() {
         if (gradSq == 0) {
-            if (Math.abs(functionValue[0]) <= absoluteError) {
+            if (Math.abs(functionValue[0]) <= solutionAbsoluteTolerence) {
                 solutionStatus = SolutionStatus.GOOD;
             } else {
                 if (eval < maxEval) {
                     Random rand = new Random();
                     for (int i = 0; i < solution.length; i++) {
-                        solution[i] += rand.nextDouble() * 4 - 2 * absoluteError;
+                        solution[i] += rand.nextDouble() * 4 - 2 * solutionAbsoluteTolerence;
                     }
                     return true;
                 }
@@ -147,8 +143,8 @@ public class NewtonSolver {
             }
             return false;
         }
-        if (solutionError <= absoluteError) {
-            if (isCheckFunctionValue() && Math.abs(functionValue[0]) > absoluteError && eval < maxEval) {
+        if (solutionStep <= solutionAbsoluteTolerence) {
+            if (Math.abs(functionValue[0]) > functionAbsoluteTolerence && eval < maxEval) {
                 return true;
             }
             solutionStatus = SolutionStatus.GOOD;
@@ -159,5 +155,13 @@ public class NewtonSolver {
             return false;
         }
         return true;
+    }
+
+    public double getFunctionAbsoluteTolerence() {
+        return functionAbsoluteTolerence;
+    }
+
+    public void setFunctionAbsoluteTolerence(double functionAbsoluteTolerence) {
+        this.functionAbsoluteTolerence = functionAbsoluteTolerence;
     }
 }
