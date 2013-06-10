@@ -87,9 +87,9 @@ public class TrackContourBuilderTest {
         TriangleContourBuilder builder = new TrackContourBuilder();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);
-        NewtonSolver solver = new NewtonSolver();
+        SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setMaxEval(200);
-        builder.setNewtonSolver(solver);
+        builder.setImplicitFunctionSolver(solver);
         builder.genContour();
         List<Line2D> contourHeads = builder.getContourHeads();
 

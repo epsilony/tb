@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
  *
  * @author epsilon
  */
-public class NewtonSolverTest {
+public class SimpleGradientSolverTest {
 
-    public NewtonSolverTest() {
+    public SimpleGradientSolverTest() {
     }
 
     public static class Quadric1D implements DifferentiableFunction<double[], double[]> {
@@ -55,11 +55,11 @@ public class NewtonSolverTest {
 
     //@Test
     public void test1DQuadric() {
-        NewtonSolver solver = new NewtonSolver();
+        SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric1D());
         solver.solve(new double[]{1000});
         assertEquals(0, solver.getSolution()[0], 1e-6);
-        assertTrue(solver.getSolutionStatus() == NewtonSolver.SolutionStatus.GOOD);
+        assertTrue(solver.getSolutionStatus() == SimpleGradientSolver.SolutionStatus.GOOD);
         assertTrue(solver.getEvalTimes() <= 30);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < 1e-6);
 
@@ -110,13 +110,13 @@ public class NewtonSolverTest {
 
     //@Test
     public void test2DQuadric() {
-        NewtonSolver solver = new NewtonSolver();
+        SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric2D());
         solver.solve(new double[]{1000, 1000});
         solver.setMaxEval(50);
         assertEquals(1.5, solver.getSolution()[0], 1e-6);
         assertEquals(-2.3, solver.getSolution()[1], 1e-6);
-        assertTrue(solver.getSolutionStatus() == NewtonSolver.SolutionStatus.GOOD);
+        assertTrue(solver.getSolutionStatus() == SimpleGradientSolver.SolutionStatus.GOOD);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < 1e-6);
     }
 
@@ -158,12 +158,12 @@ public class NewtonSolverTest {
 
     @Test
     public void testQuadric1DLocalMini() {
-        NewtonSolver solver = new NewtonSolver();
+        SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric1DLocalMini());
         solver.solve(new double[]{0.1});
         solver.setMaxEval(50);
-        assertEquals(NewtonSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
+        assertEquals(SimpleGradientSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
         solver.solve(new double[]{0});
-        assertEquals(NewtonSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
+        assertEquals(SimpleGradientSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
     }
 }

@@ -58,7 +58,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         double[] roughUnitContourDirection = roughHeadInfo[1];
         boolean statusGood = implicitFunctionSolver.solve(roughHeadCoord);
         if (!statusGood) {
-            throw new IllegalStateException("Newton's solver failed");
+            throw new IllegalStateException("solver failed");
         }
         ContourNode head = new ContourNode();
         head.setCoord(implicitFunctionSolver.getSolution());

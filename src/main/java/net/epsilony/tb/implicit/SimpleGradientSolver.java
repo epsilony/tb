@@ -9,7 +9,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class NewtonSolver implements ImplicitFunctionSolver {
+public class SimpleGradientSolver implements ImplicitFunctionSolver {
 
     private double gradSq;
 

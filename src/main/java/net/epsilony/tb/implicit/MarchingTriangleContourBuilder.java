@@ -81,7 +81,7 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
 
     private Node genContourNode(Line2D contourSourceEdge) {
         if (null != implicitFunctionSolver) {
-            return genContourNodeByNewtonMethod(contourSourceEdge);
+            return genContourNodeByGradientMethod(contourSourceEdge);
         } else {
             return genContourNodeByLinearInterpolate(contourSourceEdge);
         }
@@ -92,7 +92,7 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         return new Node(resultCoord);
     }
 
-    private Node genContourNodeByNewtonMethod(Line2D contourSourceEdge) {
+    private Node genContourNodeByGradientMethod(Line2D contourSourceEdge) {
         double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
         if (implicitFunctionSolver.solve(startPoint)) {
             return new Node(implicitFunctionSolver.getSolution());

@@ -64,7 +64,7 @@ public class MarchingTriangleContourBuilderTest {
     }
 
     @Test
-    public void testDiskWithAHoleWithoutNewtonMethod() {
+    public void testDiskWithAHoleWithoutGradientMethod() {
         TriangleContourCellFactory factory = new TriangleContourCellFactory();
         Rectangle2D range = new Rectangle2D.Double(0, 0, 100, 100);
         double edgeLength = 5;

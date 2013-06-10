@@ -26,7 +26,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.implicit.ImplicitFunctionSolver;
-import net.epsilony.tb.implicit.NewtonSolver;
+import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
@@ -57,15 +57,15 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     double dragX, dragY;
     int dragStatus;
     SampleFunction sampleFunction = new SampleFunction();
-    JCheckBox useNewton = new JCheckBox("Use Newton's method");
+    JCheckBox useGradient = new JCheckBox("Use Gradient method");
     JCheckBox useTrack = new JCheckBox("track");
-    ImplicitFunctionSolver implicitFunctionSolver = new NewtonSolver();
+    ImplicitFunctionSolver implicitFunctionSolver = new SimpleGradientSolver();
     private CommonFrame frame;
     private TriangleContourBuilderDemoDrawer mainDrawer;
 
     public TriangleContourBuilderDemo() {
-        useNewton.setSelected(true);
-        useNewton.addActionListener(new UseNewtonListener());
+        useGradient.setSelected(true);
+        useGradient.addActionListener(new UseGradientListener());
         useTrack.setSelected(true);
         useTrack.addActionListener(new UseTrackListener());
 
@@ -73,11 +73,11 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         logger.info(implicitFunctionSolver.toString());
     }
 
-    public class UseNewtonListener implements ActionListener {
+    public class UseGradientListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (useNewton.isSelected()) {
+            if (useGradient.isSelected()) {
                 polygonizer.setImplicitFunctionSolver(implicitFunctionSolver);
             } else {
                 polygonizer.setImplicitFunctionSolver(null);
@@ -106,9 +106,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
             genContour();
             frame.getMainPanel().repaint();
-            useNewton.setEnabled(!useTrack.isSelected());
+            useGradient.setEnabled(!useTrack.isSelected());
             if (useTrack.isSelected()) {
-                useNewton.setSelected(true);
+                useGradient.setSelected(true);
             }
         }
     }
@@ -280,7 +280,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         frame.getMainPanel().addAndSetupModelDrawer(new DraggingDrawer());
         frame.getContentPane().add(new JLabel("Draw with right key or +SHILF"));
         frame.getContentPane().add(useTrack);
-        frame.getContentPane().add(useNewton);
+        frame.getContentPane().add(useGradient);
         frame.getContentPane().setLayout(new FlowLayout());
         frame.pack();
         frame.setVisible(true);
