@@ -56,13 +56,13 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         double[][] roughHeadInfo = estimateHeadInfo(headCell);
         double[] roughHeadCoord = roughHeadInfo[0];
         double[] roughUnitContourDirection = roughHeadInfo[1];
-        boolean statusGood = newtonSolver.solve(roughHeadCoord);
+        boolean statusGood = implicitFunctionSolver.solve(roughHeadCoord);
         if (!statusGood) {
             throw new IllegalStateException("Newton's solver failed");
         }
         ContourNode head = new ContourNode();
-        head.setCoord(newtonSolver.getSolution());
-        head.setFunctionValue(newtonSolver.getFunctionValue());
+        head.setCoord(implicitFunctionSolver.getSolution());
+        head.setFunctionValue(implicitFunctionSolver.getFunctionValue());
         if (isHeadPointEligible(head, roughUnitContourDirection, headCell)) {
             return head;
         }
@@ -176,12 +176,12 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         while (tryHard && roughDistance >= specification.getMinSegmentLength()) {
             double[] rough = genRoughPointByGradient(preNode, roughDistance);
 
-            if (!newtonSolver.solve(rough)) {
+            if (!implicitFunctionSolver.solve(rough)) {
                 roughDistance *= ROUGH_DISTANCE_SHRINK;
                 continue;
             }
-            next.setCoord(newtonSolver.getSolution());
-            next.setFunctionValue(newtonSolver.getFunctionValue());
+            next.setCoord(implicitFunctionSolver.getSolution());
+            next.setFunctionValue(implicitFunctionSolver.getFunctionValue());
             if (specification.isSegmentEligible(preNode, next)) {
                 return next;
             }

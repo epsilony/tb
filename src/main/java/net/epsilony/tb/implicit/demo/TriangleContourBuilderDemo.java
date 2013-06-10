@@ -25,6 +25,7 @@ import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
+import net.epsilony.tb.implicit.ImplicitFunctionSolver;
 import net.epsilony.tb.implicit.NewtonSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -58,7 +59,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     SampleFunction sampleFunction = new SampleFunction();
     JCheckBox useNewton = new JCheckBox("Use Newton's method");
     JCheckBox useTrack = new JCheckBox("track");
-    NewtonSolver newtonSolver = new NewtonSolver();
+    ImplicitFunctionSolver implicitFunctionSolver = new NewtonSolver();
     private CommonFrame frame;
     private TriangleContourBuilderDemoDrawer mainDrawer;
 
@@ -68,8 +69,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         useTrack.setSelected(true);
         useTrack.addActionListener(new UseTrackListener());
 
-        newtonSolver.setMaxEval(200);
-        logger.info(newtonSolver.toString());
+        implicitFunctionSolver.setMaxEval(200);
+        logger.info(implicitFunctionSolver.toString());
     }
 
     public class UseNewtonListener implements ActionListener {
@@ -77,9 +78,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (useNewton.isSelected()) {
-                polygonizer.setNewtonSolver(newtonSolver);
+                polygonizer.setImplicitFunctionSolver(implicitFunctionSolver);
             } else {
-                polygonizer.setNewtonSolver(null);
+                polygonizer.setImplicitFunctionSolver(null);
             }
             genContour();
             frame.getMainPanel().repaint();
@@ -125,7 +126,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         polygonizer.setCells(cells);
         polygonizer.setLevelSetFunction(sampleFunction);
 
-        polygonizer.setNewtonSolver(newtonSolver);
+        polygonizer.setImplicitFunctionSolver(implicitFunctionSolver);
     }
 
     public class SampleFunction implements DifferentiableFunction<double[], double[]> {

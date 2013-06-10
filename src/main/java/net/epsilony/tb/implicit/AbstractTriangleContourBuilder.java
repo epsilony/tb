@@ -18,7 +18,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
 
     protected List<TriangleContourCell> cells;
     protected DifferentiableFunction<double[], double[]> levelSetFunction;
-    protected NewtonSolver newtonSolver = null;
+    protected ImplicitFunctionSolver implicitFunctionSolver = null;
     protected List<Line2D> contourHeads = new LinkedList<>();
     protected Iterator<TriangleContourCell> cellsIterator;
     protected List<Line2D> openRingsHeads = new LinkedList<>();
@@ -34,8 +34,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     @Override
-    public NewtonSolver getNewtonSolver() {
-        return newtonSolver;
+    public ImplicitFunctionSolver getImplicitFunctionSolver() {
+        return implicitFunctionSolver;
     }
 
     @Override
@@ -55,10 +55,10 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     @Override
-    public void setNewtonSolver(NewtonSolver newtonSolver) {
-        this.newtonSolver = newtonSolver;
-        if (null != newtonSolver) {
-            newtonSolver.setFunction(levelSetFunction);
+    public void setImplicitFunctionSolver(ImplicitFunctionSolver implicitFunctionSolver) {
+        this.implicitFunctionSolver = implicitFunctionSolver;
+        if (null != implicitFunctionSolver) {
+            implicitFunctionSolver.setFunction(levelSetFunction);
         }
     }
 

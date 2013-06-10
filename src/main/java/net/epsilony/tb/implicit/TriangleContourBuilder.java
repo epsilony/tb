@@ -15,15 +15,15 @@ public interface TriangleContourBuilder {
 
     DifferentiableFunction<double[], double[]> getLevelSetFunction();
 
-    NewtonSolver getNewtonSolver();
-
     void setCells(List<TriangleContourCell> cells);
 
     void setLevelSetFunction(DifferentiableFunction<double[], double[]> levelSetFunction);
 
-    void setNewtonSolver(NewtonSolver newtonSolver);
-
     void genContour();
 
     List<Line2D> getContourHeads();
+
+    ImplicitFunctionSolver getImplicitFunctionSolver();
+
+    void setImplicitFunctionSolver(ImplicitFunctionSolver implicitFunctionSolver);
 }
