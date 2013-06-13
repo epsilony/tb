@@ -5,6 +5,8 @@ package net.epsilony.tb.nlopt.demo;
 
 import static net.epsilony.tb.nlopt.NloptLibrary.*;
 import static java.lang.Math.*;
+import net.epsilony.tb.nlopt.NloptFunctionAdapter;
+import net.epsilony.tb.analysis.AbstractDifferentiableFunction;
 import org.bridj.IntValuedEnum;
 import org.bridj.Pointer;
 
@@ -18,17 +20,29 @@ public class NloptLibraryDemo {
         NloptOpt opt = nloptCreate(NloptAlgorithm.NLOPT_LD_MMA, 2);
         Pointer<Byte> nloptAlgorithmName = nloptAlgorithmName(NloptAlgorithm.NLOPT_LD_MMA);
         System.out.println(nloptAlgorithmName.getCString());
+        NloptFunc func = new NloptFunctionAdapter(new AbstractDifferentiableFunction() {
 
-        NloptFunc func = new NloptFunc() {
             @Override
-            public double apply(int n, Pointer<Double> x, Pointer<Double> gradient, Pointer<?> func_data) {
-                if (gradient != Pointer.NULL) {
-                    gradient.setDoubleAtIndex(0, 0);
-                    gradient.setDoubleAtIndex(1, 0.5 / sqrt(x.getDoubleAtIndex(1)));
-                }
-                return sqrt(x.getDoubleAtIndex(1));
+            public int getInputDimension() {
+                return 2;
             }
-        };
+
+            @Override
+            public int getOutputDimension() {
+                return 1;
+            }
+
+            @Override
+            public double[] value(double[] input, double[] output) {
+                if (null == output) {
+                    output = new double[getDiffOrder() * 2 + 1];
+                }
+                output[0] = Math.sqrt(input[1]);
+                output[1] = 0;
+                output[2] = 0.5 / sqrt(input[1]);
+                return output;
+            }
+        });
 
         NloptFunc constraint = new NloptFunc() {
             @Override
@@ -56,6 +70,7 @@ public class NloptLibraryDemo {
         IntValuedEnum<NloptResult> nloptOptimize = nloptOptimize(opt, start, objValue);
         System.out.println("nloptOptimize = " + nloptOptimize);
         System.out.println("objValue = " + objValue);
+        System.out.println("expected objec value = " + sqrt(8/27.0));
         System.out.println(objValue.getDouble());
         nloptDestroy(opt);
     }

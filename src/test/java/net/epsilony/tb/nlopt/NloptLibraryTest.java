@@ -2,6 +2,8 @@
 package net.epsilony.tb.nlopt;
 
 import static java.lang.Math.sqrt;
+import java.util.Arrays;
+import net.epsilony.tb.analysis.AbstractDifferentiableFunction;
 import static net.epsilony.tb.nlopt.NloptLibrary.nloptAddInequalityConstraint;
 import static net.epsilony.tb.nlopt.NloptLibrary.nloptAlgorithmName;
 import static net.epsilony.tb.nlopt.NloptLibrary.nloptCreate;
@@ -30,16 +32,31 @@ public class NloptLibraryTest {
         Pointer<Byte> nloptAlgorithmName = nloptAlgorithmName(NloptLibrary.NloptAlgorithm.NLOPT_LD_MMA);
         System.out.println(nloptAlgorithmName.getCString());
 
-        NloptLibrary.NloptFunc func = new NloptLibrary.NloptFunc() {
+        NloptLibrary.NloptFunc func = new NloptFunctionAdapter(new AbstractDifferentiableFunction() {
+            int count = 0;
+
             @Override
-            public double apply(int n, Pointer<Double> x, Pointer<Double> gradient, Pointer<?> func_data) {
-                if (gradient != Pointer.NULL) {
-                    gradient.setDoubleAtIndex(0, 0);
-                    gradient.setDoubleAtIndex(1, 0.5 / sqrt(x.getDoubleAtIndex(1)));
-                }
-                return sqrt(x.getDoubleAtIndex(1));
+            public int getInputDimension() {
+                return 2;
             }
-        };
+
+            @Override
+            public int getOutputDimension() {
+                return 1;
+            }
+
+            @Override
+            public double[] value(double[] input, double[] output) {
+                if (null == output) {
+                    output = new double[getDiffOrder() * 2 + 1];
+                }
+                output[0] = Math.sqrt(input[1]);
+                output[1] = 0;
+                output[2] = 0.5 / sqrt(input[1]);
+                System.out.println(count + ": " + Arrays.toString(input) + ", obj: " + output[0]);
+                return output;
+            }
+        });
 
         NloptLibrary.NloptFunc constraint = new NloptLibrary.NloptFunc() {
             @Override
