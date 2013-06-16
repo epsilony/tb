@@ -9,10 +9,6 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
  */
 public interface ImplicitFunctionSolver {
 
-    int getEvalTimes();
-
-    DifferentiableFunction<double[], double[]> getFunction();
-
     double getFunctionAbsoluteTolerence();
 
     double[] getFunctionValue();
@@ -23,8 +19,6 @@ public interface ImplicitFunctionSolver {
 
     double getSolutionAbsoluteTolerence();
 
-    double getSolutionError();
-
     void setFunction(DifferentiableFunction<double[], double[]> function);
 
     void setFunctionAbsoluteTolerence(double functionAbsoluteTolerence);
@@ -34,5 +28,4 @@ public interface ImplicitFunctionSolver {
     void setSolutionAbsoluteTolerence(double solutionAbsoluteTolerence);
 
     boolean solve(double[] start);
-    
 }

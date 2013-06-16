@@ -31,7 +31,6 @@ public class SimpleGradientSolver implements ImplicitFunctionSolver {
     SolutionStatus solutionStatus;
     private double functionAbsoluteTolerence = DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE;
 
-    @Override
     public DifferentiableFunction<double[], double[]> getFunction() {
         return function;
     }
@@ -119,12 +118,10 @@ public class SimpleGradientSolver implements ImplicitFunctionSolver {
         return functionValue;
     }
 
-    @Override
     public int getEvalTimes() {
         return eval;
     }
 
-    @Override
     public double getSolutionError() {
         return solutionStep;
     }
