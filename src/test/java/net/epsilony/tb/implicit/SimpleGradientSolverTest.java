@@ -108,7 +108,7 @@ public class SimpleGradientSolverTest {
         }
     }
 
-    //@Test
+    @Test
     public void test2DQuadric() {
         SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric2D());
