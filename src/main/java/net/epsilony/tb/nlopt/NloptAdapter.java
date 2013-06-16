@@ -15,9 +15,11 @@ import org.bridj.Pointer;
 public class NloptAdapter {
 
     NloptOpt opt;
+    double[] solution;
 
     public NloptAdapter(IntValuedEnum<NloptAlgorithm> algorithm, int dimension) {
         opt = nloptCreate(algorithm, dimension);
+        solution = new double[dimension];
     }
 
     @Override
@@ -199,7 +201,7 @@ public class NloptAdapter {
         checkNloptResult(nloptResult);
     }
 
-    public double getMaxEval() {
+    public int getMaxEval() {
         return nloptGetMaxeval(opt);
     }
 
@@ -212,13 +214,20 @@ public class NloptAdapter {
         return nloptGetMaxtime(opt);
     }
 
+    //TODO: let argument be only one and let the object contains the gradient information
     public IntValuedEnum<NloptResult> optimize(double[] startPoint, double[] objectVal) {
         Pointer<Double> objectValPointer = Pointer.allocateDouble();
-        IntValuedEnum<NloptResult> nloptResult = nloptOptimize(opt, Pointer.pointerToDoubles(startPoint), objectValPointer);
+        final Pointer<Double> startPointer = Pointer.pointerToDoubles(startPoint);
+        IntValuedEnum<NloptResult> nloptResult = nloptOptimize(opt, startPointer, objectValPointer);
         if (null != objectVal) {
             objectVal[0] = objectValPointer.getDouble();
         }
+        startPointer.getDoubles(solution);
         return nloptResult;
+    }
+
+    public double[] getSolution() {
+        return solution;
     }
 
     public static void main(String[] args) {
