@@ -1,9 +1,9 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit.demo;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -14,8 +14,11 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
@@ -29,7 +32,6 @@ import net.epsilony.tb.implicit.ImplicitFunctionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
-import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 import net.epsilony.tb.ui.ModelTransform;
 import org.slf4j.LoggerFactory;
@@ -60,7 +62,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     JCheckBox useGradient = new JCheckBox("Use Gradient method");
     JCheckBox useTrack = new JCheckBox("track");
     ImplicitFunctionSolver implicitFunctionSolver = new SimpleGradientSolver();
-    private CommonFrame frame;
+    private BasicModelPanel modelPanel;
     private TriangleContourBuilderDemoDrawer mainDrawer;
 
     public TriangleContourBuilderDemo() {
@@ -83,7 +85,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                 polygonizer.setImplicitFunctionSolver(null);
             }
             genContour();
-            frame.getMainPanel().repaint();
+            modelPanel.repaint();
         }
     }
 
@@ -100,12 +102,12 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            frame.getMainPanel().getModelDrawers().remove(mainDrawer);
+            modelPanel.getModelDrawers().remove(mainDrawer);
             genPolygonizer();
             mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
-            frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
+            modelPanel.addAndSetupModelDrawer(mainDrawer);
             genContour();
-            frame.getMainPanel().repaint();
+            modelPanel.repaint();
             useGradient.setEnabled(!useTrack.isSelected());
             if (useTrack.isSelected()) {
                 useGradient.setSelected(true);
@@ -271,18 +273,30 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public void genUI() {
         genPolygonizer();
         genContour();
-        frame = new CommonFrame();
+
+        modelPanel = new BasicModelPanel();
         mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
-        frame.getMainPanel().addAndSetupModelDrawer(mainDrawer);
-        frame.getMainPanel().setPreferredSize(new Dimension(800, 600));
-        frame.getMainPanel().addMouseListener(this);
-        frame.getMainPanel().addMouseMotionListener(this);
-        frame.getMainPanel().addAndSetupModelDrawer(new DraggingDrawer());
-        frame.getContentPane().add(new JLabel("Draw with right key or +SHILF"));
-        frame.getContentPane().add(useTrack);
-        frame.getContentPane().add(useGradient);
-        frame.getContentPane().setLayout(new FlowLayout());
+        modelPanel.addAndSetupModelDrawer(mainDrawer);
+        modelPanel.setPreferredSize(new Dimension(800, 600));
+        modelPanel.addMouseListener(this);
+        modelPanel.addMouseMotionListener(this);
+        modelPanel.addAndSetupModelDrawer(new DraggingDrawer());
+
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new BorderLayout());
+        frame.getContentPane().add(modelPanel, BorderLayout.CENTER);
+
+        JPanel rightPanel = new JPanel();
+        frame.getContentPane().add(rightPanel, BorderLayout.LINE_END);
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
+
+        rightPanel.add(new JLabel("Draw with right key or +SHILF"));
+        rightPanel.add(useTrack);
+        rightPanel.add(useGradient);
+
         frame.pack();
+        modelPanel.setZoomAllNeeded(true);
         frame.setVisible(true);
     }
 
