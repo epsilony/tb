@@ -149,7 +149,7 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
             solver.setFunction(onEdgeFunction);
             solver.setLowerBounds(new double[]{0});
             solver.setUpperBounds(new double[]{1});
-            solver.setMaxEval(2000);
+            solver.setMaxEval(200);
             solver.setFunctionAbsoluteTolerence(1e-5);
         }
 
@@ -159,23 +159,16 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
 
         public void setSolver(BoundedImplicitFunctionSolver solver) {
             this.solver = solver;
-            solver.setFunction(onEdgeFunction);
             solver.setLowerBounds(new double[]{0});
             solver.setUpperBounds(new double[]{1});
             solver.setFunction(onEdgeFunction);
         }
-        private static final double[] solveStart = new double[]{0.5};
+        private final double[] solveStart = new double[]{0.5};
 
         @Override
         protected ContourNode genContourNode(Line2D contourSourceEdge) {
             onEdgeFunction.prepareToSolve(contourSourceEdge.getStartCoord(), contourSourceEdge.getEndCoord());
-
-
-            solver.setFunction(onEdgeFunction);
-            solver.setMaxEval(2000);
-            solver.setFunctionAbsoluteTolerence(1e-5);
-            solver.setLowerBounds(new double[]{0});
-            solver.setUpperBounds(new double[]{1});
+            solver.setFunction(onEdgeFunction);    //TODO : find the bug of MMA
             solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
             if (!solver.solve(solveStart)) {
                 solver.solve(solveStart);

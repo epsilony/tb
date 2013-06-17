@@ -29,6 +29,7 @@ import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
+import net.epsilony.tb.implicit.MMAFunctionSolver;
 import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
 import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
@@ -72,7 +73,6 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     private LinkedList<TriangleContourCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
 
-
     public TriangleContourBuilderDemo() {
         genBuilderMap();
         genCells();
@@ -101,17 +101,19 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         builderMap.put(marchingSimpleGradient, freeGradient);
 
         MarchingTriangleContourBuilder.OneEdge onEdgeGradient = new MarchingTriangleContourBuilder.OneEdge();
-        onEdgeGradient.getSolver().setFunctionAbsoluteTolerence(1e-6);
-        onEdgeGradient.getSolver().setMaxEval(200);
+        MMAFunctionSolver solver = new MMAFunctionSolver(1);
+        solver.setMaxEval(200);
+        solver.setFunctionAbsoluteTolerence(1e-5);
+        onEdgeGradient.setSolver(solver);
         onEdgeGradient.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeGradient, onEdgeGradient);
-        
+
         MarchingTriangleContourBuilder.OneEdge onEdgeBisection = new MarchingTriangleContourBuilder.OneEdge();
         onEdgeBisection.setSolver(new SimpleBisectionSolver());
         onEdgeBisection.getSolver().setMaxEval(200);
         onEdgeBisection.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeBisection, onEdgeBisection);
-        
+
         TrackContourBuilder trackBuilder = new TrackContourBuilder();
         SimpleGradientSolver trackSolver = new SimpleGradientSolver();
         trackSolver.setMaxEval(200);
