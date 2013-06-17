@@ -30,6 +30,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
+import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -66,9 +67,11 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     String marchingSimpleGradient = "marching: simple gradient";
     String marchingOnEdgeGradient = "marching: on edge gradient";
     String trackingSimpleGradient = "tracking: simple gradient";
+    String marchingOnEdgeBisection = "marching: on edge bisection";
     String currentSelection = marchingLinear;
     private LinkedList<TriangleContourCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
+
 
     public TriangleContourBuilderDemo() {
         genBuilderMap();
@@ -97,12 +100,18 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         freeGradient.setSolver(simpleGradientSolver);
         builderMap.put(marchingSimpleGradient, freeGradient);
 
-        MarchingTriangleContourBuilder.OnEdgeGradient onEdgeGradient = new MarchingTriangleContourBuilder.OnEdgeGradient();
+        MarchingTriangleContourBuilder.OneEdge onEdgeGradient = new MarchingTriangleContourBuilder.OneEdge();
         onEdgeGradient.getSolver().setFunctionAbsoluteTolerence(1e-6);
         onEdgeGradient.getSolver().setMaxEval(200);
         onEdgeGradient.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeGradient, onEdgeGradient);
-
+        
+        MarchingTriangleContourBuilder.OneEdge onEdgeBisection = new MarchingTriangleContourBuilder.OneEdge();
+        onEdgeBisection.setSolver(new SimpleBisectionSolver());
+        onEdgeBisection.getSolver().setMaxEval(200);
+        onEdgeBisection.setLevelSetFunction(sampleFunction);
+        builderMap.put(marchingOnEdgeBisection, onEdgeBisection);
+        
         TrackContourBuilder trackBuilder = new TrackContourBuilder();
         SimpleGradientSolver trackSolver = new SimpleGradientSolver();
         trackSolver.setMaxEval(200);
