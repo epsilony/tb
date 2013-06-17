@@ -12,7 +12,7 @@ import org.bridj.IntValuedEnum;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MMAFunctionSolver implements ImplicitFunctionSolver {
+public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
 
     public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = 1E-4;
     NloptAdapter nloptAdapter;
@@ -121,12 +121,25 @@ public class MMAFunctionSolver implements ImplicitFunctionSolver {
         oriValue = null;
         double[] startCopy = Arrays.copyOf(start, start.length);
         IntValuedEnum<NloptLibrary.NloptResult> nloptResult = nloptAdapter.optimize(startCopy, null);
-        if (nloptResult.value() > 0
-                && nloptResult.value() != NloptResult.NLOPT_MAXEVAL_REACHED.value
-                && nloptResult.value() != NloptResult.NLOPT_MAXTIME_REACHED.value) {
+        if (nloptResult.value() > 0){
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void setLowerBounds(double[] lowerBounds) {
+        nloptAdapter.setLowerBounds(lowerBounds);
+    }
+
+    @Override
+    public void setUpperBounds(double[] upperBounds) {
+        nloptAdapter.setUpperBounds(upperBounds);
+    }
+
+    @Override
+    public void addConstraint(DifferentiableFunction<double[], double[]> function, double tolerence) {
+        nloptAdapter.addInequalityConstraint(function, tolerence);
     }
 }
