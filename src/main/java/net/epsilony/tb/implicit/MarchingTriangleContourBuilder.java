@@ -139,4 +139,106 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
             implicitFunctionSolver.setFunction(levelSetFunction);
         }
     }
+
+    public static class OnEdgeGradient extends MarchingTriangleContourBuilder {
+
+        ConstraintImplicitFunctionSolver solver = new MMAFunctionSolver(1);
+        OnEdgeFunction onEdgeFunction = new OnEdgeFunction();
+
+        public OnEdgeGradient() {
+            solver.setFunction(onEdgeFunction);
+            solver.setLowerBounds(new double[]{0});
+            solver.setUpperBounds(new double[]{1});
+        }
+
+        public ConstraintImplicitFunctionSolver getSolver() {
+            return solver;
+        }
+
+        public void setSolver(ConstraintImplicitFunctionSolver solver) {
+            this.solver = solver;
+            solver.setFunction(onEdgeFunction);
+            solver.setLowerBounds(new double[]{0});
+            solver.setUpperBounds(new double[]{1});
+        }
+        private static final double[] solveStart = new double[]{0.5};
+
+        @Override
+        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+            onEdgeFunction.prepareToSolve(contourSourceEdge.getStartCoord(), contourSourceEdge.getEndCoord());
+
+
+            solver.setFunction(onEdgeFunction);
+            solver.setMaxEval(2000);
+            solver.setFunctionAbsoluteTolerence(1e-5);
+            solver.setLowerBounds(new double[]{0});
+            solver.setUpperBounds(new double[]{1});
+            solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
+            if (!solver.solve(solveStart)) {
+                solver.solve(solveStart);
+                throw new IllegalStateException();
+            }
+            ContourNode result = new ContourNode();
+            result.setCoord(onEdgeFunction.coord);
+            result.setFunctionValue(onEdgeFunction.levelSetFuncVal);
+            return result;
+        }
+
+        private class OnEdgeFunction implements DifferentiableFunction<double[], double[]> {
+
+            double[] endCoord;
+            double[] startCoord;
+            double[] coord = new double[2];
+            double[] levelSetFuncVal;
+
+            public void prepareToSolve(double[] startCoord, double[] endCoord) {
+                this.endCoord = endCoord;
+                this.startCoord = startCoord;
+                levelSetFuncVal = null;
+                coord = new double[2];
+            }
+
+            @Override
+            public int getInputDimension() {
+                return 1;
+            }
+
+            @Override
+            public int getOutputDimension() {
+                return 1;
+            }
+
+            @Override
+            public double[] value(double[] input, double[] output) {
+
+                if (null == output) {
+                    output = new double[getDiffOrder() + 1];
+                }
+                double t = input[0];
+                double x = startCoord[0] * (1 - t) + endCoord[0] * t;
+                double y = startCoord[1] * (1 - t) + endCoord[1] * t;
+                coord[0] = x;
+                coord[1] = y;
+                levelSetFuncVal = levelSetFunction.value(coord, levelSetFuncVal);
+                output[0] = levelSetFuncVal[0];
+                if (getDiffOrder() >= 1) {
+                    double x_t = endCoord[0] - startCoord[0];
+                    double y_t = endCoord[1] - startCoord[1];
+                    output[1] = levelSetFuncVal[1] * x_t + levelSetFuncVal[2] * y_t;
+                }
+
+                return output;
+            }
+
+            @Override
+            public int getDiffOrder() {
+                return levelSetFunction.getDiffOrder();
+            }
+
+            @Override
+            public void setDiffOrder(int diffOrder) {
+                levelSetFunction.setDiffOrder(diffOrder);
+            }
+        }
+    }
 }
