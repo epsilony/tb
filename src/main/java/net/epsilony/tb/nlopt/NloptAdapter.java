@@ -56,7 +56,10 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         minObjectFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(opt, Pointer.pointerTo(minObjectFunction), Pointer.NULL);
+        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(
+                opt,
+                Pointer.pointerTo(minObjectFunction),
+                Pointer.NULL);
         checkNloptResult(nloptResult);
     }
 
@@ -101,7 +104,8 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityConstraint(opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
+        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityConstraint(
+                opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
         inequalConstraintsHolder.add(nloptFunction);
     }
@@ -111,7 +115,8 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityConstraint(opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
+        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityConstraint(
+                opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
         equalConstraintsHolder.add(nloptFunction);
     }
