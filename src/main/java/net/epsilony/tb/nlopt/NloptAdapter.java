@@ -3,6 +3,8 @@
  */
 package net.epsilony.tb.nlopt;
 
+import java.util.LinkedList;
+import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import static net.epsilony.tb.nlopt.NloptLibrary.*;
 import org.bridj.IntValuedEnum;
@@ -16,6 +18,11 @@ public class NloptAdapter {
 
     NloptOpt opt;
     double[] solution;
+    NloptFunc minObjectFunction;
+    List<NloptFunc> inequalConstraintsHolder = new LinkedList<>();
+    List<NloptMfunc> inequalMconstraintsHolder = new LinkedList<>();
+    List<NloptFunc> equalConstraintsHolder = new LinkedList<>();
+    List<NloptMfunc> equalMconstraintsHolder = new LinkedList<>();
 
     public NloptAdapter(IntValuedEnum<NloptAlgorithm> algorithm, int dimension) {
         opt = nloptCreate(algorithm, dimension);
@@ -47,8 +54,8 @@ public class NloptAdapter {
         if (function.getOutputDimension() != 1 || function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }
-        NloptFunc nloptFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(opt, Pointer.pointerTo(nloptFunction), Pointer.NULL);
+        minObjectFunction = new NloptFunctionAdapter(function);
+        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(opt, Pointer.pointerTo(minObjectFunction), Pointer.NULL);
         checkNloptResult(nloptResult);
     }
 
@@ -95,6 +102,7 @@ public class NloptAdapter {
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
         IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityConstraint(opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
+        inequalConstraintsHolder.add(nloptFunction);
     }
 
     public void addEqualityConstraint(DifferentiableFunction<double[], double[]> function, double tolerence) {
@@ -104,14 +112,19 @@ public class NloptAdapter {
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
         IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityConstraint(opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
+        equalConstraintsHolder.add(nloptFunction);
     }
 
     public void removeInequalityConstraints() {
+        inequalConstraintsHolder.clear();
+        inequalMconstraintsHolder.clear();
         IntValuedEnum<NloptResult> nloptResult = nloptRemoveInequalityConstraints(opt);
         checkNloptResult(nloptResult);
     }
 
     public void removeEqualityConstraints() {
+        equalConstraintsHolder.clear();
+        equalMconstraintsHolder.clear();
         IntValuedEnum<NloptResult> nloptResult = nloptRemoveEqualityConstraints(opt);
         checkNloptResult(nloptResult);
     }
@@ -128,6 +141,7 @@ public class NloptAdapter {
                 Pointer.NULL,
                 Pointer.pointerToDoubles(tols));
         checkNloptResult(nloptResult);
+        inequalMconstraintsHolder.add(nloptMfunc);
     }
 
     public void addEqualityVectorConstraint(DifferentiableFunction<double[], double[]> function, double[] tols) {
@@ -142,6 +156,7 @@ public class NloptAdapter {
                 Pointer.NULL,
                 Pointer.pointerToDoubles(tols));
         checkNloptResult(nloptResult);
+        equalMconstraintsHolder.add(nloptMfunc);
     }
 
     public void setStopValue(double value) {

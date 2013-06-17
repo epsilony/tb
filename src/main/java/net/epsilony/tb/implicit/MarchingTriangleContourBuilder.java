@@ -168,7 +168,6 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
         @Override
         protected ContourNode genContourNode(Line2D contourSourceEdge) {
             onEdgeFunction.prepareToSolve(contourSourceEdge.getStartCoord(), contourSourceEdge.getEndCoord());
-            solver.setFunction(onEdgeFunction);    //TODO : find the bug of MMA
             solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
             if (!solver.solve(solveStart)) {
                 solver.solve(solveStart);

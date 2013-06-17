@@ -46,6 +46,9 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
         public double[] value(double[] input, double[] output) {
             oriValue = oriFunction.value(input, oriValue);
             double t = oriValue[0] * 2;
+            if (null == output) {
+                output = new double[oriValue.length];
+            }
             for (int i = 1; i < oriValue.length; i++) {
                 output[i] = t * oriValue[i];
             }
@@ -119,7 +122,7 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
         oriValue = null;
         double[] startCopy = Arrays.copyOf(start, start.length);
         IntValuedEnum<NloptLibrary.NloptResult> nloptResult = nloptAdapter.optimize(startCopy, null);
-        if (nloptResult.value() > 0){
+        if (nloptResult.value() > 0) {
             return true;
         } else {
             return false;
