@@ -3,6 +3,7 @@
  */
 package net.epsilony.tb.nlopt;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
@@ -242,7 +243,7 @@ public class NloptAdapter {
     }
 
     public double[] getSolution() {
-        return solution;
+        return Arrays.copyOf(solution, solution.length);
     }
 
     public static void main(String[] args) {
