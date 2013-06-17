@@ -13,22 +13,23 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
-import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
 import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
-import net.epsilony.tb.implicit.ImplicitFunctionSolver;
+import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -49,7 +50,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public static final int DRAG_HOLE = 2;
     public static final int DRAG_NOTHING = 0;
     public TriangleContourBuilder polygonizer;
-    public double holeRadius = 15;
+    public double holeRadius = 18.198818617168925;// 15;
     public double holeX = 44;
     public double holeY = 42;
     public double diskRadius = 30;
@@ -59,34 +60,19 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     double dragX, dragY;
     int dragStatus;
     SampleFunction sampleFunction = new SampleFunction();
-    JCheckBox useGradient = new JCheckBox("Use Gradient method");
-    JCheckBox useTrack = new JCheckBox("track");
-    ImplicitFunctionSolver implicitFunctionSolver = new SimpleGradientSolver();
     private BasicModelPanel modelPanel;
     private TriangleContourBuilderDemoDrawer mainDrawer;
+    String marchingLinear = "marching: linear";
+    String marchingSimpleGradient = "marching: simple gradient";
+    String marchingOnEdgeGradient = "marching: on edge gradient";
+    String trackingSimpleGradient = "tracking: simple gradient";
+    String currentSelection = marchingLinear;
+    private LinkedList<TriangleContourCell> cells;
+    final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
 
     public TriangleContourBuilderDemo() {
-        useGradient.setSelected(true);
-        useGradient.addActionListener(new UseGradientListener());
-        useTrack.setSelected(true);
-        useTrack.addActionListener(new UseTrackListener());
-
-        implicitFunctionSolver.setMaxEval(200);
-        logger.info(implicitFunctionSolver.toString());
-    }
-
-    public class UseGradientListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent event) {
-            if (useGradient.isSelected()) {
-                polygonizer.setImplicitFunctionSolver(implicitFunctionSolver);
-            } else {
-                polygonizer.setImplicitFunctionSolver(null);
-            }
-            genContour();
-            modelPanel.repaint();
-        }
+        genBuilderMap();
+        genCells();
     }
 
     public void genContour() {
@@ -98,37 +84,44 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         }
     }
 
-    public class UseTrackListener implements ActionListener {
+    private void genBuilderMap() {
+        builderMap.clear();
+        MarchingTriangleContourBuilder.LinearInterpolate linearInterpolate = new MarchingTriangleContourBuilder.LinearInterpolate();
+        linearInterpolate.setLevelSetFunction(sampleFunction);
+        builderMap.put(marchingLinear, linearInterpolate);
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            modelPanel.getModelDrawers().remove(mainDrawer);
-            genPolygonizer();
-            mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
-            modelPanel.addAndSetupModelDrawer(mainDrawer);
-            genContour();
-            modelPanel.repaint();
-            useGradient.setEnabled(!useTrack.isSelected());
-            if (useTrack.isSelected()) {
-                useGradient.setSelected(true);
-            }
-        }
+        SimpleGradientSolver simpleGradientSolver = new SimpleGradientSolver();
+        simpleGradientSolver.setMaxEval(200);
+        MarchingTriangleContourBuilder.FreeGradient freeGradient = new MarchingTriangleContourBuilder.FreeGradient();
+        freeGradient.setLevelSetFunction(sampleFunction);
+        freeGradient.setSolver(simpleGradientSolver);
+        builderMap.put(marchingSimpleGradient, freeGradient);
+
+        MarchingTriangleContourBuilder.OnEdgeGradient onEdgeGradient = new MarchingTriangleContourBuilder.OnEdgeGradient();
+        onEdgeGradient.getSolver().setFunctionAbsoluteTolerence(1e-6);
+        onEdgeGradient.getSolver().setMaxEval(200);
+        onEdgeGradient.setLevelSetFunction(sampleFunction);
+        builderMap.put(marchingOnEdgeGradient, onEdgeGradient);
+
+        TrackContourBuilder trackBuilder = new TrackContourBuilder();
+        SimpleGradientSolver trackSolver = new SimpleGradientSolver();
+        trackSolver.setMaxEval(200);
+        trackBuilder.setLevelSetFunction(sampleFunction);
+        trackBuilder.setImplicitFunctionSolver(trackSolver);
+        builderMap.put(trackingSimpleGradient, trackBuilder);
     }
 
     private void genPolygonizer() {
-        TriangleContourCellFactory fatory = new TriangleContourCellFactory();
-        TriangleContourCell[][] coverRectangle = fatory.coverRectangle(new Rectangle2D.Double(0, 0, 100, 100), 5);
-        LinkedList<TriangleContourCell> cells = new LinkedList<>();
-        MiscellaneousUtils.addToList(coverRectangle, cells);
-        if (useTrack.isSelected()) {
-            polygonizer = new TrackContourBuilder();
-        } else {
-            polygonizer = new MarchingTriangleContourBuilder();
-        }
+        polygonizer = builderMap.get(currentSelection);
         polygonizer.setCells(cells);
         polygonizer.setLevelSetFunction(sampleFunction);
+    }
 
-        polygonizer.setImplicitFunctionSolver(implicitFunctionSolver);
+    private void genCells() {
+        TriangleContourCellFactory fatory = new TriangleContourCellFactory();
+        TriangleContourCell[][] coverRectangle = fatory.coverRectangle(new Rectangle2D.Double(0, 0, 100, 100), 5);
+        cells = new LinkedList<>();
+        MiscellaneousUtils.addToList(coverRectangle, cells);
     }
 
     public class SampleFunction implements DifferentiableFunction<double[], double[]> {
@@ -270,6 +263,24 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         return DRAG_NOTHING;
     }
 
+    public class LeftRadioListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String actionString = e.getActionCommand();
+            if (!actionString.equals(currentSelection)) {
+                currentSelection = actionString;
+                genPolygonizer();
+                genContour();
+                modelPanel.getModelDrawers().remove(mainDrawer);
+                mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+                modelPanel.addAndSetupModelDrawer(mainDrawer);
+                modelPanel.repaint();
+                logger.info("change to {}", polygonizer);
+            }
+        }
+    }
+
     public void genUI() {
         genPolygonizer();
         genContour();
@@ -291,9 +302,22 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         frame.getContentPane().add(rightPanel, BorderLayout.LINE_END);
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
 
-        rightPanel.add(new JLabel("Draw with right key or +SHILF"));
-        rightPanel.add(useTrack);
-        rightPanel.add(useGradient);
+
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+        boolean first = true;
+        LeftRadioListener buttonAction = new LeftRadioListener();
+        for (String buttonName : builderMap.keySet()) {
+            JRadioButton button = new JRadioButton(buttonName);
+            button.setActionCommand(buttonName);
+            if (first) {
+                button.setSelected(true);
+                first = false;
+            }
+            buttonGroup.add(button);
+            button.addActionListener(buttonAction);
+            rightPanel.add(button);
+        }
 
         frame.pack();
         modelPanel.setZoomAllNeeded(true);
