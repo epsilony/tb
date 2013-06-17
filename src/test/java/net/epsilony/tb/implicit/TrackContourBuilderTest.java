@@ -84,7 +84,7 @@ public class TrackContourBuilderTest {
         TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(cellsGrid, cells);
-        TriangleContourBuilder builder = new TrackContourBuilder();
+        TrackContourBuilder builder = new TrackContourBuilder();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);
         SimpleGradientSolver solver = new SimpleGradientSolver();
