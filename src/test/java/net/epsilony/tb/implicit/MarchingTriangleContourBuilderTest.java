@@ -74,7 +74,7 @@ public class MarchingTriangleContourBuilderTest {
         TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(cellsGrid, cells);
-        TriangleContourBuilder builder = new MarchingTriangleContourBuilder();
+        TriangleContourBuilder builder = new MarchingTriangleContourBuilder.LinearInterpolate();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);
         builder.genContour();

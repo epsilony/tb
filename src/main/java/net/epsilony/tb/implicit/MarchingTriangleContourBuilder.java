@@ -4,7 +4,7 @@ package net.epsilony.tb.implicit;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.solid.Node;
+import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
 
@@ -12,7 +12,7 @@ import net.epsilony.tb.solid.Segment2DUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
+public abstract class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
 
     protected List<TriangleContourCell> openRingsHeadsCells = new LinkedList<>();
 
@@ -79,27 +79,7 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
         }
     }
 
-    private Node genContourNode(Line2D contourSourceEdge) {
-        if (null != implicitFunctionSolver) {
-            return genContourNodeByGradientMethod(contourSourceEdge);
-        } else {
-            return genContourNodeByLinearInterpolate(contourSourceEdge);
-        }
-    }
-
-    private Node genContourNodeByLinearInterpolate(Line2D contourSourceEdge) {
-        double[] resultCoord = genLinearInterpolateContourPoint(contourSourceEdge);
-        return new Node(resultCoord);
-    }
-
-    private Node genContourNodeByGradientMethod(Line2D contourSourceEdge) {
-        double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
-        if (implicitFunctionSolver.solve(startPoint)) {
-            return new Node(implicitFunctionSolver.getSolution());
-        } else {
-            throw new IllegalStateException();
-        }
-    }
+    abstract protected ContourNode genContourNode(Line2D contourSourceEdge);
 
     private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line2D segment) {
         Iterator<TriangleContourCell> openHeadCellIter = openRingsHeadsCells.iterator();
@@ -120,5 +100,43 @@ public class MarchingTriangleContourBuilder extends AbstractTriangleContourBuild
             }
         }
         return findAndRemove;
+    }
+
+    public static class LinearInterpolate extends MarchingTriangleContourBuilder {
+
+        @Override
+        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+            double[] resultCoord = genLinearInterpolateContourPoint(contourSourceEdge);
+            ContourNode result = new ContourNode();
+            result.setCoord(resultCoord);
+            return result;
+        }
+    }
+
+    public static class FreeGradient extends MarchingTriangleContourBuilder {
+
+        ImplicitFunctionSolver solver = new SimpleGradientSolver();
+
+        @Override
+        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+            double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
+            if (solver.solve(startPoint)) {
+                ContourNode result = new ContourNode();
+                result.setCoord(solver.getSolution());
+                result.setFunctionValue(solver.getFunctionValue());
+                return result;
+            } else {
+                throw new IllegalStateException();
+            }
+        }
+
+        public ImplicitFunctionSolver getSolver() {
+            return solver;
+        }
+
+        public void setSolver(ImplicitFunctionSolver implicitFunctionSolver) {
+            this.solver = implicitFunctionSolver;
+            implicitFunctionSolver.setFunction(levelSetFunction);
+        }
     }
 }

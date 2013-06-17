@@ -18,6 +18,7 @@ import net.epsilony.tb.solid.Segment2DUtils;
 public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     TrackContourSpecification specification = new TrackContourSpecification();
+    protected ImplicitFunctionSolver implicitFunctionSolver = null;
 
     @Override
     public void genContour() {
@@ -275,6 +276,17 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         this.specification = specification;
         if (null == specification) {
             throw new IllegalArgumentException("specification should not be null");
+        }
+    }
+
+    public ImplicitFunctionSolver getImplicitFunctionSolver() {
+        return implicitFunctionSolver;
+    }
+
+    public void setImplicitFunctionSolver(ImplicitFunctionSolver implicitFunctionSolver) {
+        this.implicitFunctionSolver = implicitFunctionSolver;
+        if (null != implicitFunctionSolver) {
+            implicitFunctionSolver.setFunction(levelSetFunction);
         }
     }
 }

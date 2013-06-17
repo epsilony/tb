@@ -22,8 +22,4 @@ public interface TriangleContourBuilder {
     void genContour();
 
     List<Line2D> getContourHeads();
-
-    ImplicitFunctionSolver getImplicitFunctionSolver();
-
-    void setImplicitFunctionSolver(ImplicitFunctionSolver implicitFunctionSolver);
 }
