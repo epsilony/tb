@@ -142,7 +142,7 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
 
     public static class OnEdgeGradient extends MarchingTriangleContourBuilder {
 
-        ConstraintImplicitFunctionSolver solver = new MMAFunctionSolver(1);
+        BoundedImplicitFunctionSolver solver = new MMAFunctionSolver(1);
         OnEdgeFunction onEdgeFunction = new OnEdgeFunction();
 
         public OnEdgeGradient() {
@@ -151,11 +151,11 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
             solver.setUpperBounds(new double[]{1});
         }
 
-        public ConstraintImplicitFunctionSolver getSolver() {
+        public BoundedImplicitFunctionSolver getSolver() {
             return solver;
         }
 
-        public void setSolver(ConstraintImplicitFunctionSolver solver) {
+        public void setSolver(BoundedImplicitFunctionSolver solver) {
             this.solver = solver;
             solver.setFunction(onEdgeFunction);
             solver.setLowerBounds(new double[]{0});
