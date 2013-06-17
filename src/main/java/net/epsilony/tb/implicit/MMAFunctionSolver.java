@@ -16,8 +16,6 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
 
     public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = 1E-4;
     NloptAdapter nloptAdapter;
-    double[] x;
-    double[] solution;
     double[] oriValue;
     DifferentiableFunction<double[], double[]> oriFunction;
     DifferentiableFunction<double[], double[]> squaredFunction = new SquaredFunction();
