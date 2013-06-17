@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MarchingTriangleContourBuilderTest {
+public class MarchingTriangleTest {
 
-    public MarchingTriangleContourBuilderTest() {
+    public MarchingTriangleTest() {
     }
 
     public class RawOneDiskWithAHole implements DifferentiableFunction<double[], double[]> {
@@ -74,7 +74,7 @@ public class MarchingTriangleContourBuilderTest {
         TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
         LinkedList<TriangleContourCell> cells = new LinkedList<>();
         MiscellaneousUtils.addToList(cellsGrid, cells);
-        TriangleContourBuilder builder = new MarchingTriangleContourBuilder.LinearInterpolate();
+        TriangleContourBuilder builder = new MarchingTriangle.LinearInterpolate();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);
         builder.genContour();

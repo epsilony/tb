@@ -30,7 +30,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
 import net.epsilony.tb.implicit.MMAFunctionSolver;
-import net.epsilony.tb.implicit.MarchingTriangleContourBuilder;
+import net.epsilony.tb.implicit.MarchingTriangle;
 import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
@@ -90,18 +90,18 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
     private void genBuilderMap() {
         builderMap.clear();
-        MarchingTriangleContourBuilder.LinearInterpolate linearInterpolate = new MarchingTriangleContourBuilder.LinearInterpolate();
+        MarchingTriangle.LinearInterpolate linearInterpolate = new MarchingTriangle.LinearInterpolate();
         linearInterpolate.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingLinear, linearInterpolate);
 
         SimpleGradientSolver simpleGradientSolver = new SimpleGradientSolver();
         simpleGradientSolver.setMaxEval(200);
-        MarchingTriangleContourBuilder.FreeGradient freeGradient = new MarchingTriangleContourBuilder.FreeGradient();
+        MarchingTriangle.FreeGradient freeGradient = new MarchingTriangle.FreeGradient();
         freeGradient.setLevelSetFunction(sampleFunction);
         freeGradient.setSolver(simpleGradientSolver);
         builderMap.put(marchingSimpleGradient, freeGradient);
 
-        MarchingTriangleContourBuilder.OneEdge onEdgeMMA = new MarchingTriangleContourBuilder.OneEdge();
+        MarchingTriangle.OneEdge onEdgeMMA = new MarchingTriangle.OneEdge();
         MMAFunctionSolver solver = new MMAFunctionSolver(1);
         solver.setMaxEval(200);
         solver.setFunctionAbsoluteTolerence(1e-5);
@@ -109,7 +109,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         onEdgeMMA.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeMMA, onEdgeMMA);
 
-        MarchingTriangleContourBuilder.OneEdge onEdgeBisection = new MarchingTriangleContourBuilder.OneEdge();
+        MarchingTriangle.OneEdge onEdgeBisection = new MarchingTriangle.OneEdge();
         onEdgeBisection.setSolver(new SimpleBisectionSolver());
         onEdgeBisection.getSolver().setMaxEval(200);
         onEdgeBisection.setLevelSetFunction(sampleFunction);

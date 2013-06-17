@@ -12,7 +12,7 @@ import net.epsilony.tb.solid.Segment2DUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class MarchingTriangleContourBuilder extends AbstractTriangleContourBuilder {
+public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
 
     protected List<TriangleContourCell> openRingsHeadsCells = new LinkedList<>();
 
@@ -102,7 +102,7 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
         return findAndRemove;
     }
 
-    public static class LinearInterpolate extends MarchingTriangleContourBuilder {
+    public static class LinearInterpolate extends MarchingTriangle {
 
         @Override
         protected ContourNode genContourNode(Line2D contourSourceEdge) {
@@ -113,7 +113,7 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
         }
     }
 
-    public static class FreeGradient extends MarchingTriangleContourBuilder {
+    public static class FreeGradient extends MarchingTriangle {
 
         ImplicitFunctionSolver solver = new SimpleGradientSolver();
 
@@ -140,7 +140,7 @@ public abstract class MarchingTriangleContourBuilder extends AbstractTriangleCon
         }
     }
 
-    public static class OneEdge extends MarchingTriangleContourBuilder {
+    public static class OneEdge extends MarchingTriangle {
 
         BoundedImplicitFunctionSolver solver = new SimpleBisectionSolver();
         OnEdgeFunction onEdgeFunction = new OnEdgeFunction();
