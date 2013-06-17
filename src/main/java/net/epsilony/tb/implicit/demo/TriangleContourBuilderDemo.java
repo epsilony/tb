@@ -66,9 +66,10 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     private TriangleContourBuilderDemoDrawer mainDrawer;
     String marchingLinear = "marching: linear";
     String marchingSimpleGradient = "marching: simple gradient";
-    String marchingOnEdgeGradient = "marching: on edge gradient";
+    String marchingOnEdgeMMA = "marching: on edge MMA";
     String trackingSimpleGradient = "tracking: simple gradient";
     String marchingOnEdgeBisection = "marching: on edge bisection";
+    String trackingMMA = "tracking: mma";
     String currentSelection = marchingLinear;
     private LinkedList<TriangleContourCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
@@ -100,13 +101,13 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         freeGradient.setSolver(simpleGradientSolver);
         builderMap.put(marchingSimpleGradient, freeGradient);
 
-        MarchingTriangleContourBuilder.OneEdge onEdgeGradient = new MarchingTriangleContourBuilder.OneEdge();
+        MarchingTriangleContourBuilder.OneEdge onEdgeMMA = new MarchingTriangleContourBuilder.OneEdge();
         MMAFunctionSolver solver = new MMAFunctionSolver(1);
         solver.setMaxEval(200);
         solver.setFunctionAbsoluteTolerence(1e-5);
-        onEdgeGradient.setSolver(solver);
-        onEdgeGradient.setLevelSetFunction(sampleFunction);
-        builderMap.put(marchingOnEdgeGradient, onEdgeGradient);
+        onEdgeMMA.setSolver(solver);
+        onEdgeMMA.setLevelSetFunction(sampleFunction);
+        builderMap.put(marchingOnEdgeMMA, onEdgeMMA);
 
         MarchingTriangleContourBuilder.OneEdge onEdgeBisection = new MarchingTriangleContourBuilder.OneEdge();
         onEdgeBisection.setSolver(new SimpleBisectionSolver());
@@ -114,12 +115,20 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         onEdgeBisection.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeBisection, onEdgeBisection);
 
-        TrackContourBuilder trackBuilder = new TrackContourBuilder();
-        SimpleGradientSolver trackSolver = new SimpleGradientSolver();
-        trackSolver.setMaxEval(200);
-        trackBuilder.setLevelSetFunction(sampleFunction);
-        trackBuilder.setImplicitFunctionSolver(trackSolver);
-        builderMap.put(trackingSimpleGradient, trackBuilder);
+        TrackContourBuilder trackSimpGrad = new TrackContourBuilder();
+        SimpleGradientSolver simpGradient = new SimpleGradientSolver();
+        simpGradient.setMaxEval(200);
+        trackSimpGrad.setLevelSetFunction(sampleFunction);
+        trackSimpGrad.setImplicitFunctionSolver(simpGradient);
+        builderMap.put(trackingSimpleGradient, trackSimpGrad);
+
+        TrackContourBuilder trackMMA = new TrackContourBuilder();
+        MMAFunctionSolver mmaSolver = new MMAFunctionSolver(2);
+        mmaSolver.setMaxEval(200);
+        trackMMA.setLevelSetFunction(sampleFunction);
+        mmaSolver.setFunctionAbsoluteTolerence(1e-5);
+        trackMMA.setImplicitFunctionSolver(mmaSolver);
+        builderMap.put(trackingMMA, trackMMA);
     }
 
     private void genPolygonizer() {
