@@ -119,10 +119,15 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     public static double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
+        double t = genLinearInterpolateParameter(contourSourceEdge);
+        double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
+        return resultCoord;
+    }
+
+    public static double genLinearInterpolateParameter(Line2D contourSourceEdge) {
         double startValue = ((ContourNode) contourSourceEdge.getStart()).getFunctionValue()[0];
         double endValue = ((ContourNode) contourSourceEdge.getEnd()).getFunctionValue()[0];
         double t = startValue / (startValue - endValue);
-        double[] resultCoord = Math2D.pointOnSegment(startCoord, endCoord, t, null);
-        return resultCoord;
+        return t;
     }
 }
