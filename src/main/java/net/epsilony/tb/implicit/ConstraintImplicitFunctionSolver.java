@@ -7,11 +7,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface ConstraintImplicitFunctionSolver extends ImplicitFunctionSolver {
+public interface ConstraintImplicitFunctionSolver extends BoundedImplicitFunctionSolver {
 
     public void addConstraint(DifferentiableFunction<double[], double[]> constraint, double tolerence);
-
-    public void setUpperBounds(double[] upperBounds);
-
-    public void setLowerBounds(double[] lowerBounds);
 }
