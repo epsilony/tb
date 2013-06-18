@@ -13,15 +13,22 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
@@ -73,6 +80,10 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     String currentSelection = marchingLinear;
     private LinkedList<TriangleContourCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
+    private JCheckBox showGradient = new JCheckBox("show gradient", true);
+    private JCheckBox unitGradient = new JCheckBox("unit gradient", true);
+    private JSlider unitGradientLength = new JSlider(1, 50);
+    private JFormattedTextField gradientScale;
 
     public TriangleContourBuilderDemo() {
         genBuilderMap();
@@ -294,6 +305,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                 genContour();
                 modelPanel.getModelDrawers().remove(mainDrawer);
                 mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+                updateGradientDrawingSetting();
                 modelPanel.addAndSetupModelDrawer(mainDrawer);
                 modelPanel.repaint();
                 logger.info("change to {}", polygonizer);
@@ -320,9 +332,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
         JPanel rightPanel = new JPanel();
         frame.getContentPane().add(rightPanel, BorderLayout.LINE_END);
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.PAGE_AXIS));
-
-
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         ButtonGroup buttonGroup = new ButtonGroup();
         boolean first = true;
@@ -339,9 +349,96 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             rightPanel.add(button);
         }
 
+        rightPanel.add(Box.createVerticalStrut(2));
+        showGradient = new JCheckBox("show gradient", true);
+        showGradient.setSelected(true);
+        showGradient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGradientDrawingSetting();
+                modelPanel.repaint();
+            }
+        });
+
+        rightPanel.add(showGradient);
+        unitGradient = new JCheckBox("unit gradient", true);
+        unitGradient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGradientDrawingSetting();
+                modelPanel.repaint();
+            }
+        });
+
+
+        rightPanel.add(unitGradient);
+        rightPanel.add(Box.createVerticalStrut(2));
+        unitGradientLength = new JSlider(1, 50);
+        rightPanel.add(unitGradientLength);
+        unitGradientLength.setValue(mainDrawer.nodeDrawer.getUnitGradientLength());
+        unitGradientLength.setEnabled(mainDrawer.nodeDrawer.isDrawGradient());
+        unitGradientLength.setPaintLabels(true);
+        unitGradientLength.setPaintTicks(true);
+        unitGradientLength.setPaintTrack(true);
+        unitGradientLength.setMajorTickSpacing(10);
+        unitGradientLength.setMinorTickSpacing(1);
+        unitGradientLength.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                updateGradientDrawingSetting();
+                modelPanel.repaint();
+            }
+        });
+
+        gradientScale = new JFormattedTextField(NumberFormat.getNumberInstance());
+        gradientScale.setValue(mainDrawer.nodeDrawer.getGradientScale());
+        gradientScale.setMaximumSize(new Dimension(Short.MAX_VALUE, 30));
+        rightPanel.add(gradientScale);
+        gradientScale.setEnabled(!mainDrawer.nodeDrawer.isUnitGradient());
+        gradientScale.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGradientDrawingSetting();
+                modelPanel.repaint();
+            }
+        });
+
         frame.pack();
         modelPanel.setZoomAllNeeded(true);
         frame.setVisible(true);
+    }
+
+    private void updateGradientDrawingSetting() {
+        boolean b = showGradient.isSelected();
+        mainDrawer.nodeDrawer.setDrawGradient(b);
+        if (!b) {
+            unitGradient.setEnabled(false);
+            unitGradientLength.setEnabled(false);
+            gradientScale.setEnabled(false);
+        } else {
+            unitGradient.setEnabled(true);
+            if (unitGradient.isSelected()) {
+                unitGradientLength.setEnabled(true);
+                gradientScale.setEditable(false);
+            } else {
+                unitGradientLength.setEnabled(false);
+                gradientScale.setEnabled(true);
+            }
+        }
+        mainDrawer.nodeDrawer.setUnitGradient(unitGradient.isSelected());
+        if (unitGradientLength.isEnabled()) {
+            mainDrawer.nodeDrawer.setUnitGradientLength(unitGradientLength.getValue());
+        }
+        if (gradientScale.isEnabled()) {
+            Number value = (Number) gradientScale.getValue();
+            if (value.doubleValue() <= 0) {
+                gradientScale.setValue(0.01);
+            }
+            mainDrawer.nodeDrawer.setUnitGradientLength(unitGradientLength.getValue());
+            gradientScale.setText(value.toString());
+            mainDrawer.nodeDrawer.setGradientScale(value.doubleValue());
+        }
+
     }
 
     class DraggingDrawer extends ModelDrawerAdapter {

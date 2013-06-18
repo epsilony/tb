@@ -13,7 +13,6 @@ import java.util.List;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
 import net.epsilony.tb.implicit.TriangleContourCell;
-import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.ui.ModelDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -27,7 +26,7 @@ public class TriangleContourBuilderDemoDrawer extends ModelDrawerAdapter {
     public static boolean DEFAULT_TRIANGLE_NODES_VISIBLE = true;
     TriangleContourBuilder trianglePolygonizer;
     List<TriangleContourCellDemoDrawer> triangleDrawers;
-    NodeDrawer nodeDrawer = new NodeDrawer();
+    ContourNodeDrawer nodeDrawer = new ContourNodeDrawer();
     boolean triangleNodesVisible = DEFAULT_TRIANGLE_NODES_VISIBLE;
 
     public TriangleContourBuilderDemoDrawer(TriangleContourBuilder trianglePolygonizer) {
