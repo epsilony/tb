@@ -10,26 +10,26 @@ import net.epsilony.tb.analysis.Math2D;
  */
 public class TrackContourSpecification {
 
-    public static final double DEFAULT_HEAD_CHECK_ANGLE = Math.PI * 5 / 6;
+    public static final double DEFAULT_HEAD_PERPENDICULAR_TOLERENCE = Math.PI / 6;
     public static final double MIN_MAX_SEGMENT_LENGTH_RATIO = 0.01;
-    public static double DEFAULT_MAX_SEGMENT_LENGTH = 1.5;
-    public static final double DEFAULT_MAX_CURVE = Math.PI / 6;
-    public static final double DEFAULT_MAX_PERPENDICULAR_VIOLATION_ANGLE = Math.PI / 3;
+    public static double defaultMaxSegmentLength = 1.5;
+    public static final double DEFAULT_MAX_SEGMENT_CURVE = Math.PI / 6;
+    public static final double DEFAULT_PERPENDICULAR_TOLERENCE = Math.PI / 3;
     public static final double DEFAULT_EXPECT_CURVE = Math.PI / 12;
     public static final double DEFAULT_CLOSE_HEAD_SEARCH_ANGLE = Math.PI / 2;
     //
-    private double minHeadNormalAngle = DEFAULT_HEAD_CHECK_ANGLE;
-    private double minHeadNormalSin = Math.sin(minHeadNormalAngle);
-    private double maxSegmentLength = DEFAULT_MAX_SEGMENT_LENGTH;
+    private double headPerpendicularTolerence = DEFAULT_HEAD_PERPENDICULAR_TOLERENCE;
+    private double headPerpendicularLowerLimit = Math.cos(headPerpendicularTolerence);
+    private double maxSegmentLength = defaultMaxSegmentLength;
     private double minSegmentLength = maxSegmentLength * MIN_MAX_SEGMENT_LENGTH_RATIO;
-    private double maxSegmentCurve = DEFAULT_MAX_CURVE;
+    private double maxSegmentCurve = DEFAULT_MAX_SEGMENT_CURVE;
     private double segmentCurveLowerBound = Math.cos(maxSegmentCurve);
-    private double maxPerpendicularViolationAngle = DEFAULT_MAX_PERPENDICULAR_VIOLATION_ANGLE;
-    private double perpendicularViolationSinLowerLimit = Math.sin(Math.PI / 2 - maxPerpendicularViolationAngle);
+    private double perpendicularTolerence = DEFAULT_PERPENDICULAR_TOLERENCE;
+    private double perpendicularLowerLimit = Math.cos(perpendicularTolerence);
     private double expectSegmentCurve = DEFAULT_EXPECT_CURVE;
     private double expectCurveParameter = Math.sqrt(1 - Math.cos(expectSegmentCurve));
     private double closeHeadSearchAngle = DEFAULT_CLOSE_HEAD_SEARCH_ANGLE;
-    private double closeHeadSearchSin = Math.sin(Math.PI / 2 - DEFAULT_CLOSE_HEAD_SEARCH_ANGLE);
+    private double closeHeadSearchLowerLimit = Math.cos(closeHeadSearchAngle);
     //
     private static final double ROUGH_POINT_DISTANCE_SHRINK = 0.8;
 
@@ -65,7 +65,7 @@ public class TrackContourSpecification {
         double[] vec = Math2D.subs(headCoord, nodeCoord, null);
         Math2D.normalize(vec, vec);
         double outer = Math2D.cross(nodeUnitNormal, vec);
-        if (outer < closeHeadSearchSin) {
+        if (outer < closeHeadSearchLowerLimit) {
             return false;
         }
 
@@ -89,7 +89,7 @@ public class TrackContourSpecification {
         double mx = unitRoughNextDirection[0];
         double my = unitRoughNextDirection[1];
         double outer = Math2D.cross(nx, ny, mx, my);
-        if (outer < minHeadNormalSin) {
+        if (outer < headPerpendicularLowerLimit) {
             return false;
         }
         return true;
@@ -115,11 +115,11 @@ public class TrackContourSpecification {
         Math2D.normalize(vec, vec);
 
         double outer = Math2D.cross(startNormal, vec);
-        if (outer < perpendicularViolationSinLowerLimit) {
+        if (outer < perpendicularLowerLimit) {
             return false;
         }
         outer = Math2D.cross(endNormal, vec);
-        if (outer < perpendicularViolationSinLowerLimit) {
+        if (outer < perpendicularLowerLimit) {
             return false;
         }
 
@@ -134,7 +134,7 @@ public class TrackContourSpecification {
         if (closeHeadSearchAngle <= 0 || closeHeadSearchAngle >= Math.PI / 2) {
             throw new IllegalArgumentException("should be in (0,pi/2), not " + closeHeadSearchAngle);
         }
-        closeHeadSearchSin = Math.sin(Math.PI / 2 - closeHeadSearchAngle);
+        closeHeadSearchLowerLimit = Math.cos(closeHeadSearchAngle);
         this.closeHeadSearchAngle = closeHeadSearchAngle;
     }
 
@@ -150,25 +150,40 @@ public class TrackContourSpecification {
         this.expectSegmentCurve = expectSegmentCurve;
     }
 
-    public double getMinHeadNormalAngle() {
-        return minHeadNormalAngle;
+    public double getHeadPerpendicularTolerence() {
+        return headPerpendicularTolerence;
     }
 
-    public void setMinHeadNormalAngle(double minHeadNormalAngle) {
-        if (minHeadNormalAngle < 0 || minHeadNormalAngle > Math.PI / 2) {
-            throw new IllegalArgumentException("angle should be in (0,pi/2), not " + minHeadNormalAngle);
+    public void setHeadPerpendicularTolerence(double headPerpendicularTolerence) {
+        if (headPerpendicularTolerence < 0 || headPerpendicularTolerence > Math.PI / 2) {
+            throw new IllegalArgumentException("angle should be in (0,pi/2), not " + headPerpendicularTolerence);
         }
-        this.minHeadNormalAngle = minHeadNormalAngle;
-        this.minHeadNormalSin = Math.sin(minHeadNormalAngle);
+        this.headPerpendicularTolerence = headPerpendicularTolerence;
+        this.headPerpendicularLowerLimit = Math.cos(headPerpendicularTolerence);
+    }
+
+    public void setMaxSegmentLength(double maxSegmentLength) {
+        if (maxSegmentLength <= 0) {
+            throw new IllegalArgumentException();
+        }
+        this.maxSegmentLength = maxSegmentLength;
+        if (minSegmentLength > maxSegmentLength) {
+            minSegmentLength = maxSegmentLength;
+        }
+    }
+
+    public void setMinSegmentLength(double minSegmentLength) {
+        if (minSegmentLength < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.minSegmentLength = minSegmentLength;
+        if (maxSegmentLength < minSegmentLength) {
+            maxSegmentLength = minSegmentLength;
+        }
     }
 
     public double getMaxSegmentLength() {
         return maxSegmentLength;
-    }
-
-    public void setMaxSegmentLength(double maxSegmentLength) {
-        this.maxSegmentLength = maxSegmentLength;
-        minSegmentLength = maxSegmentLength * MIN_MAX_SEGMENT_LENGTH_RATIO;
     }
 
     public double getMaxSegmentCurve() {
@@ -183,16 +198,16 @@ public class TrackContourSpecification {
         this.maxSegmentCurve = angle;
     }
 
-    public double getMaxPerpendicularViolationAngle() {
-        return maxPerpendicularViolationAngle;
+    public double getPerpendicularTolerence() {
+        return perpendicularTolerence;
     }
 
-    public void setMaxPerpendicularViolationAngle(double maxPerpendicularViolationAngle) {
-        if (maxPerpendicularViolationAngle > Math.PI / 2 || maxPerpendicularViolationAngle < 0) {
-            throw new IllegalArgumentException("should be in [0,pi/2], not" + maxPerpendicularViolationAngle);
+    public void setPerpendicularTolerence(double perpendicularTolerence) {
+        if (perpendicularTolerence > Math.PI / 2 || perpendicularTolerence < 0) {
+            throw new IllegalArgumentException("should be in [0,pi/2], not" + perpendicularTolerence);
         }
-        perpendicularViolationSinLowerLimit = Math.sin(Math.PI / 2 - maxPerpendicularViolationAngle);
-        this.maxPerpendicularViolationAngle = maxPerpendicularViolationAngle;
+        perpendicularLowerLimit = Math.cos(perpendicularTolerence);
+        this.perpendicularTolerence = perpendicularTolerence;
     }
 
     public double getMinSegmentLength() {
