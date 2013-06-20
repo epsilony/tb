@@ -116,9 +116,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
     private static final double SEARCH_DISTANCE_ENLARGE = 1.6;
 
     public void trackContour(ContourNode headNode, TriangleContourCell headCell) {
-        ContourNode headSucc = trackNextNode(
-                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
-                headNode, true);
+        ContourNode headSucc = genHeadSuccNode(headNode);
         if (null == headSucc) {
             return;
         }
@@ -136,7 +134,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             if (cell == null) {
                 break;
             }
-            Line2D nextNew = nextNewSucc(seg);
+            Line2D nextNew = genSuccSeg(seg);
             if (nextNew == null) {
                 markVisitiedAndReturnLast(cell, (Line2D) seg);
                 if (seg.getSucc() != head) {
@@ -150,7 +148,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     }
 
-    public Line2D nextNewSucc(Line2D segment) {
+    public Line2D genSuccSeg(Line2D segment) {
         ContourNode ndA = (ContourNode) segment.getPred().getStart();
         ContourNode ndB = (ContourNode) segment.getStart();
         double distance = specification.genNextRoughPointDistance(ndA, ndB);
@@ -166,6 +164,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         }
         ContourNode next = trackNextNode(distance, ndB, true);
         if (null == next) {
+            next = trackNextNode(distance, ndB, true);
             throw new IllegalStateException();
         }
         Line2D result = new Line2D(next);
@@ -290,5 +289,12 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         if (null != implicitFunctionSolver) {
             implicitFunctionSolver.setFunction(levelSetFunction);
         }
+    }
+
+    private ContourNode genHeadSuccNode(ContourNode headNode) {
+        ContourNode headSucc = trackNextNode(
+                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
+                headNode, true);
+        return headSucc;
     }
 }
