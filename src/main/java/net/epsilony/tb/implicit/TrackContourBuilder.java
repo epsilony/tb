@@ -116,7 +116,9 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
     private static final double SEARCH_DISTANCE_ENLARGE = 1.6;
 
     public void trackContour(ContourNode headNode, TriangleContourCell headCell) {
-        ContourNode headSucc = trackNextNode(specification.getExpectSegmentLength(), headNode, true);
+        ContourNode headSucc = trackNextNode(
+                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
+                headNode, true);
         if (null == headSucc) {
             return;
         }

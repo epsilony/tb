@@ -12,7 +12,6 @@ public class TrackContourSpecification {
 
     public static final double DEFAULT_HEAD_CHECK_ANGLE = Math.PI * 5 / 6;
     public static final double MIN_MAX_SEGMENT_LENGTH_RATIO = 0.01;
-    public static double DEFAULT_EXPECT_SEGMENT_LENGTH = 1;
     public static double DEFAULT_MAX_SEGMENT_LENGTH = 1.5;
     public static final double DEFAULT_MAX_CURVE = Math.PI / 6;
     public static final double DEFAULT_MAX_PERPENDICULAR_VIOLATION_ANGLE = Math.PI / 3;
@@ -21,7 +20,6 @@ public class TrackContourSpecification {
     //
     private double minHeadNormalAngle = DEFAULT_HEAD_CHECK_ANGLE;
     private double minHeadNormalSin = Math.sin(minHeadNormalAngle);
-    private double expectSegmentLength = DEFAULT_EXPECT_SEGMENT_LENGTH;
     private double maxSegmentLength = DEFAULT_MAX_SEGMENT_LENGTH;
     private double minSegmentLength = maxSegmentLength * MIN_MAX_SEGMENT_LENGTH_RATIO;
     private double maxSegmentCurve = DEFAULT_MAX_CURVE;
@@ -162,17 +160,6 @@ public class TrackContourSpecification {
         }
         this.minHeadNormalAngle = minHeadNormalAngle;
         this.minHeadNormalSin = Math.sin(minHeadNormalAngle);
-    }
-
-    public double getExpectSegmentLength() {
-        return expectSegmentLength;
-    }
-
-    public void setExpectSegmentLength(double expectSegmentLength) {
-        if (expectSegmentLength < 0) {
-            throw new IllegalArgumentException();
-        }
-        this.expectSegmentLength = expectSegmentLength;
     }
 
     public double getMaxSegmentLength() {
