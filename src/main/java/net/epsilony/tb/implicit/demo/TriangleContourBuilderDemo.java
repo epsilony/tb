@@ -14,8 +14,11 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -58,8 +61,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public static final int DRAG_OUTER = 1;
     public static final int DRAG_HOLE = 2;
     public static final int DRAG_NOTHING = 0;
-    public TriangleContourBuilder polygonizer;
-    public double holeRadius = 18.198818617168925;// 15;
+    public TriangleContourBuilder contourBuilder;
+    public double holeRadius = 33.53052215673014;// 15;
     public double holeX = 44;
     public double holeY = 42;
     public double diskRadius = 30;
@@ -93,10 +96,10 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public void genContour() {
         try {
             logger.debug("hole radius: {}, disk radius: {}", holeRadius, diskRadius);
-            polygonizer.genContour();
+            contourBuilder.genContour();
         } catch (Throwable e) {
             logger.error("", e);
-        }
+        }      
     }
 
     private void genBuilderMap() {
@@ -142,10 +145,10 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         builderMap.put(trackingMMA, trackMMA);
     }
 
-    private void genPolygonizer() {
-        polygonizer = builderMap.get(currentSelection);
-        polygonizer.setCells(cells);
-        polygonizer.setLevelSetFunction(sampleFunction);
+    private void genContourBuilder() {
+        contourBuilder = builderMap.get(currentSelection);
+        contourBuilder.setCells(cells);
+        contourBuilder.setLevelSetFunction(sampleFunction);
     }
 
     private void genCells() {
@@ -301,24 +304,24 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             String actionString = e.getActionCommand();
             if (!actionString.equals(currentSelection)) {
                 currentSelection = actionString;
-                genPolygonizer();
+                genContourBuilder();
                 genContour();
                 modelPanel.getModelDrawers().remove(mainDrawer);
-                mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+                mainDrawer = new TriangleContourBuilderDemoDrawer(contourBuilder);
                 updateGradientDrawingSetting();
                 modelPanel.addAndSetupModelDrawer(mainDrawer);
                 modelPanel.repaint();
-                logger.info("change to {}", polygonizer);
+                logger.info("change to {}", contourBuilder);
             }
         }
     }
 
     public void genUI() {
-        genPolygonizer();
+        genContourBuilder();
         genContour();
 
         modelPanel = new BasicModelPanel();
-        mainDrawer = new TriangleContourBuilderDemoDrawer(polygonizer);
+        mainDrawer = new TriangleContourBuilderDemoDrawer(contourBuilder);
         modelPanel.addAndSetupModelDrawer(mainDrawer);
         modelPanel.setPreferredSize(new Dimension(800, 600));
         modelPanel.addMouseListener(this);
@@ -337,7 +340,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         ButtonGroup buttonGroup = new ButtonGroup();
         boolean first = true;
         LeftRadioListener buttonAction = new LeftRadioListener();
-        for (String buttonName : builderMap.keySet()) {
+        List<String> methods = new ArrayList<>(builderMap.keySet());
+        Collections.sort(methods);
+        for (String buttonName : methods) {
             JRadioButton button = new JRadioButton(buttonName);
             button.setActionCommand(buttonName);
             if (first) {
