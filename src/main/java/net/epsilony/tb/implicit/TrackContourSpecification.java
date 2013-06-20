@@ -1,6 +1,9 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.Arrays;
 import net.epsilony.tb.analysis.Math2D;
 
@@ -8,7 +11,7 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TrackContourSpecification {
+public class TrackContourSpecification implements Serializable {
 
     public static final double DEFAULT_HEAD_PERPENDICULAR_TOLERENCE = Math.PI / 6;
     public static final double MIN_MAX_SEGMENT_LENGTH_RATIO = 0.01;
@@ -32,6 +35,16 @@ public class TrackContourSpecification {
     private double closeHeadSearchLowerLimit = Math.cos(closeHeadSearchAngle);
     //
     private static final double ROUGH_POINT_DISTANCE_SHRINK = 0.8;
+    //
+    private PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+    }
 
     public double genNextRoughPointDistance(ContourNode ndA, ContourNode ndB) {
         double d = Math2D.distance(ndA.getCoord(), ndB.getCoord());
@@ -135,7 +148,11 @@ public class TrackContourSpecification {
             throw new IllegalArgumentException("should be in (0,pi/2), not " + closeHeadSearchAngle);
         }
         closeHeadSearchLowerLimit = Math.cos(closeHeadSearchAngle);
+        double old = this.closeHeadSearchAngle;
         this.closeHeadSearchAngle = closeHeadSearchAngle;
+        propertyChangeSupport.firePropertyChange(
+                "closeHeadSearchAngle",
+                old, closeHeadSearchAngle);
     }
 
     public double getExpectSegmentCurve() {
@@ -147,7 +164,9 @@ public class TrackContourSpecification {
             throw new IllegalArgumentException("expect curver should be in (0, pi/2), not " + expectSegmentCurve);
         }
         expectCurveParameter = Math.sqrt(1 - Math.cos(expectSegmentCurve));
+        double old = this.expectSegmentCurve;
         this.expectSegmentCurve = expectSegmentCurve;
+        propertyChangeSupport.firePropertyChange("expectSegmentCurve", old, expectSegmentCurve);
     }
 
     public double getHeadPerpendicularTolerence() {
@@ -158,28 +177,40 @@ public class TrackContourSpecification {
         if (headPerpendicularTolerence < 0 || headPerpendicularTolerence > Math.PI / 2) {
             throw new IllegalArgumentException("angle should be in (0,pi/2), not " + headPerpendicularTolerence);
         }
+        double old = this.headPerpendicularTolerence;
         this.headPerpendicularTolerence = headPerpendicularTolerence;
         this.headPerpendicularLowerLimit = Math.cos(headPerpendicularTolerence);
+        propertyChangeSupport.firePropertyChange(
+                "headaPerpendicualrTolerence",
+                old, headPerpendicularTolerence);
     }
 
     public void setMaxSegmentLength(double maxSegmentLength) {
         if (maxSegmentLength <= 0) {
             throw new IllegalArgumentException();
         }
+        double old = this.maxSegmentLength;
         this.maxSegmentLength = maxSegmentLength;
         if (minSegmentLength > maxSegmentLength) {
+            double oldMin = minSegmentLength;
             minSegmentLength = maxSegmentLength;
+            propertyChangeSupport.firePropertyChange("minSegmentLength", oldMin, minSegmentLength);
         }
+        propertyChangeSupport.firePropertyChange("maxSegmentLength", old, maxSegmentLength);
     }
 
     public void setMinSegmentLength(double minSegmentLength) {
         if (minSegmentLength < 0) {
             throw new IllegalArgumentException();
         }
+        double old = this.minSegmentLength;
         this.minSegmentLength = minSegmentLength;
         if (maxSegmentLength < minSegmentLength) {
+            double oldMax = maxSegmentLength;
             maxSegmentLength = minSegmentLength;
+            propertyChangeSupport.firePropertyChange("maxSegmentLength", oldMax, maxSegmentLength);
         }
+        propertyChangeSupport.firePropertyChange("minSegmentLength", old, minSegmentLength);
     }
 
     public double getMaxSegmentLength() {
@@ -195,7 +226,9 @@ public class TrackContourSpecification {
             throw new IllegalArgumentException("should be in [0,pi/2], not" + angle);
         }
         segmentCurveLowerBound = Math.cos(maxSegmentCurve);
+        double old = this.maxSegmentCurve;
         this.maxSegmentCurve = angle;
+        propertyChangeSupport.firePropertyChange("maxSegmentCurve", old, angle);
     }
 
     public double getPerpendicularTolerence() {
@@ -207,7 +240,9 @@ public class TrackContourSpecification {
             throw new IllegalArgumentException("should be in [0,pi/2], not" + perpendicularTolerence);
         }
         perpendicularLowerLimit = Math.cos(perpendicularTolerence);
+        double old = this.perpendicularTolerence;
         this.perpendicularTolerence = perpendicularTolerence;
+        propertyChangeSupport.firePropertyChange("perpendicularTolerence", old, perpendicularTolerence);
     }
 
     public double getMinSegmentLength() {
