@@ -174,7 +174,7 @@ public class TrackContourSpecification implements Serializable {
     }
 
     public void setHeadPerpendicularTolerence(double headPerpendicularTolerence) {
-        if (headPerpendicularTolerence < 0 || headPerpendicularTolerence > Math.PI / 2) {
+        if (headPerpendicularTolerence <= 0 || headPerpendicularTolerence >= Math.PI / 2) {
             throw new IllegalArgumentException("angle should be in (0,pi/2), not " + headPerpendicularTolerence);
         }
         double old = this.headPerpendicularTolerence;
@@ -200,7 +200,7 @@ public class TrackContourSpecification implements Serializable {
     }
 
     public void setMinSegmentLength(double minSegmentLength) {
-        if (minSegmentLength < 0) {
+        if (minSegmentLength <= 0) {
             throw new IllegalArgumentException();
         }
         double old = this.minSegmentLength;
@@ -222,7 +222,7 @@ public class TrackContourSpecification implements Serializable {
     }
 
     public void setMaxSegmentCurve(double angle) {
-        if (angle > Math.PI / 2 || angle < 0) {
+        if (angle >= Math.PI / 2 || angle <= 0) {
             throw new IllegalArgumentException("should be in [0,pi/2], not" + angle);
         }
         segmentCurveLowerBound = Math.cos(maxSegmentCurve);
@@ -236,7 +236,7 @@ public class TrackContourSpecification implements Serializable {
     }
 
     public void setPerpendicularTolerence(double perpendicularTolerence) {
-        if (perpendicularTolerence > Math.PI / 2 || perpendicularTolerence < 0) {
+        if (perpendicularTolerence >= Math.PI / 2 || perpendicularTolerence <= 0) {
             throw new IllegalArgumentException("should be in [0,pi/2], not" + perpendicularTolerence);
         }
         perpendicularLowerLimit = Math.cos(perpendicularTolerence);
