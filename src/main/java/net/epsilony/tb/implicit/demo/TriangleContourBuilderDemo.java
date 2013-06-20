@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +26,15 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import net.epsilony.tb.implicit.TriangleContourCell;
@@ -44,6 +49,7 @@ import net.epsilony.tb.implicit.MarchingTriangle;
 import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
+import net.epsilony.tb.implicit.ui.TrackContourSpecificationPanel;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 import net.epsilony.tb.ui.ModelTransform;
@@ -87,6 +93,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     private JCheckBox unitGradient = new JCheckBox("unit gradient", true);
     private JSlider unitGradientLength = new JSlider(1, 50);
     private JFormattedTextField gradientScale;
+    private TrackContourSpecificationPanel specificationPanel;
+    private JFrame frame;
+    private JDialog dialog;
 
     public TriangleContourBuilderDemo() {
         genBuilderMap();
@@ -99,7 +108,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             contourBuilder.genContour();
         } catch (Throwable e) {
             logger.error("", e);
-        }      
+        }
     }
 
     private void genBuilderMap() {
@@ -134,6 +143,14 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         simpGradient.setMaxEval(200);
         trackSimpGrad.setLevelSetFunction(sampleFunction);
         trackSimpGrad.setImplicitFunctionSolver(simpGradient);
+        final PropertyChangeListener specificationChangeListener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                genContour();
+                modelPanel.repaint();
+            }
+        };
+        trackSimpGrad.getSpecification().addPropertyChangeListener(specificationChangeListener);
         builderMap.put(trackingSimpleGradient, trackSimpGrad);
 
         TrackContourBuilder trackMMA = new TrackContourBuilder();
@@ -142,6 +159,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         trackMMA.setLevelSetFunction(sampleFunction);
         mmaSolver.setFunctionAbsoluteTolerence(1e-5);
         trackMMA.setImplicitFunctionSolver(mmaSolver);
+        trackMMA.getSpecification().addPropertyChangeListener(specificationChangeListener);
         builderMap.put(trackingMMA, trackMMA);
     }
 
@@ -312,6 +330,15 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                 modelPanel.addAndSetupModelDrawer(mainDrawer);
                 modelPanel.repaint();
                 logger.info("change to {}", contourBuilder);
+                if (contourBuilder instanceof TrackContourBuilder) {
+                    TrackContourBuilder tcb = (TrackContourBuilder) contourBuilder;
+                    specificationPanel.setSpecification((tcb.getSpecification()));
+                } else {
+                    specificationPanel.setSpecification(null);
+                }
+            }
+            if (contourBuilder instanceof TrackContourBuilder) {
+                dialog.setVisible(true);
             }
         }
     }
@@ -328,7 +355,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         modelPanel.addMouseMotionListener(this);
         modelPanel.addAndSetupModelDrawer(new DraggingDrawer());
 
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(modelPanel, BorderLayout.CENTER);
@@ -411,6 +438,14 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         frame.pack();
         modelPanel.setZoomAllNeeded(true);
         frame.setVisible(true);
+
+        specificationPanel = new TrackContourSpecificationPanel();
+        dialog = new JDialog(frame, false);
+        dialog.setSize(500, 400);
+        dialog.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        dialog.getContentPane().add(specificationPanel);
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     private void updateGradientDrawingSetting() {
@@ -482,6 +517,11 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    logger.error("", ex);
+                }
                 TriangleContourBuilderDemo demo = new TriangleContourBuilderDemo();
                 demo.genUI();
             }
