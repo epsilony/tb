@@ -337,7 +337,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                     specificationPanel.setSpecification(null);
                 }
             }
-            if (contourBuilder instanceof TrackContourBuilder) {
+            if(contourBuilder instanceof TrackContourBuilder){
                 dialog.setVisible(true);
             }
         }
