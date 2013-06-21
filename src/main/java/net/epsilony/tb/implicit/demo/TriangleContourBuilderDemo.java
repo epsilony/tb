@@ -68,7 +68,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public static final int DRAG_HOLE = 2;
     public static final int DRAG_NOTHING = 0;
     public TriangleContourBuilder contourBuilder;
-    public double holeRadius = 33.53052215673014;// 15;
+    public double holeRadius = 20.47193553911849;// 15;
     public double holeX = 44;
     public double holeY = 42;
     public double diskRadius = 30;
@@ -124,7 +124,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         freeGradient.setSolver(simpleGradientSolver);
         builderMap.put(marchingSimpleGradient, freeGradient);
 
-        MarchingTriangle.OneEdge onEdgeMMA = new MarchingTriangle.OneEdge();
+        MarchingTriangle.OnEdge onEdgeMMA = new MarchingTriangle.OnEdge();
         MMAFunctionSolver solver = new MMAFunctionSolver(1);
         solver.setMaxEval(200);
         solver.setFunctionAbsoluteTolerence(1e-5);
@@ -132,7 +132,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         onEdgeMMA.setLevelSetFunction(sampleFunction);
         builderMap.put(marchingOnEdgeMMA, onEdgeMMA);
 
-        MarchingTriangle.OneEdge onEdgeBisection = new MarchingTriangle.OneEdge();
+        MarchingTriangle.OnEdge onEdgeBisection = new MarchingTriangle.OnEdge();
         onEdgeBisection.setSolver(new SimpleBisectionSolver());
         onEdgeBisection.getSolver().setMaxEval(200);
         onEdgeBisection.setLevelSetFunction(sampleFunction);

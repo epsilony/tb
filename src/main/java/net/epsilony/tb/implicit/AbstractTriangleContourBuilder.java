@@ -130,4 +130,59 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         double t = startValue / (startValue - endValue);
         return t;
     }
+
+    protected class OnLineFunction implements DifferentiableFunction<double[], double[]> {
+
+        double[] endCoord;
+        double[] startCoord;
+        double[] coord = new double[2];
+        double[] levelSetFuncVal;
+
+        public void prepareToSolve(double[] startCoord, double[] endCoord) {
+            this.endCoord = endCoord;
+            this.startCoord = startCoord;
+            levelSetFuncVal = null;
+            coord = new double[2];
+        }
+
+        @Override
+        public int getInputDimension() {
+            return 1;
+        }
+
+        @Override
+        public int getOutputDimension() {
+            return 1;
+        }
+
+        @Override
+        public double[] value(double[] input, double[] output) {
+            if (null == output) {
+                output = new double[getDiffOrder() + 1];
+            }
+            double t = input[0];
+            double x = startCoord[0] * (1 - t) + endCoord[0] * t;
+            double y = startCoord[1] * (1 - t) + endCoord[1] * t;
+            coord[0] = x;
+            coord[1] = y;
+            levelSetFuncVal = levelSetFunction.value(coord, levelSetFuncVal);
+            output[0] = levelSetFuncVal[0];
+            if (getDiffOrder() >= 1) {
+                double x_t = endCoord[0] - startCoord[0];
+                double y_t = endCoord[1] - startCoord[1];
+                output[1] = levelSetFuncVal[1] * x_t + levelSetFuncVal[2] * y_t;
+            }
+            return output;
+        }
+
+        @Override
+        public int getDiffOrder() {
+            return levelSetFunction.getDiffOrder();
+        }
+
+        @Override
+        public void setDiffOrder(int diffOrder) {
+            levelSetFunction.setDiffOrder(diffOrder);
+        }
+    }
 }
