@@ -2,6 +2,7 @@
 package net.epsilony.tb.implicit;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,7 @@ import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.SegmentIterator;
 
 /**
  *
@@ -19,6 +21,8 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     TrackContourSpecification specification = new TrackContourSpecification();
     protected ImplicitFunctionSolver implicitFunctionSolver = null;
+    OnLineFunction onLineFunction = new OnLineFunction();
+    SimpleBisectionSolver onLineSolver = new SimpleBisectionSolver();
 
     @Override
     public void genContour() {
@@ -148,23 +152,38 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     }
 
+    private ContourNode genHeadSuccNode(ContourNode headNode) {
+        ContourNode headSucc = trackNextNode(
+                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
+                headNode);
+        return headSucc;
+    }
+
     public Line2D genSuccSeg(Line2D segment) {
         ContourNode ndA = (ContourNode) segment.getPred().getStart();
         ContourNode ndB = (ContourNode) segment.getStart();
         double distance = specification.genNextRoughPointDistance(ndA, ndB);
         double headSearchRadius = distance * SEARCH_DISTANCE_ENLARGE;
-        Line2D otherHead = searchOtherHeadAsSuccCandidate(headSearchRadius, ndB);
-        if (null != otherHead) {
-            if (specification.isSegmentEligible(ndB, (ContourNode) otherHead.getStart())) {
-                Segment2DUtils.link(segment, otherHead);
-                return null;
+        while (distance >= specification.getMinSegmentLength()) {
+            Line2D otherHead = searchOtherHeadAsSuccCandidate(headSearchRadius, ndB);
+            if (null == otherHead) {
+                break;
             } else {
-                distance = 0.5 * Math2D.distance(ndB.getCoord(), otherHead.getStartCoord());
+                if (specification.isSegmentEligible(ndB, (ContourNode) otherHead.getStart())) {
+                    Segment2DUtils.link(segment, otherHead);
+                    return null;
+                } else {
+                    distance = 0.5 * Math2D.distance(ndB.getCoord(), otherHead.getStartCoord());
+                }
             }
         }
-        ContourNode next = trackNextNode(distance, ndB, true);
+
+        ContourNode next = trackNextNode(distance, ndB);
+
         if (null == next) {
-            next = trackNextNode(distance, ndB, true);
+            next = trackNextNodeHarder(ndB);
+        }
+        if (null == next) {
             throw new IllegalStateException();
         }
         Line2D result = new Line2D(next);
@@ -173,9 +192,9 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return result;
     }
 
-    private ContourNode trackNextNode(double roughDistance, ContourNode preNode, boolean tryHard) {
+    private ContourNode trackNextNode(double roughDistance, ContourNode preNode) {
         ContourNode next = new ContourNode();
-        while (tryHard && roughDistance >= specification.getMinSegmentLength()) {
+        while (roughDistance >= specification.getMinSegmentLength()) {
             double[] rough = genRoughPointByGradient(preNode, roughDistance);
 
             if (!implicitFunctionSolver.solve(rough)) {
@@ -184,12 +203,117 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             }
             next.setCoord(implicitFunctionSolver.getSolution());
             next.setFunctionValue(implicitFunctionSolver.getFunctionValue());
-            if (specification.isSegmentEligible(preNode, next)) {
+            if (Math.abs(next.getFunctionValue()[0]) <= 1e-3
+                    && specification.isSegmentEligible(preNode, next)) {
                 return next;
             }
             roughDistance *= ROUGH_DISTANCE_SHRINK;
         }
         return null;
+    }
+
+    private ContourNode trackNextNodeHarder(final ContourNode node) {
+        double distance = specification.getMinSegmentLength();
+        double searchDistance = distance * SEARCH_DISTANCE_ENLARGE;
+        double[] nodeCoord = node.getCoord();
+        List<Line2D> lines = new LinkedList<>();
+        for (Line2D head : contourHeads) {
+            SegmentIterator<Line2D> segIter = new SegmentIterator<>(head);
+            while (segIter.hasNext()) {
+                Line2D seg = segIter.next();
+                if (seg.getSucc() == null) {
+                    break;
+                }
+                if (Segment2DUtils.distanceToChord(seg, nodeCoord) < searchDistance) {
+                    lines.add(seg);
+                }
+            }
+        }
+        int stepNum = 360;
+        double stepAngle = Math.PI * 2 / stepNum;
+        double[] curveStart = new double[2];
+        double[] curveEnd = new double[2];
+        curveStart[0] = nodeCoord[0] + distance;
+        curveStart[1] = nodeCoord[1];
+        double[] lsv = new double[1];
+        List<ContourNode> points = new LinkedList<>();
+        for (int i = 0; i < stepNum; i++) {
+            double endAngle = i + 1 < stepNum ? (i + 1) * stepAngle : 0;
+            double endCos = Math.cos(endAngle);
+            double endSin = Math.sin(endAngle);
+            curveEnd[0] = nodeCoord[0] + endCos * distance;
+            curveEnd[1] = nodeCoord[1] + endSin * distance;
+            levelSetFunction.setDiffOrder(0);
+            levelSetFunction.value(curveStart, lsv);
+            double startV = lsv[0];
+            levelSetFunction.value(curveEnd, lsv);
+            double endV = lsv[0];
+            if (endV * startV <= 0) {
+                ContourNode point = searchPointOnSegment(curveStart, curveEnd);
+                points.add(point);
+            }
+            curveStart[0] = curveEnd[0];
+            curveStart[1] = curveEnd[1];
+        }
+
+        if (points.isEmpty()) {
+            throw new IllegalStateException();
+        }
+
+        for (Line2D line : lines) {
+            Iterator<ContourNode> pointIter = points.iterator();
+            double[] endCoord = line.getEndCoord();
+            double[] startCoord = line.getStartCoord();
+            while (pointIter.hasNext()) {
+                ContourNode point = pointIter.next();
+                if (specification.isSegmentEligible((ContourNode) line.getStart(), point)) {
+
+                    double[] pointCoord = point.getCoord();
+                    double ds = Math2D.distance(startCoord, pointCoord);
+                    double de = Math2D.distance(endCoord, pointCoord);
+                    double l = Segment2DUtils.chordLength(line);
+                    double d = Math2D.cross(
+                            endCoord[0] - startCoord[0], endCoord[1] - startCoord[1],
+                            pointCoord[0] - startCoord[0], pointCoord[1] - startCoord[1]) / l;
+                    double t = l * l + d * d;
+                    if (t > ds * ds || t > de * de) {
+                        pointIter.remove();
+                    }
+                }
+            }
+        }
+
+        if (points.isEmpty()) {
+            return null;
+        }
+
+        if (points.size() == 1) {
+            return points.get(0);
+        }
+        Iterator<ContourNode> pointsIter = points.iterator();
+        ContourNode bestResult = pointsIter.next();
+        double bestCos = ContourNode.gradientCos(node, bestResult);
+        do {
+            ContourNode nd = pointsIter.next();
+            double cosValue = ContourNode.gradientCos(node, nd);
+            if (cosValue > bestCos) {
+                bestCos = cosValue;
+                bestResult = nd;
+            }
+        } while (pointsIter.hasNext());
+        return bestResult;
+    }
+
+    public ContourNode searchPointOnSegment(double[] start, double[] end) {
+        onLineFunction.prepareToSolve(start, end);
+        onLineSolver.solve(new double[]{0.5});
+        double t = onLineSolver.getSolution()[0];
+        double[] coord = Math2D.pointOnSegment(start, end, t, null);
+        levelSetFunction.setDiffOrder(1);
+        ContourNode result = new ContourNode();
+        result.setCoord(coord);
+        result.setFunctionValue(levelSetFunction.value(coord, null));
+        return result;
     }
 
     private Line2D searchOtherHeadAsSuccCandidate(double distance, ContourNode node) {
@@ -288,13 +412,11 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         this.implicitFunctionSolver = implicitFunctionSolver;
         if (null != implicitFunctionSolver) {
             implicitFunctionSolver.setFunction(levelSetFunction);
+            onLineSolver.setFunctionAbsoluteTolerence(implicitFunctionSolver.getFunctionAbsoluteTolerence());
+            onLineSolver.setFunction(onLineFunction);
+            onLineSolver.setLowerBounds(new double[]{0});
+            onLineSolver.setUpperBounds(new double[]{1});
+            onLineSolver.setMaxEval(200);
         }
-    }
-
-    private ContourNode genHeadSuccNode(ContourNode headNode) {
-        ContourNode headSucc = trackNextNode(
-                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
-                headNode, true);
-        return headSucc;
     }
 }
