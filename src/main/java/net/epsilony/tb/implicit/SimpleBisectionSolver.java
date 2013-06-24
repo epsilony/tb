@@ -108,12 +108,12 @@ public class SimpleBisectionSolver implements BoundedImplicitFunctionSolver {
 
         function.setDiffOrder(0);
 
-        functionValue = function.value(start, functionValue);
-        double vm = functionValue[0];
         function.value(lowerBounds, functionValue);
         double vs = functionValue[0];
         function.value(upperBounds, functionValue);
         double ve = functionValue[0];
+        functionValue = function.value(start, functionValue);
+        double vm = functionValue[0];
 
         if (Math.signum(vs) == Math.signum(ve)) {
             throw new IllegalStateException("same sign on both ends");
@@ -123,6 +123,7 @@ public class SimpleBisectionSolver implements BoundedImplicitFunctionSolver {
         double te = upperBounds[0];
         double tm = start[0];
         int count = 0;
+        solution[0] = tm;
         while (Math.abs(vm) > functionAbsoluteTolerence && te - ts > solutionAbsoluteTolerence && count++ < maxEval) {
             if (Math.signum(vm) == Math.signum(vs)) {
                 ts = tm;
