@@ -86,4 +86,20 @@ public class Segment2DUtils {
 
         return path;
     }
+
+    public static double[] chordVector(Segment seg, double[] result) {
+        return Math2D.subs(seg.getEnd().getCoord(), seg.getStart().getCoord(), result);
+    }
+
+    public static double chordVectorDot(Segment seg1, Segment seg2) {
+        double[] s1 = seg1.getStart().getCoord();
+        double[] e1 = seg1.getEnd().getCoord();
+        double[] s2 = seg2.getStart().getCoord();
+        double[] e2 = seg2.getEnd().getCoord();
+        double dx1 = e1[0] - s1[0];
+        double dy1 = e1[1] - s1[1];
+        double dx2 = e2[0] - s2[0];
+        double dy2 = e2[1] - s2[1];
+        return Math2D.dot(dx1, dy1, dx2, dy2);
+    }
 }
