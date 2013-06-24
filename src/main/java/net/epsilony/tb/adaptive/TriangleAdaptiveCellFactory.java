@@ -40,10 +40,16 @@ public class TriangleAdaptiveCellFactory {
             double startX = x0 - 0.5 * edgeLength * (i % 2);
             double y = y0 + i * edgeLength * SQRT_3 / 2;
             for (int j = 0; j < row.length; j++) {
-                row[j] = new Node(startX + edgeLength * j, y);
+                Node node = newNodeInstance();
+                node.setCoord(new double[]{startX + edgeLength * j, y});
+                row[j] = node;
             }
         }
         return result;
+    }
+
+    protected Node newNodeInstance() {
+        return new Node();
     }
 
     private TriangleAdaptiveCell[][] genTriangles(Node[][] nodes) {

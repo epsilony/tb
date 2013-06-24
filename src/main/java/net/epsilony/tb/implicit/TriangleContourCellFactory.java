@@ -4,6 +4,7 @@ package net.epsilony.tb.implicit;
 import java.awt.geom.Rectangle2D;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCellFactory;
+import net.epsilony.tb.solid.Node;
 
 /**
  *
@@ -25,5 +26,10 @@ public class TriangleContourCellFactory extends TriangleAdaptiveCellFactory {
     @Override
     protected TriangleContourCell newTriangleAdaptiveCellInstance() {
         return new TriangleContourCell();
+    }
+
+    @Override
+    protected Node newNodeInstance() {
+        return new ContourNode();
     }
 }

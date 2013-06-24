@@ -21,12 +21,12 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     protected List<Line2D> contourHeads = new LinkedList<>();
     protected Iterator<TriangleContourCell> cellsIterator;
     protected List<Line2D> openRingsHeads = new LinkedList<>();
-    
+
     @Override
     public List<TriangleContourCell> getCells() {
         return cells;
     }
-    
+
     @Override
     public DifferentiableFunction<double[], double[]> getLevelSetFunction() {
         return levelSetFunction;
@@ -74,15 +74,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
                 if (start.getId() > -1) {
                     continue;
                 }
-                if (!(start instanceof ContourNode)) {
-                    ContourNode newNode = new ContourNode();
-                    newNode.setCoord(start.getCoord());
-                    edge.setStart(newNode);
-                    start = newNode;
-                } else {
-                    ContourNode cStart = (ContourNode) start;
-                    cStart.setFunctionValue(null);
-                }
+                ContourNode cStart = (ContourNode) start;
+                cStart.setFunctionValue(null);
                 start.setId(nodesNum++);
             }
         }
