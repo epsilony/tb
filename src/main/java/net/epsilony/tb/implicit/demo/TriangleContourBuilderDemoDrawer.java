@@ -13,6 +13,7 @@ import java.util.List;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
 import net.epsilony.tb.implicit.TriangleContourCell;
+import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.ui.ModelDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -71,20 +72,7 @@ public class TriangleContourBuilderDemoDrawer extends ModelDrawerAdapter {
     }
 
     private Path2D genContourPath() {
-        Path2D path = new Path2D.Double();
-        for (Line2D chainHead : trianglePolygonizer.getContourHeads()) {
-            double[] startCoord = chainHead.getStart().getCoord();
-            path.moveTo(startCoord[0], startCoord[1]);
-            Line2D seg = (Line2D) chainHead.getSucc();
-            while (seg != null && seg != chainHead) {
-                double[] segStartCoord = seg.getStart().getCoord();
-                path.lineTo(segStartCoord[0], segStartCoord[1]);
-                seg = (Line2D) seg.getSucc();
-            }
-            if (seg == chainHead) {
-                path.closePath();
-            }
-        }
+        Path2D path = Segment2DUtils.genChordPath(trianglePolygonizer.getContourHeads());
         return path;
     }
 

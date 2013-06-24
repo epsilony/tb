@@ -1,6 +1,8 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
+import java.awt.geom.Path2D;
+import java.util.Collection;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
@@ -66,5 +68,22 @@ public class Segment2DUtils {
     public static void link(Segment asPred, Segment asSucc) {
         asPred.setSucc(asSucc);
         asSucc.setPred(asPred);
+    }
+
+    public static Path2D genChordPath(Collection<? extends Segment> heads) {
+        Path2D path = new Path2D.Double();
+        for (Segment line : heads) {
+            double[] startCoord = line.getStart().getCoord();
+            path.moveTo(startCoord[0], startCoord[1]);
+            SegmentIterator<Segment> lineIter = new SegmentIterator<>(line);
+            lineIter.next();
+            while (lineIter.hasNext()) {
+                startCoord = lineIter.next().getStart().getCoord();
+                path.lineTo(startCoord[0], startCoord[1]);
+            }
+            path.closePath();
+        }
+
+        return path;
     }
 }
