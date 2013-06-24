@@ -82,7 +82,7 @@ public class DifferentiableFunctionUtils {
             outputDimension = first.getOutputDimension();
             while (it.hasNext()) {
                 DifferentiableFunction func = it.next();
-                if (inputDimension != func.getInputDimension() || outputDimension != func.getInputDimension()) {
+                if (inputDimension != func.getInputDimension() || outputDimension != func.getOutputDimension()) {
                     throw new IllegalArgumentException();
                 }
             }
