@@ -5,10 +5,10 @@ package net.epsilony.tb.analysis;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractLogicalMinMax implements DifferentiableFunction<double[], double[]> {
+public abstract class AbstractLogicalMinMax implements DifferentiableFunction {
 
-    DifferentiableFunction<double[], double[]> funA;
-    DifferentiableFunction<double[], double[]> funB;
+    DifferentiableFunction funA;
+    DifferentiableFunction funB;
     LogicalHeaviside heaviside = new LogicalHeaviside();
 
     @Override
@@ -23,11 +23,11 @@ public abstract class AbstractLogicalMinMax implements DifferentiableFunction<do
         return heaviside.getErr(x);
     }
 
-    public DifferentiableFunction<double[], double[]> getFunA() {
+    public DifferentiableFunction getFunA() {
         return funA;
     }
 
-    public DifferentiableFunction<double[], double[]> getFunB() {
+    public DifferentiableFunction getFunB() {
         return funB;
     }
 
@@ -55,7 +55,7 @@ public abstract class AbstractLogicalMinMax implements DifferentiableFunction<do
         heaviside.setDiffOrder(diffOrder);
     }
 
-    public void setFunctions(DifferentiableFunction<double[], double[]> funA, DifferentiableFunction<double[], double[]> funB) {
+    public void setFunctions(DifferentiableFunction funA, DifferentiableFunction funB) {
         if (funA.getOutputDimension() != 1 || funB.getOutputDimension() != 1) {
             throw new IllegalArgumentException("Only support 1D output function");
         }

@@ -14,7 +14,7 @@ public class LogicalMinimumTest {
     public LogicalMinimumTest() {
     }
 
-    public static class FunA_1D implements DifferentiableFunction<double[], double[]> {
+    public static class FunA_1D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -47,7 +47,7 @@ public class LogicalMinimumTest {
         }
     }
 
-    public static class FunB_1D implements DifferentiableFunction<double[], double[]> {
+    public static class FunB_1D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -109,7 +109,7 @@ public class LogicalMinimumTest {
         assertArrayEquals(exps, acts, 1e-14);
     }
 
-    public static class FunA_2D implements DifferentiableFunction<double[], double[]> {
+    public static class FunA_2D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -144,7 +144,7 @@ public class LogicalMinimumTest {
         }
     }
 
-    public static class FunB_2D implements DifferentiableFunction<double[], double[]> {
+    public static class FunB_2D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {

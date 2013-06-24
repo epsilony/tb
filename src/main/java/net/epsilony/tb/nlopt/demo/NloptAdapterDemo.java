@@ -17,7 +17,7 @@ import org.bridj.IntValuedEnum;
  */
 public class NloptAdapterDemo {
 
-    static DifferentiableFunction<double[], double[]> objFunc = new AbstractDifferentiableFunction() {
+    static DifferentiableFunction objFunc = new AbstractDifferentiableFunction() {
         int count = 0;
 
         @Override
@@ -49,7 +49,7 @@ public class NloptAdapterDemo {
             return output;
         }
     };
-    static DifferentiableFunction<double[], double[]> constraints = new AbstractDifferentiableFunction() {
+    static DifferentiableFunction constraints = new AbstractDifferentiableFunction() {
         double[][] abs = new double[][]{{2, 0}, {-1, 1}};
         int count;
 

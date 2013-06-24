@@ -13,11 +13,11 @@ public interface TriangleContourBuilder {
 
     List<TriangleContourCell> getCells();
 
-    DifferentiableFunction<double[], double[]> getLevelSetFunction();
+    DifferentiableFunction getLevelSetFunction();
 
     void setCells(List<TriangleContourCell> cells);
 
-    void setLevelSetFunction(DifferentiableFunction<double[], double[]> levelSetFunction);
+    void setLevelSetFunction(DifferentiableFunction levelSetFunction);
 
     void genContour();
 

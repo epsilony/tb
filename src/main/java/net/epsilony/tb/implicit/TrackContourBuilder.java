@@ -145,6 +145,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
                     contourHeads.remove((Line2D) seg.getSucc());
                 }
                 openRingsHeads.remove((Line2D) seg.getSucc());
+                //TODO here: divide seg.getSucc() if seg.length *1.5<seg.getSucc().length
                 break;
             }
             seg = nextNew;

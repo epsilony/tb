@@ -14,7 +14,7 @@ public class SimpleGradientSolverTest {
     public SimpleGradientSolverTest() {
     }
 
-    public static class Quadric1D implements DifferentiableFunction<double[], double[]> {
+    public static class Quadric1D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -63,7 +63,7 @@ public class SimpleGradientSolverTest {
         solver.solve(new double[]{0});
     }
 
-    public static class Quadric2D implements DifferentiableFunction<double[], double[]> {
+    public static class Quadric2D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -117,7 +117,7 @@ public class SimpleGradientSolverTest {
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < 1e-6);
     }
 
-    public static class Quadric1DLocalMini implements DifferentiableFunction<double[], double[]> {
+    public static class Quadric1DLocalMini implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {

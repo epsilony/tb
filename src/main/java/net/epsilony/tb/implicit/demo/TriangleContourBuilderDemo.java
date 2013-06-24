@@ -68,7 +68,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     public static final int DRAG_HOLE = 2;
     public static final int DRAG_NOTHING = 0;
     public TriangleContourBuilder contourBuilder;
-    public double holeRadius = 20.47193553911849;// 15;
+    public double holeRadius = 15;
     public double holeX = 44;
     public double holeY = 42;
     public double diskRadius = 30;
@@ -176,7 +176,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         MiscellaneousUtils.addToList(coverRectangle, cells);
     }
 
-    public class SampleFunction implements DifferentiableFunction<double[], double[]> {
+    public class SampleFunction implements DifferentiableFunction {
 
         int diffOrder = 0;
         LogicalMaximum logMax = new LogicalMaximum();

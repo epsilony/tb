@@ -15,7 +15,7 @@ public class SimpleBisectionSolver implements BoundedImplicitFunctionSolver {
     double solutionAbsoluteTolerence;
     double[] solution;
     double[] functionValue;
-    DifferentiableFunction<double[], double[]> function;
+    DifferentiableFunction function;
     int maxEval;
 
     public double[] getLowerBounds() {
@@ -70,12 +70,12 @@ public class SimpleBisectionSolver implements BoundedImplicitFunctionSolver {
         return functionValue;
     }
 
-    public DifferentiableFunction<double[], double[]> getFunction() {
+    public DifferentiableFunction getFunction() {
         return function;
     }
 
     @Override
-    public void setFunction(DifferentiableFunction<double[], double[]> function) {
+    public void setFunction(DifferentiableFunction function) {
         if (function.getInputDimension() != 1 || function.getOutputDimension() != 1) {
             throw new IllegalArgumentException("only supported 1d");
         }

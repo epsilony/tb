@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  */
 public class LogicalMaximumTest {
 
-    public static class FunA_1D implements DifferentiableFunction<double[], double[]> {
+    public static class FunA_1D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -44,7 +44,7 @@ public class LogicalMaximumTest {
         }
     }
 
-    public static class FunB_1D implements DifferentiableFunction<double[], double[]> {
+    public static class FunB_1D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -106,7 +106,7 @@ public class LogicalMaximumTest {
         assertArrayEquals(exps, acts, 1e-14);
     }
 
-    public static class FunA_2D implements DifferentiableFunction<double[], double[]> {
+    public static class FunA_2D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -141,7 +141,7 @@ public class LogicalMaximumTest {
         }
     }
 
-    public static class FunB_2D implements DifferentiableFunction<double[], double[]> {
+    public static class FunB_2D implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {

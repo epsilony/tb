@@ -9,5 +9,5 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
  */
 public interface ConstraintImplicitFunctionSolver extends BoundedImplicitFunctionSolver {
 
-    public void addConstraint(DifferentiableFunction<double[], double[]> constraint, double tolerence);
+    public void addConstraint(DifferentiableFunction constraint, double tolerence);
 }

@@ -7,7 +7,7 @@ package net.epsilony.tb.analysis;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractDifferentiableFunction implements DifferentiableFunction<double[], double[]>{
+public abstract class AbstractDifferentiableFunction implements DifferentiableFunction{
     protected int diffOrder;
     
     @Override

@@ -20,7 +20,7 @@ public class SimpleGradientSolver implements ImplicitFunctionSolver {
     public static double DEFAULT_SOLUTION_ABSOLUTE_TOLERENCE = 1E-6;
     public static int DEFAULT_MAX_EVAL = 10000;
     public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = -1;
-    DifferentiableFunction<double[], double[]> function;
+    DifferentiableFunction function;
     double solutionAbsoluteTolerence = DEFAULT_SOLUTION_ABSOLUTE_TOLERENCE;
     int maxEval = DEFAULT_MAX_EVAL;
     private double[] solution;
@@ -31,12 +31,12 @@ public class SimpleGradientSolver implements ImplicitFunctionSolver {
     SolutionStatus solutionStatus;
     private double functionAbsoluteTolerence = DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE;
 
-    public DifferentiableFunction<double[], double[]> getFunction() {
+    public DifferentiableFunction getFunction() {
         return function;
     }
 
     @Override
-    public void setFunction(DifferentiableFunction<double[], double[]> function) {
+    public void setFunction(DifferentiableFunction function) {
 
         if (1 != function.getOutputDimension()) {
             throw new IllegalArgumentException();

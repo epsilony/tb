@@ -51,7 +51,7 @@ public class NloptAdapter {
         return nloptAlgorithmName(getAlgorithm()).getCString();
     }
 
-    public void setMinObjective(DifferentiableFunction<double[], double[]> function) {
+    public void setMinObjective(DifferentiableFunction function) {
         if (function.getOutputDimension() != 1 || function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }
@@ -99,7 +99,7 @@ public class NloptAdapter {
         return nloptUpperBounds.getDoubles();
     }
 
-    public void addInequalityConstraint(DifferentiableFunction<double[], double[]> function, double tolerence) {
+    public void addInequalityConstraint(DifferentiableFunction function, double tolerence) {
         if (function.getOutputDimension() != 1 || function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }
@@ -110,7 +110,7 @@ public class NloptAdapter {
         inequalConstraintsHolder.add(nloptFunction);
     }
 
-    public void addEqualityConstraint(DifferentiableFunction<double[], double[]> function, double tolerence) {
+    public void addEqualityConstraint(DifferentiableFunction function, double tolerence) {
         if (function.getOutputDimension() != 1 || function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }
@@ -135,7 +135,7 @@ public class NloptAdapter {
         checkNloptResult(nloptResult);
     }
 
-    public void addInequalityVectorConstraint(DifferentiableFunction<double[], double[]> function, double[] tols) {
+    public void addInequalityVectorConstraint(DifferentiableFunction function, double[] tols) {
         if (function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }
@@ -150,7 +150,7 @@ public class NloptAdapter {
         inequalMconstraintsHolder.add(nloptMfunc);
     }
 
-    public void addEqualityVectorConstraint(DifferentiableFunction<double[], double[]> function, double[] tols) {
+    public void addEqualityVectorConstraint(DifferentiableFunction function, double[] tols) {
         if (function.getInputDimension() != getDimension()) {
             throw new IllegalArgumentException("dimension mismatch");
         }

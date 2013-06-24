@@ -53,7 +53,7 @@ public class MMAFunctionSolverTest {
     public void testLinear1D() {
         double tol = 1e-3;
         MMAFunctionSolver solver = new MMAFunctionSolver(1);
-        DifferentiableFunction<double[], double[]> func = new Linear1D();
+        DifferentiableFunction func = new Linear1D();
         solver.setFunction(func);
         solver.setMaxEval(200);
         solver.setFunctionAbsoluteTolerence(tol);
@@ -65,7 +65,7 @@ public class MMAFunctionSolverTest {
         assertArrayEquals(functionValue, func.value(new double[]{exp}, null), tol);
     }
 
-    public static class Quadric2D implements DifferentiableFunction<double[], double[]> {
+    public static class Quadric2D implements DifferentiableFunction {
 
         int count = 0;
 

@@ -17,7 +17,7 @@ import net.epsilony.tb.solid.Node;
 public abstract class AbstractTriangleContourBuilder implements TriangleContourBuilder {
 
     protected List<TriangleContourCell> cells;
-    protected DifferentiableFunction<double[], double[]> levelSetFunction;
+    protected DifferentiableFunction levelSetFunction;
     protected List<Line2D> contourHeads = new LinkedList<>();
     protected Iterator<TriangleContourCell> cellsIterator;
     protected List<Line2D> openRingsHeads = new LinkedList<>();
@@ -28,7 +28,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     @Override
-    public DifferentiableFunction<double[], double[]> getLevelSetFunction() {
+    public DifferentiableFunction getLevelSetFunction() {
         return levelSetFunction;
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     @Override
-    public void setLevelSetFunction(DifferentiableFunction<double[], double[]> levelSetFunction) {
+    public void setLevelSetFunction(DifferentiableFunction levelSetFunction) {
         if (levelSetFunction.getOutputDimension() != 1) {
             throw new IllegalArgumentException("output should be 1d only, not" + levelSetFunction.getOutputDimension());
         }
@@ -124,7 +124,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return t;
     }
 
-    protected class OnLineFunction implements DifferentiableFunction<double[], double[]> {
+    protected class OnLineFunction implements DifferentiableFunction {
 
         double[] endCoord;
         double[] startCoord;

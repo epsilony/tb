@@ -17,10 +17,10 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
     public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = 1E-4;
     NloptAdapter nloptAdapter;
     double[] oriValue;
-    DifferentiableFunction<double[], double[]> oriFunction;
-    DifferentiableFunction<double[], double[]> squaredFunction = new SquaredFunction();
+    DifferentiableFunction oriFunction;
+    DifferentiableFunction squaredFunction = new SquaredFunction();
 
-    private class SquaredFunction implements DifferentiableFunction<double[], double[]> {
+    private class SquaredFunction implements DifferentiableFunction {
 
         @Override
         public int getInputDimension() {
@@ -88,7 +88,7 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
     }
 
     @Override
-    public void setFunction(DifferentiableFunction<double[], double[]> function) {
+    public void setFunction(DifferentiableFunction function) {
         oriFunction = function;
         nloptAdapter.setMinObjective(squaredFunction);
     }
@@ -140,7 +140,7 @@ public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {
     }
 
     @Override
-    public void addConstraint(DifferentiableFunction<double[], double[]> function, double tolerence) {
+    public void addConstraint(DifferentiableFunction function, double tolerence) {
         nloptAdapter.addInequalityConstraint(function, tolerence);
     }
 }

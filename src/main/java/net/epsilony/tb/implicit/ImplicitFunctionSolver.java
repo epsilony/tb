@@ -19,7 +19,7 @@ public interface ImplicitFunctionSolver {
 
     double getSolutionAbsoluteTolerence();
 
-    void setFunction(DifferentiableFunction<double[], double[]> function);
+    void setFunction(DifferentiableFunction function);
 
     void setFunctionAbsoluteTolerence(double functionAbsoluteTolerence);
 

@@ -23,7 +23,7 @@ public class NloptAdapterTest {
 
     @Test
     public void testStandardCase() {
-        DifferentiableFunction<double[], double[]> objFunc = new AbstractDifferentiableFunction() {
+        DifferentiableFunction objFunc = new AbstractDifferentiableFunction() {
 //            int count = 0;
             @Override
             public int getInputDimension() {
@@ -54,7 +54,7 @@ public class NloptAdapterTest {
                 return output;
             }
         };
-        DifferentiableFunction<double[], double[]> constraints = new AbstractDifferentiableFunction() {
+        DifferentiableFunction constraints = new AbstractDifferentiableFunction() {
             double[][] abs = new double[][]{{2, 0}, {-1, 1}};
 //            int count;
 

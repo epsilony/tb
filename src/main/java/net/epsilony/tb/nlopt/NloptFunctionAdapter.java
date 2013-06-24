@@ -13,7 +13,7 @@ import org.bridj.Pointer;
  */
 public class NloptFunctionAdapter extends NloptFunc {
 
-    private final DifferentiableFunction<double[], double[]> function;
+    private final DifferentiableFunction function;
     private final double[] xs;
     private final double[] funcValue;
 
@@ -35,7 +35,7 @@ public class NloptFunctionAdapter extends NloptFunc {
         return result;
     }
 
-    public NloptFunctionAdapter(DifferentiableFunction<double[], double[]> function) {
+    public NloptFunctionAdapter(DifferentiableFunction function) {
         if (function.getOutputDimension() != 1) {
             throw new IllegalArgumentException("function should be real, not vector");
         }

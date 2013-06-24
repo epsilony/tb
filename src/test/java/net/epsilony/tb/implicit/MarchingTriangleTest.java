@@ -21,7 +21,7 @@ public class MarchingTriangleTest {
     public MarchingTriangleTest() {
     }
 
-    public class RawOneDiskWithAHole implements DifferentiableFunction<double[], double[]> {
+    public class RawOneDiskWithAHole implements DifferentiableFunction {
 
         int diffOrder = 0;
         double diskX = 50, diskY = 50, diskRad = 40;

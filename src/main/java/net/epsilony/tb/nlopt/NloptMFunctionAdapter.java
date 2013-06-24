@@ -13,7 +13,7 @@ import org.bridj.Pointer;
  */
 public class NloptMFunctionAdapter extends NloptMfunc {
 
-    private final DifferentiableFunction<double[], double[]> function;
+    private final DifferentiableFunction function;
     private final double[] xs;
     private final double[] funcValues;
 
@@ -39,7 +39,7 @@ public class NloptMFunctionAdapter extends NloptMfunc {
         }
     }
 
-    public NloptMFunctionAdapter(DifferentiableFunction<double[], double[]> function) {
+    public NloptMFunctionAdapter(DifferentiableFunction function) {
         this.function = function;
         xs = new double[function.getInputDimension()];
         funcValues = new double[(function.getInputDimension() + 1) * function.getOutputDimension()];

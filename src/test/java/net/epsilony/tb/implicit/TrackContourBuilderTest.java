@@ -28,7 +28,7 @@ public class TrackContourBuilderTest {
     double holeCenterY = -15;
     double holeRadius = 20;
 
-    public class SampleOneDiskWithAHole implements DifferentiableFunction<double[], double[]> {
+    public class SampleOneDiskWithAHole implements DifferentiableFunction {
 
         LogicalMaximum max = new LogicalMaximum();
         private CircleLevelSet disk;
