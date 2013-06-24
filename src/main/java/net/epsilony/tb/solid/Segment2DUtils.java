@@ -76,12 +76,16 @@ public class Segment2DUtils {
             double[] startCoord = line.getStart().getCoord();
             path.moveTo(startCoord[0], startCoord[1]);
             SegmentIterator<Segment> lineIter = new SegmentIterator<>(line);
-            lineIter.next();
+            Segment next;
+            next = lineIter.next();
             while (lineIter.hasNext()) {
-                startCoord = lineIter.next().getStart().getCoord();
+                next = lineIter.next();
+                startCoord = next.getStart().getCoord();
                 path.lineTo(startCoord[0], startCoord[1]);
             }
-            path.closePath();
+            if (next.getSucc() != null) {
+                path.closePath();
+            }
         }
 
         return path;
