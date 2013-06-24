@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import net.epsilony.tb.analysis.DifferentiableFunction;
 
 /**
  *
@@ -26,6 +27,38 @@ public class Polygon2D implements Iterable<Line2D> {
         }
         return new Polygon2D(nodeChains);
     }
+    private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
+        @Override
+        public int getInputDimension() {
+            return 2;
+        }
+
+        @Override
+        public int getOutputDimension() {
+            return 1;
+        }
+
+        @Override
+        public double[] value(double[] input, double[] output) {
+            if (null == output) {
+                output = new double[1];
+            }
+            output[0] = -distanceFunc(input[0], input[1]);
+            return output;
+        }
+
+        @Override
+        public int getDiffOrder() {
+            return 0;
+        }
+
+        @Override
+        public void setDiffOrder(int diffOrder) {
+            if (diffOrder != 0) {
+                throw new IllegalArgumentException();
+            }
+        }
+    };
 
     public Polygon2D(List<? extends List<? extends Node>> nodeChains) {
         if (nodeChains.isEmpty()) {
@@ -169,6 +202,10 @@ public class Polygon2D implements Iterable<Line2D> {
             }
         }
         return rayCrs == 'i' ? inf : -inf;
+    }
+
+    public DifferentiableFunction getLevelSetFunction() {
+        return levelSetFunction;
     }
 
     public Polygon2D fractionize(double lenUpBnd) {
