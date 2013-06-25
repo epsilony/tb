@@ -2,7 +2,6 @@
 package net.epsilony.tb.common_func;
 
 import java.util.Arrays;
-import net.epsilony.tb.shape_func.RadialFunctionCore;
 import net.epsilony.tb.MiscellaneousUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 

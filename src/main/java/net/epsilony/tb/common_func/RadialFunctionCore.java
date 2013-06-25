@@ -1,5 +1,5 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb.shape_func;
+package net.epsilony.tb.common_func;
 
 import net.epsilony.tb.analysis.UnivarArrayFunction;
 import net.epsilony.tb.synchron.SynchronizedClonable;

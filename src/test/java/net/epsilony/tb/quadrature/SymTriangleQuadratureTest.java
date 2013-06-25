@@ -3,7 +3,7 @@ package net.epsilony.tb.quadrature;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import java.util.Random;
-import net.epsilony.tb.shape_func.MonomialBasis2D;
+import net.epsilony.tb.common_func.MonomialBasis2D;
 import net.epsilony.tb.analysis.ArrvarFunction;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.integration.SimpsonIntegrator;

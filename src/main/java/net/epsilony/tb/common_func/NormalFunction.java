@@ -3,7 +3,6 @@
  */
 package net.epsilony.tb.common_func;
 
-import net.epsilony.tb.shape_func.RadialFunctionCore;
 import static java.lang.Math.*;
 import net.epsilony.tb.MiscellaneousUtils;
 

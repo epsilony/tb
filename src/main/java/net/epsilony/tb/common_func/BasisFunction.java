@@ -1,5 +1,5 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb.shape_func;
+package net.epsilony.tb.common_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import net.epsilony.tb.analysis.WithDiffOrder;
