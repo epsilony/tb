@@ -64,6 +64,21 @@ public class RadialFunction2D implements WithDiffOrder, SynchronizedClonable<Rad
         return results;
     }
 
+    public double[] values(double[] dists, double influenceRad, double[] output) {
+        int outputLength = WithDiffOrderUtil.outputLength2D(getDiffOrder());
+        if (null == output) {
+            output = new double[outputLength];
+        }
+        coreFunc.values(dists[0] / influenceRad, output);
+        if (getDiffOrder() >= 1) {
+            double d = output[1];
+            for (int j = 1; j < outputLength; j++) {
+                output[j] = d / influenceRad * dists[j];
+            }
+        }
+        return output;
+    }
+
     @Override
     public RadialFunction2D synchronizeClone() {
         return new RadialFunction2D(coreFunc.synchronizeClone());
