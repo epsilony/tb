@@ -2,7 +2,6 @@
 package net.epsilony.tb.solid;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  *
@@ -10,12 +9,12 @@ import java.util.List;
  */
 public class SegmentChainsIterator<T extends Segment> implements Iterator<T> {
 
-    Iterator<T> startIterator;
+    Iterator<? extends T> startIterator;
     T seg;
     T last;
     T start;
 
-    public SegmentChainsIterator(List<T> chainsHeads) {
+    public SegmentChainsIterator(Iterable<? extends T> chainsHeads) {
         startIterator = chainsHeads.iterator();
         seg = startIterator.hasNext() ? startIterator.next() : null;
         start = seg;
