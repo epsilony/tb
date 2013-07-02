@@ -6,6 +6,7 @@ package net.epsilony.tb.nativelib;
 import java.io.InputStream;
 import java.util.Scanner;
 import org.bridj.Pointer;
+import static net.epsilony.tb.nativelib.TriangleLibrary.*;
 
 /**
  *
@@ -13,8 +14,8 @@ import org.bridj.Pointer;
  */
 public class TriangleLibraryUtils {
 
-    public static TriangleLibrary.TriangulateIO readPoly(InputStream in, boolean zeroStart) {
-        TriangleLibrary.TriangulateIO triangulateIO = new TriangleLibrary.TriangulateIO();
+    public static TriangulateIO readPoly(InputStream in, boolean zeroStart) {
+        TriangulateIO triangulateIO = new TriangulateIO();
         Scanner scanner = new Scanner(in);
         readPoints(scanner, triangulateIO, zeroStart);
         readSegments(scanner, triangulateIO, zeroStart);
@@ -23,7 +24,7 @@ public class TriangleLibraryUtils {
         return triangulateIO;
     }
 
-    private static void readPoints(Scanner scanner, TriangleLibrary.TriangulateIO triangulateIO, boolean zeroStart) {
+    private static void readPoints(Scanner scanner, TriangulateIO triangulateIO, boolean zeroStart) {
         int pointsNum = scanner.nextInt();
         int dimension = scanner.nextInt();
         if (dimension != 2) {
@@ -71,7 +72,7 @@ public class TriangleLibraryUtils {
         }
     }
 
-    private static void readSegments(Scanner scanner, TriangleLibrary.TriangulateIO triangulateIO, boolean zeroStart) {
+    private static void readSegments(Scanner scanner, TriangulateIO triangulateIO, boolean zeroStart) {
         int segmentNum = scanner.nextInt();
         boolean useMarkers = scanner.nextInt() != 0;
         triangulateIO.setNumberOfSegments(segmentNum);
@@ -96,7 +97,7 @@ public class TriangleLibraryUtils {
         triangulateIO.setSegmentMarkerList(useMarkers ? Pointer.pointerToInts(markers) : Pointer.NULL);
     }
 
-    private static void readHoles(Scanner scanner, TriangleLibrary.TriangulateIO triangulateIO, boolean zeroStart) {
+    private static void readHoles(Scanner scanner, TriangulateIO triangulateIO, boolean zeroStart) {
         int holeNum = scanner.nextInt();
         triangulateIO.setNumberOfHoles(holeNum);
         if (holeNum <= 0) {
@@ -112,7 +113,7 @@ public class TriangleLibraryUtils {
         triangulateIO.setHoleList(holeNum > 0 ? Pointer.pointerToDoubles(holes) : Pointer.NULL);
     }
 
-    private static void readRegions(Scanner scanner, TriangleLibrary.TriangulateIO triangulateIO, boolean zeroStart) {
+    private static void readRegions(Scanner scanner, TriangulateIO triangulateIO, boolean zeroStart) {
         if (!scanner.hasNextInt()) {
             return;
         }
