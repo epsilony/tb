@@ -7,13 +7,13 @@ import net.epsilony.tb.IntIdentityMap;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractSegment implements Segment {
+public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Node> implements Segment<PS, ND> {
 
     protected int diffOrder = 0;
-    protected Node start;
+    protected ND start;
     public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
-    protected Segment pred;
-    protected Segment succ;
+    protected PS pred;
+    protected PS succ;
 
     @Override
     public int getDiffOrder() {
@@ -21,7 +21,7 @@ public abstract class AbstractSegment implements Segment {
     }
 
     @Override
-    public Node getStart() {
+    public ND getStart() {
         return start;
     }
 
@@ -35,12 +35,12 @@ public abstract class AbstractSegment implements Segment {
     }
 
     @Override
-    public Segment getPred() {
+    public PS getPred() {
         return pred;
     }
 
     @Override
-    public Node getEnd() {
+    public ND getEnd() {
         return succ.getStart();
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractSegment implements Segment {
     }
 
     @Override
-    public Segment getSucc() {
+    public PS getSucc() {
         return succ;
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractSegment implements Segment {
     }
 
     @Override
-    public void setStart(Node start) {
+    public void setStart(ND start) {
         this.start = start;
     }
 
@@ -72,12 +72,12 @@ public abstract class AbstractSegment implements Segment {
     }
 
     @Override
-    public void setPred(Segment pred) {
+    public void setPred(PS pred) {
         this.pred = pred;
     }
 
     @Override
-    public void setSucc(Segment succ) {
+    public void setSucc(PS succ) {
         this.succ = succ;
     }
 }
