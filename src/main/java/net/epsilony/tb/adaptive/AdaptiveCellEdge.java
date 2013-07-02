@@ -3,7 +3,6 @@ package net.epsilony.tb.adaptive;
 
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
@@ -70,14 +69,14 @@ public class AdaptiveCellEdge extends Line2D {
     }
 
     @Override
-    public void setPred(Segment pred) {
+    public void setPred(Line2D pred) {
         AdaptiveCellEdge wPred = (AdaptiveCellEdge) pred;
         super.setPred(wPred);
 
     }
 
     @Override
-    public void setSucc(Segment succ) {
+    public void setSucc(Line2D succ) {
         AdaptiveCellEdge wSucc = (AdaptiveCellEdge) succ;
         super.setSucc(wSucc);
     }
