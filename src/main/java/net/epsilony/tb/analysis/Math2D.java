@@ -184,6 +184,10 @@ public class Math2D {
 
     public static boolean isAnticlockwise(Iterable<double[]> simplePolygonVertes) {
         Iterator<double[]> iter = simplePolygonVertes.iterator();
+        return isAnticlockwise(iter);
+    }
+
+    public static boolean isAnticlockwise(Iterator<double[]> iter) {
         double[] firstSegmentStart = iter.next();
         double[] firstSegmentEnd = iter.next();
         double[] p1;
