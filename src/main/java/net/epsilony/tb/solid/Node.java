@@ -2,6 +2,7 @@
 package net.epsilony.tb.solid;
 
 import java.util.Arrays;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.IntIdentity;
 import net.epsilony.tb.IntIdentityMap;
 
@@ -55,5 +56,14 @@ public class Node implements IntIdentity {
     @Override
     public String toString() {
         return String.format("Node(%d)%s", id, Arrays.toString(coord));
+    }
+
+    public static Factory<Node> factory() {
+        return new Factory<Node>() {
+            @Override
+            public Node produce() {
+                return new Node();
+            }
+        };
     }
 }
