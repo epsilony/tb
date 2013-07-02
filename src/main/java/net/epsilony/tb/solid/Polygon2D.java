@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
+import net.epsilony.tb.analysis.Math2D;
 
 /**
  *
@@ -251,5 +252,38 @@ public class Polygon2D implements Iterable<Line2D> {
             segments.add(seg);
         }
         return segments;
+    }
+
+    public List<double[]> getPointsInHoles() {
+        List<double[]> result = new LinkedList<>();
+        for (Line2D head : chainsHeads) {
+            SegmentCoordIterator iter = new SegmentCoordIterator(head);
+            if (!Math2D.isAnticlockwise(iter)) {
+                continue;
+            }
+            double[] pt = new double[2];
+            int maxCount = 100;
+            for (Line2D line : new SegmentIterable<>(head)) {
+                double[] coord = line.getSucc().getEnd().getCoord();
+                if (Segment2DUtils.isPointStrictlyAtChordLeft(line, coord)) {
+                    Math2D.pointOnSegment(line.getStartCoord(), coord, 0.5, pt);
+                }
+                char rayCrossing = rayCrossing(pt[0], pt[1]);
+                boolean added = false;
+                do {
+                    if (rayCrossing == 'i') {
+                        result.add(pt);
+                        added = true;
+                        break;
+                    }
+                    Math2D.pointOnSegment(line.getEndCoord(), pt, 0.1, pt);
+                    maxCount--;
+                } while (Math2D.distanceSquare(pt, line.getEndCoord()) > 0 && maxCount > 0);
+                if (added) {
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }
