@@ -4,6 +4,10 @@
 package net.epsilony.tb.nativelib;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import org.bridj.Pointer;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
@@ -136,5 +140,33 @@ public class TriangleLibraryUtils {
             regions[index + 3] = area;
         }
         triangulateIO.setRegionList(Pointer.pointerToDoubles(regions));
+    }
+    private static final List<String> doNotFree = Arrays.asList(new String[]{"Number", "Hole", "Region"});
+
+    public static void freeOut(TriangulateIO out) {
+        Method[] methods = TriangulateIO.class.getDeclaredMethods();
+        for (Method method : methods) {
+            String name = method.getName();
+            if (!name.startsWith("get")) {
+                continue;
+            }
+            boolean fit = true;
+            for (String doNot : doNotFree) {
+                if (name.contains(doNot)) {
+                    fit = false;
+                    continue;
+                }
+            }
+            if (!fit) {
+                continue;
+            }
+            Pointer<?> pointer;
+            try {
+                pointer = (Pointer<?>) method.invoke(out);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                throw new IllegalArgumentException();
+            } 
+            trifree(pointer);
+        }
     }
 }

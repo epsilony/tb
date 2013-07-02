@@ -6,6 +6,7 @@ package net.epsilony.tb.nativelib.demo;
 import java.io.InputStream;
 import java.util.Arrays;
 import net.epsilony.tb.nativelib.TriangleLibrary;
+import net.epsilony.tb.nativelib.TriangleLibraryUtils;
 import static net.epsilony.tb.nativelib.TriangleLibraryUtils.readPoly;
 import org.bridj.Pointer;
 
@@ -25,5 +26,6 @@ public class TriangleLibraryDemo {
         Pointer<TriangleLibrary.TriangulateIO> trinPt = Pointer.pointerTo(trin);
         Pointer<TriangleLibrary.TriangulateIO> trioutPt = Pointer.pointerTo(triout);
         TriangleLibrary.triangulate(Pointer.pointerToCString("pq"), trinPt, trioutPt, Pointer.NULL);
+        TriangleLibraryUtils.freeOut(triout);
     }
 }
