@@ -10,7 +10,6 @@ import net.epsilony.tb.analysis.UnivarArrayFunction;
  */
 public interface Segment extends IntIdentity, UnivarArrayFunction {
 
-    void bisect();
 
     Node getStart();
 

@@ -20,7 +20,6 @@ public class Line2D extends AbstractSegment {
         return Math2D.distance(getStart().getCoord(), getEnd().getCoord());
     }
 
-    @Override
     public void bisect() {
         Line2D newSucc = newInstance();
         newSucc.setStart(bisectionNode());
