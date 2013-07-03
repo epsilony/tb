@@ -59,7 +59,10 @@ public class RectangleCoverTriangleCellsFactoryTest {
         assertTrue(minY < rect.getMinY());
         assertTrue(maxX > rect.getMaxX());
         assertTrue(maxY > rect.getMaxY());
+        checkTriangleLink(cellList);
+    }
 
+    public static void checkTriangleLink(List<SimpTriangleCell<Node>> cellList) {
         Map<SimpTriangleCell<Node>, Integer> cellMap = new HashMap<>();
         for (SimpTriangleCell<Node> cell : cellList) {
             for (int i = 0; i < 3; i++) {
@@ -80,7 +83,8 @@ public class RectangleCoverTriangleCellsFactoryTest {
                 cellMap.put(oppositeCell, result);
             }
         }
-
+        
+        assertTrue(cellMap.size()==cellList.size());
 
         for (Map.Entry<SimpTriangleCell<Node>, Integer> entry : cellMap.entrySet()) {
             Integer value = entry.getValue();
