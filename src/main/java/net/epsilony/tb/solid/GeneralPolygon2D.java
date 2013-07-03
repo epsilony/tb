@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
 import java.util.ArrayList;
@@ -13,7 +10,7 @@ import net.epsilony.tb.analysis.Math2D;
 
 /**
  *
- * @author epsilon
+ * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> implements Iterable<SEG> {
 
@@ -193,20 +190,25 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         List<double[]> result = new LinkedList<>();
         for (SEG head : chainsHeads) {
             SegmentCoordIterator iter = new SegmentCoordIterator(head);
-            if (!Math2D.isAnticlockwise(iter)) {
+            if (Math2D.isAnticlockwise(iter)) {
                 continue;
             }
             double[] pt = new double[2];
-            int maxCount = 100;
+
             for (SEG line : new SegmentIterable<>(head)) {
                 double[] coord = line.getSucc().getEnd().getCoord();
-                if (Segment2DUtils.isPointStrictlyAtChordLeft(line, coord)) {
-                    Math2D.pointOnSegment(line.getStart().getCoord(), coord, 0.5, pt);
+                if (!Segment2DUtils.isPointStrictlyAtChordRight(line, coord)) {
+                    continue;
                 }
+                Math2D.pointOnSegment(line.getStart().getCoord(), coord, 0.5, pt);
                 char rayCrossing = rayCrossing(pt[0], pt[1]);
                 boolean added = false;
+                int maxCount = 100;
                 do {
-                    if (rayCrossing == 'i') {
+                    if (rayCrossing == 'e' || rayCrossing == 'v') {
+                        break;
+                    }
+                    if (rayCrossing == 'o') {
                         result.add(pt);
                         added = true;
                         break;
