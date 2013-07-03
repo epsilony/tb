@@ -61,6 +61,14 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         }
     }
 
+    public void fillNodesIds() {
+        int id = 0;
+        for (SEG seg : this) {
+            seg.getStart().setId(id);
+            id++;
+        }
+    }
+
     public ArrayList<SEG> getChainsHeads() {
         return chainsHeads;
     }
