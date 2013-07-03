@@ -18,6 +18,7 @@ public class GeneralTriangleCellFactory<
     Factory<? extends CELL> cellFactory;
     Factory<? extends EDGE> edgeFactory;
     Factory<? extends NODE> nodeFactory;
+    boolean genVertes = true;
 
     public GeneralTriangleCellFactory(Factory<? extends CELL> cellFactory, Factory<? extends EDGE> edgeFactory, Factory<? extends NODE> nodeFactory) {
         this.cellFactory = cellFactory;
@@ -33,13 +34,23 @@ public class GeneralTriangleCellFactory<
         CELL result = cellFactory.produce();
         for (int i = 0; i < 3; i++) {
             result.setVertexEdge(i, edgeFactory.produce());
-            result.setVertex(i, nodeFactory.produce());
+            if (genVertes) {
+                result.setVertex(i, nodeFactory.produce());
+            }
         }
         for (int i = 0; i < 3; i++) {
             Segment2DUtils.link(result.getVertexEdge(i), result.getVertexEdge((i + 1) % 3));
             result.getVertexEdge(i).setCell(result);
         }
         return result;
+    }
+
+    public boolean isGenVertes() {
+        return genVertes;
+    }
+
+    public void setGenVertes(boolean genVertes) {
+        this.genVertes = genVertes;
     }
 
     public Factory<? extends CELL> getCellFactory() {
