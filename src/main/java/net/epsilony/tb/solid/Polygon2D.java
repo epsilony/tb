@@ -2,6 +2,7 @@
 package net.epsilony.tb.solid;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,6 +17,9 @@ public class Polygon2D extends GeneralPolygon2D<Line2D, Node> {
             ArrayList<Node> nodes = new ArrayList<>(coords.length);
             nodeChains.add(nodes);
             for (double[] coord : coords) {
+                if (coords.length < 2) {
+                    throw new IllegalArgumentException();
+                }
                 nodes.add(new Node(coord));
             }
         }
@@ -53,6 +57,29 @@ public class Polygon2D extends GeneralPolygon2D<Line2D, Node> {
     public Polygon2D() {
     }
 
+    public Polygon2D(GeneralPolygon2D<? extends Segment, ? extends Node> plg) {
+        ArrayList<? extends Segment<?, ? extends Node>> plgHeads = plg.getChainsHeads();
+        if (null == plgHeads) {
+            return;
+        }
+        chainsHeads = new ArrayList<>(plgHeads.size());
+        for (Segment head : plgHeads) {
+            Node node = new Node(head.getStart().getCoord());
+            Line2D newHead = new Line2D(node);
+            chainsHeads.add(newHead);
+            Iterator<Segment> iter = new SegmentIterator<>(head);
+            iter.next();
+            Line2D pred = newHead;
+            while (iter.hasNext()) {
+                Segment next = iter.next();
+                Line2D newNext = new Line2D(new Node(next.getStart().getCoord()));
+                Segment2DUtils.link(pred, newNext);
+                pred = newNext;
+            }
+            Segment2DUtils.link(pred, newHead);
+        }
+    }
+
     public double getMinSegmentLength() {
         return getMinSegmentCoordLength();
     }
@@ -76,5 +103,18 @@ public class Polygon2D extends GeneralPolygon2D<Line2D, Node> {
             } while (seg != cHead);
         }
         return res;
+    }
+
+    public double calcArea() {
+        double area = 0;
+        for (Segment seg : this) {
+            double[] start = seg.getStart().getCoord();
+            double[] end = seg.getEnd().getCoord();
+            double dx = end[0] - start[0];
+            double dy = end[1] - start[1];
+            area += start[0] * dy - start[1] * dx;
+        }
+        area /= 2;
+        return area;
     }
 }
