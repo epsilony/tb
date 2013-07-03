@@ -303,14 +303,15 @@ public class TriangleLibrary {
             return this;
         }
 
-//        /**
-//         * In / pointer to array copied out<br>
-//         * C type : double*
-//         */
-//        @Field(15)
-//        public Pointer<Double> holelist() {
-//            return this.io.getPointerField(this, 15);
-//        }
+        /**
+         * In / pointer to array copied out<br>
+         * C type : double*
+         */
+        @Field(15)
+        public Pointer<Double> getHoleList() {
+            return this.io.getPointerField(this, 15);
+        }
+
         /**
          * In / pointer to array copied out<br>
          * C type : double*
