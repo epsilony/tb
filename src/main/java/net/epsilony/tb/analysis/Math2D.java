@@ -3,6 +3,7 @@ package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import net.epsilony.tb.solid.triangle.Triangle;
 
 /**
  *
@@ -95,6 +96,13 @@ public class Math2D {
 
     public static double triangleArea(double x1, double y1, double x2, double y2, double x3, double y3) {
         return 0.5 * cross(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
+    }
+
+    public static double triangleArea(Triangle tri) {
+        double[] c1 = tri.getVertex(0).getCoord();
+        double[] c2 = tri.getVertex(1).getCoord();
+        double[] c3 = tri.getVertex(2).getCoord();
+        return triangleArea(c1[0], c1[1], c2[0], c2[1], c3[0], c3[1]);
     }
 
     public static boolean isSegmentsIntersecting(double[] start1, double[] end1, double[] start2, double[] end2) {
