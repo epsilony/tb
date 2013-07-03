@@ -30,6 +30,17 @@ public class Segment2DUtils {
         return cross > 0 ? true : false;
     }
 
+    public static boolean isPointStrictlyAtChordRight(Segment seg, double[] xy) {
+        double[] startCoord = seg.getStart().coord;
+        double[] endCoord = seg.getEnd().coord;
+        double dhrX = endCoord[0] - startCoord[0];
+        double dhrY = endCoord[1] - startCoord[1];
+        double dx = xy[0] - startCoord[0];
+        double dy = xy[1] - startCoord[1];
+        double cross = Math2D.cross(dhrX, dhrY, dx, dy);
+        return cross < 0 ? true : false;
+    }
+
     public static double distanceToChord(Segment seg, double x, double y) {
         double[] v1 = seg.getStart().coord;
         double[] v2 = seg.getEnd().coord;
