@@ -134,6 +134,7 @@ public class RectangleCoverTriangleCellsFactory<
             int rowMod = i % 2;
             ArrayList<CELL> cellRow = new ArrayList<>(numCols);
             cellGrid.add(cellRow);
+            generalTriangleCellFactory.setGenVertes(false);
             for (int j = 0; j < numCols; j++) {
                 CELL cell = generalTriangleCellFactory.produce();
                 cellRow.add(cell);
