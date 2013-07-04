@@ -11,7 +11,6 @@ import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.GeneralPolygon2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Polygon2D;
 import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.solid.SegmentIterator;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
@@ -29,7 +28,7 @@ public class PolygonTriangulatorFactory//
         NODE extends Node> implements Factory<TriangleArrayContainers<CELL, NODE>> {
 
     GeneralTriangleCellFactory<CELL, EDGE, NODE> generalCellFactory = new GeneralTriangleCellFactory<>();
-    GeneralPolygon2D<? extends Segment, ? extends Node> polygon;
+    GeneralPolygon2D<? extends Segment<?, ? extends Node>, ? extends Node> polygon;
     private TriangulateIO triIn;
     private TriangulateIO triOut;
     double triangleArea = -1;
@@ -62,8 +61,8 @@ public class PolygonTriangulatorFactory//
         this.prohibitEdgeSteinerPoint = prohibitEdgeSteinerPoint;
     }
 
-    public void setPolygon(GeneralPolygon2D<? extends Segment, ? extends Node> input) {
-        this.polygon = new Polygon2D(input);
+    public void setPolygon(GeneralPolygon2D<? extends Segment<?, ? extends Node>, ? extends Node> input) {
+        this.polygon = input;
     }
 
     public Factory<? extends CELL> getCellFactory() {
@@ -109,6 +108,7 @@ public class PolygonTriangulatorFactory//
         triangulate(Pointer.pointerToCString(sw), Pointer.pointerTo(triIn), Pointer.pointerTo(triOut), Pointer.NULL);
         extractNodes();
         extractTriangles();
+        //TODO: move to dispose
         TriangleLibraryUtils.freeOut(triOut);
     }
 
