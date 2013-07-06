@@ -5,6 +5,8 @@ import gnu.trove.list.array.TDoubleArrayList;
 import java.util.Random;
 import net.epsilony.tb.common_func.MonomialBasis2D;
 import net.epsilony.tb.analysis.ArrvarFunction;
+import net.epsilony.tb.solid.Node;
+import net.epsilony.tb.solid.triangle.ArrayTriangle;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.integration.SimpsonIntegrator;
 import static org.junit.Assert.*;
@@ -14,9 +16,9 @@ import org.junit.Test;
  *
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
-public class SymTriangleQuadratureTest {
+public class SymmetricTriangleQuadratureTest {
 
-    public SymTriangleQuadratureTest() {
+    public SymmetricTriangleQuadratureTest() {
     }
 
     @Test
@@ -36,9 +38,15 @@ public class SymTriangleQuadratureTest {
                 return height;
             }
         };
-        SymTriangleQuadrature ts = new SymTriangleQuadrature(x1, y1, x2, y2, x3, y3, 1);
-        for (int power = SymTriangleQuadrature.MIN_POWER; power <= SymTriangleQuadrature.MAX_POWER; power++) {
-            ts.setPower(power);
+        SymmetricTriangleQuadrature ts = new SymmetricTriangleQuadrature();
+        ArrayTriangle<Node> triangle = new ArrayTriangle<>();
+        triangle.setVertex(0, new Node(x1, y1));
+        triangle.setVertex(1, new Node(x2, y2));
+        triangle.setVertex(2, new Node(x3, y3));
+        ts.setTriangle(triangle);
+
+        for (int degree = SymmetricTriangleQuadratureUtils.MIN_ALGEBRAIC_ACCURACY; degree <= SymmetricTriangleQuadratureUtils.MAX_ALGEBRAIC_ACCURACY; degree++) {
+            ts.setDegree(degree);
             double act = ts.quadrate(sampleFunc);
             assertEquals(exp, act, 1e-12);
         }
@@ -53,12 +61,17 @@ public class SymTriangleQuadratureTest {
         double x3 = 5.5;
         double y3 = 4.9;
 
-        SymTriangleQuadrature triQuad = new SymTriangleQuadrature(x1, y1, x2, y2, x3, y3, 1);
+        SymmetricTriangleQuadrature triQuad = new SymmetricTriangleQuadrature();
+        ArrayTriangle<Node> triangle = new ArrayTriangle<>();
+        triangle.setVertex(0, new Node(x1, y1));
+        triangle.setVertex(1, new Node(x2, y2));
+        triangle.setVertex(2, new Node(x3, y3));
+        triQuad.setTriangle(triangle);
 
-        for (int power = 1; power <= SymTriangleQuadrature.MAX_POWER; power++) {
-            Random2DPolygon randPoly = new Random2DPolygon(power);
-            for (int i = power; i <= SymTriangleQuadrature.MAX_POWER; i++) {
-                triQuad.setPower(i);
+        for (int degree = 1; degree <= SymmetricTriangleQuadratureUtils.MAX_ALGEBRAIC_ACCURACY; degree++) {
+            Random2DPolygon randPoly = new Random2DPolygon(degree);
+            for (int i = degree; i <= SymmetricTriangleQuadratureUtils.MAX_ALGEBRAIC_ACCURACY; i++) {
+                triQuad.setDegree(i);
                 double act = triQuad.quadrate(randPoly);
                 double exp = -integrateWithSimpson(randPoly, x1, y1, x2, y2)
                         + integrateWithSimpson(randPoly, x1, y1, x3, y3)

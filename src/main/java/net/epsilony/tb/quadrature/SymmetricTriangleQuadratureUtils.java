@@ -3,8 +3,8 @@ package net.epsilony.tb.quadrature;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import net.epsilony.tb.analysis.ArrvarFunction;
 import net.epsilony.tb.analysis.Math2D;
+import net.epsilony.tb.solid.triangle.Triangle;
 
 /**
  * <p>the data is copy from: </ br> Table 10.5 Dunavant quadrature for area coordinate triangle , p275,Chapter 10,
@@ -12,12 +12,12 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
-public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
+public class SymmetricTriangleQuadratureUtils{
 
-    public final static int MAX_POWER = 8;
-    public final static int MIN_POWER = 1;
-    final static int[] numPts = new int[]{1, 3, 4, 6, 7, 12, 13, 16};
-    final static double[][] weights = new double[][]{
+    public final static int MAX_ALGEBRAIC_ACCURACY = 8;
+    public final static int MIN_ALGEBRAIC_ACCURACY = 1;
+    private final static int[] numPts = new int[]{1, 3, 4, 6, 7, 12, 13, 16};
+    private final static double[][] weights = new double[][]{
         {1},
         {1 / 3d, 1 / 3d, 1 / 3d},
         {-27 / 48d, 25 / 48d, 25 / 48d, 25 / 48d},
@@ -41,7 +41,7 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
             0.032458497623198, 0.032458497623198, 0.032458497623198,
             0.027230314174435, 0.027230314174435, 0.027230314174435,
             0.027230314174435, 0.027230314174435, 0.027230314174435},};
-    final static double[][] barycentricCoordinates = new double[][]{
+    private final static double[][] barycentricCoordinates = new double[][]{
         {1 / 3d, 1 / 3d, 1 / 3d},
         {2 / 3d, 1 / 6d, 1 / 6d,
             1 / 6d, 2 / 3d, 1 / 6d,
@@ -107,21 +107,17 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
     };
 
     /**
-     * 获取power阶代数精度所对应的三角形对称积分点数
+     * 获取degree阶代数精度所对应的三角形对称积分点数
      *
-     * @param power 积分的代数精度 应属于闭区间[{@link #MIN_POWER},{@link #MAX_POWER}]
+     * @param degree 积分的代数精度 应属于闭区间[{@link #MIN_ALGEBRAIC_ACCURACY},{@link #MAX_ALGEGRAIC_ACCURACY}]
      * @return
      */
-    public static int numPoints(int power) {
-        return numPts[power - 1];
+    public static int numPointsByAlgebraicAccuracy(int degree) {
+        return numPts[degree - 1];
     }
 
-    public int numPoints() {
-        return numPts[power - 1];
-    }
-
-    public static double[] barycentricCoordinates(int power) {
-        double[] results = Arrays.copyOf(barycentricCoordinates[power - 1], barycentricCoordinates[power - 1].length);
+    public static double[] barycentricCoordinates(int degree) {
+        double[] results = Arrays.copyOf(barycentricCoordinates[degree - 1], barycentricCoordinates[degree - 1].length);
         return results;
     }
 
@@ -129,10 +125,10 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
             double x1, double y1,
             double x2, double y2,
             double x3, double y3,
-            int power,
+            int degree,
             int index,
             double[] results) {
-        double[] coords = barycentricCoordinates[power - 1];
+        double[] coords = barycentricCoordinates[degree - 1];
         if (null == results) {
             results = new double[2];
         }
@@ -141,59 +137,21 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
         return results;
     }
 
-    public static double getWeight(int power, int index) {
-        return weights[power - 1][index];
+    public static double[] cartesianCoordinate(Triangle tri, int degree, int index, double[] result) {
+        double[] coord1 = tri.getVertex(0).getCoord();
+        double[] coord2 = tri.getVertex(1).getCoord();
+        double[] coord3 = tri.getVertex(2).getCoord();
+        return cartesianCoordinate(coord1[0], coord1[1], coord2[0], coord2[1], coord3[0], coord3[1], degree, index, result);
     }
 
-    public double quadrate(ArrvarFunction fun) {
-        double result = 0;
-        for (QuadraturePoint qp : this) {
-            result += qp.weight * fun.value(qp.coord);
-        }
-        return result;
-    }
-    double x1, y1, x2, y2, x3, y3;
-    int power;
-
-    public SymTriangleQuadrature(double x1, double y1, double x2, double y2, double x3, double y3, int power) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.x3 = x3;
-        this.y3 = y3;
-        this.power = power;
+    public static double getWeight(int degree, int index) {
+        return weights[degree - 1][index];
     }
 
-    public SymTriangleQuadrature() {
-    }
-
-    public void setTriangle(double x1, double y1, double x2, double y2, double x3, double y3) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.x3 = x3;
-        this.y3 = y3;
-    }
-
-    public void setTriangle(double[] vertes) {
-        setTriangle(vertes[0], vertes[1], vertes[2], vertes[3], vertes[4], vertes[5]);
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    @Override
-    public Iterator<QuadraturePoint> iterator() {
-        return new QuadIterator(x1, y1, x2, y2, x3, y3, power);
-    }
-
-    static class QuadIterator implements Iterator<QuadraturePoint> {
+    public static class QuadIterator implements Iterator<QuadraturePoint> {
 
         double x1, y1, x2, y2, x3, y3;
-        int size, nextIndex, power;
+        int size, nextIndex, degree;
         double area;
 
         @Override
@@ -204,8 +162,8 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
         @Override
         public QuadraturePoint next() {
             QuadraturePoint result = new QuadraturePoint();
-            result.weight = area * getWeight(power, nextIndex);
-            cartesianCoordinate(x1, y1, x2, y2, x3, y3, power, nextIndex, result.coord);
+            result.weight = area * getWeight(degree, nextIndex);
+            cartesianCoordinate(x1, y1, x2, y2, x3, y3, degree, nextIndex, result.coord);
             nextIndex++;
             return result;
         }
@@ -215,16 +173,16 @@ public class SymTriangleQuadrature implements Iterable<QuadraturePoint> {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public QuadIterator(double x1, double y1, double x2, double y2, double x3, double y3, int power) {
+        public QuadIterator(double x1, double y1, double x2, double y2, double x3, double y3, int degree) {
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
             this.x3 = x3;
             this.y3 = y3;
-            this.power = power;
+            this.degree = degree;
             area = Math2D.triangleArea(x1, y1, x2, y2, x3, y3);
-            size = numPoints(power);
+            size = numPointsByAlgebraicAccuracy(degree);
             nextIndex = 0;
         }
     }
