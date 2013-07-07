@@ -3,7 +3,7 @@ package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import net.epsilony.tb.solid.triangle.Triangle;
+import net.epsilony.tb.solid.winged.Triangle;
 
 /**
  *

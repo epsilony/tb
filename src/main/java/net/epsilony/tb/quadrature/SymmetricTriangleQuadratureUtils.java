@@ -4,7 +4,7 @@ package net.epsilony.tb.quadrature;
 import java.util.Arrays;
 import java.util.Iterator;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.triangle.Triangle;
+import net.epsilony.tb.solid.winged.Triangle;
 
 /**
  * <p>the data is copy from: </ br> Table 10.5 Dunavant quadrature for area coordinate triangle , p275,Chapter 10,

@@ -1,5 +1,5 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb.solid.triangle;
+package net.epsilony.tb.solid.winged;
 
 /**
  *

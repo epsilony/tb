@@ -5,7 +5,7 @@ import java.util.Iterator;
 import net.epsilony.tb.analysis.ArrvarFunction;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.triangle.Triangle;
+import net.epsilony.tb.solid.winged.Triangle;
 
 /**
  *

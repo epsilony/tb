@@ -6,7 +6,7 @@ import java.util.Random;
 import net.epsilony.tb.common_func.MonomialBasis2D;
 import net.epsilony.tb.analysis.ArrvarFunction;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.triangle.ArrayTriangle;
+import net.epsilony.tb.solid.winged.ArrayTriangle;
 import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.integration.SimpsonIntegrator;
 import static org.junit.Assert.*;
