@@ -1,6 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 
@@ -28,5 +29,14 @@ public class ContourNode extends Node {
         double gbx = funb[1];
         double gby = funb[2];
         return Math2D.cos(gax, gay, gbx, gby);
+    }
+
+    public static Factory<ContourNode> contourNodeFactory() {
+        return new Factory<ContourNode>() {
+            @Override
+            public ContourNode produce() {
+                return new ContourNode();
+            }
+        };
     }
 }

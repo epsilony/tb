@@ -71,9 +71,9 @@ public class MarchingTriangleTest {
         int expChainsSize = 2;
         double errRatio = 0.05;
         RawOneDiskWithAHole levelsetFunction = new RawOneDiskWithAHole();
-        TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
-        LinkedList<TriangleContourCell> cells = new LinkedList<>();
-        MiscellaneousUtils.addToList(cellsGrid, cells);
+        factory.setRectangle(range);
+        factory.setEdgeLength(edgeLength);
+        List<TriangleContourCell> cells = factory.produce();
         TriangleContourBuilder builder = new MarchingTriangle.LinearInterpolate();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);

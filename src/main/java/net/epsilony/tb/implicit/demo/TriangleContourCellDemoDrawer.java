@@ -10,10 +10,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
-import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.implicit.ContourNode;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.implicit.TriangleContourCell;
+import net.epsilony.tb.implicit.TriangleContourCellEdge;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -78,7 +78,7 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
         }
 
         if (nodesVisible) {
-            for (AdaptiveCellEdge edge : cell) {
+            for (TriangleContourCellEdge edge : cell) {
                 nodeDrawer.setNode(edge.getStart());
                 Node node = edge.getStart();
                 double[] funcValue = ((ContourNode) node).getFunctionValue();
@@ -97,7 +97,7 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
     private void genSegmentsPathInModelSpace() {
         path = new Path2D.Double();
 
-        Iterator<AdaptiveCellEdge> iterator = cell.iterator();
+        Iterator<TriangleContourCellEdge> iterator = cell.iterator();
 
         double[] coord = iterator.next().getStart().getCoord();
         path.moveTo(coord[0], coord[1]);

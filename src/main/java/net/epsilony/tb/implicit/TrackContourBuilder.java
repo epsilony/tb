@@ -6,12 +6,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import net.epsilony.tb.adaptive.AdaptiveCellEdge;
-import net.epsilony.tb.adaptive.TriangleAdaptiveCell;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
+import net.epsilony.tb.solid.winged.WingedCellUtils;
 
 /**
  *
@@ -75,8 +74,8 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
     }
 
     public static double[][] estimateHeadInfo(TriangleContourCell startCell) {
-        Line2D contourSourceEdge = startCell.getContourSourceEdge();
-        Line2D contourDestinationEdge = startCell.getContourDestinationEdge();
+        TriangleContourCellEdge contourSourceEdge = startCell.getContourSourceEdge();
+        TriangleContourCellEdge contourDestinationEdge = startCell.getContourDestinationEdge();
         double[] sourceEdgePoint = genLinearInterpolateContourPoint(contourSourceEdge);
         double[] destEdgePoint = genLinearInterpolateContourPoint(contourDestinationEdge);
 
@@ -92,16 +91,17 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             return false;
         }
         double[] headCoord = head.getCoord();
-        for (AdaptiveCellEdge edge : headCell) {
+        for (int i = 0; i < headCell.getNumberOfVertes(); i++) {
+            TriangleContourCellEdge edge = headCell.getVertexEdge(i);
             if (!Segment2DUtils.isPointStrictlyAtChordLeft(edge, headCoord)) {
                 return false;
             }
         }
 
-        Set<TriangleAdaptiveCell> nodesNeighbours = headCell.getNodesNeighbours();
+        Set<TriangleContourCell> nodesNeighbours = WingedCellUtils.getNodesNeighbours(headCell);
 
-        for (TriangleAdaptiveCell neighbour : nodesNeighbours) {
-            List<Line2D> passBySegs = ((TriangleContourCell) neighbour).getPassByContourLines();
+        for (TriangleContourCell neighbour : nodesNeighbours) {
+            List<Line2D> passBySegs = neighbour.getPassByContourLines();
             if (null == passBySegs) {
                 continue;
             }
@@ -338,7 +338,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     public static TriangleContourCell markVisitiedAndReturnLast(TriangleContourCell cell, Line2D seg) {
 
-        AdaptiveCellEdge sourceEdge = null;
+        TriangleContourCellEdge sourceEdge = null;
         do {
             cell.setVisited(true);
             List<Line2D> passBySegs = cell.getPassByContourLines();
@@ -347,7 +347,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
                 cell.getPassByContourLines(passBySegs);
             }
             passBySegs.add(seg);
-            AdaptiveCellEdge destEdge = getCellEdgeIntersectingSegment(cell, sourceEdge, seg);
+            TriangleContourCellEdge destEdge = getCellEdgeIntersectingSegment(cell, sourceEdge, seg);
             if (null == destEdge) {
                 break;
             }
@@ -361,12 +361,13 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return cell;
     }
 
-    public static AdaptiveCellEdge getCellEdgeIntersectingSegment(
+    public static TriangleContourCellEdge getCellEdgeIntersectingSegment(
             TriangleContourCell cell,
-            AdaptiveCellEdge except,
+            TriangleContourCellEdge except,
             Line2D seg) {
-        AdaptiveCellEdge result = null;
-        for (AdaptiveCellEdge edge : cell) {
+        TriangleContourCellEdge result = null;
+        for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+            TriangleContourCellEdge edge = cell.getVertexEdge(i);
             if (edge == except) {
                 continue;
             }

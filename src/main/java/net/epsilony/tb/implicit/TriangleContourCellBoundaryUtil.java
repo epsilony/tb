@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
@@ -64,7 +63,8 @@ public class TriangleContourCellBoundaryUtil {
         Map<Node, Line2D> asEnd = new HashMap<>();
         Set<Line2D> lines = new HashSet<>();
         for (TriangleContourCell cell : inners) {
-            for (AdaptiveCellEdge edge : cell) {
+            for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+                TriangleContourCellEdge edge = cell.getVertexEdge(i);
                 if (inners.contains((TriangleContourCell) edge.getOpposite().getCell())) {
                     continue;
                 }

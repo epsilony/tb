@@ -78,7 +78,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         }
     }
 
-    abstract protected ContourNode genContourNode(Line2D contourSourceEdge);
+    abstract protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge);
 
     private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line2D segment) {
         Iterator<TriangleContourCell> openHeadCellIter = openRingsHeadsCells.iterator();
@@ -104,7 +104,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
     public static class LinearInterpolate extends MarchingTriangle {
 
         @Override
-        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
             double[] resultCoord = genLinearInterpolateContourPoint(contourSourceEdge);
             ContourNode result = new ContourNode();
             result.setCoord(resultCoord);
@@ -117,7 +117,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         ImplicitFunctionSolver solver = new SimpleGradientSolver();
 
         @Override
-        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
             double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
             if (solver.solve(startPoint)) {
                 ContourNode result = new ContourNode();
@@ -165,7 +165,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         private final double[] solveStart = new double[]{0.5};
 
         @Override
-        protected ContourNode genContourNode(Line2D contourSourceEdge) {
+        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
             onEdgeFunction.prepareToSolve(contourSourceEdge.getStartCoord(), contourSourceEdge.getEndCoord());
             solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
             if (!solver.solve(solveStart)) {

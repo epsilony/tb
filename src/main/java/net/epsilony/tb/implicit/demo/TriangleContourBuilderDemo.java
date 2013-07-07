@@ -19,7 +19,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Box;
@@ -40,7 +39,6 @@ import javax.swing.event.ChangeListener;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
-import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
@@ -87,7 +85,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     String marchingOnEdgeBisection = "marching: on edge bisection";
     String trackingMMA = "tracking: mma";
     String currentSelection = marchingLinear;
-    private LinkedList<TriangleContourCell> cells;
+    List<TriangleContourCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
     private JCheckBox showGradient = new JCheckBox("show gradient", true);
     private JCheckBox unitGradient = new JCheckBox("unit gradient", true);
@@ -171,9 +169,9 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
     private void genCells() {
         TriangleContourCellFactory fatory = new TriangleContourCellFactory();
-        TriangleContourCell[][] coverRectangle = fatory.coverRectangle(new Rectangle2D.Double(0, 0, 100, 100), 5);
-        cells = new LinkedList<>();
-        MiscellaneousUtils.addToList(coverRectangle, cells);
+        fatory.setRectangle(new Rectangle2D.Double(0, 0, 100, 100));
+        fatory.setEdgeLength(5);
+        cells = fatory.produce();
     }
 
     public class SampleFunction implements DifferentiableFunction {
@@ -337,7 +335,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                     specificationPanel.setSpecification(null);
                 }
             }
-            if(contourBuilder instanceof TrackContourBuilder){
+            if (contourBuilder instanceof TrackContourBuilder) {
                 dialog.setVisible(true);
             }
         }

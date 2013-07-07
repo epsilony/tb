@@ -2,11 +2,9 @@
 package net.epsilony.tb.implicit;
 
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.solid.SegmentStartCoordIterable;
@@ -81,9 +79,9 @@ public class TrackContourBuilderTest {
                 diskRadius * 2 + edgeLength * 4, diskRadius * 2 + edgeLength * 4);
 
         SampleOneDiskWithAHole levelsetFunction = new SampleOneDiskWithAHole();
-        TriangleContourCell[][] cellsGrid = factory.coverRectangle(range, edgeLength);
-        LinkedList<TriangleContourCell> cells = new LinkedList<>();
-        MiscellaneousUtils.addToList(cellsGrid, cells);
+        factory.setRectangle(range);
+        factory.setEdgeLength(edgeLength);
+        List<TriangleContourCell> cells = factory.produce();
         TrackContourBuilder builder = new TrackContourBuilder();
         builder.setCells(cells);
         builder.setLevelSetFunction(levelsetFunction);

@@ -4,11 +4,9 @@ package net.epsilony.tb.implicit;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
-import net.epsilony.tb.solid.Node;
 
 /**
  *
@@ -49,8 +47,9 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     protected void setupFunctionData(TriangleContourCell cell) {
-        for (AdaptiveCellEdge edge : cell) {
-            ContourNode nd = (ContourNode) edge.getStart();
+        for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+            TriangleContourCellEdge edge = cell.getVertexEdge(i);
+            ContourNode nd = edge.getStart();
             double[] nodeValue = nd.getFunctionValue();
             if (null == nodeValue) {
                 nd.setFunctionValue(levelSetFunction.value(edge.getStart().getCoord(), null));
@@ -62,20 +61,19 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     protected void prepareToGenContour() {
         for (TriangleContourCell cell : cells) {
             cell.setVisited(false);
-            for (AdaptiveCellEdge edge : cell) {
-                edge.getStart().setId(-1);
+            for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+                cell.getVertex(i).setId(-1);
             }
         }
         int nodesNum = 0;
         for (TriangleContourCell cell : cells) {
-            for (AdaptiveCellEdge edge : cell) {
-                Node start = edge.getStart();
-
+            for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+                TriangleContourCellEdge edge = cell.getVertexEdge(i);
+                ContourNode start = edge.getStart();
                 if (start.getId() > -1) {
                     continue;
                 }
-                ContourNode cStart = (ContourNode) start;
-                cStart.setFunctionValue(null);
+                start.setFunctionValue(null);
                 start.setId(nodesNum++);
             }
         }
@@ -98,7 +96,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
                 continue;
             }
             setupFunctionData(cell);
-            Line2D sourceEdge = cell.getContourSourceEdge();
+            TriangleContourCellEdge sourceEdge = cell.getContourSourceEdge();
             if (sourceEdge == null) {
                 cell.setVisited(true);
                 continue;
@@ -109,7 +107,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return result;
     }
 
-    public static double[] genLinearInterpolateContourPoint(Line2D contourSourceEdge) {
+    public static double[] genLinearInterpolateContourPoint(TriangleContourCellEdge contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
         double t = genLinearInterpolateParameter(contourSourceEdge);
@@ -117,7 +115,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return resultCoord;
     }
 
-    public static double genLinearInterpolateParameter(Line2D contourSourceEdge) {
+    public static double genLinearInterpolateParameter(TriangleContourCellEdge contourSourceEdge) {
         double startValue = ((ContourNode) contourSourceEdge.getStart()).getFunctionValue()[0];
         double endValue = ((ContourNode) contourSourceEdge.getEnd()).getFunctionValue()[0];
         double t = startValue / (startValue - endValue);
