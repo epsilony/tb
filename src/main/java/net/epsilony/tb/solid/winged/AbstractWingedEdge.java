@@ -8,7 +8,7 @@ import net.epsilony.tb.solid.Node;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractWingedEdge<CELL, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends GeneralLine2D<EDGE, ND> implements WingedEdge<CELL, EDGE, ND> {
+public abstract class AbstractWingedEdge<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends GeneralLine2D<EDGE, ND> implements WingedEdge<CELL, EDGE, ND> {
 
     EDGE opposite;
     CELL cell;

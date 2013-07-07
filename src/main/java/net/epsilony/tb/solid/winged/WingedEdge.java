@@ -8,7 +8,7 @@ import net.epsilony.tb.solid.Segment;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface WingedEdge<CELL, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends Segment<EDGE, ND> {
+public interface WingedEdge<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends Segment<EDGE, ND> {
 
     EDGE getOpposite();
 

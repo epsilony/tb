@@ -9,7 +9,7 @@ import net.epsilony.tb.solid.Node;
  */
 public class WingedEdgeUtils {
 
-    public static <CELL, EDGE extends WingedEdge<CELL, EDGE, NODE>, NODE extends Node> //
+    public static <CELL extends WingedCell<CELL, EDGE, NODE>, EDGE extends WingedEdge<CELL, EDGE, NODE>, NODE extends Node> //
             void linkAsOpposite(EDGE edgeA, EDGE edgeB) {
         edgeA.setOpposite(edgeB);
         edgeB.setOpposite(edgeA);
