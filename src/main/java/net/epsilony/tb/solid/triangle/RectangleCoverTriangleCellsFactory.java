@@ -7,8 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.WingedEdge;
-import net.epsilony.tb.solid.WingedEdgeUtils;
 import net.epsilony.tb.ui.UIUtils;
 
 /**

@@ -2,7 +2,6 @@
 package net.epsilony.tb.solid.triangle;
 
 import net.epsilony.tb.Factory;
-import net.epsilony.tb.solid.AbstractWingedEdge;
 import net.epsilony.tb.solid.Node;
 
 /**

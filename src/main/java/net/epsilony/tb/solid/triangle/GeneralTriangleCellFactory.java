@@ -4,7 +4,6 @@ package net.epsilony.tb.solid.triangle;
 import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
-import net.epsilony.tb.solid.WingedEdge;
 
 /**
  *

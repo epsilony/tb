@@ -15,7 +15,6 @@ import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.solid.SegmentIterator;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
 import net.epsilony.tb.nativelib.TriangleLibraryUtils;
-import net.epsilony.tb.solid.WingedEdge;
 import org.bridj.Pointer;
 
 /**

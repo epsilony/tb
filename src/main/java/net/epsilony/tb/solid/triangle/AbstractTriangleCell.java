@@ -1,7 +1,6 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid.triangle;
 
-import net.epsilony.tb.solid.WingedEdge;
 import java.util.ArrayList;
 import net.epsilony.tb.solid.Node;
 

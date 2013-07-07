@@ -1,5 +1,7 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb.solid;
+package net.epsilony.tb.solid.triangle;
+
+import net.epsilony.tb.solid.Node;
 
 /**
  *

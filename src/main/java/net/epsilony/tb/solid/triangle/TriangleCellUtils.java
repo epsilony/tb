@@ -1,9 +1,6 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid.triangle;
 
-import net.epsilony.tb.solid.WingedEdge;
-import net.epsilony.tb.solid.WingedEdgeUtils;
-
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
