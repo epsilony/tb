@@ -18,4 +18,9 @@ public class SimpTriangleCell<ND extends Node> extends AbstractTriangleCell<Simp
             }
         };
     }
+
+    @Override
+    public int getNumberOfVertes() {
+        return 3;
+    }
 }

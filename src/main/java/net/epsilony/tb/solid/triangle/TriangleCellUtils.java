@@ -10,7 +10,7 @@ import net.epsilony.tb.solid.WingedEdgeUtils;
  */
 public class TriangleCellUtils {
 
-    public static void linkOppositesBySameVertes(TriangleCell cellA, TriangleCell cellB) {
+    public static void linkOppositesBySameVertes(WingedCell cellA, WingedCell cellB) {
         WingedEdge edgeA = null, edgeB = null;
         boolean finded = false;
         for (int i = 0; i < 3 && !finded; i++) {

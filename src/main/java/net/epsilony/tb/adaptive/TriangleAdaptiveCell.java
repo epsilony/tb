@@ -61,8 +61,7 @@ public class TriangleAdaptiveCell extends AbstractAdaptiveCell {
     public int getSideNum() {
         return 3;
     }
-    
-    
+
     public List<TriangleAdaptiveCell> getEdgesNeighbours() {
         List<TriangleAdaptiveCell> result = new LinkedList<>();
         for (AdaptiveCellEdge edge : this) {
@@ -79,7 +78,7 @@ public class TriangleAdaptiveCell extends AbstractAdaptiveCell {
         List<TriangleAdaptiveCell> edgeNeighbours = getEdgesNeighbours();
         Set<TriangleAdaptiveCell> nodesNeighbours = new HashSet<>(20);
         nodesNeighbours.addAll(edgeNeighbours);
-        for(TriangleAdaptiveCell neibour:edgeNeighbours){
+        for (TriangleAdaptiveCell neibour : edgeNeighbours) {
             nodesNeighbours.addAll(neibour.getEdgesNeighbours());
         }
         return nodesNeighbours;

@@ -23,7 +23,7 @@ import org.bridj.Pointer;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class PolygonTriangulatorFactory//
-        <CELL extends TriangleCell<CELL, EDGE, NODE>, //
+        <CELL extends WingedCell<CELL, EDGE, NODE>, //
         EDGE extends WingedEdge<CELL, EDGE, NODE>, //
         NODE extends Node> implements Factory<TriangleArrayContainers<CELL, NODE>> {
 

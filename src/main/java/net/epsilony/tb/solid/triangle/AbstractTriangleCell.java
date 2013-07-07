@@ -9,7 +9,7 @@ import net.epsilony.tb.solid.Node;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractTriangleCell<CELL extends TriangleCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> implements TriangleCell<CELL, EDGE, ND> {
+public abstract class AbstractTriangleCell<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> implements WingedCell<CELL, EDGE, ND> {
 
     ArrayList<EDGE> vertesEdges = new ArrayList<>(3);
 
