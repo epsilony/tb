@@ -22,7 +22,7 @@ public class QuadrangleAdaptiveCell extends AbstractAdaptiveCell {
             AdaptiveCellEdge[] childCornerEdges = new AdaptiveCellEdge[sideNum];
             newChild.setCornerEdges(childCornerEdges);
 
-            childCornerEdges[side] = cornerEdges[side];
+            childCornerEdges[side] = vertesEdges[side];
 
             AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
             newEdge.setStart(midEdges[side].getEnd());

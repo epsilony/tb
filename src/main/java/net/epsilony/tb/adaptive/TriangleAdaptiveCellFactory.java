@@ -100,16 +100,16 @@ public class TriangleAdaptiveCellFactory {
             final int rowMod = i % 2;
             for (int j = 0; j < triangles[i].length - 1; j++) {
                 if (j % 2 == 0 && rowMod == 0 || j % 2 == 1 && rowMod == 1) {
-                    AdaptiveUtils.linkAsOpposite(triangles[i][j].cornerEdges[0], triangles[i][j + 1].cornerEdges[0]);
+                    AdaptiveUtils.linkAsOpposite(triangles[i][j].vertesEdges[0], triangles[i][j + 1].vertesEdges[0]);
                 } else {
-                    AdaptiveUtils.linkAsOpposite(triangles[i][j].cornerEdges[2], triangles[i][j + 1].cornerEdges[2]);
+                    AdaptiveUtils.linkAsOpposite(triangles[i][j].vertesEdges[2], triangles[i][j + 1].vertesEdges[2]);
                 }
             }
         }
         for (int i = 0; i < triangles.length - 1; i++) {
             final int startJ = i % 2;
             for (int j = 0; j < triangles[i].length; j += 2) {
-                AdaptiveUtils.linkAsOpposite(triangles[i][j + startJ].cornerEdges[1], triangles[i + 1][j + startJ].cornerEdges[1]);
+                AdaptiveUtils.linkAsOpposite(triangles[i][j + startJ].vertesEdges[1], triangles[i + 1][j + startJ].vertesEdges[1]);
             }
         }
     }

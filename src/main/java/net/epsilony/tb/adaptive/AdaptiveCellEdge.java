@@ -1,39 +1,23 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.AbstractWingedEdge;
+import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class AdaptiveCellEdge extends Line2D {
+public class AdaptiveCellEdge<ND extends Node & Factory<ND>> extends AbstractWingedEdge<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> implements WingedEdge<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND>{
 
-    AdaptiveCellEdge opposite;
-    AdaptiveCell cell;
-
-    public AdaptiveCell getCell() {
-        return cell;
-    }
-
-    public void setCell(AdaptiveCell cell) {
-        this.cell = cell;
-    }
-
-    public AdaptiveCellEdge getOpposite() {
-        return opposite;
-    }
-
-    public void setOpposite(AdaptiveCellEdge opposite) {
-        this.opposite = opposite;
-    }
-
-    @Override
     public void bisect() {
-        AdaptiveCellEdge newSucc = new AdaptiveCellEdge();
-        newSucc.setStart(new Node(Segment2DUtils.chordMidPoint(this, null)));
+        AdaptiveCellEdge<ND> newSucc = new AdaptiveCellEdge<>();
+        ND newNode = getStart().produce();
+        newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
+        newSucc.setStart(newNode);
         newSucc.setSucc(getSucc());
         newSucc.setPred(this);
         getSucc().setPred(newSucc);
@@ -56,28 +40,5 @@ public class AdaptiveCellEdge extends Line2D {
         getSucc().setOpposite(opposite);
         newOpposite.setCell(opposite.getCell());
         opposite = newOpposite;
-    }
-
-    @Override
-    public AdaptiveCellEdge getPred() {
-        return (AdaptiveCellEdge) super.getPred();
-    }
-
-    @Override
-    public AdaptiveCellEdge getSucc() {
-        return (AdaptiveCellEdge) super.getSucc();
-    }
-
-    @Override
-    public void setPred(Line2D pred) {
-        AdaptiveCellEdge wPred = (AdaptiveCellEdge) pred;
-        super.setPred(wPred);
-
-    }
-
-    @Override
-    public void setSucc(Line2D succ) {
-        AdaptiveCellEdge wSucc = (AdaptiveCellEdge) succ;
-        super.setSucc(wSucc);
     }
 }

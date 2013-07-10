@@ -35,15 +35,15 @@ public class QuadrangleAdaptiveCellFactory {
             QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
             QuadrangleAdaptiveCell[] nextRow = cellGrid[i + 1];
             for (int j = 0; j < gridRow.length; j++) {
-                gridRow[j].cornerEdges[0].setOpposite(nextRow[j].cornerEdges[2]);
-                nextRow[j].cornerEdges[2].setOpposite(gridRow[j].cornerEdges[0]);
+                gridRow[j].vertesEdges[0].setOpposite(nextRow[j].vertesEdges[2]);
+                nextRow[j].vertesEdges[2].setOpposite(gridRow[j].vertesEdges[0]);
             }
         }
         for (int i = 0; i < cellGrid.length; i++) {
             QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
             for (int j = 0; j < gridRow.length - 1; j++) {
-                gridRow[j].cornerEdges[1].setOpposite(gridRow[j + 1].cornerEdges[3]);
-                gridRow[j + 1].cornerEdges[3].setOpposite(gridRow[j].cornerEdges[1]);
+                gridRow[j].vertesEdges[1].setOpposite(gridRow[j + 1].vertesEdges[3]);
+                gridRow[j + 1].vertesEdges[3].setOpposite(gridRow[j].vertesEdges[1]);
             }
         }
     }

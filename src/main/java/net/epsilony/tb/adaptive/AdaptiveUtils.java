@@ -4,7 +4,9 @@ package net.epsilony.tb.adaptive;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
 
@@ -71,7 +73,7 @@ public class AdaptiveUtils {
         e2.setOpposite(e1);
     }
 
-    public static void linkEdgeAndCell(AdaptiveCell cell) {
+    public static <ND extends Node & Factory<ND>> void linkEdgeAndCell(AdaptiveCell<ND> cell) {
         for (AdaptiveCellEdge edge : cell) {
             edge.setCell(cell);
         }

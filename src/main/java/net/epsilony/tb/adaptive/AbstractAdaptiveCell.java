@@ -2,25 +2,27 @@
 package net.epsilony.tb.adaptive;
 
 import java.util.Iterator;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.SegmentIterator;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractAdaptiveCell implements AdaptiveCell {
+public abstract class AbstractAdaptiveCell<ND extends Node&Factory<ND>> implements AdaptiveCell<ND> {
 
     public static int defaultMaxSideSizePower = 1;
     AdaptiveCell[] children;
-    AdaptiveCellEdge[] cornerEdges;
+    AdaptiveCellEdge[] vertesEdges;
     int level = 0;
     int maxSideSizePower = defaultMaxSideSizePower;
 
     protected void bisectEdges() {
-        for (int i = 0; i < cornerEdges.length; i++) {
-            if (cornerEdges[i].getSucc() == cornerEdges[(i + 1) % getSideNum()]) {
-                cornerEdges[i].bisect();
+        for (int i = 0; i < vertesEdges.length; i++) {
+            if (vertesEdges[i].getSucc() == vertesEdges[(i + 1) % getSideNum()]) {
+                vertesEdges[i].bisect();
             }
         }
     }
@@ -33,7 +35,7 @@ public abstract class AbstractAdaptiveCell implements AdaptiveCell {
         bisectEdges();
         AdaptiveCellEdge[] midEdges = getEdgesEndBySideMids();
         genChildren(midEdges);
-        cornerEdges = null;
+        vertesEdges = null;
     }
 
     protected abstract void genChildren(AdaptiveCellEdge[] midEdges);
@@ -45,15 +47,15 @@ public abstract class AbstractAdaptiveCell implements AdaptiveCell {
 
     @Override
     public AdaptiveCellEdge[] getCornerEdges() {
-        return cornerEdges;
+        return vertesEdges;
     }
 
     protected AdaptiveCellEdge[] getEdgesEndBySideMids() {
         AdaptiveCellEdge[] result = new AdaptiveCellEdge[getSideNum()];
         int maxSideSize = getMaxSideSize();
-        for (int side = 0; side < cornerEdges.length; side++) {
-            AdaptiveCellEdge edgeA = cornerEdges[side];
-            AdaptiveCellEdge edgeB = cornerEdges[(side + 1) % getSideNum()];
+        for (int side = 0; side < vertesEdges.length; side++) {
+            AdaptiveCellEdge edgeA = vertesEdges[side];
+            AdaptiveCellEdge edgeB = vertesEdges[(side + 1) % getSideNum()];
             double[] sideStart = edgeA.getStart().getCoord();
             double[] sideEnd = edgeB.getStart().getCoord();
             double[] midCoord = Math2D.pointOnSegment(sideStart, sideEnd, 0.5, null);
@@ -99,15 +101,15 @@ public abstract class AbstractAdaptiveCell implements AdaptiveCell {
 
     @Override
     public Iterator<AdaptiveCellEdge> iterator() {
-        if (null == cornerEdges) {
+        if (null == vertesEdges) {
             return new SegmentIterator<>(null);
         }
-        return new SegmentIterator<>(cornerEdges[0]);
+        return new SegmentIterator<>(vertesEdges[0]);
     }
 
     @Override
     public AdaptiveCell searchFissionObstrutor() {
-        Iterator<AdaptiveCellEdge> iter = new SegmentIterator<>(cornerEdges[0]);
+        Iterator<AdaptiveCellEdge> iter = new SegmentIterator<>(vertesEdges[0]);
         AdaptiveCell result = null;
         while (iter.hasNext()) {
             AdaptiveCellEdge edge = iter.next();
@@ -128,7 +130,7 @@ public abstract class AbstractAdaptiveCell implements AdaptiveCell {
 
     @Override
     public void setCornerEdges(AdaptiveCellEdge[] cornerEdges) {
-        this.cornerEdges = cornerEdges;
+        this.vertesEdges = cornerEdges;
     }
 
     @Override

@@ -10,8 +10,8 @@ import net.epsilony.tb.solid.Node;
  */
 public abstract class AbstractWingedEdge<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends GeneralLine2D<EDGE, ND> implements WingedEdge<CELL, EDGE, ND> {
 
-    EDGE opposite;
-    CELL cell;
+    protected EDGE opposite;
+    protected CELL cell;
 
     @Override
     public EDGE getOpposite() {

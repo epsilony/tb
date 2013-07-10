@@ -24,7 +24,7 @@ public class TriangleAdaptiveCell extends AbstractAdaptiveCell {
             children[side] = newChild;
             AdaptiveCellEdge[] childEdges = new AdaptiveCellEdge[sideNum];
             newChild.setCornerEdges(childEdges);
-            childEdges[side] = cornerEdges[side];
+            childEdges[side] = vertesEdges[side];
             AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
             newEdge.setStart(midEdges[side].getEnd());
             childEdges[(side + 1) % sideNum] = newEdge;
