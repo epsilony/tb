@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Polygon2D extends GeneralPolygon2D<Line2D, Node> {
+public class Polygon2D extends GeneralPolygon2D<Line2D<Node>, Node> {
 
     public static Polygon2D byCoordChains(double[][][] coordChains) {
         ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);

@@ -5,17 +5,17 @@ package net.epsilony.tb.solid;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Line2D extends AbstractLine2D<Line2D, Node> {
+public class Line2D<ND extends Node> extends AbstractLine2D<Line2D<ND>, ND> {
 
     public Line2D() {
     }
 
-    public Line2D(Node start) {
-        this.start = start;
+    public Line2D(ND start) {
+        super(start);
     }
 
     public void bisect() {
-        Line2D newSucc = newInstance();
+        Line2D<ND> newSucc = new Line2D<>();
         newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
@@ -23,8 +23,15 @@ public class Line2D extends AbstractLine2D<Line2D, Node> {
         this.succ = newSucc;
     }
 
-    protected Node bisectionNode() {
-        return new Node(Segment2DUtils.chordMidPoint(this, null));
+    protected ND bisectionNode() {
+        ND newNode;
+        try {
+            newNode = (ND) start.getClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            throw new IllegalStateException("ND doesn't have a null constructor!", ex);
+        }
+        newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
+        return newNode;
     }
 
     @Override
@@ -32,9 +39,5 @@ public class Line2D extends AbstractLine2D<Line2D, Node> {
         String endStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
         String startStr = (null == start) ? "NULL" : start.toString();
         return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
-    }
-
-    protected Line2D newInstance() {
-        return new Line2D();
     }
 }
