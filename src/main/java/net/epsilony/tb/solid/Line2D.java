@@ -5,7 +5,7 @@ package net.epsilony.tb.solid;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Line2D extends GeneralLine2D<Line2D, Node> {
+public class Line2D extends AbstractLine2D<Line2D, Node> {
 
     public Line2D() {
     }
