@@ -8,7 +8,7 @@ import net.epsilony.tb.solid.Node;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractWingedCell<CELL extends AbstractWingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> implements WingedCell<CELL, EDGE, ND> {
+public abstract class AbstractWingedCell<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> implements WingedCell<CELL, EDGE, ND> {
 
     ArrayList<EDGE> vertesEdges = new ArrayList<>(getNumberOfVertes());
 
