@@ -156,9 +156,9 @@ public class RectangleCoverTriangleCellsFactory<
             ArrayList<CELL> row = triangles.get(i);
             for (int j = 0; j < row.size() - 1; j++) {
                 if (j % 2 == 0 && rowMod == 0 || j % 2 == 1 && rowMod == 1) {
-                    WingedEdgeUtils.linkAsOpposite(row.get(j).getVertexEdge(0), row.get(j + 1).getVertexEdge(0));
+                    WingedUtils.linkAsOpposite(row.get(j).getVertexEdge(0), row.get(j + 1).getVertexEdge(0));
                 } else {
-                    WingedEdgeUtils.linkAsOpposite(row.get(j).getVertexEdge(2), row.get(j + 1).getVertexEdge(2));
+                    WingedUtils.linkAsOpposite(row.get(j).getVertexEdge(2), row.get(j + 1).getVertexEdge(2));
                 }
             }
         }
@@ -167,7 +167,7 @@ public class RectangleCoverTriangleCellsFactory<
             ArrayList<CELL> row = triangles.get(i);
             ArrayList<CELL> nextRow = triangles.get(i + 1);
             for (int j = 0; j < row.size(); j += 2) {
-                WingedEdgeUtils.linkAsOpposite(row.get(j + startJ).getVertexEdge(1), nextRow.get(j + startJ).getVertexEdge(1));
+                WingedUtils.linkAsOpposite(row.get(j + startJ).getVertexEdge(1), nextRow.get(j + startJ).getVertexEdge(1));
             }
         }
     }

@@ -23,6 +23,6 @@ public class TriangleCellUtils {
         if (!finded) {
             throw new IllegalArgumentException();
         }
-        WingedEdgeUtils.linkAsOpposite(edgeA, edgeB);
+        WingedUtils.linkAsOpposite(edgeA, edgeB);
     }
 }

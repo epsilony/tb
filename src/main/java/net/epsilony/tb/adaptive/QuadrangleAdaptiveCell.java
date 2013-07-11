@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.WingedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +44,13 @@ public class QuadrangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCel
             Segment2DUtils.link(child.getVertexEdge((side + 1) % sideNum), child.getVertexEdge((side + 2) % sideNum));
             Segment2DUtils.link(child.getVertexEdge((side + 2) % sideNum), child.getVertexEdge((side + 3) % sideNum));
 
-            AdaptiveUtils.linkAsOpposite(
+            WingedUtils.linkAsOpposite(
                     child.getVertexEdge((side + 1) % sideNum),
                     children.get((side + 1) % sideNum).getVertexEdge((side + 3) % sideNum));
         }
 
         for (int i = 0; i < children.size(); i++) {
-            AdaptiveUtils.linkEdgeAndCell(children.get(i));
+            WingedUtils.linkEdgeAndCell(children.get(i));
             children.get(i).setLevel(level + 1);
         }
     }

@@ -65,21 +65,4 @@ public class AdaptiveUtils {
         }
         return true;
     }
-
-    public static void linkAsOpposite(AdaptiveCellEdge e1, AdaptiveCellEdge e2) {
-        e1.setOpposite(e2);
-        e2.setOpposite(e1);
-    }
-
-    public static <ND extends Node> void linkEdgeAndCell(AdaptiveCell<ND> cell) {
-        for (AdaptiveCellEdge edge : cell) {
-            edge.setCell(cell);
-        }
-    }
-
-    public static <ND extends Node> void linkCornerEdges(AdaptiveCell<ND> cell) {
-        for (int i = 0; i < cell.getNumberOfVertes(); i++) {
-            Segment2DUtils.link(cell.getVertexEdge(i), cell.getVertexEdge((i + 1) % cell.getNumberOfVertes()));
-        }
-    }
 }

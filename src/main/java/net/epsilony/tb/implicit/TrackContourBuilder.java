@@ -10,7 +10,7 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line2D;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
-import net.epsilony.tb.solid.winged.WingedCellUtils;
+import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
  *
@@ -98,7 +98,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             }
         }
 
-        Set<TriangleContourCell> nodesNeighbours = WingedCellUtils.getNodesNeighbours(headCell);
+        Set<TriangleContourCell> nodesNeighbours = WingedUtils.getNodesNeighbours(headCell);
 
         for (TriangleContourCell neighbour : nodesNeighbours) {
             List<Line2D> passBySegs = neighbour.getPassByContourLines();

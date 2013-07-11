@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.winged.WingedEdgeUtils;
+import net.epsilony.tb.solid.winged.WingedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,13 +72,13 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
             ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
             ArrayList<QuadrangleAdaptiveCell<ND>> nextRow = cellGrid.get(i + 1);
             for (int j = 0; j < gridRow.size(); j++) {
-                WingedEdgeUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(0), nextRow.get(j).getVertexEdge(2));
+                WingedUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(0), nextRow.get(j).getVertexEdge(2));
             }
         }
         for (int i = 0; i < cellGrid.size(); i++) {
             ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
             for (int j = 0; j < gridRow.size() - 1; j++) {
-                WingedEdgeUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(1), gridRow.get(j + 1).getVertexEdge(3));
+                WingedUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(1), gridRow.get(j + 1).getVertexEdge(3));
             }
         }
     }
@@ -106,8 +106,8 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
             result.setVertexEdge(i, new AdaptiveCellEdge());
             result.setVertex(i, counterClockwiseVetes.get(i));
         }
-        AdaptiveUtils.linkCornerEdges(result);
-        AdaptiveUtils.linkEdgeAndCell(result);
+        WingedUtils.linkCornerEdges(result);
+        WingedUtils.linkEdgeAndCell(result);
         return result;
     }
 

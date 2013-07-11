@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
  *
@@ -47,13 +48,13 @@ public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<
             lastChild.setVertexEdge(side, newEdge);
             AdaptiveCellEdge<ND> opposite = children.get(side).getVertexEdge((side + 1) % sideNum);
             newEdge.setStart(opposite.getEnd());
-            AdaptiveUtils.linkAsOpposite(newEdge, opposite);
+            WingedUtils.linkAsOpposite(newEdge, opposite);
         }
 
-        AdaptiveUtils.linkCornerEdges(lastChild);
+        WingedUtils.linkCornerEdges(lastChild);
 
         for (int i = 0; i < children.size(); i++) {
-            AdaptiveUtils.linkEdgeAndCell(children.get(i));
+            WingedUtils.linkEdgeAndCell(children.get(i));
             children.get(i).setLevel(level + 1);
         }
     }
