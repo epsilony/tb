@@ -5,6 +5,7 @@ import net.epsilony.tb.analysis.Math2D;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Polygon2D;
 
 /**
@@ -45,7 +46,7 @@ public class TestTool {
         return result;
     }
 
-    public static Polygon2D samplePolygon(List<double[][][]> coordChainsOut) {
+    public static Polygon2D<Node> samplePolygon(List<double[][][]> coordChainsOut) {
         double[][][] coordChains = new double[][][]{{
                 {0, 0},//0
                 {2, 0},//1

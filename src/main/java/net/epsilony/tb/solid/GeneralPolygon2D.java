@@ -167,10 +167,10 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         return levelSetFunction;
     }
 
-    public ArrayList<LinkedList<Node>> getVertes() {
-        ArrayList<LinkedList<Node>> res = new ArrayList<>(chainsHeads.size());
+    public ArrayList<LinkedList<ND>> getVertes() {
+        ArrayList<LinkedList<ND>> res = new ArrayList<>(chainsHeads.size());
         for (SEG cHead : chainsHeads) {
-            LinkedList<Node> vs = new LinkedList<>();
+            LinkedList<ND> vs = new LinkedList<>();
             res.add(vs);
             SEG seg = cHead;
             do {

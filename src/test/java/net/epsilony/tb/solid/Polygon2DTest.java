@@ -54,7 +54,7 @@ public class Polygon2DTest {
     @Test
     public void testIterable() {
         ArrayList<double[][][]> coords = new ArrayList<>(1);
-        Polygon2D pg = TestTool.samplePolygon(coords);
+        Polygon2D<Node> pg = TestTool.samplePolygon(coords);
         int i = 0, j = 0;
         for (Line2D seg : pg) {
             double[][][] coordChains = coords.get(0);
@@ -70,7 +70,7 @@ public class Polygon2DTest {
 
     @Test
     public void testPolygonSegmentPredLink() {
-        Polygon2D pg = TestTool.samplePolygon(null);
+        Polygon2D<Node> pg = TestTool.samplePolygon(null);
         ArrayList<LinkedList<Node>> vertes = pg.getVertes();
         Iterator<LinkedList<Node>> vIter = vertes.iterator();
         for (Line2D cHead : pg.chainsHeads) {
