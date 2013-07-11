@@ -1,21 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import net.epsilony.tb.MiscellaneousUtils;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author epsilon
+ * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleAdaptiveCellFactoryTest {
 
@@ -29,18 +26,20 @@ public class TriangleAdaptiveCellFactoryTest {
     public void testCoverRectangle() {
         Rectangle2D rect = new Rectangle2D.Double(-1, 1, 15.1, 10.1);
         double edgeLength = 1.5;
-        TriangleAdaptiveCellFactory factory = new TriangleAdaptiveCellFactory();
-        TriangleAdaptiveCell[][] cellGrid = factory.coverRectangle(rect, edgeLength);
+        TriangleAdaptiveCellFactory<Node> factory = new TriangleAdaptiveCellFactory<>();
+        factory.setNodeFactory(Node.factory());
+        factory.setRectangle(rect);
+        factory.setEdgeLength(edgeLength);
+        List<AdaptiveCell<Node>> cellList = factory.produce();
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
         double maxX = Double.NEGATIVE_INFINITY;
         double maxY = Double.NEGATIVE_INFINITY;
-        LinkedList<TriangleAdaptiveCell> cellList = new LinkedList<>();
-        MiscellaneousUtils.addToList(cellGrid, cellList);
-        for (TriangleAdaptiveCell cell : cellList) {
+
+        for (AdaptiveCell<Node> cell : cellList) {
             int count = 0;
 
-            for (AdaptiveCellEdge edge : cell) {
+            for (AdaptiveCellEdge<Node> edge : cell) {
 
                 assertEquals(edgeLength, Segment2DUtils.chordLength(edge), edgeLength * 0.1);
 
@@ -66,12 +65,12 @@ public class TriangleAdaptiveCellFactoryTest {
         assertTrue(maxY > rect.getMaxY());
 
         Map<AdaptiveCell, Integer> cellMap = new HashMap<>();
-        for (TriangleAdaptiveCell cell : cellList) {
-            for (AdaptiveCellEdge edge : cell) {
+        for (AdaptiveCell<Node> cell : cellList) {
+            for (AdaptiveCellEdge<Node> edge : cell) {
                 if (null == edge.getOpposite()) {
                     continue;
                 }
-                AdaptiveCell opposite = edge.getOpposite().getCell();
+                AdaptiveCell<Node> opposite = edge.getOpposite().getCell();
                 assertTrue(opposite != null);
                 Integer result = cellMap.get(opposite);
                 if (null == result) {

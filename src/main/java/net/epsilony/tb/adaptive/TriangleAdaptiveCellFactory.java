@@ -1,116 +1,52 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
-import java.awt.geom.Rectangle2D;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.ui.UIUtils;
+import net.epsilony.tb.solid.winged.RectangleCoverTriangleCellsFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleAdaptiveCellFactory {
+public class TriangleAdaptiveCellFactory<ND extends Node> extends RectangleCoverTriangleCellsFactory<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> {
 
-    public TriangleAdaptiveCell[][] coverRectangle(Rectangle2D rectangle, double edgeLength) {
-        rectangle = UIUtils.tidyRectangle2D(rectangle, null);
-        final double SQRT_3 = Math.sqrt(3);
-        double x0 = rectangle.getX() - edgeLength / 4;
-        double y0 = rectangle.getY() - edgeLength * SQRT_3 / 4;
-        double t = (rectangle.getWidth() - edgeLength / 4) / edgeLength;
-        int numPointCols = (int) Math.ceil(t) + 2;
-        if (Math.ceil(t) == t) {
-            numPointCols++;
-        }
-        t = (rectangle.getHeight() - SQRT_3 * edgeLength / 4) / (SQRT_3 / 2 * edgeLength);
-        int numPointRows = (int) Math.ceil(t) + 2;
-        if (Math.ceil(t) == t) {
-            numPointRows++;
-        }
-        Node[][] nodes = genVertes(x0, y0, numPointRows, numPointCols, edgeLength);
-        TriangleAdaptiveCell[][] triangles = genTriangles(nodes);
-        linkTrianglesOpposites(triangles);
-        return triangles;
+    public static Logger logger = LoggerFactory.getLogger(TriangleAdaptiveCellFactory.class);
+    Class<ND> nodeClass;
+
+    public Class<ND> getNodeClass() {
+        return nodeClass;
     }
 
-    private Node[][] genVertes(double x0, double y0, int numRows, int numCols, double edgeLength) {
-        final double SQRT_3 = Math.sqrt(3);
-        Node[][] result = new Node[numRows][numCols];
-        for (int i = 0; i < result.length; i++) {
-            Node[] row = result[i];
-            double startX = x0 - 0.5 * edgeLength * (i % 2);
-            double y = y0 + i * edgeLength * SQRT_3 / 2;
-            for (int j = 0; j < row.length; j++) {
-                Node node = newNodeInstance();
-                node.setCoord(new double[]{startX + edgeLength * j, y});
-                row[j] = node;
-            }
-        }
-        return result;
-    }
-
-    protected Node newNodeInstance() {
-        return new Node();
-    }
-
-    private TriangleAdaptiveCell[][] genTriangles(Node[][] nodes) {
-        TriangleAdaptiveCell[][] triangleCells = new TriangleAdaptiveCell[nodes.length - 1][(nodes[0].length - 1) * 2];
-        for (int i = 0; i < nodes.length - 1; i++) {
-            int rowMod = i % 2;
-            TriangleAdaptiveCell[] triangleRow = triangleCells[i];
-            for (int j = 0; j < triangleRow.length; j++) {
-                if (rowMod == 0 && j % 2 == 0 || rowMod == 1 && j % 2 == 1) {
-                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[3];
-                    edges[0] = new AdaptiveCellEdge();
-                    edges[0].setStart(nodes[i][j / 2 + rowMod]);
-                    edges[1] = new AdaptiveCellEdge();
-                    edges[1].setStart(nodes[i + 1][j / 2 + 1]);
-                    edges[2] = new AdaptiveCellEdge();
-                    edges[2].setStart(nodes[i + 1][j / 2]);
-                    TriangleAdaptiveCell cell = newTriangleAdaptiveCellInstance();
-                    cell.setCornerEdges(edges);
-                    AdaptiveUtils.linkCornerEdges(cell);
-                    AdaptiveUtils.linkEdgeAndCell(cell);
-                    triangleRow[j] = cell;
-                } else {
-                    AdaptiveCellEdge[] edges = new AdaptiveCellEdge[3];
-                    edges[0] = new AdaptiveCellEdge();
-                    edges[0].setStart(nodes[i + 1][j / 2 + rowMod * -1 + 1]);
-                    edges[1] = new AdaptiveCellEdge();
-                    edges[1].setStart(nodes[i][j / 2]);
-                    edges[2] = new AdaptiveCellEdge();
-                    edges[2].setStart(nodes[i][j / 2 + 1]);
-
-                    TriangleAdaptiveCell cell = newTriangleAdaptiveCellInstance();
-                    cell.setCornerEdges(edges);
-                    AdaptiveUtils.linkCornerEdges(cell);
-                    AdaptiveUtils.linkEdgeAndCell(cell);
-                    triangleRow[j] = cell;
+    public void setNodeClass(Class<ND> nodeClass) {
+        this.nodeClass = nodeClass;
+        setNodeFactory(new Factory<ND>() {
+            @Override
+            public ND produce() {
+                try {
+                    return TriangleAdaptiveCellFactory.this.nodeClass.newInstance();
+                } catch (InstantiationException | IllegalAccessException ex) {
+                    logger.error("ND does not hava a null constructor!", ex);
+                    throw new IllegalStateException(ex);
                 }
             }
-        }
-        return triangleCells;
+        });
     }
 
-    protected TriangleAdaptiveCell newTriangleAdaptiveCellInstance() {
-        return new TriangleAdaptiveCell();
-    }
-
-    private void linkTrianglesOpposites(TriangleAdaptiveCell[][] triangles) {
-        for (int i = 0; i < triangles.length; i++) {
-            final int rowMod = i % 2;
-            for (int j = 0; j < triangles[i].length - 1; j++) {
-                if (j % 2 == 0 && rowMod == 0 || j % 2 == 1 && rowMod == 1) {
-                    AdaptiveUtils.linkAsOpposite(triangles[i][j].vertesEdges[0], triangles[i][j + 1].vertesEdges[0]);
-                } else {
-                    AdaptiveUtils.linkAsOpposite(triangles[i][j].vertesEdges[2], triangles[i][j + 1].vertesEdges[2]);
-                }
+    public TriangleAdaptiveCellFactory() {
+        setCellFactory(new Factory<AdaptiveCell<ND>>() {
+            @Override
+            public AdaptiveCell<ND> produce() {
+                return new TriangleAdaptiveCell<>();
             }
-        }
-        for (int i = 0; i < triangles.length - 1; i++) {
-            final int startJ = i % 2;
-            for (int j = 0; j < triangles[i].length; j += 2) {
-                AdaptiveUtils.linkAsOpposite(triangles[i][j + startJ].vertesEdges[1], triangles[i + 1][j + startJ].vertesEdges[1]);
+        });
+        setEdgeFactory(new Factory<AdaptiveCellEdge<ND>>() {
+            @Override
+            public AdaptiveCellEdge<ND> produce() {
+                return new AdaptiveCellEdge<>();
             }
-        }
+        });
     }
 }

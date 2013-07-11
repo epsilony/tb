@@ -1,28 +1,28 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.SegmentIterator;
+import net.epsilony.tb.solid.winged.AbstractWingedCell;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractAdaptiveCell<ND extends Node&Factory<ND>> implements AdaptiveCell<ND> {
+public abstract class AbstractAdaptiveCell<ND extends Node> extends AbstractWingedCell<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> implements AdaptiveCell<ND> {
 
     public static int defaultMaxSideSizePower = 1;
-    AdaptiveCell[] children;
-    AdaptiveCellEdge[] vertesEdges;
+    ArrayList<AdaptiveCell<ND>> children;
     int level = 0;
     int maxSideSizePower = defaultMaxSideSizePower;
 
     protected void bisectEdges() {
-        for (int i = 0; i < vertesEdges.length; i++) {
-            if (vertesEdges[i].getSucc() == vertesEdges[(i + 1) % getSideNum()]) {
-                vertesEdges[i].bisect();
+        for (int i = 0; i < getNumberOfVertes(); i++) {
+            if (getVertexEdge(i).getSucc() == getVertexEdge((i + 1) % getNumberOfVertes())) {
+                getVertexEdge(i).bisect();
             }
         }
     }
@@ -33,40 +33,34 @@ public abstract class AbstractAdaptiveCell<ND extends Node&Factory<ND>> implemen
             throw new IllegalStateException("Cannot fission!" + this);
         }
         bisectEdges();
-        AdaptiveCellEdge[] midEdges = getEdgesEndBySideMids();
+        ArrayList<AdaptiveCellEdge<ND>> midEdges = getEdgesEndBySideMids();
         genChildren(midEdges);
-        vertesEdges = null;
     }
 
-    protected abstract void genChildren(AdaptiveCellEdge[] midEdges);
+    protected abstract void genChildren(ArrayList<AdaptiveCellEdge<ND>> midEdges);
 
     @Override
-    public AdaptiveCell[] getChildren() {
+    public ArrayList<AdaptiveCell<ND>> getChildren() {
         return children;
     }
 
-    @Override
-    public AdaptiveCellEdge[] getCornerEdges() {
-        return vertesEdges;
-    }
-
-    protected AdaptiveCellEdge[] getEdgesEndBySideMids() {
-        AdaptiveCellEdge[] result = new AdaptiveCellEdge[getSideNum()];
+    protected ArrayList<AdaptiveCellEdge<ND>> getEdgesEndBySideMids() {
+        ArrayList<AdaptiveCellEdge<ND>> result = new ArrayList<>(getNumberOfVertes());
         int maxSideSize = getMaxSideSize();
-        for (int side = 0; side < vertesEdges.length; side++) {
-            AdaptiveCellEdge edgeA = vertesEdges[side];
-            AdaptiveCellEdge edgeB = vertesEdges[(side + 1) % getSideNum()];
+        for (int side = 0; side < getNumberOfVertes(); side++) {
+            AdaptiveCellEdge<ND> edgeA = getVertexEdge(side);
+            AdaptiveCellEdge<ND> edgeB = getVertexEdge((side + 1) % getNumberOfVertes());
             double[] sideStart = edgeA.getStart().getCoord();
             double[] sideEnd = edgeB.getStart().getCoord();
             double[] midCoord = Math2D.pointOnSegment(sideStart, sideEnd, 0.5, null);
-            AdaptiveCellEdge edge = edgeA;
+            AdaptiveCellEdge<ND> edge = edgeA;
             double lenSq = Math2D.distanceSquare(edge.getStart().getCoord(), edge.getEnd().getCoord());
             int count = 0;
             while (edge != edgeB) {
-                AdaptiveCellEdge succ = edge.getSucc();
+                AdaptiveCellEdge<ND> succ = edge.getSucc();
                 double lenSqSucc = Math2D.distanceSquare(succ.getStart().getCoord(), succ.getEnd().getCoord());
                 if (Math2D.distanceSquare(midCoord, edge.getEnd().getCoord()) < 0.2 * Math.min(lenSq, lenSqSucc)) {
-                    result[side] = edge;
+                    result.add(edge);
                 }
                 edge = succ;
                 lenSq = lenSqSucc;
@@ -100,24 +94,24 @@ public abstract class AbstractAdaptiveCell<ND extends Node&Factory<ND>> implemen
     }
 
     @Override
-    public Iterator<AdaptiveCellEdge> iterator() {
-        if (null == vertesEdges) {
+    public Iterator<AdaptiveCellEdge<ND>> iterator() {
+        if (null != getChildren()) {
             return new SegmentIterator<>(null);
         }
-        return new SegmentIterator<>(vertesEdges[0]);
+        return new SegmentIterator<>(getVertexEdge(0));
     }
 
     @Override
     public AdaptiveCell searchFissionObstrutor() {
-        Iterator<AdaptiveCellEdge> iter = new SegmentIterator<>(vertesEdges[0]);
+        Iterator<AdaptiveCellEdge<ND>> iter = new SegmentIterator<>(getVertexEdge(0));
         AdaptiveCell result = null;
         while (iter.hasNext()) {
-            AdaptiveCellEdge edge = iter.next();
-            AdaptiveCellEdge opposite = edge.getOpposite();
+            AdaptiveCellEdge<ND> edge = iter.next();
+            AdaptiveCellEdge<ND> opposite = edge.getOpposite();
             if (null == opposite) {
                 continue;
             }
-            AdaptiveCell oppositeCell = opposite.getCell();
+            AdaptiveCell<ND> oppositeCell = opposite.getCell();
             if (null == oppositeCell) {
                 continue;
             }
@@ -126,11 +120,6 @@ public abstract class AbstractAdaptiveCell<ND extends Node&Factory<ND>> implemen
             }
         }
         return result;
-    }
-
-    @Override
-    public void setCornerEdges(AdaptiveCellEdge[] cornerEdges) {
-        this.vertesEdges = cornerEdges;
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCellFactory;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.ModelDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -22,8 +23,12 @@ public class TriangleAdaptiveCellDemo extends AbstractAdaptiveCellDemo {
     public static Rectangle2D TRIANGLE_COVERY_RANGE = new Rectangle2D.Double(5, 5, 100, 60);
 
     @Override
-    protected AdaptiveCell[][] genCells() {
-        return new TriangleAdaptiveCellFactory().coverRectangle(TRIANGLE_COVERY_RANGE, TRIANGLE_EDGE_LENGTH);
+    protected List<AdaptiveCell<Node>> genCells() {
+        TriangleAdaptiveCellFactory<Node> factory = new TriangleAdaptiveCellFactory<>();
+        factory.setNodeClass(Node.class);
+        factory.setRectangle(TRIANGLE_COVERY_RANGE);
+        factory.setEdgeLength(TRIANGLE_EDGE_LENGTH);
+        return factory.produce();
     }
 
     public static void main(String[] args) {

@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.JCheckBox;
 import net.epsilony.tb.adaptive.AdaptiveCell;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
@@ -22,7 +23,7 @@ public abstract class AbstractAdaptiveCellDemo {
 
     public void createDemoUI() {
         CommonFrame frame = new CommonFrame();
-        AdaptiveCell[][] cells = genCells();
+        List<AdaptiveCell<Node>> cells = genCells();
         final BasicModelPanel mainPanel = frame.getMainPanel();
         Color nodeColor = NodeDrawer.DEFAULT_COLOR;
         nodeColor = new Color(nodeColor.getRed(), nodeColor.getGreen(), nodeColor.getBlue(), nodeColor.getAlpha() / 4);
@@ -33,12 +34,10 @@ public abstract class AbstractAdaptiveCellDemo {
                 mainPanel.addAndSetupModelDrawer(dr);
             }
         }
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                AdaptiveCellDemoDrawer drawer = new AdaptiveCellDemoDrawer();
-                drawer.setCell(cells[i][j]);
-                mainPanel.addAndSetupModelDrawer(drawer);
-            }
+        for (AdaptiveCell<Node> cell : cells) {
+            AdaptiveCellDemoDrawer drawer = new AdaptiveCellDemoDrawer();
+            drawer.setCell(cell);
+            mainPanel.addAndSetupModelDrawer(drawer);
         }
         JCheckBox recursiveBox = new JCheckBox("recursively", true);
         final JCheckBox showOppositesBox = new JCheckBox("opposites", true);
@@ -57,7 +56,7 @@ public abstract class AbstractAdaptiveCellDemo {
         frame.setVisible(true);
     }
 
-    protected abstract AdaptiveCell[][] genCells();
+    protected abstract List<AdaptiveCell<Node>> genCells();
 
     protected List<ModelDrawer> getExtraDrawers() {
         return null;

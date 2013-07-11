@@ -1,20 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.TestTool;
+import net.epsilony.tb.solid.Node;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author epsilon
+ * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCellFactoryTest {
 
@@ -26,14 +23,19 @@ public class QuadrangleAdaptiveCellFactoryTest {
      */
     @Test
     public void testByCoordGrid() {
-        AdaptiveCell[][] cellGrid = QuadrangleAdaptiveCellFactory.byCoordGrid(
-                TestTool.linSpace(0, 200, 10), TestTool.linSpace(100, 0, 5));
-        LinkedList<AdaptiveCell> cellList = new LinkedList<>();
-        MiscellaneousUtils.addToList(cellGrid, cellList);
-        for (AdaptiveCell cell : cellList) {
+        double[] xs = TestTool.linSpace(0, 200, 10);
+        double[] ys = TestTool.linSpace(100, 0, 5);
+        QuadrangleAdaptiveCellFactory<Node> factory = new QuadrangleAdaptiveCellFactory<>();
+        factory.setNodeClass(Node.class);
+        factory.setXs(xs);
+        factory.setYs(ys);
+
+        ArrayList<AdaptiveCell<Node>> cellList = new ArrayList<AdaptiveCell<Node>>(factory.produce());
+
+        for (AdaptiveCell<Node> cell : cellList) {
             int count = 0;
 
-            for (AdaptiveCellEdge edge : cell) {
+            for (AdaptiveCellEdge<Node> edge : cell) {
 
 
 
@@ -49,13 +51,13 @@ public class QuadrangleAdaptiveCellFactoryTest {
             assertEquals(4, count);
         }
 
-        Map<AdaptiveCell, Integer> cellMap = new HashMap<>();
-        for (AdaptiveCell cell : cellList) {
-            for (AdaptiveCellEdge edge : cell) {
+        Map<AdaptiveCell<Node>, Integer> cellMap = new HashMap<>();
+        for (AdaptiveCell<Node> cell : cellList) {
+            for (AdaptiveCellEdge<Node> edge : cell) {
                 if (null == edge.getOpposite()) {
                     continue;
                 }
-                AdaptiveCell opposite = edge.getOpposite().getCell();
+                AdaptiveCell<Node> opposite = edge.getOpposite().getCell();
                 assertTrue(opposite != null);
                 Integer result = cellMap.get(opposite);
                 if (null == result) {
@@ -66,22 +68,24 @@ public class QuadrangleAdaptiveCellFactoryTest {
             }
         }
 
+        int numCol = xs.length - 1;
+        int numRow = ys.length - 1;
 
-        for (int i = 0; i < cellGrid.length; i++) {
-            for (int j = 0; j < cellGrid[0].length; j++) {
+        for (int i = 0; i < numRow; i++) {
+            for (int j = 0; j < numCol; j++) {
                 int exp;
-                if (i == 0 || i == cellGrid.length - 1) {
-                    if (j == 0 || j == cellGrid[0].length - 1) {
+                if (i == 0 || i == numRow - 1) {
+                    if (j == 0 || j == numCol - 1) {
                         exp = 2;
                     } else {
                         exp = 3;
                     }
-                } else if (j == 0 || j == cellGrid[0].length - 1) {
+                } else if (j == 0 || j == numCol - 1) {
                     exp = 3;
                 } else {
                     exp = 4;
                 }
-                assertEquals(exp, (int) cellMap.get(cellGrid[i][j]));
+                assertEquals(exp, (int) cellMap.get(cellList.get(i * numCol + j)));
             }
         }
     }

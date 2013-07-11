@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
 import java.util.ArrayList;
@@ -13,7 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author epsilon
+ * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class AdaptiveCellEdgeTest {
 
@@ -37,14 +34,14 @@ public class AdaptiveCellEdgeTest {
     public void testBisect() {
         double[][] coordsA = new double[][]{{-1, 1}, {0, 1}, {0, -1}, {-1, -1}};
         double[][] coordsB = new double[][]{{1, -1}, {0, -1}, {0, 1}, {1, 1}};
-        List<AdaptiveCellEdge> chainA = genEdgeChain(coordsA);
-        List<AdaptiveCellEdge> chainB = genEdgeChain(coordsB);
+        List<AdaptiveCellEdge<Node>> chainA = genEdgeChain(coordsA);
+        List<AdaptiveCellEdge<Node>> chainB = genEdgeChain(coordsB);
 
-        AdaptiveCellEdge a = chainA.get(1);
-        AdaptiveCellEdge b = chainB.get(1);
-        final TriangleAdaptiveCell cellA = new TriangleAdaptiveCell();
+        AdaptiveCellEdge<Node> a = chainA.get(1);
+        AdaptiveCellEdge<Node> b = chainB.get(1);
+        final TriangleAdaptiveCell<Node> cellA = new TriangleAdaptiveCell();
         a.setCell(cellA);
-        final QuadrangleAdaptiveCell cellB = new QuadrangleAdaptiveCell();
+        final QuadrangleAdaptiveCell<Node> cellB = new QuadrangleAdaptiveCell();
         b.setCell(cellB);
 
         a.setOpposite(b);
@@ -75,11 +72,11 @@ public class AdaptiveCellEdgeTest {
         assertArrayEquals(b.getEnd().getCoord(), new double[]{0, 0}, 1e-14);
     }
 
-    public static List<AdaptiveCellEdge> genEdgeChain(double[][] coords) {
+    public static List<AdaptiveCellEdge<Node>> genEdgeChain(double[][] coords) {
 
-        List<AdaptiveCellEdge> result = new ArrayList<>(coords.length);
+        List<AdaptiveCellEdge<Node>> result = new ArrayList<>(coords.length);
         for (double[] coord : coords) {
-            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
+            AdaptiveCellEdge<Node> newEdge = new AdaptiveCellEdge();
             newEdge.setStart(new Node(coord));
             result.add(newEdge);
         }

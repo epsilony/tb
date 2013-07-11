@@ -4,7 +4,6 @@ package net.epsilony.tb.adaptive.demo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.NoninvertibleTransformException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.AdaptiveUtils;
+import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawer;
 
@@ -45,7 +45,7 @@ public class ClickToFission extends MouseAdapter {
         for (ModelDrawer md : modelDrawers) {
             if (md instanceof AdaptiveCellDemoDrawer) {
                 AdaptiveCellDemoDrawer quadDrawer = (AdaptiveCellDemoDrawer) md;
-                AdaptiveCell cell = quadDrawer.getCell();
+                AdaptiveCell<Node> cell = quadDrawer.getCell();
                 try {
                     if (cell.getChildren() == null && quadDrawer.isComponentPointInside(e.getX(), e.getY())) {
                         fission(cell, newDrawers);
@@ -63,8 +63,8 @@ public class ClickToFission extends MouseAdapter {
         }
     }
 
-    private void fission(AdaptiveCell cell, Collection<ModelDrawer> newDrawers) {
-        LinkedList<AdaptiveCell> newCells = new LinkedList<>();
+    private void fission(AdaptiveCell<Node> cell, Collection<ModelDrawer> newDrawers) {
+        LinkedList<AdaptiveCell<Node>> newCells = new LinkedList<>();
         AdaptiveUtils.fission(cell, recursivelyFissionCheckBox.isSelected(), newCells);
         
         for (AdaptiveCell newCell : newCells) {

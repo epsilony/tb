@@ -1,10 +1,8 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
@@ -16,19 +14,19 @@ import net.epsilony.tb.solid.SegmentIterator;
  */
 public class AdaptiveUtils {
 
-    public static void fission(AdaptiveCell cell, boolean recursively, Collection<AdaptiveCell> newCellsOutput) {
+    public static <ND extends Node> void fission(AdaptiveCell<ND> cell, boolean recursively, Collection<AdaptiveCell<ND>> newCellsOutput) {
         if (recursively) {
             recursivelyFission(cell, newCellsOutput);
         } else if (cell.isAbleToFission()) {
             cell.fission();
             if (null != newCellsOutput) {
                 newCellsOutput.clear();
-                newCellsOutput.addAll(Arrays.asList(cell.getChildren()));
+                newCellsOutput.addAll(cell.getChildren());
             }
         }
     }
 
-    public static void recursivelyFission(AdaptiveCell cell, Collection<AdaptiveCell> newCellsOutput) {
+    public static <ND extends Node> void recursivelyFission(AdaptiveCell<ND> cell, Collection<AdaptiveCell<ND>> newCellsOutput) {
         if (null != newCellsOutput) {
             newCellsOutput.clear();
         }
@@ -36,12 +34,12 @@ public class AdaptiveUtils {
 
     }
 
-    private static void _recursivelyFission(AdaptiveCell cell, Collection<AdaptiveCell> newCell) {
+    private static <ND extends Node> void _recursivelyFission(AdaptiveCell<ND> cell, Collection<AdaptiveCell<ND>> newCell) {
         do {
             if (cell.isAbleToFission()) {
                 cell.fission();
                 if (null != newCell) {
-                    newCell.addAll(Arrays.asList(cell.getChildren()));
+                    newCell.addAll(cell.getChildren());
                 }
                 break;
             } else {
@@ -50,8 +48,8 @@ public class AdaptiveUtils {
         } while (true);
     }
 
-    public static boolean isPointRestrictlyInsideCell(AdaptiveCell cell, double x, double y) {
-        Iterator<AdaptiveCellEdge> edgeIter = new SegmentIterator<>(cell.getCornerEdges()[0]);
+    public static <ND extends Node> boolean isPointRestrictlyInsideCell(AdaptiveCell<ND> cell, double x, double y) {
+        Iterator<AdaptiveCellEdge<ND>> edgeIter = new SegmentIterator<>(cell.getVertexEdge(0));
         while (edgeIter.hasNext()) {
             AdaptiveCellEdge edge = edgeIter.next();
             double[] startCoord = edge.getStart().getCoord();
@@ -73,16 +71,15 @@ public class AdaptiveUtils {
         e2.setOpposite(e1);
     }
 
-    public static <ND extends Node & Factory<ND>> void linkEdgeAndCell(AdaptiveCell<ND> cell) {
+    public static <ND extends Node> void linkEdgeAndCell(AdaptiveCell<ND> cell) {
         for (AdaptiveCellEdge edge : cell) {
             edge.setCell(cell);
         }
     }
 
-    public static void linkCornerEdges(AdaptiveCell cell) {
-        AdaptiveCellEdge[] cornerEdges = cell.getCornerEdges();
-        for (int i = 0; i < cornerEdges.length; i++) {
-            Segment2DUtils.link(cornerEdges[i], cornerEdges[(i + 1) % cornerEdges.length]);
+    public static <ND extends Node> void linkCornerEdges(AdaptiveCell<ND> cell) {
+        for (int i = 0; i < cell.getNumberOfVertes(); i++) {
+            Segment2DUtils.link(cell.getVertexEdge(i), cell.getVertexEdge((i + 1) % cell.getNumberOfVertes()));
         }
     }
 }

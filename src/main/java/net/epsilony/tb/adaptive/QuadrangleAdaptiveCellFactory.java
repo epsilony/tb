@@ -1,76 +1,134 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.adaptive;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
+import net.epsilony.tb.solid.winged.WingedEdgeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class QuadrangleAdaptiveCellFactory {
+public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<List<QuadrangleAdaptiveCell<ND>>> {
 
-    public static QuadrangleAdaptiveCell[][] byCoordGrid(double[] xs, double[] ys) {
+    public static Logger logger = LoggerFactory.getLogger(QuadrangleAdaptiveCellFactory.class);
+    double[] xs;
+    double[] ys;
+    Class<ND> nodeClass;   //to ensure that ND has null constructor, so factory pattern is not a good choice
+
+    public double[] getXs() {
+        return xs;
+    }
+
+    public void setXs(double[] xs) {
+        this.xs = xs;
+    }
+
+    public double[] getYs() {
+        return ys;
+    }
+
+    public void setYs(double[] ys) {
+        this.ys = ys;
+    }
+
+    public Class<ND> getNodeClass() {
+        return nodeClass;
+    }
+
+    public void setNodeClass(Class<ND> nodeClass) {
+        this.nodeClass = nodeClass;
+    }
+
+    private ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> byCoordGrid(ArrayList<ArrayList<ND>> nodeGrid) {
 
         int numRow = ys.length - 1;
         int numCol = xs.length - 1;
-        QuadrangleAdaptiveCell[][] result = new QuadrangleAdaptiveCell[numRow][numCol];
-        Node[][] nodeGrid = xysToNodes(xs, ys);
+        ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> result = new ArrayList<>(numRow);
+
         for (int rowIndex = 0; rowIndex < numRow; rowIndex++) {
-            QuadrangleAdaptiveCell[] resultRow = result[rowIndex];
-            for (int colIndex = 0; colIndex < resultRow.length; colIndex++) {
-                resultRow[colIndex] = produce(new Node[]{
-                    nodeGrid[rowIndex + 1][colIndex],
-                    nodeGrid[rowIndex + 1][colIndex + 1],
-                    nodeGrid[rowIndex][colIndex + 1],
-                    nodeGrid[rowIndex][colIndex]
-                });
+            ArrayList<QuadrangleAdaptiveCell<ND>> resultRow = new ArrayList<>(numCol);
+            result.add(resultRow);
+            for (int colIndex = 0; colIndex < numCol; colIndex++) {
+                resultRow.add(newCell(Arrays.asList(
+                        nodeGrid.get(rowIndex + 1).get(colIndex),
+                        nodeGrid.get(rowIndex + 1).get(colIndex + 1),
+                        nodeGrid.get(rowIndex).get(colIndex + 1),
+                        nodeGrid.get(rowIndex).get(colIndex))));
             }
         }
-        linkCellGridOpposites(result);
+
         return result;
     }
 
-    private static void linkCellGridOpposites(QuadrangleAdaptiveCell[][] cellGrid) {
-        for (int i = 0; i < cellGrid.length - 1; i++) {
-            QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
-            QuadrangleAdaptiveCell[] nextRow = cellGrid[i + 1];
-            for (int j = 0; j < gridRow.length; j++) {
-                gridRow[j].vertesEdges[0].setOpposite(nextRow[j].vertesEdges[2]);
-                nextRow[j].vertesEdges[2].setOpposite(gridRow[j].vertesEdges[0]);
+    private void linkCellGridOpposites(ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> cellGrid) {
+        for (int i = 0; i < cellGrid.size() - 1; i++) {
+            ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
+            ArrayList<QuadrangleAdaptiveCell<ND>> nextRow = cellGrid.get(i + 1);
+            for (int j = 0; j < gridRow.size(); j++) {
+                WingedEdgeUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(0), nextRow.get(j).getVertexEdge(2));
             }
         }
-        for (int i = 0; i < cellGrid.length; i++) {
-            QuadrangleAdaptiveCell[] gridRow = cellGrid[i];
-            for (int j = 0; j < gridRow.length - 1; j++) {
-                gridRow[j].vertesEdges[1].setOpposite(gridRow[j + 1].vertesEdges[3]);
-                gridRow[j + 1].vertesEdges[3].setOpposite(gridRow[j].vertesEdges[1]);
+        for (int i = 0; i < cellGrid.size(); i++) {
+            ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
+            for (int j = 0; j < gridRow.size() - 1; j++) {
+                WingedEdgeUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(1), gridRow.get(j + 1).getVertexEdge(3));
             }
         }
     }
 
-    private static Node[][] xysToNodes(double[] xs, double[] ys) {
-        Node[][] result = new Node[ys.length][xs.length];
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[i].length; j++) {
-                result[i][j] = new Node(xs[j], ys[i]);
+    private ArrayList<ArrayList<ND>> xysToNodes() {
+        ArrayList<ArrayList<ND>> result = new ArrayList<>(ys.length);
+        for (int i = 0; i < ys.length; i++) {
+            ArrayList<ND> row = new ArrayList<>(xs.length);
+            result.add(row);
+            for (int j = 0; j < xs.length; j++) {
+                ND newNode = newNode();
+                newNode.setCoord(new double[]{xs[j], ys[i]});
+                row.add(newNode);
             }
         }
         return result;
     }
 
-    private static QuadrangleAdaptiveCell produce(Node[] counterClockwiseVetes) {
-        if (counterClockwiseVetes.length != 4) {
+    private QuadrangleAdaptiveCell<ND> newCell(List<ND> counterClockwiseVetes) {
+        if (counterClockwiseVetes.size() != 4) {
             throw new IllegalArgumentException();
         }
         QuadrangleAdaptiveCell result = new QuadrangleAdaptiveCell();
-        AdaptiveCellEdge[] edges = new AdaptiveCellEdge[4];
-        for (int i = 0; i < counterClockwiseVetes.length; i++) {
-            edges[i] = new AdaptiveCellEdge();
-            edges[i].setStart(counterClockwiseVetes[i]);
+        for (int i = 0; i < counterClockwiseVetes.size(); i++) {
+            result.setVertexEdge(i, new AdaptiveCellEdge());
+            result.setVertex(i, counterClockwiseVetes.get(i));
         }
-        result.setCornerEdges(edges);
         AdaptiveUtils.linkCornerEdges(result);
         AdaptiveUtils.linkEdgeAndCell(result);
         return result;
+    }
+
+    @Override
+    public List<QuadrangleAdaptiveCell<ND>> produce() {
+        ArrayList<ArrayList<ND>> nodeGrid = xysToNodes();
+        ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> cellGrid = byCoordGrid(nodeGrid);
+        linkCellGridOpposites(cellGrid);
+        List<QuadrangleAdaptiveCell<ND>> result = new LinkedList<>();
+        for (List<QuadrangleAdaptiveCell<ND>> row : cellGrid) {
+            result.addAll(row);
+        }
+        return result;
+    }
+
+    private ND newNode() {
+        try {
+            return nodeClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            logger.error("ND does not hava a null constructor", ex);
+            throw new IllegalStateException(ex);
+        }
     }
 }
