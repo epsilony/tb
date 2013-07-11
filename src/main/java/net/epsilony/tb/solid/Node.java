@@ -66,4 +66,12 @@ public class Node implements IntIdentity {
             }
         };
     }
+
+    public static <ND extends Node> ND instanceByClass(ND nd) {
+        try {
+            return (ND) nd.getClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            throw new IllegalStateException("ND doesn't have a null constructor!", ex);
+        }
+    }
 }

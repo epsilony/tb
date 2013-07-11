@@ -6,16 +6,12 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.winged.WingedUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<ND> {
-
-    public static Logger logger = LoggerFactory.getLogger(QuadrangleAdaptiveCell.class);
 
     @Override
     protected void genChildren(ArrayList<AdaptiveCellEdge<ND>> midEdges) {
@@ -56,13 +52,7 @@ public class QuadrangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCel
     }
 
     private ND genCenterNode(ArrayList<AdaptiveCellEdge<ND>> midEdges) {
-        ND newNode = null;
-        try {
-            newNode = (ND) midEdges.get(0).getStart().getClass().newInstance();
-        } catch (InstantiationException | IllegalAccessException ex) {
-            logger.error("ND does not have a null constructor", ex);
-            throw new IllegalStateException(ex);
-        }
+        ND newNode = Node.instanceByClass(midEdges.get(0).getStart());
         newNode.setCoord(Math2D.intersectionPoint(
                 midEdges.get(0).getEndCoord(), midEdges.get(2).getEndCoord(),
                 midEdges.get(1).getEndCoord(), midEdges.get(3).getEndCoord(), null));

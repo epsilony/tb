@@ -24,12 +24,7 @@ public class Line2D<ND extends Node> extends AbstractLine2D<Line2D<ND>, ND> {
     }
 
     protected ND bisectionNode() {
-        ND newNode;
-        try {
-            newNode = (ND) start.getClass().newInstance();
-        } catch (InstantiationException | IllegalAccessException ex) {
-            throw new IllegalStateException("ND doesn't have a null constructor!", ex);
-        }
+        ND newNode=Node.instanceByClass(start);
         newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
         return newNode;
     }
