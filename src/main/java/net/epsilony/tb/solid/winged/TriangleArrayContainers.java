@@ -10,6 +10,6 @@ import net.epsilony.tb.solid.Node;
  */
 public class TriangleArrayContainers<TRI extends Triangle<ND>, ND extends Node> {
 
-    ArrayList<TRI> triangles;
-    ArrayList<ND> nodes;
+    public ArrayList<TRI> triangles;
+    public ArrayList<ND> nodes;
 }
