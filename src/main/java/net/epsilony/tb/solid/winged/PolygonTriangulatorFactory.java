@@ -6,6 +6,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.linked.TDoubleLinkedList;
 import gnu.trove.list.linked.TIntLinkedList;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
@@ -35,6 +36,7 @@ public class PolygonTriangulatorFactory//
     boolean prohibitEdgeSteinerPoint = true;
     private ArrayList<CELL> triangleCells;
     private ArrayList<NODE> nodes;
+    private List<NODE> spaceNodes;
 
     public double getTriangleArea() {
         return triangleArea;
@@ -95,6 +97,7 @@ public class PolygonTriangulatorFactory//
         TriangleArrayContainers<CELL, NODE> result = new TriangleArrayContainers<>();
         result.triangles = triangleCells;
         result.nodes = nodes;
+        result.spaceNodes=spaceNodes;
         return result;
     }
 
@@ -218,12 +221,17 @@ public class PolygonTriangulatorFactory//
     private void extractNodes() {
         int numberOfPoints = triOut.getNumberOfPoints();
         double[] points = triOut.getPointList().getDoubles(2 * numberOfPoints);
+        int[] pointsMarkers = triOut.getPointMarkerList().getInts(numberOfPoints);
         nodes = new ArrayList<>(numberOfPoints);
         generalCellFactory.setGenVertes(false);
+        spaceNodes = new LinkedList<>();
         for (int i = 0; i < numberOfPoints; i++) {
             NODE nd = generalCellFactory.nodeFactory.produce();
             nd.setCoord(new double[]{points[i * 2], points[i * 2 + 1]});
             nodes.add(nd);
+            if (pointsMarkers[i] == 0) {
+                spaceNodes.add(nd);
+            }
         }
     }
 }

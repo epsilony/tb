@@ -2,6 +2,7 @@
 package net.epsilony.tb.solid.winged;
 
 import java.util.ArrayList;
+import java.util.List;
 import net.epsilony.tb.solid.Node;
 
 /**
@@ -12,4 +13,5 @@ public class TriangleArrayContainers<TRI extends Triangle<ND>, ND extends Node> 
 
     public ArrayList<TRI> triangles;
     public ArrayList<ND> nodes;
+    public List<ND> spaceNodes;
 }
