@@ -55,7 +55,7 @@ public class RadialFunction2D implements WithDiffOrder, SynchronizedClonable<Rad
             if (!isUniRad) {
                 rad = influenceRads.getQuick(i);
             }
-            coreVals = coreFunc.values(dst / rad, coreVals);
+            coreVals = coreFunc.valuesByDistance(dst / rad, coreVals);
             results[0].add(coreVals[0]);
             for (int j = 1; j < numRows; j++) {
                 results[j].add(coreVals[1] / rad * dists[j].getQuick(i));
@@ -69,7 +69,7 @@ public class RadialFunction2D implements WithDiffOrder, SynchronizedClonable<Rad
         if (null == output) {
             output = new double[outputLength];
         }
-        coreFunc.values(dists[0] / influenceRad, output);
+        coreFunc.valuesByDistance(dists[0] / influenceRad, output);
         if (getDiffOrder() >= 1) {
             double d = output[1];
             for (int j = 1; j < outputLength; j++) {

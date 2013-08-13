@@ -26,7 +26,7 @@ public class NormalFunction implements RadialFunctionCore {
     }
 
     @Override
-    public double[] values(double x, double[] results) {
+    public double[] valuesByDistance(double x, double[] results) {
         if (null == results) {
             results = new double[]{diffOrder + 1};
         }
