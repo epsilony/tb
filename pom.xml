@@ -81,7 +81,7 @@
         <dependency>
             <groupId>net.sourceforge</groupId>
             <artifactId>py4j</artifactId>
-            <version>0.7</version>
+            <version>0.8</version>
             <type>jar</type>
         </dependency>
         <dependency>
