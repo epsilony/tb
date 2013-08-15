@@ -4,6 +4,7 @@ package net.epsilony.tb.common_func;
 import java.util.Arrays;
 import net.epsilony.tb.MiscellaneousUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+//***** with python script to generate some code at the end of this file<----------------------
 
 /**
  *
@@ -11,16 +12,14 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
  */
 public class Wendland implements RadialFunctionCore {
 
-    private static final double[] COEFS_1 = new double[]{1, -1};
-    private static final double[] COEFS_1_ORDERS = new double[]{4, 6, 8};
-    private static final double[][] COEFS_2S = new double[][]{
-        {1, 4},
-        {3, 18, 35},
-        {1, 8, 25, 32}};
-    int diffOrder;
+    private static final double[] WENDLAND_3_1 = new double[]{1, 0, -10, 20, -15, 4};//(-r + 1)**4*(4*r + 1)
+    private static final double[] WENDLAND_3_2 = new double[]{3, 0, -28, 0, 210, -448, 420, -192, 35};//(-r + 1)**6*(35*r**2 + 18*r + 3)
+    private static final double[] WENDLAND_3_3 = new double[]{1, 0, -11, 0, 66, 0, -462, 1056, -1155, 704, -231, 32};//(-r + 1)**8*(32*r**3 + 25*r**2 + 8*r + 1)
+    private static final double[][] WENDLAND_COEFFS_ARRAY = new double[][]{WENDLAND_3_1, WENDLAND_3_2, WENDLAND_3_3};
     private static final int[] LEGAL_CONTINUOUS_ORDERS = new int[]{2, 4, 6};
+    int diffOrder;
     PolynomialFunction pFunc;
-    PolynomialFunction[] pFuncs;
+    PolynomialFunction pFuncDiff;
     private final int continuous;
 
     public Wendland(int continuous) {
@@ -32,53 +31,51 @@ public class Wendland implements RadialFunctionCore {
         this(4);
     }
 
-    private void initWendland(int c) {
-        boolean legal = false;
-        for (int lc : LEGAL_CONTINUOUS_ORDERS) {
-            if (lc == c) {
-                legal = true;
+    private void initWendland(int continuous) {
+        int index = -1;
+        for (int i = 0; i < LEGAL_CONTINUOUS_ORDERS.length; i++) {
+            int lc = LEGAL_CONTINUOUS_ORDERS[i];
+            if (lc == continuous) {
+                index = i;
                 break;
             }
         }
-        if (!legal) {
+        if (index < 0) {
             throw new IllegalArgumentException(
                     "The legal continuous order should be one of "
-                    + Arrays.toString(LEGAL_CONTINUOUS_ORDERS) + " , not " + c);
+                    + Arrays.toString(LEGAL_CONTINUOUS_ORDERS) + " , not " + continuous);
         }
-        int index = c / 2 - 1;
-        PolynomialFunction p1 = new PolynomialFunction(COEFS_1);
-        for (int i = 1; i < COEFS_1_ORDERS[index]; i++) {
-            p1 = p1.multiply(p1);
-        }
-        PolynomialFunction p2 = new PolynomialFunction(COEFS_2S[index]);
-        pFunc = p1.multiply(p2);
-        diffOrder = -1;
-        _setDiffOrder(0);
 
-    }
-
-    private void _setDiffOrder(int diffOrder) {
-        if (diffOrder < 0) {
-            throw new IllegalArgumentException("only support diffOrder that is > 0, not " + diffOrder);
-        }
-        if (diffOrder == this.diffOrder) {
-            return;
-        }
-        this.diffOrder = diffOrder;
-        pFuncs = new PolynomialFunction[diffOrder + 1];
-        pFuncs[0] = pFunc;
-        for (int i = 1; i <= diffOrder; i++) {
-            pFuncs[i] = pFuncs[i - 1].polynomialDerivative();
-        }
+        pFunc = new PolynomialFunction(WENDLAND_COEFFS_ARRAY[index]);
+        pFuncDiff = pFunc.polynomialDerivative();
+        diffOrder = 0;
     }
 
     @Override
-    public double[] valuesByDistance(double x, double[] results) {
+    public double[] valuesByDistance(double distance, double[] results) {
+        if (distance < 0) {
+            throw new IllegalArgumentException("distance should be non-negative, not " + distance);
+        }
         if (null == results) {
             results = new double[diffOrder + 1];
         }
-        for (int i = 0; i < results.length; i++) {
-            results[i] = pFuncs[i].value(x);
+        if (distance >= 1) {
+            Arrays.fill(results, 0);
+            return results;
+        }
+        results[0] = pFunc.value(distance);
+        if (diffOrder >= 1) {
+            results[1] = pFuncDiff.value(distance);
+        }
+        return results;
+    }
+
+    @Override
+    public double[] valuesByDistanceSquare(double distanceSquare, double[] results) {
+        double distance = Math.sqrt(distanceSquare);
+        results = valuesByDistance(distance, results);
+        if (diffOrder >= 1) {
+            results[1] /= 2 * distance;
         }
         return results;
     }
@@ -90,7 +87,10 @@ public class Wendland implements RadialFunctionCore {
 
     @Override
     public void setDiffOrder(int diffOrder) {
-        _setDiffOrder(diffOrder);
+        if (diffOrder < 0 || diffOrder > 1) {
+            throw new IllegalArgumentException("only support diff order 0 or 1, not " + diffOrder);
+        }
+        this.diffOrder = diffOrder;
     }
 
     @Override
@@ -105,3 +105,48 @@ public class Wendland implements RadialFunctionCore {
         return MiscellaneousUtils.simpleToString(this) + '{' + "continuous=" + continuous + '}';
     }
 }
+//python script:
+//# -*- coding: utf-8 -*-
+//'''
+//Created on 2013年8月13日
+//
+//@author: epsilonyuan@gmail.com
+//'''
+//
+//from __future__ import print_function
+//from sympy import *
+//
+//if __name__ == "__main__":
+//    r, u = symbols("r,u")
+//    
+//    prefix = "private static final"
+//    if prefix is not None and len(prefix)>0 and prefix[-1] != " ":
+//        prefix += " "
+//    
+//    wendlands = {
+//    "wendland_3_1" : (1 - r) ** 4 * (4 * r + 1),
+//    "wendland_3_2" : (1 - r) ** 6 * (35 * r ** 2 + 18 * r + 3),
+//    "wendland_3_3" : (1 - r) ** 8 * (32 * r ** 3 + 25 * r ** 2 + 8 * r + 1)
+//    }
+//    
+//    wend_polys = {}
+//    for k, v in wendlands.items():
+//        wend_polys[k] = v.as_poly()
+//        
+//    pairs = [(k, v) for k, v in wend_polys.items()]
+//    pairs.sort(key=lambda s:s[0])
+//    
+//    for k, v in pairs:
+//        java_coefs = v.all_coeffs()
+//        java_coefs.reverse()
+//        c = str(java_coefs)
+//        c = "{" + c[1:-1] + "}"
+//        print(prefix, "double[] ", k.upper(), " = new double[]", c, ";//", wendlands[k], sep="")
+//    
+//    s = prefix + "double[][] WENDLAND_COEFFS_ARRAY = new double[][]{"
+//    for k, v in pairs:
+//        s +=k.upper() + ", "
+//    s = s[:-2]
+//    s += "};"
+//    print(s)
+

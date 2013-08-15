@@ -11,4 +11,6 @@ import net.epsilony.tb.synchron.SynchronizedClonable;
 public interface RadialFunctionCore extends WithDiffOrder, SynchronizedClonable<RadialFunctionCore> {
 
     double[] valuesByDistance(double distance, double[] result);
+
+    double[] valuesByDistanceSquare(double distanceSquare, double[] results);
 }
