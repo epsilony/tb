@@ -14,7 +14,7 @@ import net.epsilony.tb.synchron.SynchronizedClonable;
  */
 public class RadialBasis implements Dimensional, WithDiffOrder, SynchronizedClonable<RadialBasis> {
 
-    RadialFunctionCore coreFunc;
+    RadialBasisCore coreFunc;
     private int dim;
 
     @Override
@@ -34,7 +34,7 @@ public class RadialBasis implements Dimensional, WithDiffOrder, SynchronizedClon
         return WithDiffOrderUtil.initOutput(outputs, capacity, 2, getDiffOrder());
     }
 
-    public RadialBasis(RadialFunctionCore coreFunc) {
+    public RadialBasis(RadialBasisCore coreFunc) {
         this.coreFunc = coreFunc;
     }
 

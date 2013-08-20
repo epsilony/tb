@@ -34,7 +34,7 @@ public class RadialFunctionCoresTestUtil {
     SampleData data;
     double errorLimit = 1e-7;
     int maxDiffOrder;
-    RadialFunctionCore core;
+    RadialBasisCore core;
     private static final Logger logger = LoggerFactory.getLogger(RadialFunctionCoresTestUtil.class);
     @Rule
     public TestWatcher watcher = new TestWatcher() {
@@ -45,7 +45,7 @@ public class RadialFunctionCoresTestUtil {
         }
     };
 
-    public void setCore(RadialFunctionCore core) {
+    public void setCore(RadialBasisCore core) {
         this.core = core;
 
     }

@@ -8,7 +8,7 @@ import net.epsilony.tb.synchron.SynchronizedClonable;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface RadialFunctionCore extends WithDiffOrder, SynchronizedClonable<RadialFunctionCore> {
+public interface RadialBasisCore extends WithDiffOrder, SynchronizedClonable<RadialBasisCore> {
 
     double[] valuesByDistance(double distance, double[] result);
 

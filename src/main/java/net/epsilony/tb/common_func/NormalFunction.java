@@ -10,7 +10,7 @@ import net.epsilony.tb.MiscellaneousUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class NormalFunction implements RadialFunctionCore {
+public class NormalFunction implements RadialBasisCore {
     // 1/(sigma*sqrt(PI*2))*exp(-x*x/(2*sigma*sigma))
 
     public static double DEFAULT_SIGMA = 1;

@@ -10,7 +10,7 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Wendland implements RadialFunctionCore {
+public class Wendland implements RadialBasisCore {
 
     private static final double[] WENDLAND_3_1 = new double[]{1, 0, -10, 20, -15, 4};//(-r + 1)**4*(4*r + 1)
     private static final double[] WENDLAND_3_2 = new double[]{3, 0, -28, 0, 210, -448, 420, -192, 35};//(-r + 1)**6*(35*r**2 + 18*r + 3)
@@ -94,7 +94,7 @@ public class Wendland implements RadialFunctionCore {
     }
 
     @Override
-    public RadialFunctionCore synchronizeClone() {
+    public RadialBasisCore synchronizeClone() {
         Wendland result = new Wendland(continuous);
         result.setDiffOrder(getDiffOrder());
         return result;

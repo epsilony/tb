@@ -1,9 +1,8 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import gnu.trove.list.array.TDoubleArrayList;
 import java.util.Random;
-import net.epsilony.tb.common_func.MonomialBasis2D;
+import net.epsilony.tb.common_func.MonomialBases2D;
 import net.epsilony.tb.analysis.ArrvarFunction;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.winged.ArrayTriangle;
@@ -90,19 +89,21 @@ public class SymmetricTriangleQuadratureTest {
 
         @Override
         public double value(double[] vec) {
-            TDoubleArrayList[] bs = basis.values(vec, null);
+            double[][] output=null;
+            double[][] bs = bases.values(vec, output);
             double result = 0;
-            for (int i = 0; i < bs[0].size(); i++) {
-                result += bs[0].get(i) * pars[i];
+            for (int i = 0; i < bs[0].length; i++) {
+                result += bs[0][i] * pars[i];
             }
             return result;
         }
         double[] pars;
-        MonomialBasis2D basis;
+        MonomialBases2D bases;
 
         public Random2DPolygon(int power) {
-            basis = new MonomialBasis2D(power);
-            pars = new double[basis.basisLength()];
+            bases = new MonomialBases2D();
+            bases.setDegree(power);
+            pars = new double[bases.basesSize()];
             Random rand = new Random();
             for (int i = 0; i < pars.length; i++) {
                 pars[i] = rand.nextDouble();

@@ -8,24 +8,24 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MonomialBasis2D implements BasisFunction {
+public class MonomialBases2D implements BasesFunction<MonomialBases2D> {
 
     private int monomialOrder;
     private int diffOrder;
 
-    public void setMonomialOrder(int monomialOrder) {
+    public void setDegree(int monomialOrder) {
         this.monomialOrder = monomialOrder;
     }
 
-    public MonomialBasis2D(int monomialOrder) {
+    public MonomialBases2D(int monomialOrder) {
         initMonomialBasis2D(monomialOrder);
     }
 
-    public MonomialBasis2D() {
+    public MonomialBases2D() {
         initMonomialBasis2D(2);
     }
 
-    public int getMonomialOrder() {
+    public int getDegree() {
         return monomialOrder;
     }
 
@@ -54,7 +54,6 @@ public class MonomialBasis2D implements BasisFunction {
         return WithDiffOrderUtil.outputLength2D(monomialOrder);
     }
 
-    @Override
     public TDoubleArrayList[] values(double[] xy, TDoubleArrayList[] output) {
         TDoubleArrayList[] results = initOutput(output);
         if (monomialOrder >= 0) {
@@ -96,17 +95,42 @@ public class MonomialBasis2D implements BasisFunction {
         return results;
     }
 
+    @Override
+    public double[][] values(double[] vec, double[][] output) {
+        TDoubleArrayList[] result = values(vec, initOutput(null));
+        if (null == output) {
+            output = new double[WithDiffOrderUtil.outputLength2D(diffOrder)][WithDiffOrderUtil.outputLength2D(getDegree())];
+        }
+        for (int i = 0; i < result.length; i++) {
+            TDoubleArrayList res = result[i];
+            res.toArray(output[i]);
+        }
+        return output;
+    }
+
     public TDoubleArrayList[] initOutput(TDoubleArrayList[] output) {
-        return WithDiffOrderUtil.initOutput(output, basisLength(), 2, diffOrder);
+        return WithDiffOrderUtil.initOutput(output, basesSize(), 2, diffOrder);
     }
 
     @Override
-    public int basisLength() {
-        return basisLength(getMonomialOrder());
+    public int basesSize() {
+        return basisLength(getDegree());
     }
 
     @Override
-    public BasisFunction synchronizeClone() {
-        return new MonomialBasis2D(monomialOrder);
+    public MonomialBases2D synchronizeClone() {
+        return new MonomialBases2D(monomialOrder);
+    }
+
+    @Override
+    public void setDimension(int dim) {
+        if (dim != 2) {
+            throw new IllegalArgumentException("only support 2d, not " + dim + "d");
+        }
+    }
+
+    @Override
+    public int getDimension() {
+        return 2;
     }
 }

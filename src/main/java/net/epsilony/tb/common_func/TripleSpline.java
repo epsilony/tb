@@ -9,7 +9,7 @@ import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TripleSpline implements RadialFunctionCore {
+public class TripleSpline implements RadialBasisCore {
 
     int diffOrder;
     private static double[][] coefs = new double[][]{
@@ -95,7 +95,7 @@ public class TripleSpline implements RadialFunctionCore {
     }
 
     @Override
-    public RadialFunctionCore synchronizeClone() {
+    public RadialBasisCore synchronizeClone() {
         TripleSpline result = new TripleSpline();
         result.setDiffOrder(getDiffOrder());
         return result;
