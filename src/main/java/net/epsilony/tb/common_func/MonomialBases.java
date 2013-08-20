@@ -1,14 +1,13 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.common_func;
 
-import net.epsilony.tb.analysis.WithDiffOrder;
 import net.epsilony.tb.analysis.WithDiffOrderUtil;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MonomialBases implements WithDiffOrder {
+public class MonomialBases implements BasesFunction<MonomialBases> {
 
     int diffOrder = 0;
     int dim = 2;
@@ -27,11 +26,13 @@ public class MonomialBases implements WithDiffOrder {
         this.diffOrder = diffOrder;
     }
 
-    public int getDim() {
+    @Override
+    public int getDimension() {
         return dim;
     }
 
-    public void setDim(int dim) {
+    @Override
+    public void setDimension(int dim) {
         if (dim < 1 || dim > 3) {
             throw new IllegalArgumentException("dim should be 1-3, not " + dim);
         }
@@ -49,6 +50,7 @@ public class MonomialBases implements WithDiffOrder {
         this.degree = degree;
     }
 
+    @Override
     public double[][] values(double[] vec, double[][] results) {
         switch (dim) {
             case 1:
@@ -60,6 +62,20 @@ public class MonomialBases implements WithDiffOrder {
             default:
                 throw new IllegalStateException();
         }
+    }
+
+    @Override
+    public int basesSize() {
+        return WithDiffOrderUtil.outputLength(dim, degree);
+    }
+
+    @Override
+    public MonomialBases synchronizeClone() {
+        MonomialBases clone = new MonomialBases();
+        clone.setDegree(degree);
+        clone.setDiffOrder(diffOrder);
+        clone.setDimension(dim);
+        return clone;
     }
 
     public static double[][] monomials1D(double[] vec, int degree, int diffOrder, double[][] result) {

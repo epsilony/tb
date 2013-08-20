@@ -51,7 +51,7 @@ public class MonomialBasesTest {
         for (Data testData : testDataFromJson()) {
             tested = true;
             System.out.println(testData);
-            mb.setDim(testData.dimension);
+            mb.setDimension(testData.dimension);
             for (int i = 0; i < testData.samples.length; i++) {
                 double[] vec = testData.samples[i];
                 double[][] exps = testData.exps[i];
