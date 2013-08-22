@@ -68,6 +68,7 @@ public class ReverseCuthillMcKeeSolver {
         TIntArrayList indes = new TIntArrayList(size());
         int[] distances = new int[size()];
         boolean[] visited = null;
+        int visitedSearchStart = 0;
         TIntArrayList opt2oriList = new TIntArrayList();
         do {
             int ppNode = pseudoPeripheralNode(start);
@@ -82,9 +83,10 @@ public class ReverseCuthillMcKeeSolver {
                 for (int i = 0; i < indes.size(); i++) {
                     visited[indes.getQuick(i)] = true;
                 }
-                for (int i = 0; i < visited.length; i++) {
+                for (int i = visitedSearchStart; i < visited.length; i++) {
                     if (!visited[i]) {
                         start = i;
+                        visitedSearchStart = i + 1;
                         break;
                     }
                 }
