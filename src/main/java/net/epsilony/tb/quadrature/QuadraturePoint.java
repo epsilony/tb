@@ -11,8 +11,6 @@ public class QuadraturePoint {
 
     public double weight;
     public double[] coord;
-    public Segment segment;
-    public double segmentParameter;
 
     QuadraturePoint(double weight, double x, double y) {
         this.weight = weight;
@@ -20,7 +18,6 @@ public class QuadraturePoint {
     }
 
     public QuadraturePoint() {
-        coord = new double[2];
     }
 
     public QuadraturePoint(int dim) {

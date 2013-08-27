@@ -9,7 +9,7 @@ import net.epsilony.tb.analysis.ArrvarFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
+public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
 
     Segment segment = null;
     int degree = -1;
@@ -35,14 +35,14 @@ public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
     }
 
     @Override
-    public Iterator<QuadraturePoint> iterator() {
-        if(degree<0){
-            throw new IllegalStateException("quadrature degree must be set to a nonnegative one, not "+degree);
+    public Iterator<Segment2DQuadraturePoint> iterator() {
+        if (degree < 0) {
+            throw new IllegalStateException("quadrature degree must be set to a nonnegative one, not " + degree);
         }
         return new MyIterator();
     }
 
-    private class MyIterator implements Iterator<QuadraturePoint> {
+    private class MyIterator implements Iterator<Segment2DQuadraturePoint> {
 
         int nextIdx = 0;
         private double[] coordAndDifferential = new double[4];
@@ -53,19 +53,23 @@ public class Segment2DQuadrature implements Iterable<QuadraturePoint> {
         }
 
         @Override
-        public QuadraturePoint next() {
+        public Segment2DQuadraturePoint next() {
             double point = points[nextIdx];
             double t = (point + 1) / 2;
             segment.setDiffOrder(1);
             segment.values(t, coordAndDifferential);
             double dx = coordAndDifferential[2];
             double dy = coordAndDifferential[3];
-            double weight = weights[nextIdx] / 2 * (Math.sqrt(dx * dx + dy * dy));
+            double segLen = Math.sqrt(dx * dx + dy * dy);
+            double weight = weights[nextIdx] / 2 * segLen;
 
             double x = coordAndDifferential[0];
             double y = coordAndDifferential[1];
             nextIdx++;
-            QuadraturePoint result = new QuadraturePoint(weight, x, y);
+            Segment2DQuadraturePoint result = new Segment2DQuadraturePoint();
+            result.coord = new double[]{x, y};
+            result.weight = weight;
+            result.outerNormal = new double[]{-dy / segLen, dx / segLen};
             result.segment = segment;
             result.segmentParameter = t;
             return result;
