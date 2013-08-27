@@ -37,7 +37,7 @@ public class SymmetricTriangleQuadrature implements Iterable<QuadraturePoint> {
     }
 
     public QuadraturePoint getQuadraturePoint(int index) {
-        QuadraturePoint result = new QuadraturePoint();
+        QuadraturePoint result = new QuadraturePoint(2);
         SymmetricTriangleQuadratureUtils.cartesianCoordinate(triangle, degree, index, result.coord);
         result.weight = Math2D.triangleArea(triangle) * SymmetricTriangleQuadratureUtils.getWeight(degree, index);
         return result;
