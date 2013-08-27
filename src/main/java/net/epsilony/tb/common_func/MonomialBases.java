@@ -70,7 +70,7 @@ public class MonomialBases implements BasesFunction<MonomialBases> {
     }
 
     @Override
-    public MonomialBases synchronizeClone() {
+    public MonomialBases produceAClone() {
         MonomialBases clone = new MonomialBases();
         clone.setDegree(degree);
         clone.setDiffOrder(diffOrder);

@@ -118,7 +118,7 @@ public class MonomialBases2D implements BasesFunction<MonomialBases2D> {
     }
 
     @Override
-    public MonomialBases2D synchronizeClone() {
+    public MonomialBases2D produceAClone() {
         return new MonomialBases2D(monomialOrder);
     }
 

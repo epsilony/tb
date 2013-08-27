@@ -94,7 +94,7 @@ public class Wendland implements RadialBasisCore {
     }
 
     @Override
-    public RadialBasisCore synchronizeClone() {
+    public RadialBasisCore produceAClone() {
         Wendland result = new Wendland(continuous);
         result.setDiffOrder(getDiffOrder());
         return result;

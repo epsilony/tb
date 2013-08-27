@@ -6,13 +6,13 @@ import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.Dimensional;
 import net.epsilony.tb.analysis.WithDiffOrder;
 import net.epsilony.tb.analysis.WithDiffOrderUtil;
-import net.epsilony.tb.synchron.SynchronizedClonable;
+import net.epsilony.tb.CloneFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RadialBasis implements Dimensional, WithDiffOrder, SynchronizedClonable<RadialBasis> {
+public class RadialBasis implements Dimensional, WithDiffOrder, CloneFactory<RadialBasis> {
 
     RadialBasisCore coreFunc;
     private int dim;
@@ -62,8 +62,8 @@ public class RadialBasis implements Dimensional, WithDiffOrder, SynchronizedClon
     }
 
     @Override
-    public RadialBasis synchronizeClone() {
-        RadialBasis result = new RadialBasis(coreFunc.synchronizeClone());
+    public RadialBasis produceAClone() {
+        RadialBasis result = new RadialBasis(coreFunc.produceAClone());
         return result;
     }
 

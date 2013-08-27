@@ -74,7 +74,7 @@ public class NormalFunction implements RadialBasisCore {
     }
 
     @Override
-    public NormalFunction synchronizeClone() {
+    public NormalFunction produceAClone() {
         NormalFunction result = new NormalFunction();
         result.setDiffOrder(diffOrder);
         result.setSigma(sigma);

@@ -1,11 +1,11 @@
 /* (c) Copyright by Man YUAN */
-package net.epsilony.tb.synchron;
+package net.epsilony.tb;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface SynchronizedClonable<T> {
+public interface CloneFactory<T> {
 
-    T synchronizeClone();
+    T produceAClone();
 }
