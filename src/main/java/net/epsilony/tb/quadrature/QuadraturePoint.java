@@ -1,8 +1,6 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import net.epsilony.tb.solid.Segment;
-
 /**
  *
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
