@@ -39,14 +39,19 @@ public class GaussLegendre {
 
         return true;
     }
-
+    
     public static double[][] pointsWeightsByDegree(int degree) {
-        int num = (int) Math.ceil((degree + 1) / 2.0);
+        int num = pointsNum(degree);
         return pointsWeightsByNum(num);
     }
 
     public static double[][] pointsWeightsByNum(int num) {
         isNumInDomain(num);
         return new double[][]{Arrays.copyOf(points[num - 1], num), Arrays.copyOf(weights[num - 1], num)};
+    }
+
+    public static int pointsNum(int degree) {
+        int num = (int) Math.ceil((degree + 1) / 2.0);
+        return num;
     }
 }
