@@ -117,4 +117,14 @@ public class Segment2DUtils {
         double dy2 = e2[1] - s2[1];
         return Math2D.dot(dx1, dy1, dx2, dy2);
     }
+
+    public static double[] chordUnitOutNormal(Segment seg, double[] result) {
+        double[] vec = chordVector(seg, result);
+        double dx = vec[0];
+        double dy = vec[1];
+        double len = chordLength(seg);
+        vec[0] = -dy / len;
+        vec[1] = dx / len;
+        return vec;
+    }
 }
