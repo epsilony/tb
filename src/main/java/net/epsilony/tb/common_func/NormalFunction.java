@@ -74,14 +74,6 @@ public class NormalFunction implements RadialBasisCore {
     }
 
     @Override
-    public NormalFunction produceAClone() {
-        NormalFunction result = new NormalFunction();
-        result.setDiffOrder(diffOrder);
-        result.setSigma(sigma);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return MiscellaneousUtils.simpleToString(this) + '{' + "sigma=" + sigma + '}';
     }

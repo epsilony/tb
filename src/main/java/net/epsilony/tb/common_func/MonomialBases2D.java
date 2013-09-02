@@ -8,7 +8,7 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MonomialBases2D implements BasesFunction<MonomialBases2D> {
+public class MonomialBases2D implements BasesFunction {
 
     private int monomialOrder;
     private int diffOrder;
@@ -115,11 +115,6 @@ public class MonomialBases2D implements BasesFunction<MonomialBases2D> {
     @Override
     public int basesSize() {
         return basisLength(getDegree());
-    }
-
-    @Override
-    public MonomialBases2D produceAClone() {
-        return new MonomialBases2D(monomialOrder);
     }
 
     @Override

@@ -94,13 +94,6 @@ public class Wendland implements RadialBasisCore {
     }
 
     @Override
-    public RadialBasisCore produceAClone() {
-        Wendland result = new Wendland(continuous);
-        result.setDiffOrder(getDiffOrder());
-        return result;
-    }
-
-    @Override
     public String toString() {
         return MiscellaneousUtils.simpleToString(this) + '{' + "continuous=" + continuous + '}';
     }

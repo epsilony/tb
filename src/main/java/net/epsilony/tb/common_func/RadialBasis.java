@@ -2,17 +2,17 @@
 package net.epsilony.tb.common_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
+import java.io.Serializable;
 import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.Dimensional;
 import net.epsilony.tb.analysis.WithDiffOrder;
 import net.epsilony.tb.analysis.WithDiffOrderUtil;
-import net.epsilony.tb.CloneFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RadialBasis implements Dimensional, WithDiffOrder, CloneFactory<RadialBasis> {
+public class RadialBasis implements Dimensional, WithDiffOrder, Serializable {
 
     RadialBasisCore coreFunc;
     private int dim;
@@ -59,12 +59,6 @@ public class RadialBasis implements Dimensional, WithDiffOrder, CloneFactory<Rad
             }
         }
         return output;
-    }
-
-    @Override
-    public RadialBasis produceAClone() {
-        RadialBasis result = new RadialBasis(coreFunc.produceAClone());
-        return result;
     }
 
     @Override

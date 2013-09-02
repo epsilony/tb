@@ -1,15 +1,15 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.common_func;
 
+import java.io.Serializable;
 import net.epsilony.tb.analysis.Dimensional;
 import net.epsilony.tb.analysis.WithDiffOrder;
-import net.epsilony.tb.CloneFactory;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface BasesFunction<T extends BasesFunction> extends Dimensional,WithDiffOrder , CloneFactory<T>{
+public interface BasesFunction extends Dimensional, WithDiffOrder, Serializable {
 
     double[][] values(double[] vec, double[][] output);
 

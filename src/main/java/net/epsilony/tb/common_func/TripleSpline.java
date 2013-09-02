@@ -95,13 +95,6 @@ public class TripleSpline implements RadialBasisCore {
     }
 
     @Override
-    public RadialBasisCore produceAClone() {
-        TripleSpline result = new TripleSpline();
-        result.setDiffOrder(getDiffOrder());
-        return result;
-    }
-
-    @Override
     public String toString() {
         return MiscellaneousUtils.simpleToString(this);
     }

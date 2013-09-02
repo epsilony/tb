@@ -7,7 +7,7 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class MonomialBases implements BasesFunction<MonomialBases> {
+public class MonomialBases implements BasesFunction {
 
     int diffOrder = 0;
     int dim = 2;
@@ -67,15 +67,6 @@ public class MonomialBases implements BasesFunction<MonomialBases> {
     @Override
     public int basesSize() {
         return WithDiffOrderUtil.outputLength(dim, degree);
-    }
-
-    @Override
-    public MonomialBases produceAClone() {
-        MonomialBases clone = new MonomialBases();
-        clone.setDegree(degree);
-        clone.setDiffOrder(diffOrder);
-        clone.setDimension(dim);
-        return clone;
     }
 
     public static double[][] monomials1D(double[] vec, int degree, int diffOrder, double[][] result) {
