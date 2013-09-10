@@ -9,9 +9,20 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  */
 public class MonomialBases implements BasesFunction {
 
+    int id;
     int diffOrder = 0;
     int dim = 2;
     int degree = 2;
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public int getDiffOrder() {

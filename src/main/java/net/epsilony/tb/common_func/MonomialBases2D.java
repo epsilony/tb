@@ -10,6 +10,7 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  */
 public class MonomialBases2D implements BasesFunction {
 
+    private int id;
     private int monomialOrder;
     private int diffOrder;
 
@@ -127,5 +128,15 @@ public class MonomialBases2D implements BasesFunction {
     @Override
     public int getDimension() {
         return 2;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }
