@@ -3,6 +3,7 @@ package net.epsilony.tb.common_func;
 
 import gnu.trove.list.array.TDoubleArrayList;
 import java.io.Serializable;
+import net.epsilony.tb.IntIdentity;
 import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.Dimensional;
 import net.epsilony.tb.analysis.WithDiffOrder;
@@ -12,10 +13,29 @@ import net.epsilony.tb.analysis.WithDiffOrderUtil;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RadialBasis implements Dimensional, WithDiffOrder, Serializable {
+public class RadialBasis implements IntIdentity, Dimensional, WithDiffOrder, Serializable {
 
     RadialBasisCore coreFunc;
     private int dim;
+    private int id;
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public RadialBasisCore getCoreFunc() {
+        return coreFunc;
+    }
+
+    public void setCoreFunc(RadialBasisCore coreFunc) {
+        this.coreFunc = coreFunc;
+    }
 
     @Override
     public int getDiffOrder() {
