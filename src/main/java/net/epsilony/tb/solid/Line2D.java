@@ -33,6 +33,6 @@ public class Line2D<ND extends Node> extends AbstractLine2D<Line2D<ND>, ND> {
     public String toString() {
         String endStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
         String startStr = (null == start) ? "NULL" : start.toString();
-        return String.format("Segment2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
+        return String.format("Line2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
     }
 }
