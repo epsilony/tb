@@ -186,9 +186,9 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         return new SegmentChainsIterator<>(chainsHeads);
     }
 
-    public List<Segment> getSegments() {
-        LinkedList<Segment> segments = new LinkedList<>();
-        for (Segment seg : this) {
+    public List<SEG> getSegments() {
+        LinkedList<SEG> segments = new LinkedList<>();
+        for (SEG seg : this) {
             segments.add(seg);
         }
         return segments;
