@@ -3,7 +3,7 @@ package net.epsilony.tb.quadrature;
 
 import net.epsilony.tb.solid.ArcSegment2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.analysis.ArrvarFunction;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -27,8 +27,8 @@ public class Segment2DQuadratureTest {
             }
         };
 
-        Line2D seg = new Line2D(new Node(1, -1));
-        seg.setSucc(new Line2D(new Node(-2, 3)));
+        Line seg = new Line(new Node(1, -1));
+        seg.setSucc(new Line(new Node(-2, 3)));
         double exp = 5 * val;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
@@ -51,8 +51,8 @@ public class Segment2DQuadratureTest {
             }
         };
 
-        Line2D seg = new Line2D(new Node(1, 2));
-        seg.setSucc(new Line2D(new Node(-2, 6)));
+        Line seg = new Line(new Node(1, 2));
+        seg.setSucc(new Line(new Node(-2, 6)));
         double exp = -2.5;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
@@ -75,8 +75,8 @@ public class Segment2DQuadratureTest {
             }
         };
 
-        Line2D seg = new Line2D(new Node(1, 2));
-        seg.setSucc(new Line2D(new Node(-2, 6)));
+        Line seg = new Line(new Node(1, 2));
+        seg.setSucc(new Line(new Node(-2, 6)));
         double exp = 20;
         boolean getHere = false;
         for (int deg = 1; deg < GaussLegendre.MAXPOINTS * 2 - 1; deg++) {
@@ -101,7 +101,7 @@ public class Segment2DQuadratureTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setStart(new Node(xTrans + radius * Math.cos(startAngle), yTrans + radius * Math.sin(startAngle)));
         arc.setRadius(radius);
-        arc.setSucc(new Line2D(
+        arc.setSucc(new Line(
                 new Node(
                 xTrans + radius * Math.cos(endAngle),
                 yTrans + radius * Math.sin(endAngle))));

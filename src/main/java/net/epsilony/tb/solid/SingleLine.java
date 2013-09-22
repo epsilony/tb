@@ -5,7 +5,7 @@ package net.epsilony.tb.solid;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a> St-Pierre</a>
  */
-public class SingleLine2D<ND extends Node> extends AbstractLine2D<SingleLine2D<ND>, ND> {
+public class SingleLine<ND extends Node> extends AbstractLine<SingleLine<ND>, ND> {
 
     ND end;
 
@@ -19,22 +19,22 @@ public class SingleLine2D<ND extends Node> extends AbstractLine2D<SingleLine2D<N
     }
 
     @Override
-    public SingleLine2D<ND> getPred() {
+    public SingleLine<ND> getPred() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public SingleLine2D<ND> getSucc() {
+    public SingleLine<ND> getSucc() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setPred(SingleLine2D<ND> pred) {
+    public void setPred(SingleLine<ND> pred) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setSucc(SingleLine2D<ND> succ) {
+    public void setSucc(SingleLine<ND> succ) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

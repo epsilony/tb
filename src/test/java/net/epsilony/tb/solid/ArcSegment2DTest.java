@@ -23,7 +23,7 @@ public class ArcSegment2DTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
         arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
-        arc.setSucc(new Line2D(new Node(
+        arc.setSucc(new Line(new Node(
                 radius * cos(PI / 3) + xTrans,
                 radius * sin(PI / 3) + yTrans)));
         double[] center = arc.calcCenter(null);
@@ -53,7 +53,7 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(onChordLeft);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAngle) + xTrans, radius * sin(startAngle) + yTrans));
-            arc.setSucc(new Line2D(new Node(
+            arc.setSucc(new Line(new Node(
                     radius * cos(endAngle) + xTrans,
                     radius * sin(endAngle) + yTrans)));
             double[] samples = new double[]{0, 1, 0.5, 0.35};
@@ -91,7 +91,7 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(false);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAngle) + xTrans, radius * sin(startAngle) + yTrans));
-            arc.setSucc(new Line2D(new Node(
+            arc.setSucc(new Line(new Node(
                     radius * cos(endAngle) + xTrans,
                     radius * sin(endAngle) + yTrans)));
             arc.setCenterOnChordLeft(onChordLeft);
@@ -117,7 +117,7 @@ public class ArcSegment2DTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
         arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
-        arc.setSucc(new Line2D(new Node(
+        arc.setSucc(new Line(new Node(
                 radius * cos(PI / 3) + xTrans,
                 radius * sin(PI / 3) + yTrans)));
 
@@ -156,7 +156,7 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(centerOnChordLeft);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAmpAngle) + xTrans, radius * sin(startAmpAngle) + yTrans));
-            arc.setSucc(new Line2D(new Node(
+            arc.setSucc(new Line(new Node(
                     radius * cos(endAmpAngle) + xTrans,
                     radius * sin(endAmpAngle) + yTrans)));
             Segment rawTail = arc.getSucc();

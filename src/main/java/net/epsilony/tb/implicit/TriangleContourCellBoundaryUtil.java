@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterable;
@@ -22,7 +22,7 @@ import net.epsilony.tb.solid.SegmentIterator;
 public class TriangleContourCellBoundaryUtil {
 
     List<TriangleContourCell> cells;
-    List<Line2D> contourHeads;
+    List<Line> contourHeads;
 
     public List<TriangleContourCell> getCells() {
         return cells;
@@ -32,17 +32,17 @@ public class TriangleContourCellBoundaryUtil {
         this.cells = cells;
     }
 
-    public List<Line2D> getContourHeads() {
+    public List<Line> getContourHeads() {
         return contourHeads;
     }
 
-    public void setContourHeads(List<Line2D> contourHeads) {
+    public void setContourHeads(List<Line> contourHeads) {
         this.contourHeads = contourHeads;
     }
 
-    public List<Line2D> genInnerTriangleBoundariesHeads() {
+    public List<Line> genInnerTriangleBoundariesHeads() {
         Set<TriangleContourCell> inners = getInnerTriangles();
-        List<Line2D> heads = genHeadsOfBoundaries(inners);
+        List<Line> heads = genHeadsOfBoundaries(inners);
         treatComplexChains(heads);
         return heads;
     }
@@ -58,10 +58,10 @@ public class TriangleContourCellBoundaryUtil {
         return inners;
     }
 
-    private List<Line2D> genHeadsOfBoundaries(Set<TriangleContourCell> inners) {
-        Map<Node, Line2D> asStart = new HashMap<>();
-        Map<Node, Line2D> asEnd = new HashMap<>();
-        Set<Line2D> lines = new HashSet<>();
+    private List<Line> genHeadsOfBoundaries(Set<TriangleContourCell> inners) {
+        Map<Node, Line> asStart = new HashMap<>();
+        Map<Node, Line> asEnd = new HashMap<>();
+        Set<Line> lines = new HashSet<>();
         for (TriangleContourCell cell : inners) {
             for (int i = 0; i < cell.getNumberOfVertes(); i++) {
                 TriangleContourCellEdge edge = cell.getVertexEdge(i);
@@ -69,8 +69,8 @@ public class TriangleContourCellBoundaryUtil {
                     continue;
                 }
                 boolean linked = false;
-                Line2D line = new Line2D(edge.getEnd());
-                Line2D succ = asStart.get(edge.getStart());
+                Line line = new Line(edge.getEnd());
+                Line succ = asStart.get(edge.getStart());
                 if (succ == null) {
                     asEnd.put(edge.getStart(), line);
                 } else {
@@ -78,7 +78,7 @@ public class TriangleContourCellBoundaryUtil {
                     linked = true;
                     asStart.remove(edge.getStart());
                 }
-                Line2D pred = asEnd.get(edge.getEnd());
+                Line pred = asEnd.get(edge.getEnd());
                 if (pred == null) {
                     asStart.put(edge.getEnd(), line);
                 } else {
@@ -91,18 +91,18 @@ public class TriangleContourCellBoundaryUtil {
                 }
             }
         }
-        List<Line2D> heads = pickHeads(lines);
+        List<Line> heads = pickHeads(lines);
         return heads;
     }
 
-    private void treatComplexChains(List<Line2D> heads) {
-        Map<Node, Line2D> asStart = new HashMap<>();
-        Map<Node, List<Line2D>> conflictsMap = new HashMap<>();
-        for (Line2D head : heads) {
-            for (Line2D line : new SegmentIterable<>(head)) {
-                Line2D conflictLine = asStart.get(line.getStart());
+    private void treatComplexChains(List<Line> heads) {
+        Map<Node, Line> asStart = new HashMap<>();
+        Map<Node, List<Line>> conflictsMap = new HashMap<>();
+        for (Line head : heads) {
+            for (Line line : new SegmentIterable<>(head)) {
+                Line conflictLine = asStart.get(line.getStart());
                 if (null != conflictLine) {
-                    List<Line2D> conflicts = conflictsMap.get(line.getStart());
+                    List<Line> conflicts = conflictsMap.get(line.getStart());
                     if (null == conflicts) {
                         conflicts = new ArrayList<>(3);
                         conflictsMap.put(line.getStart(), conflicts);
@@ -119,34 +119,34 @@ public class TriangleContourCellBoundaryUtil {
         }
 
         boolean treated = false;
-        for (Entry<Node, List<Line2D>> entry : conflictsMap.entrySet()) {
-            List<Line2D> lines = entry.getValue();
+        for (Entry<Node, List<Line>> entry : conflictsMap.entrySet()) {
+            List<Line> lines = entry.getValue();
             switch (lines.size()) {
                 case 2: {
-                    Line2D l = lines.get(0);
-                    Line2D lp = (Line2D) l.getPred();
+                    Line l = lines.get(0);
+                    Line lp = (Line) l.getPred();
                     double dot = Segment2DUtils.chordVectorDot(l, lp);
                     if (dot < 0) {
                         continue;
                     }
-                    Line2D ll = lines.get(1);
-                    Line2D llp = (Line2D) ll.getPred();
+                    Line ll = lines.get(1);
+                    Line llp = (Line) ll.getPred();
                     Segment2DUtils.link(llp, l);
                     Segment2DUtils.link(lp, ll);
                     treated = true;
                 }
                 break;
                 case 3: {
-                    Line2D[] preds = new Line2D[3];
+                    Line[] preds = new Line[3];
                     for (int i = 0; i < 3; i++) {
-                        Line2D l = lines.get(i);
-                        Line2D lp = (Line2D) l.getPred();
+                        Line l = lines.get(i);
+                        Line lp = (Line) l.getPred();
                         if (Segment2DUtils.chordVectorDot(l, lp) < 0) {
                             preds[i] = lp;
                         } else {
                             treated = true;
                             for (int j = 1; j < 3; j++) {
-                                Line2D lpp = (Line2D) lines.get((i + j) % 3).getPred();
+                                Line lpp = (Line) lines.get((i + j) % 3).getPred();
                                 if (Segment2DUtils.chordVectorDot(l, lpp) < 0) {
                                     preds[i] = lpp;
                                 }
@@ -164,20 +164,20 @@ public class TriangleContourCellBoundaryUtil {
         }
 
         if (treated) {
-            List<Line2D> result = pickHeads(new HashSet<>(heads));
+            List<Line> result = pickHeads(new HashSet<>(heads));
             heads.clear();
             heads.addAll(result);
         }
 
     }
 
-    private List<Line2D> pickHeads(Set<Line2D> lines) {
-        List<Line2D> heads = new LinkedList<>();
+    private List<Line> pickHeads(Set<Line> lines) {
+        List<Line> heads = new LinkedList<>();
         while (!lines.isEmpty()) {
-            Line2D headCandidate = lines.iterator().next();
+            Line headCandidate = lines.iterator().next();
             lines.remove(headCandidate);
             heads.add(headCandidate);
-            SegmentIterator<Line2D> lineIterator = new SegmentIterator<>(headCandidate);
+            SegmentIterator<Line> lineIterator = new SegmentIterator<>(headCandidate);
             while (lineIterator.hasNext()) {
                 lines.remove(lineIterator.next());
             }

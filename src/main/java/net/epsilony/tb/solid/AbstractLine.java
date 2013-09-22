@@ -7,12 +7,12 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractLine2D<PS extends Segment<PS, ND>, ND extends Node> extends AbstractSegment<PS, ND> {
+public abstract class AbstractLine<PS extends Segment<PS, ND>, ND extends Node> extends AbstractSegment<PS, ND> {
 
-    public AbstractLine2D() {
+    public AbstractLine() {
     }
 
-    public AbstractLine2D(ND node) {
+    public AbstractLine(ND node) {
         start = node;
     }
 

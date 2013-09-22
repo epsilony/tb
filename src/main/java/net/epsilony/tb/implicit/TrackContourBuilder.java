@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
 import net.epsilony.tb.solid.winged.WingedUtils;
@@ -101,11 +101,11 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         Set<TriangleContourCell> nodesNeighbours = WingedUtils.getNodesNeighbours(headCell);
 
         for (TriangleContourCell neighbour : nodesNeighbours) {
-            List<Line2D> passBySegs = neighbour.getPassByContourLines();
+            List<Line> passBySegs = neighbour.getPassByContourLines();
             if (null == passBySegs) {
                 continue;
             }
-            for (Line2D neighbourSeg : passBySegs) {
+            for (Line neighbourSeg : passBySegs) {
                 ContourNode neiStart = (ContourNode) neighbourSeg.getStart();
                 ContourNode neiEnd = (ContourNode) neighbourSeg.getEnd();
                 if (specification.isSegmentEligible(neiStart, head) || specification.isSegmentEligible(head, neiEnd)) {
@@ -124,9 +124,9 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         if (null == headSucc) {
             return;
         }
-        Line2D head = new Line2D();
+        Line head = new Line();
         head.setStart(headNode);
-        Line2D seg = new Line2D(headSucc);
+        Line seg = new Line(headSucc);
         Segment2DUtils.link(head, seg);
         openRingsHeads.add(head);
         contourHeads.add(head);
@@ -134,17 +134,17 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         TriangleContourCell cell = headCell;
         cell.setVisited(true);
         while (true) {
-            cell = markVisitiedAndReturnLast(cell, (Line2D) seg.getPred());
+            cell = markVisitiedAndReturnLast(cell, (Line) seg.getPred());
             if (cell == null) {
                 break;
             }
-            Line2D nextNew = genSuccSeg(seg);
+            Line nextNew = genSuccSeg(seg);
             if (nextNew == null) {
-                markVisitiedAndReturnLast(cell, (Line2D) seg);
+                markVisitiedAndReturnLast(cell, (Line) seg);
                 if (seg.getSucc() != head) {
-                    contourHeads.remove((Line2D) seg.getSucc());
+                    contourHeads.remove((Line) seg.getSucc());
                 }
-                openRingsHeads.remove((Line2D) seg.getSucc());
+                openRingsHeads.remove((Line) seg.getSucc());
                 //TODO here: divide seg.getSucc() if seg.length *1.5<seg.getSucc().length
                 break;
             }
@@ -160,13 +160,13 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return headSucc;
     }
 
-    public Line2D genSuccSeg(Line2D segment) {
+    public Line genSuccSeg(Line segment) {
         ContourNode ndA = (ContourNode) segment.getPred().getStart();
         ContourNode ndB = (ContourNode) segment.getStart();
         double distance = specification.genNextRoughPointDistance(ndA, ndB);
         double headSearchRadius = distance * SEARCH_DISTANCE_ENLARGE;
         while (distance >= specification.getMinSegmentLength()) {
-            Line2D otherHead = searchOtherHeadAsSuccCandidate(headSearchRadius, ndB);
+            Line otherHead = searchOtherHeadAsSuccCandidate(headSearchRadius, ndB);
             if (null == otherHead) {
                 break;
             } else {
@@ -187,7 +187,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         if (null == next) {
             throw new IllegalStateException();
         }
-        Line2D result = new Line2D(next);
+        Line result = new Line(next);
 
         Segment2DUtils.link(segment, result);
         return result;
@@ -217,11 +217,11 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         double distance = specification.getMinSegmentLength();
         double searchDistance = distance * SEARCH_DISTANCE_ENLARGE;
         double[] nodeCoord = node.getCoord();
-        List<Line2D> lines = new LinkedList<>();
-        for (Line2D head : contourHeads) {
-            SegmentIterator<Line2D> segIter = new SegmentIterator<>(head);
+        List<Line> lines = new LinkedList<>();
+        for (Line head : contourHeads) {
+            SegmentIterator<Line> segIter = new SegmentIterator<>(head);
             while (segIter.hasNext()) {
-                Line2D seg = segIter.next();
+                Line seg = segIter.next();
                 if (seg.getSucc() == null) {
                     break;
                 }
@@ -261,7 +261,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             throw new IllegalStateException();
         }
 
-        for (Line2D line : lines) {
+        for (Line line : lines) {
             Iterator<ContourNode> pointIter = points.iterator();
             double[] endCoord = line.getEndCoord();
             double[] startCoord = line.getStartCoord();
@@ -317,12 +317,12 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return result;
     }
 
-    private Line2D searchOtherHeadAsSuccCandidate(double distance, ContourNode node) {
-        Line2D result = null;
+    private Line searchOtherHeadAsSuccCandidate(double distance, ContourNode node) {
+        Line result = null;
         double[] nodeCoord = node.getCoord();
         double[] normal = Arrays.copyOfRange(node.getFunctionValue(), 1, 3);
         Math2D.normalize(normal, normal);
-        for (Line2D head : openRingsHeads) {
+        for (Line head : openRingsHeads) {
             ContourNode headNode = (ContourNode) head.getStart();
             double[] headCoord = headNode.getCoord();
             if (Math2D.distance(headCoord, nodeCoord) > distance) {
@@ -336,12 +336,12 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return result;
     }
 
-    public static TriangleContourCell markVisitiedAndReturnLast(TriangleContourCell cell, Line2D seg) {
+    public static TriangleContourCell markVisitiedAndReturnLast(TriangleContourCell cell, Line seg) {
 
         TriangleContourCellEdge sourceEdge = null;
         do {
             cell.setVisited(true);
-            List<Line2D> passBySegs = cell.getPassByContourLines();
+            List<Line> passBySegs = cell.getPassByContourLines();
             if (null == passBySegs) {
                 passBySegs = new LinkedList<>();
                 cell.getPassByContourLines(passBySegs);
@@ -364,7 +364,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
     public static TriangleContourCellEdge getCellEdgeIntersectingSegment(
             TriangleContourCell cell,
             TriangleContourCellEdge except,
-            Line2D seg) {
+            Line seg) {
         TriangleContourCellEdge result = null;
         for (int i = 0; i < cell.getNumberOfVertes(); i++) {
             TriangleContourCellEdge edge = cell.getVertexEdge(i);

@@ -3,7 +3,7 @@ package net.epsilony.tb.implicit;
 
 import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 
 /**
  *
@@ -21,5 +21,5 @@ public interface TriangleContourBuilder {
 
     void genContour();
 
-    List<Line2D> getContourHeads();
+    List<Line> getContourHeads();
 }

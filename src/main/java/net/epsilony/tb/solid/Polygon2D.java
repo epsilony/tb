@@ -8,7 +8,7 @@ import java.util.List;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line2D<ND>, ND> {
+public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line<ND>, ND> {
 
     public static <ND extends Node> Polygon2D<ND> byCoordChains(double[][][] coordChains, ND nd) {
         ArrayList<ArrayList<ND>> nodeChains = new ArrayList<>(coordChains.length);
@@ -44,11 +44,11 @@ public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line2D<ND>, ND>
                         + "nodesChain[%d] has only %d nodes",
                         nodeChains.indexOf(nds), nds.size()));
             }
-            Line2D<ND> chainHead = new Line2D();
-            Line2D<ND> seg = chainHead;
+            Line<ND> chainHead = new Line();
+            Line<ND> seg = chainHead;
             for (ND nd : nds) {
                 seg.start = nd;
-                Line2D succ = new Line2D();
+                Line succ = new Line();
                 seg.succ = succ;
                 succ.pred = seg;
                 seg = succ;
@@ -84,7 +84,6 @@ public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line2D<ND>, ND>
 //            Segment2DUtils.link(pred, newHead);
 //        }
 //    }
-
     public double getMinSegmentLength() {
         return getMinSegmentCoordLength();
     }
@@ -98,13 +97,13 @@ public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line2D<ND>, ND>
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
         Polygon2D<ND> res = new Polygon2D<>(getVertes());
-        for (Line2D<ND> cHead : res.chainsHeads) {
-            Line2D<ND> seg = cHead;
+        for (Line<ND> cHead : res.chainsHeads) {
+            Line<ND> seg = cHead;
             do {
                 while (seg.length() > lenUpBnd) {
                     seg.bisect();
                 }
-                seg = (Line2D) seg.succ;
+                seg = (Line) seg.succ;
             } while (seg != cHead);
         }
         return res;

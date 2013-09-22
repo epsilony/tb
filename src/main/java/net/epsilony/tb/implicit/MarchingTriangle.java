@@ -4,7 +4,7 @@ package net.epsilony.tb.implicit;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
@@ -35,18 +35,18 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
 
     private void genContourFromCell(TriangleContourCell headCell) {
         headCell.setVisited(true);
-        Line2D chainHead = new Line2D(genContourNode(headCell.getContourSourceEdge()));
+        Line chainHead = new Line(genContourNode(headCell.getContourSourceEdge()));
         contourHeads.add(chainHead);
 
         openRingsHeadsCells.add(headCell);
         openRingsHeads.add(chainHead);
         TriangleContourCell contourCell = headCell;
 
-        Line2D segment = chainHead;
+        Line segment = chainHead;
         while (true) {
             TriangleContourCell nextContourCell = contourCell.nextContourCell();
             if (null == nextContourCell) {
-                Line2D newSucc = new Line2D(genContourNode(contourCell.getContourDestinationEdge()));
+                Line newSucc = new Line(genContourNode(contourCell.getContourDestinationEdge()));
                 Segment2DUtils.link(segment, newSucc);
                 break;
             } else {
@@ -71,7 +71,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
             contourCell.setVisited(true);
             setupFunctionData(contourCell);
 
-            Line2D newSucc = new Line2D(genContourNode(contourCell.getContourSourceEdge()));
+            Line newSucc = new Line(genContourNode(contourCell.getContourSourceEdge()));
             Segment2DUtils.link(segment, newSucc);
             segment = newSucc;
 
@@ -80,13 +80,13 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
 
     abstract protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge);
 
-    private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line2D segment) {
+    private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line segment) {
         Iterator<TriangleContourCell> openHeadCellIter = openRingsHeadsCells.iterator();
-        Iterator<Line2D> openHeadSegIter = openRingsHeads.iterator();
+        Iterator<Line> openHeadSegIter = openRingsHeads.iterator();
         boolean findAndRemove = false;
         while (openHeadCellIter.hasNext()) {
             TriangleContourCell cell = openHeadCellIter.next();
-            Line2D openRingHead = openHeadSegIter.next();
+            Line openRingHead = openHeadSegIter.next();
             if (cell == contourCell) {
                 openHeadCellIter.remove();
                 openHeadSegIter.remove();

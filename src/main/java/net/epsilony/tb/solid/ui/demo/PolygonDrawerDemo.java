@@ -3,7 +3,7 @@ package net.epsilony.tb.solid.ui.demo;
 
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.solid.Polygon2D;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.solid.ui.PolygonDrawer;
 import net.epsilony.tb.TestTool;
@@ -23,7 +23,7 @@ public class PolygonDrawerDemo {
         CommonFrame frame = new CommonFrame();
         BasicModelPanel mainPanel = frame.getMainPanel();
         mainPanel.addAndSetupModelDrawer(polygonDrawer);
-        for (Line2D seg : polygon) {
+        for (Line seg : polygon) {
             mainPanel.addAndSetupModelDrawer(new NodeDrawer(seg.getStart()));
         }
         frame.setVisible(true);

@@ -3,7 +3,7 @@ package net.epsilony.tb.implicit;
 
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
@@ -89,13 +89,13 @@ public class TrackContourBuilderTest {
         solver.setMaxEval(200);
         builder.setImplicitFunctionSolver(solver);
         builder.genContour();
-        List<Line2D> contourHeads = builder.getContourHeads();
+        List<Line> contourHeads = builder.getContourHeads();
 
         assertEquals(expChainsSize, contourHeads.size());
 
         for (int i = 0; i < contourHeads.size(); i++) {
             double x0, y0, rad;
-            Line2D head = contourHeads.get(i);
+            Line head = contourHeads.get(i);
             boolean b = Math2D.isAnticlockwise(new SegmentStartCoordIterable(head));
             if (b) {
                 x0 = diskCenterX;
@@ -109,7 +109,7 @@ public class TrackContourBuilderTest {
             double expArea = Math.PI * rad * rad;
             expArea *= b ? 1 : -1;
 
-            Line2D seg = head;
+            Line seg = head;
             double actArea = 0;
             double[] center = new double[]{x0, y0};
             do {
@@ -117,7 +117,7 @@ public class TrackContourBuilderTest {
                 double[] endCoord = seg.getEnd().getCoord();
                 actArea += 0.5 * Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1],
                         x0 - startCoord[0], y0 - startCoord[1]);
-                seg = (Line2D) seg.getSucc();
+                seg = (Line) seg.getSucc();
                 double actRadius = Math2D.distance(startCoord, center);
                 assertEquals(rad, actRadius, 1e-5);
                 actRadius = Math2D.distance(endCoord, center);

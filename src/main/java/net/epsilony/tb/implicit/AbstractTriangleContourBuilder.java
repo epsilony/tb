@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 
 /**
  *
@@ -16,9 +16,9 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
 
     protected List<TriangleContourCell> cells;
     protected DifferentiableFunction levelSetFunction;
-    protected List<Line2D> contourHeads = new LinkedList<>();
+    protected List<Line> contourHeads = new LinkedList<>();
     protected Iterator<TriangleContourCell> cellsIterator;
-    protected List<Line2D> openRingsHeads = new LinkedList<>();
+    protected List<Line> openRingsHeads = new LinkedList<>();
 
     @Override
     public List<TriangleContourCell> getCells() {
@@ -84,7 +84,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
     }
 
     @Override
-    public List<Line2D> getContourHeads() {
+    public List<Line> getContourHeads() {
         return contourHeads;
     }
 

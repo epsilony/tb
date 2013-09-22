@@ -3,7 +3,7 @@ package net.epsilony.tb.implicit;
 
 import java.util.Iterator;
 import java.util.List;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.winged.AbstractTriangleCell;
 import net.epsilony.tb.solid.winged.WingedCell;
 
@@ -17,17 +17,17 @@ public class TriangleContourCell extends AbstractTriangleCell<TriangleContourCel
     private static final int[] STATUS_CONTOUR_SRC_EDGE_INDEX_MAP = new int[]{-1, 2, 0, 2, 1, 1, 0, -1};
     boolean visited = false;
     private int status = -1;
-    List<Line2D> passByContourLines;
+    List<Line> passByContourLines;
 
     public int getStatus() {
         return status;
     }
 
-    public List<Line2D> getPassByContourLines() {
+    public List<Line> getPassByContourLines() {
         return passByContourLines;
     }
 
-    public void getPassByContourLines(List<Line2D> passBySegs) {
+    public void getPassByContourLines(List<Line> passBySegs) {
         this.passByContourLines = passBySegs;
     }
 

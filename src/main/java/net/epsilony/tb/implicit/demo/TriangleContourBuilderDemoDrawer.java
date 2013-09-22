@@ -10,7 +10,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
 import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.solid.Segment2DUtils;
@@ -58,15 +58,15 @@ public class TriangleContourBuilderDemoDrawer extends ModelDrawerAdapter {
     }
 
     private void drawContourNodes(Graphics2D g2) {
-        for (Line2D chainHead : trianglePolygonizer.getContourHeads()) {
+        for (Line chainHead : trianglePolygonizer.getContourHeads()) {
             nodeDrawer.setColor(DEFAULT_CONTOUR_COLOR);
             nodeDrawer.setNode(chainHead.getStart());
             nodeDrawer.drawModel(g2);
-            Line2D seg = (Line2D) chainHead.getSucc();
+            Line seg = (Line) chainHead.getSucc();
             while (seg != null && seg != chainHead) {
                 nodeDrawer.setNode(seg.getStart());
                 nodeDrawer.drawModel(g2);
-                seg = (Line2D) seg.getSucc();
+                seg = (Line) seg.getSucc();
             }
         }
     }

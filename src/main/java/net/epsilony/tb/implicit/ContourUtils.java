@@ -2,7 +2,7 @@
 package net.epsilony.tb.implicit;
 
 import java.util.List;
-import net.epsilony.tb.solid.Line2D;
+import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
 
@@ -12,12 +12,12 @@ import net.epsilony.tb.solid.SegmentIterator;
  */
 public class ContourUtils {
 
-    public static double getMinSegmentLength(List<Line2D> contourHeads) {
+    public static double getMinSegmentLength(List<Line> contourHeads) {
         double min = Double.POSITIVE_INFINITY;
-        for (Line2D head : contourHeads) {
-            SegmentIterator<Line2D> iter = new SegmentIterator<>(head);
+        for (Line head : contourHeads) {
+            SegmentIterator<Line> iter = new SegmentIterator<>(head);
             while (iter.hasNext()) {
-                Line2D seg = iter.next();
+                Line seg = iter.next();
                 double segLen = Segment2DUtils.chordLength(seg);
                 if (segLen < min) {
                     min = segLen;

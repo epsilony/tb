@@ -5,17 +5,17 @@ package net.epsilony.tb.solid;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Line2D<ND extends Node> extends AbstractLine2D<Line2D<ND>, ND> {
+public class Line<ND extends Node> extends AbstractLine<Line<ND>, ND> {
 
-    public Line2D() {
+    public Line() {
     }
 
-    public Line2D(ND start) {
+    public Line(ND start) {
         super(start);
     }
 
     public void bisect() {
-        Line2D<ND> newSucc = new Line2D<>();
+        Line<ND> newSucc = new Line<>();
         newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
@@ -24,7 +24,7 @@ public class Line2D<ND extends Node> extends AbstractLine2D<Line2D<ND>, ND> {
     }
 
     protected ND bisectionNode() {
-        ND newNode=Node.instanceByClass(start);
+        ND newNode = Node.instanceByClass(start);
         newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
         return newNode;
     }
