@@ -15,7 +15,7 @@ import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.solid.SegmentIterator;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
 import net.epsilony.tb.nativelib.TriangleLibraryUtils;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.GeneralPolygon2D;
 import org.bridj.Pointer;
 
 /**
@@ -28,7 +28,7 @@ public class PolygonTriangulatorFactory//
         NODE extends Node> implements Factory<TriangleArrayContainers<CELL, NODE>> {
 
     GeneralTriangleCellFactory<CELL, EDGE, NODE> generalCellFactory = new GeneralTriangleCellFactory<>();
-    Polygon2D<NODE> polygon;
+    GeneralPolygon2D<EDGE, NODE> polygon;
     private TriangulateIO triIn;
     private TriangulateIO triOut;
     double triangleArea = -1;
@@ -62,7 +62,7 @@ public class PolygonTriangulatorFactory//
         this.prohibitEdgeSteinerPoint = prohibitEdgeSteinerPoint;
     }
 
-    public void setPolygon(Polygon2D<NODE> input) {
+    public void setPolygon(GeneralPolygon2D input) {
         this.polygon = input;
     }
 
@@ -97,7 +97,7 @@ public class PolygonTriangulatorFactory//
         TriangleArrayContainers<CELL, NODE> result = new TriangleArrayContainers<>();
         result.triangles = triangleCells;
         result.nodes = nodes;
-        result.spaceNodes=spaceNodes;
+        result.spaceNodes = spaceNodes;
         return result;
     }
 
