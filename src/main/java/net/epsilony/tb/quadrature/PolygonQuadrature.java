@@ -2,7 +2,7 @@
 package net.epsilony.tb.quadrature;
 
 import java.util.Iterator;
-import net.epsilony.tb.solid.GeneralPolygon2D;
+import net.epsilony.tb.solid.Polygon2D;
 import net.epsilony.tb.solid.Segment;
 
 /**
@@ -11,7 +11,7 @@ import net.epsilony.tb.solid.Segment;
  */
 public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
 
-    GeneralPolygon2D polygon;
+    Polygon2D polygon;
     int degree = 2;
 
     public int getDegree() {
@@ -22,11 +22,11 @@ public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
         this.degree = degree;
     }
 
-    public GeneralPolygon2D getPolygon() {
+    public Polygon2D getPolygon() {
         return polygon;
     }
 
-    public void setPolygon(GeneralPolygon2D polygon) {
+    public void setPolygon(Polygon2D polygon) {
         this.polygon = polygon;
     }
 
