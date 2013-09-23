@@ -9,17 +9,14 @@ import net.epsilony.tb.solid.Segment2DUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class GeneralTriangleCellFactory<
-        CELL extends WingedCell<CELL, EDGE, NODE>, //
-        EDGE extends WingedEdge<CELL, EDGE, NODE>, //
-        NODE extends Node> implements Factory<CELL> {
+public class GeneralTriangleCellFactory implements Factory<WingedCell> {
 
-    Factory<? extends CELL> cellFactory;
-    Factory<? extends EDGE> edgeFactory;
-    Factory<? extends NODE> nodeFactory;
+    Factory<? extends WingedCell> cellFactory;
+    Factory<? extends WingedEdge> edgeFactory;
+    Factory<? extends Node> nodeFactory;
     boolean genVertes = true;
 
-    public GeneralTriangleCellFactory(Factory<? extends CELL> cellFactory, Factory<? extends EDGE> edgeFactory, Factory<? extends NODE> nodeFactory) {
+    public GeneralTriangleCellFactory(Factory<? extends TriangleCell> cellFactory, Factory<? extends WingedEdge> edgeFactory, Factory<? extends Node> nodeFactory) {
         this.cellFactory = cellFactory;
         this.edgeFactory = edgeFactory;
         this.nodeFactory = nodeFactory;
@@ -29,8 +26,8 @@ public class GeneralTriangleCellFactory<
     }
 
     @Override
-    public CELL produce() {
-        CELL result = cellFactory.produce();
+    public WingedCell produce() {
+        WingedCell result = cellFactory.produce();
         for (int i = 0; i < 3; i++) {
             result.setVertexEdge(i, edgeFactory.produce());
             if (genVertes) {
@@ -52,27 +49,27 @@ public class GeneralTriangleCellFactory<
         this.genVertes = genVertes;
     }
 
-    public Factory<? extends CELL> getCellFactory() {
+    public Factory<? extends WingedCell> getCellFactory() {
         return cellFactory;
     }
 
-    public void setCellFactory(Factory<? extends CELL> cellFactory) {
+    public void setCellFactory(Factory<? extends WingedCell> cellFactory) {
         this.cellFactory = cellFactory;
     }
 
-    public Factory<? extends EDGE> getEdgeFactory() {
+    public Factory<? extends WingedEdge> getEdgeFactory() {
         return edgeFactory;
     }
 
-    public void setEdgeFactory(Factory<? extends EDGE> edgeFactory) {
+    public void setEdgeFactory(Factory<? extends WingedEdge> edgeFactory) {
         this.edgeFactory = edgeFactory;
     }
 
-    public Factory<? extends NODE> getNodeFactory() {
+    public Factory<? extends Node> getNodeFactory() {
         return nodeFactory;
     }
 
-    public void setNodeFactory(Factory<? extends NODE> nodeFactory) {
+    public void setNodeFactory(Factory<? extends Node> nodeFactory) {
         this.nodeFactory = nodeFactory;
     }
 }

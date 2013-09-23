@@ -8,19 +8,21 @@ import net.epsilony.tb.analysis.UnivarArrayFunction;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface Segment<PAS extends Segment<PAS,ND>, ND extends Node> extends IntIdentity, UnivarArrayFunction {
+public interface Segment extends IntIdentity, UnivarArrayFunction {
 
-    ND getStart();
+    Node getStart();
 
-    PAS getPred();
+    Segment getPred();
 
-    ND getEnd();
+    Node getEnd();
 
-    PAS getSucc();
+    Segment getSucc();
 
-    void setStart(ND start);
+    void setStart(Node start);
 
-    void setPred(PAS pred);
+    void setPred(Segment pred);
 
-    void setSucc(PAS succ);
+    void setSucc(Segment succ);
+
+    void bisect();
 }

@@ -3,17 +3,19 @@ package net.epsilony.tb.adaptive;
 
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
-import net.epsilony.tb.solid.winged.AbstractWingedEdge;
+import net.epsilony.tb.solid.winged.RawWingedEdge;
 import net.epsilony.tb.solid.winged.WingedEdge;
+
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class AdaptiveCellEdge<ND extends Node> extends AbstractWingedEdge<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> implements WingedEdge<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> {
+public class AdaptiveCellEdge extends RawWingedEdge {
 
+    @Override
     public void bisect() {
-        AdaptiveCellEdge<ND> newSucc = new AdaptiveCellEdge<>();
-        ND newNode=Node.instanceByClass(getStart());
+        AdaptiveCellEdge newSucc = new AdaptiveCellEdge();
+        Node newNode = Node.instanceByClass(getStart());
         newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
         newSucc.setStart(newNode);
         newSucc.setSucc(getSucc());
@@ -34,8 +36,8 @@ public class AdaptiveCellEdge<ND extends Node> extends AbstractWingedEdge<Adapti
         opposite.setSucc(newOpposite);
 
         newOpposite.setOpposite(this);
-        opposite.setOpposite(getSucc());
-        getSucc().setOpposite(opposite);
+        opposite.setOpposite((WingedEdge) getSucc());
+        ((WingedEdge) getSucc()).setOpposite(opposite);
         newOpposite.setCell(opposite.getCell());
         opposite = newOpposite;
     }

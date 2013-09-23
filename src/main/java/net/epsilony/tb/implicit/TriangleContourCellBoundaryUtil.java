@@ -14,6 +14,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterable;
 import net.epsilony.tb.solid.SegmentIterator;
+import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
  *
@@ -64,7 +65,7 @@ public class TriangleContourCellBoundaryUtil {
         Set<Line> lines = new HashSet<>();
         for (TriangleContourCell cell : inners) {
             for (int i = 0; i < cell.getNumberOfVertes(); i++) {
-                TriangleContourCellEdge edge = cell.getVertexEdge(i);
+                WingedEdge edge = cell.getVertexEdge(i);
                 if (inners.contains((TriangleContourCell) edge.getOpposite().getCell())) {
                     continue;
                 }

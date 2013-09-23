@@ -4,7 +4,6 @@ package net.epsilony.tb.adaptive;
 import java.util.ArrayList;
 import java.util.Iterator;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.SegmentIterator;
 import net.epsilony.tb.solid.winged.AbstractWingedCell;
 
@@ -12,10 +11,10 @@ import net.epsilony.tb.solid.winged.AbstractWingedCell;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractAdaptiveCell<ND extends Node> extends AbstractWingedCell<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> implements AdaptiveCell<ND> {
+public abstract class AbstractAdaptiveCell extends AbstractWingedCell implements AdaptiveCell {
 
     public static int defaultMaxSideSizePower = 1;
-    ArrayList<AdaptiveCell<ND>> children;
+    ArrayList<AdaptiveCell> children;
     int level = 0;
     int maxSideSizePower = defaultMaxSideSizePower;
 
@@ -33,36 +32,36 @@ public abstract class AbstractAdaptiveCell<ND extends Node> extends AbstractWing
             throw new IllegalStateException("Cannot fission!" + this);
         }
         bisectEdges();
-        ArrayList<AdaptiveCellEdge<ND>> midEdges = getEdgesEndBySideMids();
+        ArrayList<AdaptiveCellEdge> midEdges = getEdgesEndBySideMids();
         genChildren(midEdges);
     }
 
-    protected abstract void genChildren(ArrayList<AdaptiveCellEdge<ND>> midEdges);
+    protected abstract void genChildren(ArrayList<AdaptiveCellEdge> midEdges);
 
     @Override
-    public ArrayList<AdaptiveCell<ND>> getChildren() {
+    public ArrayList<AdaptiveCell> getChildren() {
         return children;
     }
 
-    protected ArrayList<AdaptiveCellEdge<ND>> getEdgesEndBySideMids() {
-        ArrayList<AdaptiveCellEdge<ND>> result = new ArrayList<>(getNumberOfVertes());
+    protected ArrayList<AdaptiveCellEdge> getEdgesEndBySideMids() {
+        ArrayList<AdaptiveCellEdge> result = new ArrayList<>(getNumberOfVertes());
         int maxSideSize = getMaxSideSize();
         for (int side = 0; side < getNumberOfVertes(); side++) {
-            AdaptiveCellEdge<ND> edgeA = getVertexEdge(side);
-            AdaptiveCellEdge<ND> edgeB = getVertexEdge((side + 1) % getNumberOfVertes());
+            AdaptiveCellEdge edgeA = (AdaptiveCellEdge) getVertexEdge(side);
+            AdaptiveCellEdge edgeB = (AdaptiveCellEdge) getVertexEdge((side + 1) % getNumberOfVertes());
             double[] sideStart = edgeA.getStart().getCoord();
             double[] sideEnd = edgeB.getStart().getCoord();
             double[] midCoord = Math2D.pointOnSegment(sideStart, sideEnd, 0.5, null);
-            AdaptiveCellEdge<ND> edge = edgeA;
+            AdaptiveCellEdge edge = edgeA;
             double lenSq = Math2D.distanceSquare(edge.getStart().getCoord(), edge.getEnd().getCoord());
             int count = 0;
             while (edge != edgeB) {
-                AdaptiveCellEdge<ND> succ = edge.getSucc();
-                double lenSqSucc = Math2D.distanceSquare(succ.getStart().getCoord(), succ.getEnd().getCoord());
+                AdaptiveCellEdge edgeSucc = (AdaptiveCellEdge) edge.getSucc();
+                double lenSqSucc = Math2D.distanceSquare(edgeSucc.getStart().getCoord(), edgeSucc.getEnd().getCoord());
                 if (Math2D.distanceSquare(midCoord, edge.getEnd().getCoord()) < 0.2 * Math.min(lenSq, lenSqSucc)) {
                     result.add(edge);
                 }
-                edge = succ;
+                edge = edgeSucc;
                 lenSq = lenSqSucc;
                 count++;
                 if (count > maxSideSize) {
@@ -94,24 +93,24 @@ public abstract class AbstractAdaptiveCell<ND extends Node> extends AbstractWing
     }
 
     @Override
-    public Iterator<AdaptiveCellEdge<ND>> iterator() {
+    public Iterator<AdaptiveCellEdge> iterator() {
         if (null != getChildren()) {
             return new SegmentIterator<>(null);
         }
-        return new SegmentIterator<>(getVertexEdge(0));
+        return new SegmentIterator<>((AdaptiveCellEdge) getVertexEdge(0));
     }
 
     @Override
     public AdaptiveCell searchFissionObstrutor() {
-        Iterator<AdaptiveCellEdge<ND>> iter = new SegmentIterator<>(getVertexEdge(0));
+        Iterator<AdaptiveCellEdge> iter = new SegmentIterator<>((AdaptiveCellEdge) getVertexEdge(0));
         AdaptiveCell result = null;
         while (iter.hasNext()) {
-            AdaptiveCellEdge<ND> edge = iter.next();
-            AdaptiveCellEdge<ND> opposite = edge.getOpposite();
-            if (null == opposite) {
+            AdaptiveCellEdge edge = iter.next();
+            AdaptiveCellEdge edgeOpposite = (AdaptiveCellEdge) edge.getOpposite();
+            if (null == edgeOpposite) {
                 continue;
             }
-            AdaptiveCell<ND> oppositeCell = opposite.getCell();
+            AdaptiveCell oppositeCell = (AdaptiveCell) edgeOpposite.getCell();
             if (null == oppositeCell) {
                 continue;
             }

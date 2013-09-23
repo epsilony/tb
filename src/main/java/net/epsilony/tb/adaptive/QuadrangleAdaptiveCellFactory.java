@@ -15,12 +15,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<List<QuadrangleAdaptiveCell<ND>>> {
+public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAdaptiveCell>> {
 
     public static Logger logger = LoggerFactory.getLogger(QuadrangleAdaptiveCellFactory.class);
     double[] xs;
     double[] ys;
-    Class<ND> nodeClass;   //to ensure that ND has null constructor, so factory pattern is not a good choice
+    Class<? extends Node> nodeClass;   //to ensure that ND has null constructor, so factory pattern is not a good choice
 
     public double[] getXs() {
         return xs;
@@ -38,22 +38,22 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
         this.ys = ys;
     }
 
-    public Class<ND> getNodeClass() {
+    public Class getNodeClass() {
         return nodeClass;
     }
 
-    public void setNodeClass(Class<ND> nodeClass) {
+    public void setNodeClass(Class nodeClass) {
         this.nodeClass = nodeClass;
     }
 
-    private ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> byCoordGrid(ArrayList<ArrayList<ND>> nodeGrid) {
+    private ArrayList<ArrayList<QuadrangleAdaptiveCell>> byCoordGrid(ArrayList<ArrayList<Node>> nodeGrid) {
 
         int numRow = ys.length - 1;
         int numCol = xs.length - 1;
-        ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> result = new ArrayList<>(numRow);
+        ArrayList<ArrayList<QuadrangleAdaptiveCell>> result = new ArrayList<>(numRow);
 
         for (int rowIndex = 0; rowIndex < numRow; rowIndex++) {
-            ArrayList<QuadrangleAdaptiveCell<ND>> resultRow = new ArrayList<>(numCol);
+            ArrayList<QuadrangleAdaptiveCell> resultRow = new ArrayList<>(numCol);
             result.add(resultRow);
             for (int colIndex = 0; colIndex < numCol; colIndex++) {
                 resultRow.add(newCell(Arrays.asList(
@@ -67,29 +67,29 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
         return result;
     }
 
-    private void linkCellGridOpposites(ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> cellGrid) {
+    private void linkCellGridOpposites(ArrayList<ArrayList<QuadrangleAdaptiveCell>> cellGrid) {
         for (int i = 0; i < cellGrid.size() - 1; i++) {
-            ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
-            ArrayList<QuadrangleAdaptiveCell<ND>> nextRow = cellGrid.get(i + 1);
+            ArrayList<QuadrangleAdaptiveCell> gridRow = cellGrid.get(i);
+            ArrayList<QuadrangleAdaptiveCell> nextRow = cellGrid.get(i + 1);
             for (int j = 0; j < gridRow.size(); j++) {
                 WingedUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(0), nextRow.get(j).getVertexEdge(2));
             }
         }
         for (int i = 0; i < cellGrid.size(); i++) {
-            ArrayList<QuadrangleAdaptiveCell<ND>> gridRow = cellGrid.get(i);
+            ArrayList<QuadrangleAdaptiveCell> gridRow = cellGrid.get(i);
             for (int j = 0; j < gridRow.size() - 1; j++) {
                 WingedUtils.linkAsOpposite(gridRow.get(j).getVertexEdge(1), gridRow.get(j + 1).getVertexEdge(3));
             }
         }
     }
 
-    private ArrayList<ArrayList<ND>> xysToNodes() {
-        ArrayList<ArrayList<ND>> result = new ArrayList<>(ys.length);
+    private ArrayList<ArrayList<Node>> xysToNodes() {
+        ArrayList<ArrayList<Node>> result = new ArrayList<>(ys.length);
         for (int i = 0; i < ys.length; i++) {
-            ArrayList<ND> row = new ArrayList<>(xs.length);
+            ArrayList row = new ArrayList<>(xs.length);
             result.add(row);
             for (int j = 0; j < xs.length; j++) {
-                ND newNode = newNode();
+                Node newNode = newNode();
                 newNode.setCoord(new double[]{xs[j], ys[i]});
                 row.add(newNode);
             }
@@ -97,7 +97,7 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
         return result;
     }
 
-    private QuadrangleAdaptiveCell<ND> newCell(List<ND> counterClockwiseVetes) {
+    private QuadrangleAdaptiveCell newCell(List<Node> counterClockwiseVetes) {
         if (counterClockwiseVetes.size() != 4) {
             throw new IllegalArgumentException();
         }
@@ -112,18 +112,18 @@ public class QuadrangleAdaptiveCellFactory<ND extends Node> implements Factory<L
     }
 
     @Override
-    public List<QuadrangleAdaptiveCell<ND>> produce() {
-        ArrayList<ArrayList<ND>> nodeGrid = xysToNodes();
-        ArrayList<ArrayList<QuadrangleAdaptiveCell<ND>>> cellGrid = byCoordGrid(nodeGrid);
+    public List<QuadrangleAdaptiveCell> produce() {
+        ArrayList<ArrayList<Node>> nodeGrid = xysToNodes();
+        ArrayList<ArrayList<QuadrangleAdaptiveCell>> cellGrid = byCoordGrid(nodeGrid);
         linkCellGridOpposites(cellGrid);
-        List<QuadrangleAdaptiveCell<ND>> result = new LinkedList<>();
-        for (List<QuadrangleAdaptiveCell<ND>> row : cellGrid) {
+        List<QuadrangleAdaptiveCell> result = new LinkedList<>();
+        for (List<QuadrangleAdaptiveCell> row : cellGrid) {
             result.addAll(row);
         }
         return result;
     }
 
-    private ND newNode() {
+    private Node newNode() {
         try {
             return nodeClass.newInstance();
         } catch (InstantiationException | IllegalAccessException ex) {

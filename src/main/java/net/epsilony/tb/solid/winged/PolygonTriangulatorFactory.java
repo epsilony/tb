@@ -22,21 +22,18 @@ import org.bridj.Pointer;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class PolygonTriangulatorFactory//
-        <CELL extends WingedCell<CELL, EDGE, NODE>, //
-        EDGE extends WingedEdge<CELL, EDGE, NODE>, //
-        NODE extends Node> implements Factory<TriangleArrayContainers<CELL, NODE>> {
+public class PolygonTriangulatorFactory implements Factory<TriangleArrayContainers> {
 
-    GeneralTriangleCellFactory<CELL, EDGE, NODE> generalCellFactory = new GeneralTriangleCellFactory<>();
-    GeneralPolygon2D<EDGE, NODE> polygon;
+    GeneralTriangleCellFactory generalCellFactory = new GeneralTriangleCellFactory();
+    GeneralPolygon2D polygon;
     private TriangulateIO triIn;
     private TriangulateIO triOut;
     double triangleArea = -1;
     double minAngleDegree = -1;
     boolean prohibitEdgeSteinerPoint = true;
-    private ArrayList<CELL> triangleCells;
-    private ArrayList<NODE> nodes;
-    private List<NODE> spaceNodes;
+    private ArrayList<TriangleCell> triangleCells;
+    private ArrayList<Node> nodes;
+    private List<Node> spaceNodes;
 
     public double getTriangleArea() {
         return triangleArea;
@@ -66,35 +63,35 @@ public class PolygonTriangulatorFactory//
         this.polygon = input;
     }
 
-    public Factory<? extends CELL> getCellFactory() {
+    public Factory<? extends WingedCell> getCellFactory() {
         return generalCellFactory.getCellFactory();
     }
 
-    public void setCellFactory(Factory<? extends CELL> cellFactory) {
+    public void setCellFactory(Factory<? extends TriangleCell> cellFactory) {
         generalCellFactory.setCellFactory(cellFactory);
     }
 
-    public Factory<? extends EDGE> getEdgeFactory() {
+    public Factory<? extends WingedEdge> getEdgeFactory() {
         return generalCellFactory.getEdgeFactory();
     }
 
-    public void setEdgeFactory(Factory<? extends EDGE> edgeFactory) {
+    public void setEdgeFactory(Factory<? extends WingedEdge> edgeFactory) {
         generalCellFactory.setEdgeFactory(edgeFactory);
     }
 
-    public Factory<? extends NODE> getNodeFactory() {
+    public Factory<? extends Node> getNodeFactory() {
         return generalCellFactory.getNodeFactory();
     }
 
-    public void setNodeFactory(Factory<? extends NODE> nodeFactory) {
+    public void setNodeFactory(Factory<? extends Node> nodeFactory) {
         generalCellFactory.setNodeFactory(nodeFactory);
     }
 
     @Override
-    public TriangleArrayContainers<CELL, NODE> produce() {
+    public TriangleArrayContainers produce() {
         triangulatePolygon();
 
-        TriangleArrayContainers<CELL, NODE> result = new TriangleArrayContainers<>();
+        TriangleArrayContainers result = new TriangleArrayContainers();
         result.triangles = triangleCells;
         result.nodes = nodes;
         result.spaceNodes = spaceNodes;
@@ -193,12 +190,12 @@ public class PolygonTriangulatorFactory//
         int[] neighbours = triOut.getNeighborList().getInts(3 * numberOfTriangles);
         triangleCells = new ArrayList<>(numberOfTriangles);
         for (int i = 0; i < numberOfTriangles; i++) {
-            CELL triangleCell = generalCellFactory.produce();
+            TriangleCell triangleCell = (TriangleCell) generalCellFactory.produce();
             for (int j = 0; j < 3; j++) {
                 triangleCell.setVertex(j, nodes.get(triangles[i * 3 + j]));
             }
             if (Math2D.triangleArea(triangleCell) < 0) {
-                NODE tn = triangleCell.getVertex(1);
+                Node tn = triangleCell.getVertex(1);
                 triangleCell.setVertex(1, triangleCell.getVertex(2));
                 triangleCell.setVertex(2, tn);
             }
@@ -206,13 +203,13 @@ public class PolygonTriangulatorFactory//
         }
 
         for (int i = 0; i < numberOfTriangles; i++) {
-            CELL triangleCell = triangleCells.get(i);
+            TriangleCell triangleCell = triangleCells.get(i);
             for (int j = 0; j < 3; j++) {
                 int neighbourIndex = neighbours[i * 3 + j];
                 if (neighbourIndex < 0) {
                     continue;
                 }
-                CELL nb = triangleCells.get(neighbourIndex);
+                TriangleCell nb = triangleCells.get(neighbourIndex);
                 TriangleCellUtils.linkOppositesBySameVertes(triangleCell, nb);
             }
         }
@@ -226,7 +223,7 @@ public class PolygonTriangulatorFactory//
         generalCellFactory.setGenVertes(false);
         spaceNodes = new LinkedList<>();
         for (int i = 0; i < numberOfPoints; i++) {
-            NODE nd = generalCellFactory.nodeFactory.produce();
+            Node nd = generalCellFactory.nodeFactory.produce();
             nd.setCoord(new double[]{points[i * 2], points[i * 2 + 1]});
             nodes.add(nd);
             if (pointsMarkers[i] == 0) {

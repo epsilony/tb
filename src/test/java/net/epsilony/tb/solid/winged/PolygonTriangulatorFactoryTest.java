@@ -2,6 +2,7 @@
 package net.epsilony.tb.solid.winged;
 
 import java.util.ArrayList;
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Polygon2D;
@@ -20,20 +21,20 @@ public class PolygonTriangulatorFactoryTest {
 
     @Test
     public void testSomeMethod() {
-        PolygonTriangulatorFactory<SimpTriangleCell<Node>, SimpTriangleEdge<Node>, Node> factory = sampleSimpFactory();
+        PolygonTriangulatorFactory factory = sampleSimpFactory();
         factory.setTriangleArea(25);
         Polygon2D[] polygons = new Polygon2D[]{sampleQuadrangleWithoutHole(), sampleFacePolygon()};
         int count = 0;
         for (Polygon2D polygon : polygons) {
             System.out.println("test sample" + count++);
             factory.setPolygon(polygon);
-            TriangleArrayContainers<SimpTriangleCell<Node>, Node> triangleContainer = factory.produce();
+            TriangleArrayContainers triangleContainer = factory.produce();
             testTriangleAear(polygon, triangleContainer.triangles);
             RectangleCoverTriangleCellsFactoryTest.checkTriangleLink(triangleContainer.triangles);
         }
     }
 
-    private void testTriangleAear(Polygon2D polygon, ArrayList<SimpTriangleCell<Node>> triangles) {
+    private void testTriangleAear(Polygon2D polygon, ArrayList<TriangleCell> triangles) {
         double polygonArea = polygon.calcArea();
         double triangleAreaSum = 0;
         for (Triangle tri : triangles) {
@@ -42,10 +43,20 @@ public class PolygonTriangulatorFactoryTest {
         assertEquals(polygonArea, triangleAreaSum, 1e-6);
     }
 
-    public PolygonTriangulatorFactory<SimpTriangleCell<Node>, SimpTriangleEdge<Node>, Node> sampleSimpFactory() {
-        PolygonTriangulatorFactory<SimpTriangleCell<Node>, SimpTriangleEdge<Node>, Node> result = new PolygonTriangulatorFactory<>();
-        result.setCellFactory(SimpTriangleCell.factory());
-        result.setEdgeFactory(SimpTriangleEdge.factory());
+    public PolygonTriangulatorFactory sampleSimpFactory() {
+        PolygonTriangulatorFactory result = new PolygonTriangulatorFactory();
+        result.setCellFactory(new Factory<TriangleCell>() {
+            @Override
+            public TriangleCell produce() {
+                return new TriangleCell();
+            }
+        });
+        result.setEdgeFactory(new Factory<WingedEdge>() {
+            @Override
+            public WingedEdge produce() {
+                return new RawWingedEdge();
+            }
+        });
         result.setNodeFactory(Node.factory());
         return result;
     }

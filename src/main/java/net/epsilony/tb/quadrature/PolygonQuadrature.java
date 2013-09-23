@@ -3,7 +3,6 @@ package net.epsilony.tb.quadrature;
 
 import java.util.Iterator;
 import net.epsilony.tb.solid.GeneralPolygon2D;
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment;
 
 /**
@@ -12,7 +11,7 @@ import net.epsilony.tb.solid.Segment;
  */
 public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
 
-    GeneralPolygon2D<? extends Segment, ? extends Node> polygon;
+    GeneralPolygon2D polygon;
     int degree = 2;
 
     public int getDegree() {

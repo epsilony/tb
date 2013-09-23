@@ -8,35 +8,35 @@ import java.util.List;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line<ND>, ND> {
+public class Polygon2D extends GeneralPolygon2D {
 
-    public static <ND extends Node> Polygon2D<ND> byCoordChains(double[][][] coordChains, ND nd) {
-        ArrayList<ArrayList<ND>> nodeChains = new ArrayList<>(coordChains.length);
+    public static Polygon2D byCoordChains(double[][][] coordChains, Node nd) {
+        ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);
         for (double[][] coords : coordChains) {
-            ArrayList<ND> nodes = new ArrayList<>(coords.length);
+            ArrayList<Node> nodes = new ArrayList<>(coords.length);
             nodeChains.add(nodes);
             for (double[] coord : coords) {
                 if (coords.length < 2) {
                     throw new IllegalArgumentException();
                 }
-                ND newNode = Node.instanceByClass(nd);
+                Node newNode = Node.instanceByClass(nd);
                 newNode.setCoord(coord);
                 nodes.add(newNode);
             }
         }
-        return new Polygon2D<>(nodeChains);
+        return new Polygon2D(nodeChains);
     }
 
-    public static Polygon2D<Node> byCoordChains(double[][][] coordChains) {
+    public static Polygon2D byCoordChains(double[][][] coordChains) {
         return byCoordChains(coordChains, new Node());
     }
 
-    public Polygon2D(List<? extends List<? extends ND>> nodeChains) {
+    public Polygon2D(List<? extends List<? extends Node>> nodeChains) {
         if (nodeChains.isEmpty()) {
             throw new IllegalArgumentException("There is at least 1 chain in a Polygon");
         }
         chainsHeads = new ArrayList<>(nodeChains.size());
-        for (List< ? extends ND> nds : nodeChains) {
+        for (List< ? extends Node> nds : nodeChains) {
             if (nds.size() < 3) {
                 throw new IllegalArgumentException(
                         String.format(
@@ -44,9 +44,9 @@ public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line<ND>, ND> {
                         + "nodesChain[%d] has only %d nodes",
                         nodeChains.indexOf(nds), nds.size()));
             }
-            Line<ND> chainHead = new Line();
-            Line<ND> seg = chainHead;
-            for (ND nd : nds) {
+            Line chainHead = new Line();
+            Line seg = chainHead;
+            for (Node nd : nds) {
                 seg.start = nd;
                 Line succ = new Line();
                 seg.succ = succ;
@@ -92,13 +92,14 @@ public class Polygon2D<ND extends Node> extends GeneralPolygon2D<Line<ND>, ND> {
         return getMaxSegmentCoordLength();
     }
 
-    public Polygon2D<ND> fractionize(double lenUpBnd) {
+    public Polygon2D fractionize(double lenUpBnd) {
         if (lenUpBnd <= 0) {
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
-        Polygon2D<ND> res = new Polygon2D<>(getVertes());
-        for (Line<ND> cHead : res.chainsHeads) {
-            Line<ND> seg = cHead;
+        Polygon2D res = new Polygon2D(getVertes());
+        for (Segment cHeadSeg : res.chainsHeads) {
+            Line cHead = (Line) cHeadSeg;
+            Line seg = cHead;
             do {
                 while (seg.length() > lenUpBnd) {
                     seg.bisect();

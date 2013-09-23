@@ -7,9 +7,9 @@ import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.SwingUtilities;
-import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.TriangleAdaptiveCellFactory;
 import net.epsilony.tb.solid.Node;
+import net.epsilony.tb.solid.winged.WingedCell;
 import net.epsilony.tb.ui.ModelDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -23,8 +23,8 @@ public class TriangleAdaptiveCellDemo extends AbstractAdaptiveCellDemo {
     public static Rectangle2D TRIANGLE_COVERY_RANGE = new Rectangle2D.Double(5, 5, 100, 60);
 
     @Override
-    protected List<AdaptiveCell<Node>> genCells() {
-        TriangleAdaptiveCellFactory<Node> factory = new TriangleAdaptiveCellFactory<>();
+    protected List<WingedCell> genCells() {
+        TriangleAdaptiveCellFactory factory = new TriangleAdaptiveCellFactory();
         factory.setNodeClass(Node.class);
         factory.setRectangle(TRIANGLE_COVERY_RANGE);
         factory.setEdgeLength(TRIANGLE_EDGE_LENGTH);

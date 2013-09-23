@@ -25,17 +25,17 @@ public class QuadrangleAdaptiveCellFactoryTest {
     public void testByCoordGrid() {
         double[] xs = TestTool.linSpace(0, 200, 10);
         double[] ys = TestTool.linSpace(100, 0, 5);
-        QuadrangleAdaptiveCellFactory<Node> factory = new QuadrangleAdaptiveCellFactory<>();
+        QuadrangleAdaptiveCellFactory factory = new QuadrangleAdaptiveCellFactory();
         factory.setNodeClass(Node.class);
         factory.setXs(xs);
         factory.setYs(ys);
 
-        ArrayList<AdaptiveCell<Node>> cellList = new ArrayList<AdaptiveCell<Node>>(factory.produce());
+        ArrayList<AdaptiveCell> cellList = new ArrayList<AdaptiveCell>(factory.produce());
 
-        for (AdaptiveCell<Node> cell : cellList) {
+        for (AdaptiveCell cell : cellList) {
             int count = 0;
 
-            for (AdaptiveCellEdge<Node> edge : cell) {
+            for (AdaptiveCellEdge edge : cell) {
 
 
 
@@ -51,13 +51,13 @@ public class QuadrangleAdaptiveCellFactoryTest {
             assertEquals(4, count);
         }
 
-        Map<AdaptiveCell<Node>, Integer> cellMap = new HashMap<>();
-        for (AdaptiveCell<Node> cell : cellList) {
-            for (AdaptiveCellEdge<Node> edge : cell) {
+        Map<AdaptiveCell, Integer> cellMap = new HashMap<>();
+        for (AdaptiveCell cell : cellList) {
+            for (AdaptiveCellEdge edge : cell) {
                 if (null == edge.getOpposite()) {
                     continue;
                 }
-                AdaptiveCell<Node> opposite = edge.getOpposite().getCell();
+                AdaptiveCell opposite = (AdaptiveCell) edge.getOpposite().getCell();
                 assertTrue(opposite != null);
                 Integer result = cellMap.get(opposite);
                 if (null == result) {

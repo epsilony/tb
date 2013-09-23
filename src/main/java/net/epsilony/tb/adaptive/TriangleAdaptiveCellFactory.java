@@ -11,20 +11,20 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleAdaptiveCellFactory<ND extends Node> extends RectangleCoverTriangleCellsFactory<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> {
+public class TriangleAdaptiveCellFactory extends RectangleCoverTriangleCellsFactory {
 
     public static Logger logger = LoggerFactory.getLogger(TriangleAdaptiveCellFactory.class);
-    Class<ND> nodeClass;
+    Class<? extends Node> nodeClass;
 
-    public Class<ND> getNodeClass() {
+    public Class<? extends Node> getNodeClass() {
         return nodeClass;
     }
 
-    public void setNodeClass(Class<ND> nodeClass) {
+    public void setNodeClass(Class<? extends Node> nodeClass) {
         this.nodeClass = nodeClass;
-        setNodeFactory(new Factory<ND>() {
+        setNodeFactory(new Factory<Node>() {
             @Override
-            public ND produce() {
+            public Node produce() {
                 try {
                     return TriangleAdaptiveCellFactory.this.nodeClass.newInstance();
                 } catch (InstantiationException | IllegalAccessException ex) {
@@ -36,16 +36,16 @@ public class TriangleAdaptiveCellFactory<ND extends Node> extends RectangleCover
     }
 
     public TriangleAdaptiveCellFactory() {
-        setCellFactory(new Factory<AdaptiveCell<ND>>() {
+        setCellFactory(new Factory<TriangleAdaptiveCell>() {
             @Override
-            public AdaptiveCell<ND> produce() {
-                return new TriangleAdaptiveCell<>();
+            public TriangleAdaptiveCell produce() {
+                return new TriangleAdaptiveCell();
             }
         });
-        setEdgeFactory(new Factory<AdaptiveCellEdge<ND>>() {
+        setEdgeFactory(new Factory<AdaptiveCellEdge>() {
             @Override
-            public AdaptiveCellEdge<ND> produce() {
-                return new AdaptiveCellEdge<>();
+            public AdaptiveCellEdge produce() {
+                return new AdaptiveCellEdge();
             }
         });
     }

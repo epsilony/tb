@@ -10,6 +10,8 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
+import net.epsilony.tb.solid.winged.WingedCell;
+import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
@@ -74,8 +76,8 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
     }
 
     public static double[][] estimateHeadInfo(TriangleContourCell startCell) {
-        TriangleContourCellEdge contourSourceEdge = startCell.getContourSourceEdge();
-        TriangleContourCellEdge contourDestinationEdge = startCell.getContourDestinationEdge();
+        WingedEdge contourSourceEdge = startCell.getContourSourceEdge();
+        WingedEdge contourDestinationEdge = startCell.getContourDestinationEdge();
         double[] sourceEdgePoint = genLinearInterpolateContourPoint(contourSourceEdge);
         double[] destEdgePoint = genLinearInterpolateContourPoint(contourDestinationEdge);
 
@@ -92,16 +94,16 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         }
         double[] headCoord = head.getCoord();
         for (int i = 0; i < headCell.getNumberOfVertes(); i++) {
-            TriangleContourCellEdge edge = headCell.getVertexEdge(i);
+            WingedEdge edge = headCell.getVertexEdge(i);
             if (!Segment2DUtils.isPointStrictlyAtChordLeft(edge, headCoord)) {
                 return false;
             }
         }
 
-        Set<TriangleContourCell> nodesNeighbours = WingedUtils.getNodesNeighbours(headCell);
+        Set<WingedCell> nodesNeighbours = WingedUtils.getNodesNeighbours(headCell);
 
-        for (TriangleContourCell neighbour : nodesNeighbours) {
-            List<Line> passBySegs = neighbour.getPassByContourLines();
+        for (WingedCell neighbour : nodesNeighbours) {
+            List<Line> passBySegs = ((TriangleContourCell) neighbour).getPassByContourLines();
             if (null == passBySegs) {
                 continue;
             }
@@ -338,7 +340,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     public static TriangleContourCell markVisitiedAndReturnLast(TriangleContourCell cell, Line seg) {
 
-        TriangleContourCellEdge sourceEdge = null;
+        WingedEdge sourceEdge = null;
         do {
             cell.setVisited(true);
             List<Line> passBySegs = cell.getPassByContourLines();
@@ -347,7 +349,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
                 cell.getPassByContourLines(passBySegs);
             }
             passBySegs.add(seg);
-            TriangleContourCellEdge destEdge = getCellEdgeIntersectingSegment(cell, sourceEdge, seg);
+            WingedEdge destEdge = getCellEdgeIntersectingSegment(cell, sourceEdge, seg);
             if (null == destEdge) {
                 break;
             }
@@ -361,18 +363,18 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return cell;
     }
 
-    public static TriangleContourCellEdge getCellEdgeIntersectingSegment(
+    public static WingedEdge getCellEdgeIntersectingSegment(
             TriangleContourCell cell,
-            TriangleContourCellEdge except,
+            WingedEdge except,
             Line seg) {
-        TriangleContourCellEdge result = null;
+        WingedEdge result = null;
         for (int i = 0; i < cell.getNumberOfVertes(); i++) {
-            TriangleContourCellEdge edge = cell.getVertexEdge(i);
+            WingedEdge edge = cell.getVertexEdge(i);
             if (edge == except) {
                 continue;
             }
             if (Math2D.isSegmentsIntersecting(
-                    edge.getStartCoord(), edge.getEndCoord(),
+                    edge.getStart().getCoord(), edge.getEnd().getCoord(),
                     seg.getStartCoord(), seg.getEndCoord())) {
                 result = edge;
                 break;

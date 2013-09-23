@@ -7,6 +7,7 @@ import java.util.List;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Line;
+import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
  *
@@ -48,8 +49,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
 
     protected void setupFunctionData(TriangleContourCell cell) {
         for (int i = 0; i < cell.getNumberOfVertes(); i++) {
-            TriangleContourCellEdge edge = cell.getVertexEdge(i);
-            ContourNode nd = edge.getStart();
+            WingedEdge edge = cell.getVertexEdge(i);
+            ContourNode nd = (ContourNode) edge.getStart();
             double[] nodeValue = nd.getFunctionValue();
             if (null == nodeValue) {
                 nd.setFunctionValue(levelSetFunction.value(edge.getStart().getCoord(), null));
@@ -68,8 +69,8 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         int nodesNum = 0;
         for (TriangleContourCell cell : cells) {
             for (int i = 0; i < cell.getNumberOfVertes(); i++) {
-                TriangleContourCellEdge edge = cell.getVertexEdge(i);
-                ContourNode start = edge.getStart();
+                WingedEdge edge = cell.getVertexEdge(i);
+                ContourNode start = (ContourNode) edge.getStart();
                 if (start.getId() > -1) {
                     continue;
                 }
@@ -96,7 +97,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
                 continue;
             }
             setupFunctionData(cell);
-            TriangleContourCellEdge sourceEdge = cell.getContourSourceEdge();
+            WingedEdge sourceEdge = cell.getContourSourceEdge();
             if (sourceEdge == null) {
                 cell.setVisited(true);
                 continue;
@@ -107,7 +108,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return result;
     }
 
-    public static double[] genLinearInterpolateContourPoint(TriangleContourCellEdge contourSourceEdge) {
+    public static double[] genLinearInterpolateContourPoint(WingedEdge contourSourceEdge) {
         double[] startCoord = contourSourceEdge.getStart().getCoord();
         double[] endCoord = contourSourceEdge.getEnd().getCoord();
         double t = genLinearInterpolateParameter(contourSourceEdge);
@@ -115,7 +116,7 @@ public abstract class AbstractTriangleContourBuilder implements TriangleContourB
         return resultCoord;
     }
 
-    public static double genLinearInterpolateParameter(TriangleContourCellEdge contourSourceEdge) {
+    public static double genLinearInterpolateParameter(WingedEdge contourSourceEdge) {
         double startValue = ((ContourNode) contourSourceEdge.getStart()).getFunctionValue()[0];
         double endValue = ((ContourNode) contourSourceEdge.getEnd()).getFunctionValue()[0];
         double t = startValue / (startValue - endValue);

@@ -7,13 +7,13 @@ import net.epsilony.tb.IntIdentityMap;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Node> implements Segment<PS, ND> {
+public class RawSegment implements Segment {
 
     protected int diffOrder = 0;
-    protected ND start;
+    protected Node start;
     public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
-    protected PS pred;
-    protected PS succ;
+    protected Segment pred;
+    protected Segment succ;
 
     @Override
     public int getDiffOrder() {
@@ -21,7 +21,7 @@ public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Nod
     }
 
     @Override
-    public ND getStart() {
+    public Node getStart() {
         return start;
     }
 
@@ -35,12 +35,12 @@ public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Nod
     }
 
     @Override
-    public PS getPred() {
+    public Segment getPred() {
         return pred;
     }
 
     @Override
-    public ND getEnd() {
+    public Node getEnd() {
         return succ.getStart();
     }
 
@@ -49,7 +49,7 @@ public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Nod
     }
 
     @Override
-    public PS getSucc() {
+    public Segment getSucc() {
         return succ;
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Nod
     }
 
     @Override
-    public void setStart(ND start) {
+    public void setStart(Node start) {
         this.start = start;
     }
 
@@ -72,12 +72,22 @@ public abstract class AbstractSegment<PS extends Segment<PS, ND>, ND extends Nod
     }
 
     @Override
-    public void setPred(PS pred) {
+    public void setPred(Segment pred) {
         this.pred = pred;
     }
 
     @Override
-    public void setSucc(PS succ) {
+    public void setSucc(Segment succ) {
         this.succ = succ;
+    }
+
+    @Override
+    public double[] values(double x, double[] results) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void bisect() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

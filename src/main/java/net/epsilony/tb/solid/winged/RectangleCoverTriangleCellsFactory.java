@@ -13,12 +13,10 @@ import net.epsilony.tb.ui.UIUtils;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RectangleCoverTriangleCellsFactory<
-        CELL extends WingedCell<CELL, EDGE, NODE>, //
-        EDGE extends WingedEdge<CELL, EDGE, NODE>, //
-        NODE extends Node> implements Factory<List<CELL>> {
+public class RectangleCoverTriangleCellsFactory
+        implements Factory<List<WingedCell>> {
 
-    GeneralTriangleCellFactory<CELL, EDGE, NODE> generalTriangleCellFactory = new GeneralTriangleCellFactory<>();
+    GeneralTriangleCellFactory generalTriangleCellFactory = new GeneralTriangleCellFactory();
     Rectangle2D rectangle;
     double edgeLength;
 
@@ -38,56 +36,56 @@ public class RectangleCoverTriangleCellsFactory<
         this.edgeLength = edgeLength;
     }
 
-    public Factory<? extends CELL> getCellFactory() {
+    public Factory<? extends WingedCell> getCellFactory() {
         return generalTriangleCellFactory.getCellFactory();
     }
 
-    public void setCellFactory(Factory<? extends CELL> cellFactory) {
+    public void setCellFactory(Factory<? extends WingedCell> cellFactory) {
         generalTriangleCellFactory.setCellFactory(cellFactory);
     }
 
-    public Factory<? extends EDGE> getEdgeFactory() {
+    public Factory<? extends WingedEdge> getEdgeFactory() {
         return generalTriangleCellFactory.getEdgeFactory();
     }
 
-    public void setEdgeFactory(Factory<? extends EDGE> edgeFactory) {
+    public void setEdgeFactory(Factory<? extends WingedEdge> edgeFactory) {
         generalTriangleCellFactory.setEdgeFactory(edgeFactory);
     }
 
-    public Factory<? extends NODE> getNodeFactory() {
+    public Factory<? extends Node> getNodeFactory() {
         return generalTriangleCellFactory.getNodeFactory();
     }
 
-    public void setNodeFactory(Factory<? extends NODE> nodeFactory) {
+    public void setNodeFactory(Factory<? extends Node> nodeFactory) {
         generalTriangleCellFactory.setNodeFactory(nodeFactory);
     }
 
     @Override
-    public List<CELL> produce() {
-        List<CELL> result = new LinkedList<>();
-        ArrayList<ArrayList<CELL>> triangleGrid = genTriangleGridCoversRectangle();
-        for (List<CELL> row : triangleGrid) {
+    public List<WingedCell> produce() {
+        List<WingedCell> result = new LinkedList<>();
+        ArrayList<ArrayList<WingedCell>> triangleGrid = genTriangleGridCoversRectangle();
+        for (List<WingedCell> row : triangleGrid) {
             result.addAll(row);
         }
         return result;
     }
 
-    public ArrayList<ArrayList<CELL>> genTriangleGridCoversRectangle() {
+    public ArrayList<ArrayList<WingedCell>> genTriangleGridCoversRectangle() {
         rectangle = UIUtils.tidyRectangle2D(rectangle, null);
-        ArrayList<ArrayList<NODE>> nodesGrid = genNodesGrid();
-        ArrayList<ArrayList<CELL>> cellGrid = genCellGrid(nodesGrid);
+        ArrayList<ArrayList<Node>> nodesGrid = genNodesGrid();
+        ArrayList<ArrayList<WingedCell>> cellGrid = genCellGrid(nodesGrid);
         linkTrianglesOpposites(cellGrid);
         return cellGrid;
     }
 
-    private ArrayList<ArrayList<NODE>> genNodesGrid() {
+    private ArrayList<ArrayList<Node>> genNodesGrid() {
         double[][][] coordsGrid = genVertesCoordsGrid();
-        ArrayList<ArrayList<NODE>> result = new ArrayList<>(coordsGrid.length);
+        ArrayList<ArrayList<Node>> result = new ArrayList<>(coordsGrid.length);
         for (double[][] coordsRow : coordsGrid) {
-            ArrayList<NODE> nodeRow = new ArrayList<>(coordsRow.length);
+            ArrayList<Node> nodeRow = new ArrayList<>(coordsRow.length);
             result.add(nodeRow);
             for (double[] coord : coordsRow) {
-                NODE node = generalTriangleCellFactory.nodeFactory.produce();
+                Node node = generalTriangleCellFactory.nodeFactory.produce();
                 node.setCoord(coord);
                 nodeRow.add(node);
             }
@@ -124,17 +122,17 @@ public class RectangleCoverTriangleCellsFactory<
         return result;
     }
 
-    private ArrayList<ArrayList<CELL>> genCellGrid(ArrayList<ArrayList<NODE>> nodeGrid) {
+    private ArrayList<ArrayList<WingedCell>> genCellGrid(ArrayList<ArrayList<Node>> nodeGrid) {
         int numCols = (nodeGrid.get(0).size() - 1) * 2;
         int numRows = nodeGrid.size() - 1;
-        ArrayList<ArrayList<CELL>> cellGrid = new ArrayList<>(numRows);
+        ArrayList<ArrayList<WingedCell>> cellGrid = new ArrayList<>(numRows);
         for (int i = 0; i < numRows; i++) {
             int rowMod = i % 2;
-            ArrayList<CELL> cellRow = new ArrayList<>(numCols);
+            ArrayList<WingedCell> cellRow = new ArrayList<>(numCols);
             cellGrid.add(cellRow);
             generalTriangleCellFactory.setGenVertes(false);
             for (int j = 0; j < numCols; j++) {
-                CELL cell = generalTriangleCellFactory.produce();
+                WingedCell cell = generalTriangleCellFactory.produce();
                 cellRow.add(cell);
                 if (rowMod == 0 && j % 2 == 0 || rowMod == 1 && j % 2 == 1) {
                     cell.setVertex(0, nodeGrid.get(i).get(j / 2 + rowMod));
@@ -150,10 +148,10 @@ public class RectangleCoverTriangleCellsFactory<
         return cellGrid;
     }
 
-    private void linkTrianglesOpposites(ArrayList<ArrayList<CELL>> triangles) {
+    private void linkTrianglesOpposites(ArrayList<ArrayList<WingedCell>> triangles) {
         for (int i = 0; i < triangles.size(); i++) {
             final int rowMod = i % 2;
-            ArrayList<CELL> row = triangles.get(i);
+            ArrayList<WingedCell> row = triangles.get(i);
             for (int j = 0; j < row.size() - 1; j++) {
                 if (j % 2 == 0 && rowMod == 0 || j % 2 == 1 && rowMod == 1) {
                     WingedUtils.linkAsOpposite(row.get(j).getVertexEdge(0), row.get(j + 1).getVertexEdge(0));
@@ -164,8 +162,8 @@ public class RectangleCoverTriangleCellsFactory<
         }
         for (int i = 0; i < triangles.size() - 1; i++) {
             final int startJ = i % 2;
-            ArrayList<CELL> row = triangles.get(i);
-            ArrayList<CELL> nextRow = triangles.get(i + 1);
+            ArrayList<WingedCell> row = triangles.get(i);
+            ArrayList<WingedCell> nextRow = triangles.get(i + 1);
             for (int j = 0; j < row.size(); j += 2) {
                 WingedUtils.linkAsOpposite(row.get(j + startJ).getVertexEdge(1), nextRow.get(j + startJ).getVertexEdge(1));
             }

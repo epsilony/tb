@@ -1,21 +1,24 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
+import net.epsilony.tb.analysis.Math2D;
+
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Line<ND extends Node> extends AbstractLine<Line<ND>, ND> {
+public class Line extends RawSegment {
 
     public Line() {
     }
 
-    public Line(ND start) {
-        super(start);
+    public Line(Node start) {
+        this.start = start;
     }
 
+    @Override
     public void bisect() {
-        Line<ND> newSucc = new Line<>();
+        Line newSucc = new Line();
         newSucc.setStart(bisectionNode());
         newSucc.succ = this.succ;
         newSucc.pred = this;
@@ -23,8 +26,8 @@ public class Line<ND extends Node> extends AbstractLine<Line<ND>, ND> {
         this.succ = newSucc;
     }
 
-    protected ND bisectionNode() {
-        ND newNode = Node.instanceByClass(start);
+    protected Node bisectionNode() {
+        Node newNode = Node.instanceByClass(start);
         newNode.setCoord(Segment2DUtils.chordMidPoint(this, null));
         return newNode;
     }
@@ -34,5 +37,24 @@ public class Line<ND extends Node> extends AbstractLine<Line<ND>, ND> {
         String endStr = (null == succ || null == getEnd()) ? "NULL" : getEnd().toString();
         String startStr = (null == start) ? "NULL" : start.toString();
         return String.format("Line2D(%d)[h:(%s), r:(%s)]", id, startStr, endStr);
+    }
+
+    public double length() {
+        return Math2D.distance(getStart().getCoord(), getEnd().getCoord());
+    }
+
+    @Override
+    public double[] values(double t, double[] results) {
+        if (null == results) {
+            results = new double[diffOrder * 2];
+        }
+        double[] startCoord = getStart().getCoord();
+        double[] endCoord = getEnd().getCoord();
+        Math2D.pointOnSegment(startCoord, endCoord, t, results);
+        if (diffOrder >= 1) {
+            results[2] = endCoord[0] - startCoord[0];
+            results[3] = endCoord[1] - startCoord[1];
+        }
+        return results;
     }
 }

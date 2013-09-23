@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.WingedEdge;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -34,14 +35,14 @@ public class AdaptiveCellEdgeTest {
     public void testBisect() {
         double[][] coordsA = new double[][]{{-1, 1}, {0, 1}, {0, -1}, {-1, -1}};
         double[][] coordsB = new double[][]{{1, -1}, {0, -1}, {0, 1}, {1, 1}};
-        List<AdaptiveCellEdge<Node>> chainA = genEdgeChain(coordsA);
-        List<AdaptiveCellEdge<Node>> chainB = genEdgeChain(coordsB);
+        List<AdaptiveCellEdge> chainA = genEdgeChain(coordsA);
+        List<AdaptiveCellEdge> chainB = genEdgeChain(coordsB);
 
-        AdaptiveCellEdge<Node> a = chainA.get(1);
-        AdaptiveCellEdge<Node> b = chainB.get(1);
-        final TriangleAdaptiveCell<Node> cellA = new TriangleAdaptiveCell();
+        AdaptiveCellEdge a = chainA.get(1);
+        AdaptiveCellEdge b = chainB.get(1);
+        final TriangleAdaptiveCell cellA = new TriangleAdaptiveCell();
         a.setCell(cellA);
-        final QuadrangleAdaptiveCell<Node> cellB = new QuadrangleAdaptiveCell();
+        final QuadrangleAdaptiveCell cellB = new QuadrangleAdaptiveCell();
         b.setCell(cellB);
 
         a.setOpposite(b);
@@ -52,31 +53,31 @@ public class AdaptiveCellEdgeTest {
         assertTrue(a.getPred() == chainA.get(0));
         assertTrue(a.getSucc().getPred() == a);
         assertTrue(chainA.get(0).getSucc() == a);
-        assertTrue(a.getSucc().getOpposite() == b);
+        assertTrue(((WingedEdge) a.getSucc()).getOpposite() == b);
         assertTrue(a.getSucc() == b.getOpposite());
         assertTrue(a.getSucc().getSucc() == chainA.get(2));
         assertTrue(a.getSucc().getSucc().getPred() == a.getSucc());
-        assertTrue(a.getCell()==cellA);
-        assertTrue(a.getSucc().getCell()==cellA);
+        assertTrue(a.getCell() == cellA);
+        assertTrue(((WingedEdge) a.getSucc()).getCell() == cellA);
 
         assertTrue(b.getPred() == chainB.get(0));
         assertTrue(b.getPred().getSucc() == b);
         assertTrue(b.getSucc().getPred() == b);
-        assertTrue(b.getSucc().getOpposite() == a);
+        assertTrue(((WingedEdge) b.getSucc()).getOpposite() == a);
         assertTrue(b.getSucc() == a.getOpposite());
         assertTrue(b.getSucc().getSucc() == chainB.get(2));
         assertTrue(b.getSucc().getSucc().getPred() == b.getSucc());
-        assertTrue(b.getCell()==cellB);
-        assertTrue(b.getSucc().getCell()==cellB);
+        assertTrue(b.getCell() == cellB);
+        assertTrue(((WingedEdge) b.getSucc()).getCell() == cellB);
 
         assertArrayEquals(b.getEnd().getCoord(), new double[]{0, 0}, 1e-14);
     }
 
-    public static List<AdaptiveCellEdge<Node>> genEdgeChain(double[][] coords) {
+    public static List<AdaptiveCellEdge> genEdgeChain(double[][] coords) {
 
-        List<AdaptiveCellEdge<Node>> result = new ArrayList<>(coords.length);
+        List<AdaptiveCellEdge> result = new ArrayList<>(coords.length);
         for (double[] coord : coords) {
-            AdaptiveCellEdge<Node> newEdge = new AdaptiveCellEdge();
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
             newEdge.setStart(new Node(coord));
             result.add(newEdge);
         }

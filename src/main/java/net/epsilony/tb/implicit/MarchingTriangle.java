@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
  *
@@ -78,7 +79,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         }
     }
 
-    abstract protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge);
+    abstract protected ContourNode genContourNode(WingedEdge contourSourceEdge);
 
     private boolean tryMergeWithOpenRingHeads(TriangleContourCell contourCell, Line segment) {
         Iterator<TriangleContourCell> openHeadCellIter = openRingsHeadsCells.iterator();
@@ -104,7 +105,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
     public static class LinearInterpolate extends MarchingTriangle {
 
         @Override
-        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
+        protected ContourNode genContourNode(WingedEdge contourSourceEdge) {
             double[] resultCoord = genLinearInterpolateContourPoint(contourSourceEdge);
             ContourNode result = new ContourNode();
             result.setCoord(resultCoord);
@@ -117,7 +118,7 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         ImplicitFunctionSolver solver = new SimpleGradientSolver();
 
         @Override
-        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
+        protected ContourNode genContourNode(WingedEdge contourSourceEdge) {
             double[] startPoint = genLinearInterpolateContourPoint(contourSourceEdge);
             if (solver.solve(startPoint)) {
                 ContourNode result = new ContourNode();
@@ -165,8 +166,8 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
         private final double[] solveStart = new double[]{0.5};
 
         @Override
-        protected ContourNode genContourNode(TriangleContourCellEdge contourSourceEdge) {
-            onEdgeFunction.prepareToSolve(contourSourceEdge.getStartCoord(), contourSourceEdge.getEndCoord());
+        protected ContourNode genContourNode(WingedEdge contourSourceEdge) {
+            onEdgeFunction.prepareToSolve(contourSourceEdge.getStart().getCoord(), contourSourceEdge.getEnd().getCoord());
             solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
             if (!solver.solve(solveStart)) {
                 solver.solve(solveStart);

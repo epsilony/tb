@@ -3,11 +3,10 @@ package net.epsilony.tb.solid.ui.demo;
 
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.solid.Polygon2D;
-import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.solid.ui.PolygonDrawer;
 import net.epsilony.tb.TestTool;
-import net.epsilony.tb.solid.Node;
+import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 
@@ -18,12 +17,12 @@ import net.epsilony.tb.ui.CommonFrame;
 public class PolygonDrawerDemo {
 
     public static void createUI() {
-        Polygon2D<Node> polygon = TestTool.samplePolygon(null);
+        Polygon2D polygon = TestTool.samplePolygon(null);
         PolygonDrawer polygonDrawer = new PolygonDrawer(polygon);
         CommonFrame frame = new CommonFrame();
         BasicModelPanel mainPanel = frame.getMainPanel();
         mainPanel.addAndSetupModelDrawer(polygonDrawer);
-        for (Line seg : polygon) {
+        for (Segment seg : polygon) {
             mainPanel.addAndSetupModelDrawer(new NodeDrawer(seg.getStart()));
         }
         frame.setVisible(true);

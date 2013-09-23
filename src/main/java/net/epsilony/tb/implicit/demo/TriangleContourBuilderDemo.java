@@ -36,7 +36,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.epsilony.tb.implicit.TriangleContourCell;
 import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.TriangleContourBuilder;
 import net.epsilony.tb.analysis.DifferentiableFunction;
@@ -48,6 +47,7 @@ import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
 import net.epsilony.tb.implicit.ui.TrackContourSpecificationPanel;
+import net.epsilony.tb.solid.winged.WingedCell;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 import net.epsilony.tb.ui.ModelTransform;
@@ -85,7 +85,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
     String marchingOnEdgeBisection = "marching: on edge bisection";
     String trackingMMA = "tracking: mma";
     String currentSelection = marchingLinear;
-    List<TriangleContourCell> cells;
+    List<WingedCell> cells;
     final Map<String, TriangleContourBuilder> builderMap = new HashMap<>();
     private JCheckBox showGradient = new JCheckBox("show gradient", true);
     private JCheckBox unitGradient = new JCheckBox("unit gradient", true);
@@ -163,7 +163,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
     private void genContourBuilder() {
         contourBuilder = builderMap.get(currentSelection);
-        contourBuilder.setCells(cells);
+        contourBuilder.setCells((List) cells);
         contourBuilder.setLevelSetFunction(sampleFunction);
     }
 

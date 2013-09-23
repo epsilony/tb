@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Polygon2D;
-import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.TestTool;
+import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.SingleModelShapeDrawer;
@@ -24,14 +24,14 @@ public class PolygonDrawer extends SingleModelShapeDrawer {
 
     public static GeneralPath genGeneralPath(Polygon2D polygon) {
         GeneralPath path = new GeneralPath();
-        ArrayList<Line> chainsHeads = polygon.getChainsHeads();
-        for (Line chainHead : chainsHeads) {
+        ArrayList<Segment> chainsHeads = polygon.getChainsHeads();
+        for (Segment chainHead : chainsHeads) {
             Node nd = chainHead.getStart();
             path.moveTo(nd.getCoord()[0], nd.getCoord()[1]);
 
-            Line seg = chainHead;
+            Segment seg = chainHead;
             do {
-                seg = (Line) seg.getSucc();
+                seg = seg.getSucc();
                 nd = seg.getStart();
                 path.lineTo(nd.getCoord()[0], nd.getCoord()[1]);
             } while (seg != chainHead);

@@ -9,9 +9,9 @@ import net.epsilony.tb.solid.Node;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleArrayContainers<TRI extends Triangle<ND>, ND extends Node> {
+public class TriangleArrayContainers {
 
-    public ArrayList<TRI> triangles;
-    public ArrayList<ND> nodes;
-    public List<ND> spaceNodes;
+    public ArrayList<TriangleCell> triangles;
+    public ArrayList<Node> nodes;
+    public List<Node> spaceNodes;
 }

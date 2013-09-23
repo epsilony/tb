@@ -8,16 +8,18 @@ import java.util.List;
 import java.util.Set;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.Triangle;
+import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<ND> {
+public class TriangleAdaptiveCell extends AbstractAdaptiveCell implements Triangle<Node> {
 
     @Override
-    protected void genChildren(ArrayList<AdaptiveCellEdge<ND>> midEdges) {
+    protected void genChildren(ArrayList<AdaptiveCellEdge> midEdges) {
         final int sideNum = getNumberOfVertes();
         final int childrenNum = sideNum + 1;
         children = new ArrayList<>(childrenNum);
@@ -28,14 +30,14 @@ public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<
             children.add(child);
 
             child.setVertexEdge(side, getVertexEdge(side));
-            AdaptiveCellEdge<ND> newEdge = new AdaptiveCellEdge<>();
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
             newEdge.setStart(midEdges.get(side).getEnd());
             child.setVertexEdge((side + 1) % sideNum, newEdge);
-            child.setVertexEdge((side + 2) % sideNum, midEdges.get((side + 2) % sideNum).getSucc());
+            child.setVertexEdge((side + 2) % sideNum, (WingedEdge) midEdges.get((side + 2) % sideNum).getSucc());
         }
 
         for (int side = 0; side < midEdges.size(); side++) {
-            AdaptiveCell<ND> child = children.get(side);
+            AdaptiveCell child = children.get(side);
             Segment2DUtils.link(midEdges.get(side), child.getVertexEdge((side + 1) % sideNum));
             Segment2DUtils.link(child.getVertexEdge((side + 1) % sideNum), child.getVertexEdge((side + 2) % sideNum));
         }
@@ -44,9 +46,9 @@ public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<
         children.add(lastChild);
 
         for (int side = 0; side < lastChild.getNumberOfVertes(); side++) {
-            AdaptiveCellEdge<ND> newEdge = new AdaptiveCellEdge<>();
+            AdaptiveCellEdge newEdge = new AdaptiveCellEdge();
             lastChild.setVertexEdge(side, newEdge);
-            AdaptiveCellEdge<ND> opposite = children.get(side).getVertexEdge((side + 1) % sideNum);
+            AdaptiveCellEdge opposite = (AdaptiveCellEdge) children.get(side).getVertexEdge((side + 1) % sideNum);
             newEdge.setStart(opposite.getEnd());
             WingedUtils.linkAsOpposite(newEdge, opposite);
         }
@@ -64,10 +66,10 @@ public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<
         return 3;
     }
 
-    public List<TriangleAdaptiveCell<ND>> getEdgesNeighbours() {
-        List<TriangleAdaptiveCell<ND>> result = new LinkedList<>();
-        for (AdaptiveCellEdge<ND> edge : this) {
-            AdaptiveCellEdge<ND> opposite = edge.getOpposite();
+    public List<TriangleAdaptiveCell> getEdgesNeighbours() {
+        List<TriangleAdaptiveCell> result = new LinkedList<>();
+        for (AdaptiveCellEdge edge : this) {
+            AdaptiveCellEdge opposite = (AdaptiveCellEdge) edge.getOpposite();
             if (null == opposite) {
                 continue;
             }
@@ -76,9 +78,9 @@ public class TriangleAdaptiveCell<ND extends Node> extends AbstractAdaptiveCell<
         return result;
     }
 
-    public Set<TriangleAdaptiveCell<ND>> getNodesNeighbours() {
-        List<TriangleAdaptiveCell<ND>> edgeNeighbours = getEdgesNeighbours();
-        Set<TriangleAdaptiveCell<ND>> nodesNeighbours = new HashSet<>(20);
+    public Set<TriangleAdaptiveCell> getNodesNeighbours() {
+        List<TriangleAdaptiveCell> edgeNeighbours = getEdgesNeighbours();
+        Set<TriangleAdaptiveCell> nodesNeighbours = new HashSet<>(20);
         nodesNeighbours.addAll(edgeNeighbours);
         for (TriangleAdaptiveCell neibour : edgeNeighbours) {
             nodesNeighbours.addAll(neibour.getEdgesNeighbours());

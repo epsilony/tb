@@ -2,13 +2,12 @@
 package net.epsilony.tb.implicit;
 
 import java.awt.geom.Rectangle2D;
-import java.util.LinkedList;
 import java.util.List;
 import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.MiscellaneousUtils;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.solid.SegmentStartCoordIterable;
+import net.epsilony.tb.solid.winged.WingedCell;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -73,9 +72,9 @@ public class MarchingTriangleTest {
         RawOneDiskWithAHole levelsetFunction = new RawOneDiskWithAHole();
         factory.setRectangle(range);
         factory.setEdgeLength(edgeLength);
-        List<TriangleContourCell> cells = factory.produce();
+        List<WingedCell> cells = factory.produce();
         TriangleContourBuilder builder = new MarchingTriangle.LinearInterpolate();
-        builder.setCells(cells);
+        builder.setCells((List) cells);
         builder.setLevelSetFunction(levelsetFunction);
         builder.genContour();
         List<Line> contourHeads = builder.getContourHeads();

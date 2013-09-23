@@ -12,10 +12,10 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> implements Iterable<SEG> {
+public class GeneralPolygon2D implements Iterable<Segment> {
 
     public static final int DIM = 2;
-    ArrayList<SEG> chainsHeads;
+    ArrayList<Segment> chainsHeads;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override
         public int getInputDimension() {
@@ -49,13 +49,13 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         }
     };
 
-    public void setChainsHeads(List<? extends SEG> chainsHeads) {
+    public void setChainsHeads(List<? extends Segment> chainsHeads) {
         this.chainsHeads = new ArrayList<>(chainsHeads);
     }
 
     public void fillSegmentsIds() {
         int id = 0;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             seg.setId(id);
             id++;
         }
@@ -63,19 +63,19 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
 
     public void fillNodesIds() {
         int id = 0;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             seg.getStart().setId(id);
             id++;
         }
     }
 
-    public ArrayList<SEG> getChainsHeads() {
+    public ArrayList<Segment> getChainsHeads() {
         return chainsHeads;
     }
 
     public double getMinSegmentCoordLength() {
         double minLen = Double.POSITIVE_INFINITY;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             double len = Segment2DUtils.chordLength(seg);
             if (len < minLen) {
                 minLen = len;
@@ -86,7 +86,7 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
 
     public double getMaxSegmentCoordLength() {
         double maxLen = 0;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             double len = Segment2DUtils.chordLength(seg);
             if (maxLen < len) {
                 maxLen = len;
@@ -104,7 +104,7 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
      */
     public char rayCrossing(double x, double y) {
         int rCross = 0, lCross = 0;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             Node start = seg.getStart();
             double x1 = start.coord[0];
             double y1 = start.coord[1];
@@ -154,7 +154,7 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         }
 
         double inf = Double.POSITIVE_INFINITY;
-        for (SEG seg : this) {
+        for (Segment seg : this) {
             double dst = Segment2DUtils.distanceToChord(seg, x, y);
             if (dst < inf) {
                 inf = dst;
@@ -167,12 +167,12 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
         return levelSetFunction;
     }
 
-    public ArrayList<LinkedList<ND>> getVertes() {
-        ArrayList<LinkedList<ND>> res = new ArrayList<>(chainsHeads.size());
-        for (SEG cHead : chainsHeads) {
-            LinkedList<ND> vs = new LinkedList<>();
+    public ArrayList<LinkedList<Node>> getVertes() {
+        ArrayList<LinkedList<Node>> res = new ArrayList<>(chainsHeads.size());
+        for (Segment cHead : chainsHeads) {
+            LinkedList<Node> vs = new LinkedList<>();
             res.add(vs);
-            SEG seg = cHead;
+            Segment seg = cHead;
             do {
                 vs.add(seg.getStart());
                 seg = seg.getSucc();
@@ -182,13 +182,13 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
     }
 
     @Override
-    public Iterator<SEG> iterator() {
+    public Iterator<Segment> iterator() {
         return new SegmentChainsIterator<>(chainsHeads);
     }
 
-    public List<SEG> getSegments() {
-        LinkedList<SEG> segments = new LinkedList<>();
-        for (SEG seg : this) {
+    public List<Segment> getSegments() {
+        LinkedList<Segment> segments = new LinkedList<>();
+        for (Segment seg : this) {
             segments.add(seg);
         }
         return segments;
@@ -196,14 +196,14 @@ public class GeneralPolygon2D<SEG extends Segment<SEG, ND>, ND extends Node> imp
 
     public List<double[]> getPointsInHoles() {
         List<double[]> result = new LinkedList<>();
-        for (SEG head : chainsHeads) {
+        for (Segment head : chainsHeads) {
             SegmentCoordIterator iter = new SegmentCoordIterator(head);
             if (Math2D.isAnticlockwise(iter)) {
                 continue;
             }
             double[] pt = new double[2];
 
-            for (SEG line : new SegmentIterable<>(head)) {
+            for (Segment line : new SegmentIterable<>(head)) {
                 double[] coord = line.getSucc().getEnd().getCoord();
                 if (!Segment2DUtils.isPointStrictlyAtChordRight(line, coord)) {
                     continue;

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
+import net.epsilony.tb.solid.winged.WingedCell;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,20 +27,20 @@ public class TriangleAdaptiveCellFactoryTest {
     public void testCoverRectangle() {
         Rectangle2D rect = new Rectangle2D.Double(-1, 1, 15.1, 10.1);
         double edgeLength = 1.5;
-        TriangleAdaptiveCellFactory<Node> factory = new TriangleAdaptiveCellFactory<>();
+        TriangleAdaptiveCellFactory factory = new TriangleAdaptiveCellFactory();
         factory.setNodeFactory(Node.factory());
         factory.setRectangle(rect);
         factory.setEdgeLength(edgeLength);
-        List<AdaptiveCell<Node>> cellList = factory.produce();
+        List<WingedCell> cellList = factory.produce();
         double minX = Double.POSITIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
         double maxX = Double.NEGATIVE_INFINITY;
         double maxY = Double.NEGATIVE_INFINITY;
 
-        for (AdaptiveCell<Node> cell : cellList) {
+        for (WingedCell cell : cellList) {
             int count = 0;
 
-            for (AdaptiveCellEdge<Node> edge : cell) {
+            for (AdaptiveCellEdge edge : (AdaptiveCell) cell) {
 
                 assertEquals(edgeLength, Segment2DUtils.chordLength(edge), edgeLength * 0.1);
 
@@ -65,12 +66,12 @@ public class TriangleAdaptiveCellFactoryTest {
         assertTrue(maxY > rect.getMaxY());
 
         Map<AdaptiveCell, Integer> cellMap = new HashMap<>();
-        for (AdaptiveCell<Node> cell : cellList) {
-            for (AdaptiveCellEdge<Node> edge : cell) {
+        for (WingedCell cell : cellList) {
+            for (AdaptiveCellEdge edge : (AdaptiveCell) cell) {
                 if (null == edge.getOpposite()) {
                     continue;
                 }
-                AdaptiveCell<Node> opposite = edge.getOpposite().getCell();
+                AdaptiveCell opposite = (AdaptiveCell) edge.getOpposite().getCell();
                 assertTrue(opposite != null);
                 Integer result = cellMap.get(opposite);
                 if (null == result) {

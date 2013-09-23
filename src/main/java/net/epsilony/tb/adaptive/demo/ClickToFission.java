@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.adaptive.AdaptiveUtils;
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawer;
 
@@ -45,7 +44,7 @@ public class ClickToFission extends MouseAdapter {
         for (ModelDrawer md : modelDrawers) {
             if (md instanceof AdaptiveCellDemoDrawer) {
                 AdaptiveCellDemoDrawer quadDrawer = (AdaptiveCellDemoDrawer) md;
-                AdaptiveCell<Node> cell = quadDrawer.getCell();
+                AdaptiveCell cell = quadDrawer.getCell();
                 try {
                     if (cell.getChildren() == null && quadDrawer.isComponentPointInside(e.getX(), e.getY())) {
                         fission(cell, newDrawers);
@@ -63,10 +62,10 @@ public class ClickToFission extends MouseAdapter {
         }
     }
 
-    private void fission(AdaptiveCell<Node> cell, Collection<ModelDrawer> newDrawers) {
-        LinkedList<AdaptiveCell<Node>> newCells = new LinkedList<>();
+    private void fission(AdaptiveCell cell, Collection<ModelDrawer> newDrawers) {
+        LinkedList<AdaptiveCell> newCells = new LinkedList<>();
         AdaptiveUtils.fission(cell, recursivelyFissionCheckBox.isSelected(), newCells);
-        
+
         for (AdaptiveCell newCell : newCells) {
             AdaptiveCellDemoDrawer drawer = new AdaptiveCellDemoDrawer();
             drawer.setCell(newCell);

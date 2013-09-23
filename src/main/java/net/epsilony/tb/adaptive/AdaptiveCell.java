@@ -2,18 +2,17 @@
 package net.epsilony.tb.adaptive;
 
 import java.util.ArrayList;
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.winged.WingedCell;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface AdaptiveCell<ND extends Node> extends Iterable<AdaptiveCellEdge<ND>>, WingedCell<AdaptiveCell<ND>, AdaptiveCellEdge<ND>, ND> {
+public interface AdaptiveCell extends Iterable<AdaptiveCellEdge>, WingedCell {
 
     void fission();
 
-    ArrayList<AdaptiveCell<ND>> getChildren();
+    ArrayList<AdaptiveCell> getChildren();
 
     int getLevel();
 
@@ -23,7 +22,7 @@ public interface AdaptiveCell<ND extends Node> extends Iterable<AdaptiveCellEdge
 
     boolean isAbleToFission();
 
-    AdaptiveCell<ND> searchFissionObstrutor();
+    AdaptiveCell searchFissionObstrutor();
 
     void setLevel(int level);
 

@@ -4,8 +4,6 @@ package net.epsilony.tb.adaptive;
 import java.util.Collection;
 import java.util.Iterator;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.SegmentIterator;
 
 /**
@@ -14,7 +12,7 @@ import net.epsilony.tb.solid.SegmentIterator;
  */
 public class AdaptiveUtils {
 
-    public static <ND extends Node> void fission(AdaptiveCell<ND> cell, boolean recursively, Collection<AdaptiveCell<ND>> newCellsOutput) {
+    public static void fission(AdaptiveCell cell, boolean recursively, Collection<AdaptiveCell> newCellsOutput) {
         if (recursively) {
             recursivelyFission(cell, newCellsOutput);
         } else if (cell.isAbleToFission()) {
@@ -26,7 +24,7 @@ public class AdaptiveUtils {
         }
     }
 
-    public static <ND extends Node> void recursivelyFission(AdaptiveCell<ND> cell, Collection<AdaptiveCell<ND>> newCellsOutput) {
+    public static void recursivelyFission(AdaptiveCell cell, Collection<AdaptiveCell> newCellsOutput) {
         if (null != newCellsOutput) {
             newCellsOutput.clear();
         }
@@ -34,7 +32,7 @@ public class AdaptiveUtils {
 
     }
 
-    private static <ND extends Node> void _recursivelyFission(AdaptiveCell<ND> cell, Collection<AdaptiveCell<ND>> newCell) {
+    private static void _recursivelyFission(AdaptiveCell cell, Collection<AdaptiveCell> newCell) {
         do {
             if (cell.isAbleToFission()) {
                 cell.fission();
@@ -48,8 +46,8 @@ public class AdaptiveUtils {
         } while (true);
     }
 
-    public static <ND extends Node> boolean isPointRestrictlyInsideCell(AdaptiveCell<ND> cell, double x, double y) {
-        Iterator<AdaptiveCellEdge<ND>> edgeIter = new SegmentIterator<>(cell.getVertexEdge(0));
+    public static boolean isPointRestrictlyInsideCell(AdaptiveCell cell, double x, double y) {
+        Iterator<AdaptiveCellEdge> edgeIter = new SegmentIterator<>((AdaptiveCellEdge) cell.getVertexEdge(0));
         while (edgeIter.hasNext()) {
             AdaptiveCellEdge edge = edgeIter.next();
             double[] startCoord = edge.getStart().getCoord();

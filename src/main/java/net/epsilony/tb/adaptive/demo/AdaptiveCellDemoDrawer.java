@@ -14,7 +14,6 @@ import net.epsilony.tb.adaptive.AdaptiveCellEdge;
 import net.epsilony.tb.adaptive.AdaptiveUtils;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.SingleModelShapeDrawer;
 import net.epsilony.tb.ui.UIUtils;
 
@@ -26,20 +25,20 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
 
     public static double DEFAULT_OPPOSITE_MARK_LENGTH = 15;
     public static Color DEFAULT_OPPOSITE_MARK_COLOR = Color.RED;
-    AdaptiveCell<Node> cell;
+    AdaptiveCell cell;
     private NodeDrawer nodeDrawer = new NodeDrawer(null);
     private double oppositeMarkLength = DEFAULT_OPPOSITE_MARK_LENGTH;
     private Color oppositeMarkColor = DEFAULT_OPPOSITE_MARK_COLOR;
     public static boolean showOppositeMarks = true;
 
-    public void setCell(AdaptiveCell<Node> cell) {
+    public void setCell(AdaptiveCell cell) {
         this.cell = cell;
         Path2D path = new Path2D.Double();
-        Iterator<AdaptiveCellEdge<Node>> edgeIter = cell.iterator();
+        Iterator<AdaptiveCellEdge> edgeIter = cell.iterator();
         if (!edgeIter.hasNext()) {
             return;
         }
-        AdaptiveCellEdge<Node> edge = edgeIter.next();
+        AdaptiveCellEdge edge = edgeIter.next();
         path.moveTo(edge.getStart().getCoord()[0], edge.getStart().getCoord()[1]);
         while (edgeIter.hasNext()) {
             edge = edgeIter.next();
@@ -74,7 +73,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         }
     }
 
-    private void drawEdgeOpposite(Graphics2D g2, AdaptiveCellEdge<Node> edge) {
+    private void drawEdgeOpposite(Graphics2D g2, AdaptiveCellEdge edge) {
 
         if (edge.getOpposite() == null) {
             return;
@@ -92,7 +91,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
 
         g2.setColor(oppositeMarkColor);
 
-        AdaptiveCellEdge<Node> opp = edge.getOpposite();
+        AdaptiveCellEdge opp = (AdaptiveCellEdge) edge.getOpposite();
         double[] oppositeMid = Math2D.pointOnSegment(opp.getStart().getCoord(), opp.getEnd().getCoord(), 0.25, null);
         modelToComponentTransform.transform(oppositeMid, 0, oppositeMid, 0, 1);
         path.moveTo(midPoint[0] + markVec[0], midPoint[1] + markVec[1]);

@@ -1,20 +1,19 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid.winged;
 
-import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface WingedEdge<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends Segment<EDGE, ND> {
+public interface WingedEdge extends Segment {
 
-    EDGE getOpposite();
+    WingedEdge getOpposite();
 
-    void setOpposite(EDGE opposite);
+    void setOpposite(WingedEdge opposite);
 
-    CELL getCell();
+    WingedCell getCell();
 
-    void setCell(CELL cell);
+    void setCell(WingedCell cell);
 }

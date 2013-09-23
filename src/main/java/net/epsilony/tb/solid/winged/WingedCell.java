@@ -7,11 +7,11 @@ import net.epsilony.tb.solid.Node;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface WingedCell<CELL extends WingedCell<CELL, EDGE, ND>, EDGE extends WingedEdge<CELL, EDGE, ND>, ND extends Node> extends Triangle<ND> {
+public interface WingedCell extends Triangle<Node> {
 
-    EDGE getVertexEdge(int i);
+    WingedEdge getVertexEdge(int i);
 
-    void setVertexEdge(int i, EDGE edge);
+    void setVertexEdge(int i, WingedEdge edge);
 
     int getNumberOfVertes();
 }

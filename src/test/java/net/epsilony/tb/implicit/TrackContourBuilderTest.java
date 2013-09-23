@@ -8,6 +8,7 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.solid.SegmentStartCoordIterable;
+import net.epsilony.tb.solid.winged.WingedCell;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -81,9 +82,9 @@ public class TrackContourBuilderTest {
         SampleOneDiskWithAHole levelsetFunction = new SampleOneDiskWithAHole();
         factory.setRectangle(range);
         factory.setEdgeLength(edgeLength);
-        List<TriangleContourCell> cells = factory.produce();
+        List<WingedCell> cells = factory.produce();
         TrackContourBuilder builder = new TrackContourBuilder();
-        builder.setCells(cells);
+        builder.setCells((List) cells);
         builder.setLevelSetFunction(levelsetFunction);
         SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setMaxEval(200);

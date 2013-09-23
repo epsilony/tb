@@ -13,7 +13,7 @@ import java.util.Iterator;
 import net.epsilony.tb.implicit.ContourNode;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.implicit.TriangleContourCell;
-import net.epsilony.tb.implicit.TriangleContourCellEdge;
+import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
@@ -78,7 +78,7 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
         }
 
         if (nodesVisible) {
-            for (TriangleContourCellEdge edge : cell) {
+            for (WingedEdge edge : cell) {
                 nodeDrawer.setNode(edge.getStart());
                 Node node = edge.getStart();
                 double[] funcValue = ((ContourNode) node).getFunctionValue();
@@ -97,7 +97,7 @@ public class TriangleContourCellDemoDrawer extends ModelDrawerAdapter {
     private void genSegmentsPathInModelSpace() {
         path = new Path2D.Double();
 
-        Iterator<TriangleContourCellEdge> iterator = cell.iterator();
+        Iterator<WingedEdge> iterator = cell.iterator();
 
         double[] coord = iterator.next().getStart().getCoord();
         path.moveTo(coord[0], coord[1]);
