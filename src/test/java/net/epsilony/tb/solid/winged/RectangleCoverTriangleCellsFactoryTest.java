@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.epsilony.tb.Factory;
+import net.epsilony.tb.RudeFactory;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 import org.junit.Test;
@@ -25,18 +25,8 @@ public class RectangleCoverTriangleCellsFactoryTest {
         Rectangle2D rect = new Rectangle2D.Double(-1, 1, 15.1, 10.1);
         double edgeLength = 1.5;
         RectangleCoverTriangleCellsFactory factory = new RectangleCoverTriangleCellsFactory();
-        factory.setCellFactory(new Factory<TriangleCell>() {
-            @Override
-            public TriangleCell produce() {
-                return new TriangleCell();
-            }
-        });
-        factory.setEdgeFactory(new Factory<WingedEdge>() {
-            @Override
-            public WingedEdge produce() {
-                return new RawWingedEdge();
-            }
-        });
+        factory.setCellFactory(new RudeFactory<>(TriangleCell.class));
+        factory.setEdgeFactory(new RudeFactory<>(RawWingedEdge.class));
         factory.setNodeFactory(Node.factory());
         factory.setRectangle(rect);
         factory.setEdgeLength(edgeLength);

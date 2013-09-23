@@ -2,7 +2,7 @@
 package net.epsilony.tb.solid.winged;
 
 import java.util.ArrayList;
-import net.epsilony.tb.Factory;
+import net.epsilony.tb.RudeFactory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Polygon2D;
@@ -45,18 +45,8 @@ public class PolygonTriangulatorFactoryTest {
 
     public PolygonTriangulatorFactory sampleSimpFactory() {
         PolygonTriangulatorFactory result = new PolygonTriangulatorFactory();
-        result.setCellFactory(new Factory<TriangleCell>() {
-            @Override
-            public TriangleCell produce() {
-                return new TriangleCell();
-            }
-        });
-        result.setEdgeFactory(new Factory<WingedEdge>() {
-            @Override
-            public WingedEdge produce() {
-                return new RawWingedEdge();
-            }
-        });
+        result.setCellFactory(new RudeFactory<>(TriangleCell.class));
+        result.setEdgeFactory(new RudeFactory<>(RawWingedEdge.class));
         result.setNodeFactory(Node.factory());
         return result;
     }

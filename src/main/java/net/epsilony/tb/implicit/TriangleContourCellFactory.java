@@ -1,10 +1,9 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.implicit;
 
-import net.epsilony.tb.Factory;
+import net.epsilony.tb.RudeFactory;
 import net.epsilony.tb.solid.winged.RawWingedEdge;
 import net.epsilony.tb.solid.winged.RectangleCoverTriangleCellsFactory;
-import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
  *
@@ -13,18 +12,8 @@ import net.epsilony.tb.solid.winged.WingedEdge;
 public class TriangleContourCellFactory extends RectangleCoverTriangleCellsFactory {
 
     public TriangleContourCellFactory() {
-        setCellFactory(new Factory<TriangleContourCell>() {
-            @Override
-            public TriangleContourCell produce() {
-                return new TriangleContourCell();
-            }
-        });
-        setEdgeFactory(new Factory<WingedEdge>() {
-            @Override
-            public WingedEdge produce() {
-                return new RawWingedEdge();
-            }
-        });
+        setCellFactory(new RudeFactory<>(TriangleContourCell.class));
+        setEdgeFactory(new RudeFactory<>(RawWingedEdge.class));
         setNodeFactory(ContourNode.contourNodeFactory());
     }
 }
