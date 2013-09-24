@@ -35,12 +35,12 @@ public class Polygon2DTest {
         ArrayList<double[][][]> coords = new ArrayList<>(1);
         Polygon2D pg = TestTool.samplePolygon(coords);
         double[][] testCoordsExps = new double[][]{{
-                3, 6.5, Math.sqrt(2) / 4},
-            {7, 5.5, -Math.sqrt(5) / 10},
-            {-1, -1, -Math.sqrt(2)},
-            {1, 2.5, 0},
-            {6.25, 6, 0.25},
-            {2.9, 3, -0.1}
+            3, 6.5, Math.sqrt(2) / 4},
+        {7, 5.5, -Math.sqrt(5) / 10},
+        {-1, -1, -Math.sqrt(2)},
+        {1, 2.5, 0},
+        {6.25, 6, 0.25},
+        {2.9, 3, -0.1}
         };
         for (double[] xy_exp : testCoordsExps) {
             double exp = xy_exp[2];
@@ -101,13 +101,13 @@ public class Polygon2DTest {
         ArrayList<LinkedList<Node>> pVertes = fPg.getVertes();
         double[][][] exps = new double[][][]{
             {{-1, -1}, {-0.5, -1}, {0, -1}, {0.5, -1},
-                {1, -1}, {1, -0.5}, {1, 0}, {1, 0.5},
-                {1, 1}, {0.5, 1}, {0, 1}, {-0.5, 1},
-                {-1, 1}, {-1, 0.5}, {-1, 0}, {-1, -0.5},},
+            {1, -1}, {1, -0.5}, {1, 0}, {1, 0.5},
+            {1, 1}, {0.5, 1}, {0, 1}, {-0.5, 1},
+            {-1, 1}, {-1, 0.5}, {-1, 0}, {-1, -0.5},},
             {{-0.5, -0.5}, {-0.5, 0},
-                {-0.5, 0.5}, {0, 0.5},
-                {0.5, 0.5}, {0.5, 0},
-                {0.5, -0.5}, {0, -0.5}}
+            {-0.5, 0.5}, {0, 0.5},
+            {0.5, 0.5}, {0.5, 0},
+            {0.5, -0.5}, {0, -0.5}}
         };
         int i = 0;
         for (LinkedList<Node> cs : pVertes) {

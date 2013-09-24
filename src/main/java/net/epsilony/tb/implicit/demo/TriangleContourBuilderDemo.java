@@ -400,7 +400,6 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             }
         });
 
-
         rightPanel.add(unitGradient);
         rightPanel.add(Box.createVerticalStrut(2));
         unitGradientLength = new JSlider(1, 50);

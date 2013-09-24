@@ -24,10 +24,10 @@ public class NodeDrawer extends ModelDrawerAdapter {
     Color color = DEFAULT_COLOR;
     double rad = DEFAULT_RAD;
     private float lineWidth = DEFAULT_LINE_WIDTH;
-    private Stroke stroke=new BasicStroke(lineWidth);
+    private Stroke stroke = new BasicStroke(lineWidth);
 
     public NodeDrawer(Node node) {
-        this.node = node; 
+        this.node = node;
     }
 
     public NodeDrawer() {

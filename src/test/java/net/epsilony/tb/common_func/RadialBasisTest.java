@@ -52,7 +52,6 @@ public class RadialBasisTest {
         rb.setDiffOrder(testData.diffOrder);
         rb.setDimension(testData.dim);
 
-
         for (int i = 0; i < testData.exps.length; i++) {
             double[] dists = testData.dists[i];
             double[] exp = testData.exps[i];

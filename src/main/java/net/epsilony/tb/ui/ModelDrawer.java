@@ -15,7 +15,7 @@ public interface ModelDrawer {
     boolean isVisible();
 
     void setVisible(boolean visible);
-    
+
     Rectangle2D getBoundsInModelSpace();
 
     void setModelToComponentTransform(AffineTransform modelToComponentTransform);

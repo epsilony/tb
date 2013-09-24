@@ -7,12 +7,14 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.winged.Triangle;
 
 /**
- * <p>the data is copy from: </ br> Table 10.5 Dunavant quadrature for area coordinate triangle , p275,Chapter 10,
- * Finite Element Analysis with Error Estimators, Ed Akin, Elsevere.</p>
+ * <p>
+ * the data is copy from: </ br> Table 10.5 Dunavant quadrature for area
+ * coordinate triangle , p275,Chapter 10, Finite Element Analysis with Error
+ * Estimators, Ed Akin, Elsevere.</p>
  *
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
-public class SymmetricTriangleQuadratureUtils{
+public class SymmetricTriangleQuadratureUtils {
 
     public final static int MAX_ALGEBRAIC_ACCURACY = 8;
     public final static int MIN_ALGEBRAIC_ACCURACY = 1;
@@ -109,7 +111,8 @@ public class SymmetricTriangleQuadratureUtils{
     /**
      * 获取degree阶代数精度所对应的三角形对称积分点数
      *
-     * @param degree 积分的代数精度 应属于闭区间[{@link #MIN_ALGEBRAIC_ACCURACY},{@link #MAX_ALGEGRAIC_ACCURACY}]
+     * @param degree 积分的代数精度
+     * 应属于闭区间[{@link #MIN_ALGEBRAIC_ACCURACY},{@link #MAX_ALGEGRAIC_ACCURACY}]
      * @return
      */
     public static int numPointsByAlgebraicAccuracy(int degree) {

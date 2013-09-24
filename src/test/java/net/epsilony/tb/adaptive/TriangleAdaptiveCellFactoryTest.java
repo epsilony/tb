@@ -82,7 +82,6 @@ public class TriangleAdaptiveCellFactoryTest {
             }
         }
 
-
         for (Map.Entry<AdaptiveCell, Integer> entry : cellMap.entrySet()) {
             Integer value = entry.getValue();
             assertTrue(value <= 3 && value >= 1);

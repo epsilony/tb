@@ -372,7 +372,6 @@ public class MonomialBases implements BasesFunction {
                     res_x[18] = 0;
                     res_x[19] = 0;
 
-
                     res_y[0] = 0;
                     res_y[1] = 0;
                     res_y[2] = 1;
@@ -394,7 +393,6 @@ public class MonomialBases implements BasesFunction {
                     res_y[17] = 0;
                     res_y[18] = z2;
                     res_y[19] = 0;
-
 
                     res_z[0] = 0;
                     res_z[1] = 0;

@@ -32,7 +32,7 @@ public class DictComparator<T> implements Comparator<T> {
     }
 
     public DictComparator<T> getSlibing(int primeComparatorIndex) {
-        return new DictComparator<>(comparators,primeComparatorIndex);
+        return new DictComparator<>(comparators, primeComparatorIndex);
     }
 
     public int getPrimeComparatorIndex() {

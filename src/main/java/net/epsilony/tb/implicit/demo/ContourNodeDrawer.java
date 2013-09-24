@@ -65,10 +65,10 @@ public class ContourNodeDrawer extends NodeDrawer {
 
         } else {
             Math2D.scale(gradient, gradientScale, gradient);
-            line=new Line2D.Double(coord[0], coord[1], coord[0]+gradient[0], coord[1]+gradient[1]);
-            line=modelToComponentTransform.createTransformedShape(line);
+            line = new Line2D.Double(coord[0], coord[1], coord[0] + gradient[0], coord[1] + gradient[1]);
+            line = modelToComponentTransform.createTransformedShape(line);
         }
-        
+
         Color oldColor = g2.getColor();
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(gradientStroke);

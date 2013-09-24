@@ -28,7 +28,7 @@ public class RadialBasis implements IntIdentity, Dimensional, WithDiffOrder, Ser
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public RadialBasisCore getCoreFunc() {
         return coreFunc;
     }

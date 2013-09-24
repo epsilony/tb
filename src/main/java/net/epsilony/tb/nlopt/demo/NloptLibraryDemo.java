@@ -70,7 +70,7 @@ public class NloptLibraryDemo {
         IntValuedEnum<NloptResult> nloptOptimize = nloptOptimize(opt, start, objValue);
         System.out.println("nloptOptimize = " + nloptOptimize);
         System.out.println("objValue = " + objValue);
-        System.out.println("expected objec value = " + sqrt(8/27.0));
+        System.out.println("expected objec value = " + sqrt(8 / 27.0));
         System.out.println(objValue.getDouble());
         nloptDestroy(opt);
     }

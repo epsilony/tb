@@ -89,7 +89,7 @@ public class SymmetricTriangleQuadratureTest {
 
         @Override
         public double value(double[] vec) {
-            double[][] output=null;
+            double[][] output = null;
             double[][] bs = bases.values(vec, output);
             double result = 0;
             for (int i = 0; i < bs[0].length; i++) {

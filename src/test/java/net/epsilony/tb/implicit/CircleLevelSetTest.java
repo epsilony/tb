@@ -52,7 +52,6 @@ public class CircleLevelSetTest {
         circle.setRadius(radius);
         circle.setDiffOrder(1);
 
-
         double[][] testDatas = new double[][]{
             {centerX, centerY - radius, 0, 0, -2 * radius},
             {centerX + 2, centerY + 1, -11, 4, 2}

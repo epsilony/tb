@@ -12,13 +12,17 @@ import net.epsilony.tb.pair.WithPair;
 import net.epsilony.tb.pair.WithPairComparator;
 
 /**
- * <p> A Layered Range Tree, a fractional cascading Range Tree. </br> the build time is \(O(log^d(n)n)\) </br> the
- * search time is \(O(log^{d-1}(n)\) </br>
+ * <p>
+ * A Layered Range Tree, a fractional cascading Range Tree. </br> the build time
+ * is \(O(log^d(n)n)\) </br> the search time is \(O(log^{d-1}(n)\) </br>
  * holdind a Layered Rang Tree need \(O(log^d(n)n)\) memory</br>
- * in fact it's about \(72 log^d_2(n)n+32 log^{d-1}_2 n+72
- * log_2(n)n\)dataMemory (bytes) where d means dimension;</br> </p> <p> The whole algorithm is described minutely in
- * Mark de Berg et. al. <i>Computational Geometry Algorithms and Applications(Third Edition)</i> Ch5 </br> It should be
- * pointed out that the input keys should not contain duplicate objects.
+ * in fact it's about \(72 log^d_2(n)n+32 log^{d-1}_2 n+72 log_2(n)n\)dataMemory
+ * (bytes) where d means dimension;</br> </p>
+ * <p>
+ * The whole algorithm is described minutely in Mark de Berg et. al.
+ * <i>Computational Geometry Algorithms and Applications(Third Edition)</i> Ch5
+ * </br> It should be pointed out that the input keys should not contain
+ * duplicate objects.
  *
  * @version 1.0~beta
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>

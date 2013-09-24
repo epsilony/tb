@@ -37,8 +37,6 @@ public class QuadrangleAdaptiveCellFactoryTest {
 
             for (AdaptiveCellEdge edge : cell) {
 
-
-
                 if (edge.getOpposite() != null) {
                     assertEquals(edge.getOpposite().getOpposite(), edge);
                 }

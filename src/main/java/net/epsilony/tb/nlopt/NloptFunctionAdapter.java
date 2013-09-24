@@ -22,7 +22,7 @@ public class NloptFunctionAdapter extends NloptFunc {
         if (n != function.getInputDimension()) {
             throw new IllegalStateException();
         }
-        
+
         x.getDoublesAtOffset(0, xs, 0, n);
         if (Pointer.NULL != gradient) {
             function.setDiffOrder(1);

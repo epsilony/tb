@@ -73,9 +73,9 @@ public class SingleModelShapeDrawer extends ModelDrawerAdapter {
         if (isFilling()) {
             g2.setColor(
                     new Color(fillingColor.getRed(),
-                    fillingColor.getGreen(),
-                    fillingColor.getBlue(),
-                    (int) (fillingColor.getAlpha() * fillingAlpha)));
+                            fillingColor.getGreen(),
+                            fillingColor.getBlue(),
+                            (int) (fillingColor.getAlpha() * fillingAlpha)));
             g2.fill(polygonShape);
         }
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

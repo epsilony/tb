@@ -7,9 +7,10 @@ package net.epsilony.tb.analysis;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AbstractDifferentiableFunction implements DifferentiableFunction{
+public abstract class AbstractDifferentiableFunction implements DifferentiableFunction {
+
     protected int diffOrder;
-    
+
     @Override
     public int getDiffOrder() {
         return diffOrder;
@@ -19,5 +20,5 @@ public abstract class AbstractDifferentiableFunction implements DifferentiableFu
     public void setDiffOrder(int diffOrder) {
         this.diffOrder = diffOrder;
     }
-    
+
 }

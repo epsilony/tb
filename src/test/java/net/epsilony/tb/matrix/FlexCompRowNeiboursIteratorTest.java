@@ -20,16 +20,16 @@ public class FlexCompRowNeiboursIteratorTest {
     @Test
     public void testTheWholeIterator() {
         DenseMatrix denseMatrix = new DenseMatrix(new double[][]{
-                    {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 11, 00, 11, 00, 11, 00, 11},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-                    {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},});
+            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 11, 00, 11, 00, 11, 00, 11},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
+            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},});
 
         FlexCompRowMatrix flexMat = new FlexCompRowMatrix(denseMatrix.numRows(), denseMatrix.numColumns());
         for (MatrixEntry me : denseMatrix) {
@@ -53,7 +53,6 @@ public class FlexCompRowNeiboursIteratorTest {
         }
         exp = new int[]{1, 5, 7, 9};
         assertArrayEquals(exp, acts.toArray());
-
 
         flexMat.set(3, 1, 11);
         iter = new FlexCompRowNeiboursIterator(flexMat, 3, true);

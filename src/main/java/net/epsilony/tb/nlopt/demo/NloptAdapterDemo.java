@@ -33,7 +33,6 @@ public class NloptAdapterDemo {
         @Override
         public double[] value(double[] input, double[] output) {
 
-
             if (null == output) {
                 output = new double[getDiffOrder() * 2 + 1];
             }

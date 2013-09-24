@@ -38,7 +38,6 @@ public class NloptAdapterTest {
             @Override
             public double[] value(double[] input, double[] output) {
 
-
                 if (null == output) {
                     output = new double[getDiffOrder() * 2 + 1];
                 }
@@ -92,7 +91,6 @@ public class NloptAdapterTest {
         double RelativeXTolerence = 1e-4;
         double[] startPoint = new double[]{1.234, 5.768};
 
-
         NloptAdapter nloptAdapter = new NloptAdapter(NloptLibrary.NloptAlgorithm.NLOPT_LD_MMA, 2);
         nloptAdapter.setMinObjective(objFunc);
         nloptAdapter.setLowerBounds(lowerBounds);
@@ -129,7 +127,6 @@ public class NloptAdapterTest {
         double[] upexps = new double[]{1, 3, 4, 7};
         nloptAdapter.setUpperBounds(exps);
         assertArrayEquals(exps, nloptAdapter.getUpperBounds(), 0);
-
 
         Arrays.fill(upexps, 12);
         nloptAdapter.setUpperBounds(upexps[0]);

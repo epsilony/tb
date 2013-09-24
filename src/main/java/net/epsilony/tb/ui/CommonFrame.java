@@ -20,7 +20,7 @@ public class CommonFrame extends JFrame {
         super();
         this.basicModelPanel = basicModelPanelUI;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         getContentPane().add(basicModelPanelUI);
         basicModelPanelUI.setPreferredSize(new Dimension(400, 300));
     }

@@ -16,6 +16,7 @@ import net.epsilony.tb.ui.ModelDrawerAdapter;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class BasicModelPanelDemo {
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

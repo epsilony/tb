@@ -39,7 +39,7 @@ public class GaussLegendre {
 
         return true;
     }
-    
+
     public static double[][] pointsWeightsByDegree(int degree) {
         int num = pointsNum(degree);
         return pointsWeightsByNum(num);

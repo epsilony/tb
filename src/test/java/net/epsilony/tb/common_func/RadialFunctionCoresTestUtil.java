@@ -60,7 +60,7 @@ public class RadialFunctionCoresTestUtil {
         Gson gson = new Gson();
         data = gson.fromJson(reader, SampleData.class);
         int b = p.waitFor();
-        if(b!=0){
+        if (b != 0) {
             throw new IllegalStateException("cmd does not exit normally");
         }
         if (data == null || data.distanceSamples.length <= 0) {

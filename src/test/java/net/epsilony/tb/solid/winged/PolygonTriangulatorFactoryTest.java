@@ -53,8 +53,8 @@ public class PolygonTriangulatorFactoryTest {
 
     public Polygon2D sampleQuadrangleWithoutHole() {
         double[][][] coords = new double[][][]{{
-                {10, -10}, {100, 10}, {110, 90}, {5, 10}
-            }
+            {10, -10}, {100, 10}, {110, 90}, {5, 10}
+        }
         };
         Polygon2D polygon = Polygon2D.byCoordChains(coords);
         polygon = polygon.fractionize(polygonSegmentLength);

@@ -165,7 +165,7 @@ public class TriangleLibraryUtils {
                 pointer = (Pointer<?>) method.invoke(out);
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
                 throw new IllegalArgumentException();
-            } 
+            }
             trifree(pointer);
         }
     }

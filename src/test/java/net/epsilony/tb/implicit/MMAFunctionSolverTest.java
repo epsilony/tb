@@ -122,7 +122,7 @@ public class MMAFunctionSolverTest {
         assertEquals(1.5, solver.getSolution()[0], tol * 10);
         assertEquals(-2.3, solver.getSolution()[1], tol * 10);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < tol);
-        
+
         assertTrue(solver.solve(new double[]{20, -30}));
         assertEquals(1.5, solver.getSolution()[0], tol * 10);
         assertEquals(-2.3, solver.getSolution()[1], tol * 10);

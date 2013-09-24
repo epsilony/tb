@@ -44,9 +44,9 @@ public class Polygon2D implements Iterable<Segment> {
             if (nds.size() < 3) {
                 throw new IllegalArgumentException(
                         String.format(
-                        "Each chain in a polygon must contain at least 3 nodes as vertes! "
-                        + "nodesChain[%d] has only %d nodes",
-                        nodeChains.indexOf(nds), nds.size()));
+                                "Each chain in a polygon must contain at least 3 nodes as vertes! "
+                                + "nodesChain[%d] has only %d nodes",
+                                nodeChains.indexOf(nds), nds.size()));
             }
             Line chainHead = new Line();
             Line seg = chainHead;
@@ -147,7 +147,8 @@ public class Polygon2D implements Iterable<Segment> {
     }
 
     /**
-     * Originate from:<\br> Joseph O'Rourke, Computational Geometry in C,2ed. Page 244, Code 7.13
+     * Originate from:<\br> Joseph O'Rourke, Computational Geometry in C,2ed.
+     * Page 244, Code 7.13
      *
      * @param x
      * @param y

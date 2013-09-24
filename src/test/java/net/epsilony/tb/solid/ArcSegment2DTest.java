@@ -143,7 +143,6 @@ public class ArcSegment2DTest {
         double xTrans = -3.1;
         double yTrans = 2.2;
 
-
         for (boolean centerOnChordLeft : new boolean[]{true, false}) {
             double startAmpAngle = PI / 6;
             double endAmpAngle = PI * 2 / 3;

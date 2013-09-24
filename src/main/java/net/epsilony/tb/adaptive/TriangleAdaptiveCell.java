@@ -24,7 +24,6 @@ public class TriangleAdaptiveCell extends AbstractAdaptiveCell implements Triang
         final int childrenNum = sideNum + 1;
         children = new ArrayList<>(childrenNum);
 
-
         for (int side = 0; side < midEdges.size(); side++) {
             TriangleAdaptiveCell child = new TriangleAdaptiveCell();
             children.add(child);
