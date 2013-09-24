@@ -94,6 +94,26 @@ public class Math2D {
         return results;
     }
 
+    public static double[] adds(double[] v1, double[] v2, double[] results) {
+        if (results == null) {
+            results = new double[]{v1[0] + v2[0], v1[1] + v2[1]};
+        } else {
+            results[0] = v1[0] + v2[0];
+            results[1] = v1[1] + v2[1];
+        }
+        return results;
+    }
+
+    public static double[] adds(double[] v1, double scale1, double[] v2, double scale2, double[] results) {
+        if (results == null) {
+            results = new double[]{v1[0] * scale1 + v2[0] * scale2, v1[1] * scale1 + v2[1] * scale2};
+        } else {
+            results[0] = v1[0] * scale1 + v2[0] * scale2;
+            results[1] = v1[1] * scale1 + v2[1] * scale2;
+        }
+        return results;
+    }
+
     public static double triangleArea(double x1, double y1, double x2, double y2, double x3, double y3) {
         return 0.5 * cross(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
     }
