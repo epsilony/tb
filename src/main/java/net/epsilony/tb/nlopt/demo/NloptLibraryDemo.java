@@ -21,7 +21,6 @@ public class NloptLibraryDemo {
         Pointer<Byte> nloptAlgorithmName = nloptAlgorithmName(NloptAlgorithm.NLOPT_LD_MMA);
         System.out.println(nloptAlgorithmName.getCString());
         NloptFunc func = new NloptFunctionAdapter(new AbstractDifferentiableFunction() {
-
             @Override
             public int getInputDimension() {
                 return 2;

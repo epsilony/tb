@@ -473,7 +473,8 @@ public class TriangleLibrary {
     protected native static void triangulate(@Ptr long charPtr1, @Ptr long triangulateioPtr1, @Ptr long triangulateioPtr2, @Ptr long triangulateioPtr3);
 
     /**
-     * Original signature : <code>void trifree(VOID*)</code><br>
+     * Original signature :
+     * <code>void trifree(VOID*)</code><br>
      * <i>native declaration : line 287</i>
      */
     public static void trifree(Pointer<?> memptr) {
@@ -718,4 +719,6 @@ public class TriangleLibrary {
 /*  triangulation whether or not the edges were written.  If segments are    */
 /*  not used, `numberofsegments' will indicate the number of boundary edges. */
 /*                                                                           */
-/*****************************************************************************/
+/**
+ * **************************************************************************
+ */

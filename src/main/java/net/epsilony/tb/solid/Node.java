@@ -3,26 +3,14 @@ package net.epsilony.tb.solid;
 
 import java.util.Arrays;
 import net.epsilony.tb.Factory;
-import net.epsilony.tb.IntIdentityMap;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Node implements GeomUnit {
+public class Node extends RawGeomUnit {
 
     protected double[] coord;
-    protected int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public double[] getCoord() {
         return coord;
@@ -72,10 +60,5 @@ public class Node implements GeomUnit {
         } catch (InstantiationException | IllegalAccessException ex) {
             throw new IllegalStateException("ND doesn't have a null constructor!", ex);
         }
-    }
-
-    @Override
-    public Segment getParent() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

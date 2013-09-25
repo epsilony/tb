@@ -20,5 +20,4 @@ public abstract class AbstractDifferentiableFunction implements DifferentiableFu
     public void setDiffOrder(int diffOrder) {
         this.diffOrder = diffOrder;
     }
-
 }

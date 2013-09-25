@@ -12,7 +12,7 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Facet implements GeomUnit, Iterable<Segment> {
+public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public static Facet byCoordChains(double[][][] coordChains, Node nd) {
         ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);
@@ -40,36 +40,23 @@ public class Facet implements GeomUnit, Iterable<Segment> {
             throw new IllegalArgumentException("There is at least 1 outer Ring of a Facet");
         }
         Facet facet = new Facet();
-        facet.chainsHeads = new ArrayList<>(nodeChains.size());
-        for (List< ? extends Node> nds : nodeChains) {
-            if (nds.size() < 3) {
-                throw new IllegalArgumentException(
-                        String.format(
-                        "Each chain in a polygon must contain at least 3 nodes as vertes! "
-                        + "nodesChain[%d] has only %d nodes",
-                        nodeChains.indexOf(nds), nds.size()));
-            }
-            Line chainHead = new Line();
-            Line seg = chainHead;
-            for (Node nd : nds) {
-                seg.start = nd;
-                Line succ = new Line();
-                seg.succ = succ;
-                succ.pred = seg;
-                seg = succ;
-            }
-            chainHead.pred = seg.pred;
-            chainHead.pred.setSucc(chainHead);
-            facet.chainsHeads.add(chainHead);
+        facet.setRings(new ArrayList<Ring>(nodeChains.size()));
+        for (List< ? extends Node> nodeChain : nodeChains) {
+            Ring ring = Ring.byNodesChain(nodeChain);
+            ring.setParent(facet);
+            facet.rings.add(ring);
         }
         return facet;
     }
 
-    public Facet() {
+    public static Facet byRingsHeads(List<? extends Segment> heads) {
+        Facet facet = new Facet();
+        facet.setRings(Ring.byRingsHeads(heads));
+        return facet;
     }
     public static final int DIM = 2;
-    int id;
-    ArrayList<Segment> chainsHeads;
+
+    List<Ring> rings;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override
         public int getInputDimension() {
@@ -103,8 +90,15 @@ public class Facet implements GeomUnit, Iterable<Segment> {
         }
     };
 
-    public void setChainsHeads(List<? extends Segment> chainsHeads) {
-        this.chainsHeads = new ArrayList<>(chainsHeads);
+    public List<Ring> getRings() {
+        return rings;
+    }
+
+    public void setRings(List<Ring> rings) {
+        this.rings = rings;
+        for (Ring ring : rings) {
+            ring.setParent(this);
+        }
     }
 
     public void fillSegmentsIds() {
@@ -121,10 +115,6 @@ public class Facet implements GeomUnit, Iterable<Segment> {
             seg.getStart().setId(ndId);
             ndId++;
         }
-    }
-
-    public ArrayList<Segment> getChainsHeads() {
-        return chainsHeads;
     }
 
     public double getMinSegmentCoordLength() {
@@ -223,21 +213,23 @@ public class Facet implements GeomUnit, Iterable<Segment> {
     }
 
     public ArrayList<LinkedList<Node>> getVertes() {
-        ArrayList<LinkedList<Node>> res = new ArrayList<>(chainsHeads.size());
-        for (Segment cHead : chainsHeads) {
+        ArrayList<LinkedList<Node>> res = new ArrayList<>(rings.size());
+        for (Ring ring : rings) {
             LinkedList<Node> vs = new LinkedList<>();
             res.add(vs);
-            Segment seg = cHead;
-            do {
+            for (Segment seg : ring) {
                 vs.add(seg.getStart());
-                seg = seg.getSucc();
-            } while (seg != cHead);
+            }
         }
         return res;
     }
 
     @Override
     public Iterator<Segment> iterator() {
+        ArrayList<Segment> chainsHeads = new ArrayList<>(rings.size());
+        for (Ring ring : rings) {
+            chainsHeads.add(ring.getHead());
+        }
         return new SegmentChainsIterator<>(chainsHeads);
     }
 
@@ -251,7 +243,8 @@ public class Facet implements GeomUnit, Iterable<Segment> {
 
     public List<double[]> getPointsInHoles() {
         List<double[]> result = new LinkedList<>();
-        for (Segment head : chainsHeads) {
+        for (Ring ring : rings) {
+            Segment head = ring.getHead();
             SegmentCoordIterator iter = new SegmentCoordIterator(head);
             if (Math2D.isAnticlockwise(iter)) {
                 continue;
@@ -305,31 +298,24 @@ public class Facet implements GeomUnit, Iterable<Segment> {
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
         Facet res = byNodesChains(getVertes());
-        for (Segment cHeadSeg : res.chainsHeads) {
-            Line cHead = (Line) cHeadSeg;
-            Line seg = cHead;
+        for (Ring ring : res.getRings()) {
+            Segment seg = ring.getHead();
+            Segment cHead = seg;
             do {
-                while (seg.length() > lenUpBnd) {
+                while (Segment2DUtils.chordLength(seg) > lenUpBnd) {
                     seg.bisect();
                 }
-                seg = (Line) seg.succ;
+                seg = seg.getSucc();
             } while (seg != cHead);
         }
         return res;
     }
 
-    @Override
-    public GeomUnit getParent() {
-        return null;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
+    public List<Segment> getRingsHeads() {
+        ArrayList<Segment> result = new ArrayList<>(rings.size());
+        for (Ring ring : rings) {
+            result.add(ring.getHead());
+        }
+        return result;
     }
 }

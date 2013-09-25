@@ -10,5 +10,4 @@ public interface BoundedImplicitFunctionSolver extends ImplicitFunctionSolver {
     void setLowerBounds(double[] lowerBounds);
 
     void setUpperBounds(double[] upperBounds);
-
 }

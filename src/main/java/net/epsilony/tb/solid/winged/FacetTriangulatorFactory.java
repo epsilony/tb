@@ -25,7 +25,7 @@ import org.bridj.Pointer;
 public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers> {
 
     GeneralTriangleCellFactory generalCellFactory = new GeneralTriangleCellFactory();
-    Facet polygon;
+    Facet facet;
     private TriangulateIO triIn;
     private TriangulateIO triOut;
     double triangleArea = -1;
@@ -60,7 +60,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
     }
 
     public void setPolygon(Facet input) {
-        this.polygon = input;
+        this.facet = input;
     }
 
     public Factory<? extends WingedCell> getCellFactory() {
@@ -112,7 +112,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
     }
 
     private void genPointSegmentList() {
-        ArrayList<? extends Segment> chainsHeads = polygon.getChainsHeads();
+        List<? extends Segment> chainsHeads = facet.getRingsHeads();
         TDoubleList points = new TDoubleLinkedList();
         TIntList pointsMarks = new TIntLinkedList();
         TIntList segments = new TIntLinkedList();
@@ -153,7 +153,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
     }
 
     private void genHoleList() {
-        List<double[]> pointsInHoles = polygon.getPointsInHoles();
+        List<double[]> pointsInHoles = facet.getPointsInHoles();
         triIn.setNumberOfHoles(pointsInHoles.size());
         System.out.println("triIn.getNumberOfHole() = " + triIn.getNumberOfHoles());
         if (pointsInHoles.isEmpty()) {

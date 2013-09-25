@@ -13,7 +13,7 @@ public class Line extends RawSegment {
     }
 
     public Line(Node start) {
-        this.start = start;
+        super(start);
     }
 
     @Override

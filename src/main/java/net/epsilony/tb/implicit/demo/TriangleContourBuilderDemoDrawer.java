@@ -97,8 +97,7 @@ public class TriangleContourBuilderDemoDrawer extends ModelDrawerAdapter {
     private void genDrawers() {
         triangleDrawers = new LinkedList<>();
         for (TriangleContourCell cell : trianglePolygonizer.getCells()) {
-            TriangleContourCellDemoDrawer cellDrawer
-                    = new TriangleContourCellDemoDrawer(cell);
+            TriangleContourCellDemoDrawer cellDrawer = new TriangleContourCellDemoDrawer(cell);
             triangleDrawers.add(cellDrawer);
             cellDrawer.setNodesVisible(triangleNodesVisible);
         }

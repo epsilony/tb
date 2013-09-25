@@ -15,5 +15,4 @@ public class Segment2DQuadraturePoint extends QuadraturePoint {
 
     public Segment2DQuadraturePoint() {
     }
-
 }

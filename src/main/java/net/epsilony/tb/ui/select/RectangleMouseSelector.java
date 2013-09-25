@@ -65,8 +65,7 @@ public class RectangleMouseSelector extends MouseAdapter {
         Rectangle2D rectangle = new Rectangle2D.Double(
                 rectangleSelectStartX, rectangleSelectStartY,
                 -rectangleSelectStartX + e.getX(), -rectangleSelectStartY + e.getY());
-        RectangleSelectionEvent rectangleSelectionEvent
-                = new RectangleSelectionEvent(this, rectangle, isKeepFormerSelections(e));
+        RectangleSelectionEvent rectangleSelectionEvent = new RectangleSelectionEvent(this, rectangle, isKeepFormerSelections(e));
         return rectangleSelectionEvent;
     }
 

@@ -1,20 +1,24 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
-import net.epsilony.tb.IntIdentityMap;
-
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RawSegment implements Segment {
+public class RawSegment extends RawGeomUnit implements Segment {
 
     protected int diffOrder = 0;
     protected Node start;
-    public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
     protected Segment pred;
     protected Segment succ;
-    Ring parent;
+
+    public RawSegment() {
+    }
+
+    public RawSegment(Node start) {
+        this.start = start;
+        start.setParent(parent);
+    }
 
     @Override
     public int getDiffOrder() {
@@ -28,11 +32,6 @@ public class RawSegment implements Segment {
 
     public double[] getStartCoord() {
         return start.coord;
-    }
-
-    @Override
-    public int getId() {
-        return id;
     }
 
     @Override
@@ -65,11 +64,7 @@ public class RawSegment implements Segment {
     @Override
     public void setStart(Node start) {
         this.start = start;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
+        start.setParent(this);
     }
 
     @Override
@@ -91,14 +86,4 @@ public class RawSegment implements Segment {
     public void bisect() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Ring getParent() {
-        return parent;
-    }
-
-    public void setParent(Ring parent) {
-        this.parent = parent;
-    }
-
 }

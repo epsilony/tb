@@ -103,8 +103,8 @@ public class Segment2DQuadratureTest {
         arc.setRadius(radius);
         arc.setSucc(new Line(
                 new Node(
-                        xTrans + radius * Math.cos(endAngle),
-                        yTrans + radius * Math.sin(endAngle))));
+                xTrans + radius * Math.cos(endAngle),
+                yTrans + radius * Math.sin(endAngle))));
         Segment2DQuadrature sq = new Segment2DQuadrature();
         sq.setDegree(1);
         boolean beenHere = false;

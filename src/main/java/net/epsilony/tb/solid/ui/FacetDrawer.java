@@ -4,7 +4,7 @@ package net.epsilony.tb.solid.ui;
 import java.awt.Dimension;
 import java.awt.Shape;
 import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
+import java.util.List;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Facet;
@@ -22,9 +22,9 @@ public class FacetDrawer extends SingleModelShapeDrawer {
 
     Facet polygon;
 
-    public static GeneralPath genGeneralPath(Facet polygon) {
+    public static GeneralPath genGeneralPath(Facet facet) {
         GeneralPath path = new GeneralPath();
-        ArrayList<Segment> chainsHeads = polygon.getChainsHeads();
+        List<Segment> chainsHeads = facet.getRingsHeads();
         for (Segment chainHead : chainsHeads) {
             Node nd = chainHead.getStart();
             path.moveTo(nd.getCoord()[0], nd.getCoord()[1]);

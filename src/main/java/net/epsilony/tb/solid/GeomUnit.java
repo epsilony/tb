@@ -10,4 +10,6 @@ import net.epsilony.tb.IntIdentity;
 public interface GeomUnit extends IntIdentity {
 
     GeomUnit getParent();
+
+    void setParent(GeomUnit parent);
 }
