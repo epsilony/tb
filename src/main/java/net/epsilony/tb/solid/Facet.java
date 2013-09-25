@@ -55,7 +55,6 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         return facet;
     }
     public static final int DIM = 2;
-
     List<Ring> rings;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override

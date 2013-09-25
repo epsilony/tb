@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+/* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
-
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class RawGeomUnit implements GeomUnit {
+
     protected int id;
     protected GeomUnit parent;
 
@@ -32,5 +29,4 @@ public abstract class RawGeomUnit implements GeomUnit {
     public void setParent(GeomUnit parent) {
         this.parent = parent;
     }
-    
 }
