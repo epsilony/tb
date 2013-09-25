@@ -5,7 +5,7 @@ import net.epsilony.tb.analysis.Math2D;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 
 /**
  *
@@ -45,7 +45,7 @@ public class TestTool {
         return result;
     }
 
-    public static Polygon2D samplePolygon(List<double[][][]> coordChainsOut) {
+    public static Facet samplePolygon(List<double[][][]> coordChainsOut) {
         double[][][] coordChains = new double[][][]{{
             {0, 0},//0
             {2, 0},//1
@@ -91,6 +91,6 @@ public class TestTool {
             coordChainsOut.clear();
             coordChainsOut.add(coordChains);
         }
-        return Polygon2D.byCoordChains(coordChains);
+        return Facet.byCoordChains(coordChains);
     }
 }

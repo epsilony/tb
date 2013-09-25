@@ -12,9 +12,9 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Polygon2D implements Iterable<Segment> {
+public class Facet implements Iterable<Segment> {
 
-    public static Polygon2D byCoordChains(double[][][] coordChains, Node nd) {
+    public static Facet byCoordChains(double[][][] coordChains, Node nd) {
         ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);
         for (double[][] coords : coordChains) {
             ArrayList<Node> nodes = new ArrayList<>(coords.length);
@@ -28,14 +28,14 @@ public class Polygon2D implements Iterable<Segment> {
                 nodes.add(newNode);
             }
         }
-        return new Polygon2D(nodeChains);
+        return new Facet(nodeChains);
     }
 
-    public static Polygon2D byCoordChains(double[][][] coordChains) {
+    public static Facet byCoordChains(double[][][] coordChains) {
         return byCoordChains(coordChains, new Node());
     }
 
-    public Polygon2D(List<? extends List<? extends Node>> nodeChains) {
+    public Facet(List<? extends List<? extends Node>> nodeChains) {
         if (nodeChains.isEmpty()) {
             throw new IllegalArgumentException("There is at least 1 chain in a Polygon");
         }
@@ -63,7 +63,7 @@ public class Polygon2D implements Iterable<Segment> {
         }
     }
 
-    public Polygon2D() {
+    public Facet() {
     }
     public static final int DIM = 2;
     ArrayList<Segment> chainsHeads;
@@ -297,11 +297,11 @@ public class Polygon2D implements Iterable<Segment> {
         return area;
     }
 
-    public Polygon2D fractionize(double lenUpBnd) {
+    public Facet fractionize(double lenUpBnd) {
         if (lenUpBnd <= 0) {
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
-        Polygon2D res = new Polygon2D(getVertes());
+        Facet res = new Facet(getVertes());
         for (Segment cHeadSeg : res.chainsHeads) {
             Line cHead = (Line) cHeadSeg;
             Line seg = cHead;

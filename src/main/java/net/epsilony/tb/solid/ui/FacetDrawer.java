@@ -7,7 +7,7 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 import net.epsilony.tb.TestTool;
 import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -18,11 +18,11 @@ import net.epsilony.tb.ui.SingleModelShapeDrawer;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class PolygonDrawer extends SingleModelShapeDrawer {
+public class FacetDrawer extends SingleModelShapeDrawer {
 
-    Polygon2D polygon;
+    Facet polygon;
 
-    public static GeneralPath genGeneralPath(Polygon2D polygon) {
+    public static GeneralPath genGeneralPath(Facet polygon) {
         GeneralPath path = new GeneralPath();
         ArrayList<Segment> chainsHeads = polygon.getChainsHeads();
         for (Segment chainHead : chainsHeads) {
@@ -40,18 +40,18 @@ public class PolygonDrawer extends SingleModelShapeDrawer {
         return path;
     }
 
-    public PolygonDrawer() {
+    public FacetDrawer() {
     }
 
-    public PolygonDrawer(Polygon2D polygon) {
+    public FacetDrawer(Facet polygon) {
         _setPolygon(polygon);
     }
 
-    public void setPolygon(Polygon2D polygon) {
+    public void setPolygon(Facet polygon) {
         _setPolygon(polygon);
     }
 
-    private void _setPolygon(Polygon2D polygon) {
+    private void _setPolygon(Facet polygon) {
         this.polygon = polygon;
         Shape polygonPath = genGeneralPath(polygon);
         _setShape(polygonPath);
@@ -64,8 +64,8 @@ public class PolygonDrawer extends SingleModelShapeDrawer {
                 CommonFrame frame = new CommonFrame();
                 BasicModelPanel basicModelPanel = frame.getMainPanel();
                 basicModelPanel.setPreferredSize(new Dimension(800, 600));
-                Polygon2D polygon = TestTool.samplePolygon(null);
-                PolygonDrawer drawer = new PolygonDrawer();
+                Facet polygon = TestTool.samplePolygon(null);
+                FacetDrawer drawer = new FacetDrawer();
                 drawer.setPolygon(polygon);
                 basicModelPanel.addAndSetupModelDrawer(drawer);
                 frame.setVisible(true);

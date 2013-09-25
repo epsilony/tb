@@ -2,9 +2,9 @@
 package net.epsilony.tb.solid.ui.demo;
 
 import javax.swing.SwingUtilities;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 import net.epsilony.tb.solid.ui.NodeDrawer;
-import net.epsilony.tb.solid.ui.PolygonDrawer;
+import net.epsilony.tb.solid.ui.FacetDrawer;
 import net.epsilony.tb.TestTool;
 import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.ui.BasicModelPanel;
@@ -17,8 +17,8 @@ import net.epsilony.tb.ui.CommonFrame;
 public class PolygonDrawerDemo {
 
     public static void createUI() {
-        Polygon2D polygon = TestTool.samplePolygon(null);
-        PolygonDrawer polygonDrawer = new PolygonDrawer(polygon);
+        Facet polygon = TestTool.samplePolygon(null);
+        FacetDrawer polygonDrawer = new FacetDrawer(polygon);
         CommonFrame frame = new CommonFrame();
         BasicModelPanel mainPanel = frame.getMainPanel();
         mainPanel.addAndSetupModelDrawer(polygonDrawer);

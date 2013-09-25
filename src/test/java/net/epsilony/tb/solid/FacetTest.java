@@ -13,14 +13,14 @@ import org.junit.Test;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Polygon2DTest {
+public class FacetTest {
 
-    public Polygon2DTest() {
+    public FacetTest() {
     }
 
     @Test
     public void testDistanceFuncSimp() {
-        Polygon2D pg = samplePolygon();
+        Facet pg = samplePolygon();
         double[][] testCoords = new double[][]{{0.5, 0.5}, {0.1, 0.1}, {-0.1, -0.1}, {0.5, 0.4}, {0.5, 0.25}};
         double[] exps = new double[]{0, 0.1, -0.1 * Math.sqrt(2), 0.1, 0.25};
         for (int i = 0; i < exps.length; i++) {
@@ -33,7 +33,7 @@ public class Polygon2DTest {
     @Test
     public void testDistanceFuncComp() {
         ArrayList<double[][][]> coords = new ArrayList<>(1);
-        Polygon2D pg = TestTool.samplePolygon(coords);
+        Facet pg = TestTool.samplePolygon(coords);
         double[][] testCoordsExps = new double[][]{{
             3, 6.5, Math.sqrt(2) / 4},
         {7, 5.5, -Math.sqrt(5) / 10},
@@ -54,7 +54,7 @@ public class Polygon2DTest {
     @Test
     public void testIterable() {
         ArrayList<double[][][]> coords = new ArrayList<>(1);
-        Polygon2D pg = TestTool.samplePolygon(coords);
+        Facet pg = TestTool.samplePolygon(coords);
         int i = 0, j = 0;
         for (Segment seg : pg) {
             double[][][] coordChains = coords.get(0);
@@ -70,7 +70,7 @@ public class Polygon2DTest {
 
     @Test
     public void testPolygonSegmentPredLink() {
-        Polygon2D pg = TestTool.samplePolygon(null);
+        Facet pg = TestTool.samplePolygon(null);
         ArrayList<LinkedList<Node>> vertes = pg.getVertes();
         Iterator<LinkedList<Node>> vIter = vertes.iterator();
         for (Segment cHead : pg.chainsHeads) {
@@ -96,8 +96,8 @@ public class Polygon2DTest {
             {{-0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5}, {0.5, -0.5}}
         };
 
-        Polygon2D pg = Polygon2D.byCoordChains(coordChains);
-        Polygon2D fPg = pg.fractionize(0.67);
+        Facet pg = Facet.byCoordChains(coordChains);
+        Facet fPg = pg.fractionize(0.67);
         ArrayList<LinkedList<Node>> pVertes = fPg.getVertes();
         double[][][] exps = new double[][][]{
             {{-1, -1}, {-0.5, -1}, {0, -1}, {0.5, -1},
@@ -122,8 +122,8 @@ public class Polygon2DTest {
         }
     }
 
-    public Polygon2D samplePolygon() {
+    public Facet samplePolygon() {
         double[][][] coordChains = new double[][][]{{{0, 0}, {1, 0}, {1, 1}, {0.5, 0.5}, {0, 1}}};
-        return Polygon2D.byCoordChains(coordChains);
+        return Facet.byCoordChains(coordChains);
     }
 }

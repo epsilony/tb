@@ -1,7 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -20,7 +20,7 @@ public class PolygonQuadratureTest {
         };
 
         double expLen = Math.sqrt(10) * 2 + Math.sqrt(8);
-        Polygon2D polygon = Polygon2D.byCoordChains(points);
+        Facet polygon = Facet.byCoordChains(points);
 
         PolygonQuadrature qp = new PolygonQuadrature();
         qp.setPolygon(polygon);

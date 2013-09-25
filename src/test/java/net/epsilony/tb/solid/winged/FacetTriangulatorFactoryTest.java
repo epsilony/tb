@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.epsilony.tb.RudeFactory;
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,19 +13,19 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class PolygonTriangulatorFactoryTest {
+public class FacetTriangulatorFactoryTest {
 
-    public PolygonTriangulatorFactoryTest() {
+    public FacetTriangulatorFactoryTest() {
     }
     double polygonSegmentLength = 5;
 
     @Test
     public void testSomeMethod() {
-        PolygonTriangulatorFactory factory = sampleSimpFactory();
+        FacetTriangulatorFactory factory = sampleSimpFactory();
         factory.setTriangleArea(25);
-        Polygon2D[] polygons = new Polygon2D[]{sampleQuadrangleWithoutHole(), sampleFacePolygon()};
+        Facet[] polygons = new Facet[]{sampleQuadrangleWithoutHole(), sampleFacePolygon()};
         int count = 0;
-        for (Polygon2D polygon : polygons) {
+        for (Facet polygon : polygons) {
             System.out.println("test sample" + count++);
             factory.setPolygon(polygon);
             TriangleArrayContainers triangleContainer = factory.produce();
@@ -34,7 +34,7 @@ public class PolygonTriangulatorFactoryTest {
         }
     }
 
-    private void testTriangleAear(Polygon2D polygon, ArrayList<TriangleCell> triangles) {
+    private void testTriangleAear(Facet polygon, ArrayList<TriangleCell> triangles) {
         double polygonArea = polygon.calcArea();
         double triangleAreaSum = 0;
         for (Triangle tri : triangles) {
@@ -43,25 +43,25 @@ public class PolygonTriangulatorFactoryTest {
         assertEquals(polygonArea, triangleAreaSum, 1e-6);
     }
 
-    public PolygonTriangulatorFactory sampleSimpFactory() {
-        PolygonTriangulatorFactory result = new PolygonTriangulatorFactory();
+    public FacetTriangulatorFactory sampleSimpFactory() {
+        FacetTriangulatorFactory result = new FacetTriangulatorFactory();
         result.setCellFactory(new RudeFactory<>(TriangleCell.class));
         result.setEdgeFactory(new RudeFactory<>(RawWingedEdge.class));
         result.setNodeFactory(Node.factory());
         return result;
     }
 
-    public Polygon2D sampleQuadrangleWithoutHole() {
+    public Facet sampleQuadrangleWithoutHole() {
         double[][][] coords = new double[][][]{{
             {10, -10}, {100, 10}, {110, 90}, {5, 10}
         }
         };
-        Polygon2D polygon = Polygon2D.byCoordChains(coords);
+        Facet polygon = Facet.byCoordChains(coords);
         polygon = polygon.fractionize(polygonSegmentLength);
         return polygon;
     }
 
-    public Polygon2D sampleFacePolygon() {
+    public Facet sampleFacePolygon() {
         //famouse face without inner segment
         double[][][] coords = new double[][][]{
             {//face
@@ -77,7 +77,7 @@ public class PolygonTriangulatorFactoryTest {
                 {70, 50}, {60, 30}, {10, 55}, {40, 55}
             }
         };
-        Polygon2D polygon = Polygon2D.byCoordChains(coords);
+        Facet polygon = Facet.byCoordChains(coords);
         polygon = polygon.fractionize(polygonSegmentLength);
         return polygon;
     }

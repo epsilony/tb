@@ -15,17 +15,17 @@ import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.solid.SegmentIterator;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
 import net.epsilony.tb.nativelib.TriangleLibraryUtils;
-import net.epsilony.tb.solid.Polygon2D;
+import net.epsilony.tb.solid.Facet;
 import org.bridj.Pointer;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class PolygonTriangulatorFactory implements Factory<TriangleArrayContainers> {
+public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers> {
 
     GeneralTriangleCellFactory generalCellFactory = new GeneralTriangleCellFactory();
-    Polygon2D polygon;
+    Facet polygon;
     private TriangulateIO triIn;
     private TriangulateIO triOut;
     double triangleArea = -1;
@@ -59,7 +59,7 @@ public class PolygonTriangulatorFactory implements Factory<TriangleArrayContaine
         this.prohibitEdgeSteinerPoint = prohibitEdgeSteinerPoint;
     }
 
-    public void setPolygon(Polygon2D input) {
+    public void setPolygon(Facet input) {
         this.polygon = input;
     }
 
