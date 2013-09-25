@@ -12,7 +12,7 @@ import net.epsilony.tb.analysis.Math2D;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Facet implements Iterable<Segment> {
+public class Facet implements GeomUnit, Iterable<Segment> {
 
     public static Facet byCoordChains(double[][][] coordChains, Node nd) {
         ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);
@@ -28,25 +28,26 @@ public class Facet implements Iterable<Segment> {
                 nodes.add(newNode);
             }
         }
-        return new Facet(nodeChains);
+        return byNodesChains(nodeChains);
     }
 
     public static Facet byCoordChains(double[][][] coordChains) {
         return byCoordChains(coordChains, new Node());
     }
 
-    public Facet(List<? extends List<? extends Node>> nodeChains) {
+    public static Facet byNodesChains(List<? extends List<? extends Node>> nodeChains) {
         if (nodeChains.isEmpty()) {
-            throw new IllegalArgumentException("There is at least 1 chain in a Polygon");
+            throw new IllegalArgumentException("There is at least 1 outer Ring of a Facet");
         }
-        chainsHeads = new ArrayList<>(nodeChains.size());
+        Facet facet = new Facet();
+        facet.chainsHeads = new ArrayList<>(nodeChains.size());
         for (List< ? extends Node> nds : nodeChains) {
             if (nds.size() < 3) {
                 throw new IllegalArgumentException(
                         String.format(
-                                "Each chain in a polygon must contain at least 3 nodes as vertes! "
-                                + "nodesChain[%d] has only %d nodes",
-                                nodeChains.indexOf(nds), nds.size()));
+                        "Each chain in a polygon must contain at least 3 nodes as vertes! "
+                        + "nodesChain[%d] has only %d nodes",
+                        nodeChains.indexOf(nds), nds.size()));
             }
             Line chainHead = new Line();
             Line seg = chainHead;
@@ -59,13 +60,15 @@ public class Facet implements Iterable<Segment> {
             }
             chainHead.pred = seg.pred;
             chainHead.pred.setSucc(chainHead);
-            chainsHeads.add(chainHead);
+            facet.chainsHeads.add(chainHead);
         }
+        return facet;
     }
 
     public Facet() {
     }
     public static final int DIM = 2;
+    int id;
     ArrayList<Segment> chainsHeads;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override
@@ -105,18 +108,18 @@ public class Facet implements Iterable<Segment> {
     }
 
     public void fillSegmentsIds() {
-        int id = 0;
+        int segId = 0;
         for (Segment seg : this) {
-            seg.setId(id);
-            id++;
+            seg.setId(segId);
+            segId++;
         }
     }
 
     public void fillNodesIds() {
-        int id = 0;
+        int ndId = 0;
         for (Segment seg : this) {
-            seg.getStart().setId(id);
-            id++;
+            seg.getStart().setId(ndId);
+            ndId++;
         }
     }
 
@@ -301,7 +304,7 @@ public class Facet implements Iterable<Segment> {
         if (lenUpBnd <= 0) {
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
-        Facet res = new Facet(getVertes());
+        Facet res = byNodesChains(getVertes());
         for (Segment cHeadSeg : res.chainsHeads) {
             Line cHead = (Line) cHeadSeg;
             Line seg = cHead;
@@ -313,5 +316,20 @@ public class Facet implements Iterable<Segment> {
             } while (seg != cHead);
         }
         return res;
+    }
+
+    @Override
+    public GeomUnit getParent() {
+        return null;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
     }
 }
