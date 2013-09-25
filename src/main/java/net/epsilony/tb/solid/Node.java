@@ -3,14 +3,13 @@ package net.epsilony.tb.solid;
 
 import java.util.Arrays;
 import net.epsilony.tb.Factory;
-import net.epsilony.tb.IntIdentity;
 import net.epsilony.tb.IntIdentityMap;
 
 /**
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Node implements IntIdentity {
+public class Node implements GeomUnit {
 
     protected double[] coord;
     protected int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
@@ -73,5 +72,10 @@ public class Node implements IntIdentity {
         } catch (InstantiationException | IllegalAccessException ex) {
             throw new IllegalStateException("ND doesn't have a null constructor!", ex);
         }
+    }
+
+    @Override
+    public Segment getParent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

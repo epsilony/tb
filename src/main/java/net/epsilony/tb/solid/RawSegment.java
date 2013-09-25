@@ -14,6 +14,7 @@ public class RawSegment implements Segment {
     public int id = IntIdentityMap.NULL_INDEX_SUPREMUM;
     protected Segment pred;
     protected Segment succ;
+    Ring parent;
 
     @Override
     public int getDiffOrder() {
@@ -90,4 +91,14 @@ public class RawSegment implements Segment {
     public void bisect() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Ring getParent() {
+        return parent;
+    }
+
+    public void setParent(Ring parent) {
+        this.parent = parent;
+    }
+
 }
