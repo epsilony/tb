@@ -1,6 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.solid;
 
+import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
@@ -56,5 +57,31 @@ public class Line extends RawSegment {
             results[3] = endCoord[1] - startCoord[1];
         }
         return results;
+    }
+
+    public void fractionize(int num, Factory<? extends Node> nodeFactory) {
+        if (num == 1) {
+            return;
+        }
+        if (num < 1) {
+            throw new IllegalArgumentException();
+        }
+        double lengthStep = length() / num;
+        double[] deltaVector = Math2D.subs(getEndCoord(), getStartCoord(), null);
+        deltaVector = Math2D.normalize(deltaVector, deltaVector);
+        deltaVector = Math2D.scale(deltaVector, lengthStep, deltaVector);
+        Segment formerSucc = getSucc();
+
+        Line last = this;
+        for (int i = 0; i < num - 1; i++) {
+            double[] coord = Math2D.adds(getStartCoord(), 1, deltaVector, i + 1, null);
+            Node nd = nodeFactory.produce();
+            nd.setCoord(coord);
+            Line newSucc = new Line(nd);
+            newSucc.setParent(parent);
+            Segment2DUtils.link(last, newSucc);
+            last = newSucc;
+        }
+        Segment2DUtils.link(last, formerSucc);
     }
 }
