@@ -47,7 +47,7 @@ public class Line extends RawSegment {
     @Override
     public double[] values(double t, double[] results) {
         if (null == results) {
-            results = new double[diffOrder * 2];
+            results = new double[(diffOrder + 1) * 2];
         }
         double[] startCoord = getStart().getCoord();
         double[] endCoord = getEnd().getCoord();
