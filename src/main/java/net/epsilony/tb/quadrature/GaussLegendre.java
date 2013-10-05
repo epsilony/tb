@@ -31,13 +31,41 @@ public class GaussLegendre {
             128 / 225d,
             (322 + 13 * sqrt(70)) / 900, (322 - 13 * sqrt(70)) / 900}};
 
-    public static boolean isNumInDomain(int n) {
-        if (n < MINPOINTS || n > MAXPOINTS) {
-            throw new UnsupportedOperationException(
-                    "The quadrature points number:" + n + " is not supported yet");
+    public static boolean isPointsNumSupported(int num) {
+        if (num < MINPOINTS || num > MAXPOINTS) {
+            return false;
         }
 
         return true;
+    }
+
+    public static void checkPointsNum(int num) {
+        if (isPointsNumSupported(num)) {
+            return;
+        }
+
+        if (num < 1) {
+            throw new IllegalArgumentException("points number must be >= 1, not " + num);
+        }
+        throw new UnsupportedOperationException(
+                "The quadrature points number:" + num + " is not supported yet");
+    }
+
+    public static boolean isDegreeSupported(int degree) {
+        int pointsNum = pointsNum(degree);
+        return isPointsNumSupported(pointsNum);
+    }
+
+    public static void checkDegree(int degree) {
+        if (isDegreeSupported(degree)) {
+            return;
+        }
+        if (degree < 1) {
+            throw new IllegalArgumentException("degree must be > 1, not " + degree);
+        }
+
+        throw new UnsupportedOperationException(
+                "The quadrature degree:" + degree + " is not supported yet");
     }
 
     public static double[][] pointsWeightsByDegree(int degree) {
@@ -46,7 +74,7 @@ public class GaussLegendre {
     }
 
     public static double[][] pointsWeightsByNum(int num) {
-        isNumInDomain(num);
+        isPointsNumSupported(num);
         return new double[][]{Arrays.copyOf(points[num - 1], num), Arrays.copyOf(weights[num - 1], num)};
     }
 
