@@ -6,6 +6,7 @@ import net.epsilony.tb.solid.ArcSegment2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.analysis.ArrvarFunction;
+import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Segment2DUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -64,6 +65,24 @@ public class Segment2DQuadratureTest {
             double act = sq.quadrate(func);
             assertEquals(exp, act, 1e-12);
             getHere = true;
+        }
+        assertTrue(getHere);
+
+        seg.fractionize(7, new RudeFactory<>(Node.class));
+        Segment2DQuadrature sq = new Segment2DQuadrature();
+        sq.setSegment(seg);
+        sq.setDegree(3);
+        sq.setStartEndParameter(0, 7);
+        double act = sq.quadrate(func);
+
+        assertEquals(exp, act, 1e-14);
+
+        getHere = false;
+        for (Segment2DQuadraturePoint qp : sq) {
+            getHere = true;
+            qp.segment.setDiffOrder(0);
+            double[] coord = qp.segment.values(qp.segmentParameter, null);
+            assertArrayEquals(coord, qp.coord, 1e-14);
         }
         assertTrue(getHere);
     }
