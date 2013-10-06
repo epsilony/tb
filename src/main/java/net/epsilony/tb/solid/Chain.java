@@ -45,6 +45,13 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         }
         return rings;
     }
+
+    public Chain() {
+    }
+
+    public Chain(Segment head) {
+        this.head = head;
+    }
     Segment head;
 
     public void setParent(Facet parent) {
@@ -62,8 +69,43 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         }
     }
 
+    public boolean isClosed() {
+        if (head.getPred() == null) {
+            return false;
+        }
+        Segment last = getLast();
+        if (head.getPred() == last) {
+            return true;
+        }
+        return false;
+    }
+
+    public void checkAsRing() {
+        if (head.getPred() == null) {
+            throw new IllegalStateException();
+        }
+        Segment last = getLast();
+        if (head.getPred() != last) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void checkChainsHead() {
+        if (head.getPred() != null && getLast() != head.getPred()) {
+            throw new IllegalStateException();
+        }
+    }
+
     @Override
     public Iterator<Segment> iterator() {
         return new SegmentIterator<>(head);
+    }
+
+    public Segment getLast() {
+        Segment last = null;
+        for (Segment seg : this) {
+            last = seg;
+        }
+        return last;
     }
 }
