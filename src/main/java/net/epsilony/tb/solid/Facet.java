@@ -40,9 +40,9 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
             throw new IllegalArgumentException("There is at least 1 outer Ring of a Facet");
         }
         Facet facet = new Facet();
-        facet.setRings(new ArrayList<Ring>(nodeChains.size()));
+        facet.setRings(new ArrayList<Chain>(nodeChains.size()));
         for (List< ? extends Node> nodeChain : nodeChains) {
-            Ring ring = Ring.byNodesChain(nodeChain);
+            Chain ring = Chain.byNodesChain(nodeChain);
             ring.setParent(facet);
             facet.rings.add(ring);
         }
@@ -51,11 +51,11 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public static Facet byRingsHeads(List<? extends Segment> heads) {
         Facet facet = new Facet();
-        facet.setRings(Ring.byRingsHeads(heads));
+        facet.setRings(Chain.byRingsHeads(heads));
         return facet;
     }
     public static final int DIM = 2;
-    List<Ring> rings;
+    List<Chain> rings;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override
         public int getInputDimension() {
@@ -89,13 +89,13 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         }
     };
 
-    public List<Ring> getRings() {
+    public List<Chain> getRings() {
         return rings;
     }
 
-    public void setRings(List<Ring> rings) {
+    public void setRings(List<Chain> rings) {
         this.rings = rings;
-        for (Ring ring : rings) {
+        for (Chain ring : rings) {
             ring.setParent(this);
         }
     }
@@ -213,7 +213,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public ArrayList<LinkedList<Node>> getVertes() {
         ArrayList<LinkedList<Node>> res = new ArrayList<>(rings.size());
-        for (Ring ring : rings) {
+        for (Chain ring : rings) {
             LinkedList<Node> vs = new LinkedList<>();
             res.add(vs);
             for (Segment seg : ring) {
@@ -226,7 +226,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
     @Override
     public Iterator<Segment> iterator() {
         ArrayList<Segment> chainsHeads = new ArrayList<>(rings.size());
-        for (Ring ring : rings) {
+        for (Chain ring : rings) {
             chainsHeads.add(ring.getHead());
         }
         return new SegmentChainsIterator<>(chainsHeads);
@@ -242,7 +242,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public List<double[]> getPointsInHoles() {
         List<double[]> result = new LinkedList<>();
-        for (Ring ring : rings) {
+        for (Chain ring : rings) {
             Segment head = ring.getHead();
             SegmentCoordIterator iter = new SegmentCoordIterator(head);
             if (Math2D.isAnticlockwise(iter)) {
@@ -297,7 +297,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
             throw new IllegalArgumentException("maxLength should be greater than 0 :" + lenUpBnd);
         }
         Facet res = byNodesChains(getVertes());
-        for (Ring ring : res.getRings()) {
+        for (Chain ring : res.getRings()) {
             Segment seg = ring.getHead();
             Segment cHead = seg;
             do {
@@ -312,7 +312,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public List<Segment> getRingsHeads() {
         ArrayList<Segment> result = new ArrayList<>(rings.size());
-        for (Ring ring : rings) {
+        for (Chain ring : rings) {
             result.add(ring.getHead());
         }
         return result;

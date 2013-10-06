@@ -9,9 +9,9 @@ import java.util.List;
  *
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class Ring extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
+public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
-    public static Ring byNodesChain(List<? extends Node> nodesChain) {
+    public static Chain byNodesChain(List<? extends Node> nodesChain) {
         if (nodesChain.size() < 3) {
             throw new IllegalArgumentException(
                     String.format(
@@ -31,15 +31,15 @@ public class Ring extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         chainHead.pred = seg.pred;
         chainHead.pred.setSucc(chainHead);
 
-        Ring ring = new Ring();
+        Chain ring = new Chain();
         ring.setHead(chainHead);
         return ring;
     }
 
-    public static ArrayList<Ring> byRingsHeads(List<? extends Segment> heads) {
-        ArrayList<Ring> rings = new ArrayList<>(heads.size());
+    public static ArrayList<Chain> byRingsHeads(List<? extends Segment> heads) {
+        ArrayList<Chain> rings = new ArrayList<>(heads.size());
         for (Segment head : heads) {
-            Ring ring = new Ring();
+            Chain ring = new Chain();
             ring.setHead(head);
             rings.add(ring);
         }
