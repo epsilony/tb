@@ -12,28 +12,42 @@ import java.util.List;
 public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public static Chain byNodesChain(List<? extends Node> nodesChain) {
-        if (nodesChain.size() < 3) {
+        return byNodesChain(nodesChain, true);
+    }
+
+    public static Chain byNodesChain(List<? extends Node> nodesChain, boolean closed) {
+        if (closed && nodesChain.size() < 3) {
             throw new IllegalArgumentException(
                     String.format(
-                    "Each chain in a polygon must contain at least 3 nodes as vertes! "
+                    "Each closed chain must contains at least 3 nodes as vertes! "
                     + "this nodes chain has only %d nodes",
                     nodesChain.size()));
         }
+        if (!closed && nodesChain.size() < 2) {
+            throw new IllegalArgumentException(
+                    String.format(
+                    "Each open chain must contains at least 2 nodes as vertes! "
+                    + "this nodes chain has only %d nodes",
+                    nodesChain.size()));
+        }
+
+        Iterator<? extends Node> nodeIter = nodesChain.iterator();
         Line chainHead = new Line();
+        chainHead.setStart(nodeIter.next());
         Line seg = chainHead;
-        for (Node nd : nodesChain) {
-            seg.start = nd;
-            Line succ = new Line();
-            seg.succ = succ;
-            succ.pred = seg;
+        while (nodeIter.hasNext()) {
+            Line succ = new Line(nodeIter.next());
+            Segment2DUtils.link(seg, succ);
             seg = succ;
         }
-        chainHead.pred = seg.pred;
-        chainHead.pred.setSucc(chainHead);
 
-        Chain ring = new Chain();
-        ring.setHead(chainHead);
-        return ring;
+        if (closed) {
+            Segment2DUtils.link(seg, chainHead);
+        }
+
+        Chain chain = new Chain();
+        chain.setHead(chainHead);
+        return chain;
     }
 
     public static ArrayList<Chain> byRingsHeads(List<? extends Segment> heads) {
