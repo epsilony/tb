@@ -15,8 +15,6 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
     int degree = -1;
     double[] points;
     double[] weights;
-    double startParameter = 0;
-    double endParameter = 1;
 
     public void setSegment(Segment segment) {
         this.segment = segment;
@@ -26,10 +24,6 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
     }
 
     public void setDegree(int degree) {
-        GaussLegendre.checkDegree(degree);
-        if (this.degree == degree) {
-            return;
-        }
         this.degree = degree;
         double[][] pws = GaussLegendre.pointsWeightsByDegree(degree);
         points = pws[0];
@@ -52,8 +46,6 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
 
         int nextIdx = 0;
         private double[] coordAndDifferential = new double[4];
-        Segment currentSegment = segment;
-        int currentStartBase = 0;
 
         @Override
         public boolean hasNext() {
@@ -63,22 +55,13 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
         @Override
         public Segment2DQuadraturePoint next() {
             double point = points[nextIdx];
-            double t = (point + 1) / 2 * (endParameter - startParameter) + startParameter;
-            double t2 = t - currentStartBase;
-            while (t2 > 1) {
-                currentSegment = currentSegment.getSucc();
-                if (null == currentSegment) {
-                    throw new IllegalStateException();
-                }
-                currentStartBase++;
-                t2 = t - currentStartBase;
-            }
-            currentSegment.setDiffOrder(1);
-            currentSegment.values(t2, coordAndDifferential);
+            double t = (point + 1) / 2;
+            segment.setDiffOrder(1);
+            segment.values(t, coordAndDifferential);
             double dx = coordAndDifferential[2];
             double dy = coordAndDifferential[3];
-            double ds = Math.sqrt(dx * dx + dy * dy);
-            double weight = weights[nextIdx] / 2 * ds * (endParameter - startParameter);
+            double segLen = Math.sqrt(dx * dx + dy * dy);
+            double weight = weights[nextIdx] / 2 * segLen;
 
             double x = coordAndDifferential[0];
             double y = coordAndDifferential[1];
@@ -86,9 +69,9 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
             Segment2DQuadraturePoint result = new Segment2DQuadraturePoint();
             result.coord = new double[]{x, y};
             result.weight = weight;
-            result.outerNormal = new double[]{-dy / ds, dx / ds};
-            result.segment = currentSegment;
-            result.segmentParameter = t2;
+            result.outerNormal = new double[]{-dy / segLen, dx / segLen};
+            result.segment = segment;
+            result.segmentParameter = t;
             return result;
         }
 
@@ -104,24 +87,5 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
             res += func.value(qp.coord) * qp.weight;
         }
         return res;
-    }
-
-    public double getStartParameter() {
-        return startParameter;
-    }
-
-    public double getEndParameter() {
-        return endParameter;
-    }
-
-    public void setStartEndParameter(double startParameter, double endParameter) {
-        if (startParameter < 0) {
-            throw new IllegalArgumentException("start parameter must be >= 0, not " + startParameter);
-        }
-        if (endParameter <= startParameter) {
-            throw new IllegalArgumentException(String.format("end parameter must > start parameter (start:%d, end:%d)", startParameter, endParameter));
-        }
-        this.startParameter = startParameter;
-        this.endParameter = endParameter;
     }
 }

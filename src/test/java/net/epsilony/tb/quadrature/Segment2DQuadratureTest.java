@@ -1,13 +1,10 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.quadrature;
 
-import net.epsilony.tb.RudeFactory;
 import net.epsilony.tb.solid.ArcSegment2D;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.analysis.ArrvarFunction;
-import net.epsilony.tb.analysis.Math2D;
-import net.epsilony.tb.solid.Segment2DUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -67,24 +64,6 @@ public class Segment2DQuadratureTest {
             getHere = true;
         }
         assertTrue(getHere);
-
-        seg.fractionize(7, new RudeFactory<>(Node.class));
-        Segment2DQuadrature sq = new Segment2DQuadrature();
-        sq.setSegment(seg);
-        sq.setDegree(3);
-        sq.setStartEndParameter(0, 7);
-        double act = sq.quadrate(func);
-
-        assertEquals(exp, act, 1e-14);
-
-        getHere = false;
-        for (Segment2DQuadraturePoint qp : sq) {
-            getHere = true;
-            qp.segment.setDiffOrder(0);
-            double[] coord = qp.segment.values(qp.segmentParameter, null);
-            assertArrayEquals(coord, qp.coord, 1e-14);
-        }
-        assertTrue(getHere);
     }
 
     @Test
@@ -142,26 +121,5 @@ public class Segment2DQuadratureTest {
             beenHere = true;
         }
         assertTrue(beenHere);
-    }
-
-    @Test
-    public void testFractionizedLine() {
-        Line line = new Line(new Node(new double[]{-1, 1}));
-        Line succ = new Line(new Node(new double[]{3, 4}));
-        Segment2DUtils.link(line, succ);
-        line.fractionize(7, new RudeFactory<>(Node.class));
-        Segment2DQuadrature segment2DQuadrature = new Segment2DQuadrature();
-        segment2DQuadrature.setDegree(2);
-        segment2DQuadrature.setSegment(line);
-        segment2DQuadrature.setStartEndParameter(0.1, 6.3);
-
-        double expLen = 5 * 6.2 / 7;
-
-        double actLen = 0;
-        for (Segment2DQuadraturePoint qp : segment2DQuadrature) {
-            actLen += qp.weight;
-        }
-
-        assertEquals(expLen, actLen, 1e-14);
     }
 }
