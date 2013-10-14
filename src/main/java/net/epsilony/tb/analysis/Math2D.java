@@ -255,4 +255,20 @@ public class Math2D {
         double deltaAngle = Math.acos(cosineValue) * Math.signum(crossValue);
         return deltaAngle;
     }
+
+    public static double projectionLength(double[] start, double[] end, double[] point) {
+        double[] vec = subs(end, start, null);
+        normalize(vec, vec);
+        return dot(vec, subs(point, start, null));
+    }
+
+    public static double projectionParameter(double[] start, double[] end, double[] point) {
+        if (Arrays.equals(start, point)) {
+            return 0;
+        }
+        if (Arrays.equals(end, point)) {
+            return 1;
+        }
+        return projectionLength(start, end, point) / distance(start, end);
+    }
 }
