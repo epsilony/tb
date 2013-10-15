@@ -123,8 +123,8 @@ public class Segment2DUtils {
         double dx = vec[0];
         double dy = vec[1];
         double len = chordLength(seg);
-        vec[0] = -dy / len;
-        vec[1] = dx / len;
+        vec[0] = dy / len;
+        vec[1] = -dx / len;
         return vec;
     }
 }
