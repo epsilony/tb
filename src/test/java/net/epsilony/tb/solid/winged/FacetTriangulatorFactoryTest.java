@@ -27,7 +27,7 @@ public class FacetTriangulatorFactoryTest {
         int count = 0;
         for (Facet polygon : polygons) {
             System.out.println("test sample" + count++);
-            factory.setPolygon(polygon);
+            factory.setFacet(polygon);
             TriangleArrayContainers triangleContainer = factory.produce();
             testTriangleAear(polygon, triangleContainer.triangles);
             RectangleCoverTriangleCellsFactoryTest.checkTriangleLink(triangleContainer.triangles);

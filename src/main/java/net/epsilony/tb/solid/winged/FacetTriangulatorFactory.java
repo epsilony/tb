@@ -59,7 +59,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
         this.prohibitEdgeSteinerPoint = prohibitEdgeSteinerPoint;
     }
 
-    public void setPolygon(Facet input) {
+    public void setFacet(Facet input) {
         this.facet = input;
     }
 
