@@ -284,9 +284,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         for (Segment seg : this) {
             double[] start = seg.getStart().getCoord();
             double[] end = seg.getEnd().getCoord();
-            double dx = end[0] - start[0];
-            double dy = end[1] - start[1];
-            area += start[0] * dy - start[1] * dx;
+            area += start[0] * end[1] - start[1] * end[0];
         }
         area /= 2;
         return area;
