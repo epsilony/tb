@@ -70,4 +70,39 @@ public class Math2DTest {
 
         assertEquals(exp, act);
     }
+
+    @Test
+    public void testArea() {
+        double[][] vertes = new double[][]{
+            {-1, -2}, {3, 2}, {2, 4}
+        };
+        double expArea = 6;
+        double actArea = Math2D.area(vertes);
+        assertEquals(expArea, actArea, 1e-14);
+    }
+
+    @Test
+    public void testCentroid() {
+        double[][] vertes = new double[][]{
+            {-1, -2}, {3, 2}, {2, 4}
+        };
+        double[] expCentroid = new double[]{4 / 3.0, 4 / 3.0};
+        double[] actCentroid = Math2D.centroid(vertes, null);
+        assertArrayEquals(expCentroid, actCentroid, 1e-14);
+    }
+
+    @Test
+    public void testProjectionParameter() {
+        double[] start = new double[]{-1, -2};
+        double[] end = new double[]{3, 2};
+        double[][] points = new double[][]{{-1, -2}, {3, 2}, {1, 0}, {2, 0}};
+        double[] exps = new double[]{0, 1, 0.5, 0.625};
+
+        for (int i = 0; i < exps.length; i++) {
+            double exp = exps[i];
+            double[] pt = points[i];
+            double act = Math2D.projectionParameter(start, end, pt);
+            assertEquals(exp, act, 1e-14);
+        }
+    }
 }

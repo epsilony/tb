@@ -115,7 +115,7 @@ public class Math2D {
     }
 
     public static double triangleArea(double x1, double y1, double x2, double y2, double x3, double y3) {
-        return 0.5 * cross(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
+        return 0.5 * (x1 * y2 - y1 * x2 + x2 * y3 - y2 * x3 + x3 * y1 - y3 * x1);
     }
 
     public static double triangleArea(Triangle tri) {
@@ -270,5 +270,43 @@ public class Math2D {
             return 1;
         }
         return projectionLength(start, end, point) / distance(start, end);
+    }
+
+    public static double area(double[][] vertes) {
+        double area = 0;
+        for (int i = 0; i < vertes.length; i++) {
+            int i_p = (i + 1) % vertes.length;
+            area += vertes[i][0] * vertes[i_p][1] - vertes[i][1] * vertes[i_p][0];
+        }
+        area /= 2;
+        return area;
+    }
+
+    public static double[] centroid(double[][] vertes, double[] result) {
+
+        double c_x = 0;
+        double c_y = 0;
+        double area = 0;
+        for (int i = 0; i < vertes.length; i++) {
+            int i_p = (i + 1) % vertes.length;
+            double x_i = vertes[i][0];
+            double y_i = vertes[i][1];
+            double x_i_p = vertes[i_p][0];
+            double y_i_p = vertes[i_p][1];
+            double td = x_i * y_i_p - x_i_p * y_i;
+            c_x += (x_i + x_i_p) * td;
+            c_y += (y_i + y_i_p) * td;
+            area += td;
+        }
+        area /= 2;
+        c_x /= 6 * area;
+        c_y /= 6 * area;
+        if (result == null) {
+            return new double[]{c_x, c_y};
+        } else {
+            result[0] = c_x;
+            result[1] = c_y;
+            return result;
+        }
     }
 }
