@@ -11,6 +11,7 @@ import net.epsilony.tb.analysis.ArrvarFunction;
  */
 public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
 
+    public static final int DEFAULT_DEGREE = 2;
     Segment segment = null;
     int degree = -1;
     double[] points;
@@ -21,9 +22,24 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
     }
 
     public Segment2DQuadrature() {
+        _setDegree(DEFAULT_DEGREE);
     }
 
     public void setDegree(int degree) {
+        _setDegree(degree);
+    }
+
+    public int getNumOfPoints() {
+        return weights.length;
+    }
+
+    private void _setDegree(int degree) {
+        if (degree < 1) {
+            throw new IllegalArgumentException("degree should be >= 1, not " + degree);
+        }
+        if (this.degree == degree) {
+            return;
+        }
         this.degree = degree;
         double[][] pws = GaussLegendre.pointsWeightsByDegree(degree);
         points = pws[0];
