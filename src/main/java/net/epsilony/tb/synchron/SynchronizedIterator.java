@@ -1,6 +1,7 @@
 /* (c) Copyright by Man YUAN */
 package net.epsilony.tb.synchron;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -8,6 +9,10 @@ import java.util.Iterator;
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SynchronizedIterator<T> {
+
+    public static <T> SynchronizedIterator<T> produce(Collection<? extends T> collection) {
+        return new SynchronizedIterator<>(collection.iterator(), collection.size());
+    }
 
     public SynchronizedIterator(Iterator<? extends T> iterator) {
         this.iterator = iterator;
