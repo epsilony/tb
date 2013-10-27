@@ -82,8 +82,7 @@ public class TrackContourSpecificationBeanInfo extends SimpleBeanInfo {
     // Here you can add code for customizing the Superclass BeanInfo.
 //GEN-LAST:Superclass
     /**
-     * Gets the bean's
-     * <code>BeanDescriptor</code>s.
+     * Gets the bean's <code>BeanDescriptor</code>s.
      *
      * @return BeanDescriptor describing the editable properties of this bean.
      * May return null if the information should be obtained by automatic
@@ -95,8 +94,7 @@ public class TrackContourSpecificationBeanInfo extends SimpleBeanInfo {
     }
 
     /**
-     * Gets the bean's
-     * <code>PropertyDescriptor</code>s.
+     * Gets the bean's <code>PropertyDescriptor</code>s.
      *
      * @return An array of PropertyDescriptors describing the editable
      * properties supported by this bean. May return null if the information
@@ -113,8 +111,7 @@ public class TrackContourSpecificationBeanInfo extends SimpleBeanInfo {
     }
 
     /**
-     * Gets the bean's
-     * <code>EventSetDescriptor</code>s.
+     * Gets the bean's <code>EventSetDescriptor</code>s.
      *
      * @return An array of EventSetDescriptors describing the kinds of events
      * fired by this bean. May return null if the information should be obtained
@@ -126,8 +123,7 @@ public class TrackContourSpecificationBeanInfo extends SimpleBeanInfo {
     }
 
     /**
-     * Gets the bean's
-     * <code>MethodDescriptor</code>s.
+     * Gets the bean's <code>MethodDescriptor</code>s.
      *
      * @return An array of MethodDescriptors describing the methods implemented
      * by this bean. May return null if the information should be obtained by

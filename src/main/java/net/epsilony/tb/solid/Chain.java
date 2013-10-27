@@ -19,16 +19,16 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         if (closed && nodesChain.size() < 3) {
             throw new IllegalArgumentException(
                     String.format(
-                    "Each closed chain must contains at least 3 nodes as vertes! "
-                    + "this nodes chain has only %d nodes",
-                    nodesChain.size()));
+                            "Each closed chain must contains at least 3 nodes as vertes! "
+                            + "this nodes chain has only %d nodes",
+                            nodesChain.size()));
         }
         if (!closed && nodesChain.size() < 2) {
             throw new IllegalArgumentException(
                     String.format(
-                    "Each open chain must contains at least 2 nodes as vertes! "
-                    + "this nodes chain has only %d nodes",
-                    nodesChain.size()));
+                            "Each open chain must contains at least 2 nodes as vertes! "
+                            + "this nodes chain has only %d nodes",
+                            nodesChain.size()));
         }
 
         Iterator<? extends Node> nodeIter = nodesChain.iterator();
