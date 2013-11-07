@@ -1,4 +1,14 @@
-/target/
+# netbeans
 nbactions.xml
 nb-configuration.xml
+
+# logging
 *.log
+
+# eclipse
+.classpath
+.project
+.settings/
+
+# maven
+target/
