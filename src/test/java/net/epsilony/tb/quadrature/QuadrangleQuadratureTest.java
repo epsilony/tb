@@ -22,7 +22,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleQuadratureTest {
@@ -32,7 +32,7 @@ public class QuadrangleQuadratureTest {
 
     @Test
     public void testArea() {
-        double[] quad = new double[]{4, 4, -2.1, 1.6, 0.8, -1.9, 3, 1.1};
+        double[] quad = new double[] { 4, 4, -2.1, 1.6, 0.8, -1.9, 3, 1.1 };
         QuadrangleQuadrature qQuad = new QuadrangleQuadrature();
         qQuad.setQuadrangle(quad);
         final double val = -1.4;
@@ -51,7 +51,7 @@ public class QuadrangleQuadratureTest {
 
     @Test
     public void testX() {
-        double[] quad = new double[]{0, 0, 4, 0, 4, 3, 0, 3};
+        double[] quad = new double[] { 0, 0, 4, 0, 4, 3, 0, 3 };
         QuadrangleQuadrature qQuad = new QuadrangleQuadrature();
         qQuad.setQuadrangle(quad);
         double exp = 24;
@@ -69,7 +69,7 @@ public class QuadrangleQuadratureTest {
 
     @Test
     public void testY() {
-        double[] quad = new double[]{0, 0, 4, 0, 4, 3, 0, 3};
+        double[] quad = new double[] { 0, 0, 4, 0, 4, 3, 0, 3 };
         QuadrangleQuadrature qQuad = new QuadrangleQuadrature();
         qQuad.setQuadrangle(quad);
         double exp = 18;

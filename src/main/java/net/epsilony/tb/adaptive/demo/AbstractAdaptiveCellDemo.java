@@ -23,7 +23,9 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+
 import javax.swing.JCheckBox;
+
 import net.epsilony.tb.adaptive.AdaptiveCell;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 import net.epsilony.tb.solid.winged.WingedCell;
@@ -32,7 +34,7 @@ import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class AbstractAdaptiveCellDemo {
@@ -64,6 +66,7 @@ public abstract class AbstractAdaptiveCellDemo {
                 mainPanel.repaint();
             }
         });
+        @SuppressWarnings("unused")
         ClickToFission clickToFission = new ClickToFission(mainPanel, recursiveBox);
         frame.getContentPane().add(showOppositesBox);
         frame.getContentPane().add(recursiveBox);

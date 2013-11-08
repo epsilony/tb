@@ -33,7 +33,7 @@ import net.epsilony.tb.solid.SegmentIterator;
 import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleContourCellBoundaryUtil {
@@ -67,8 +67,7 @@ public class TriangleContourCellBoundaryUtil {
     private Set<TriangleContourCell> getInnerTriangles() {
         Set<TriangleContourCell> inners = new HashSet<>();
         for (TriangleContourCell cell : cells) {
-            if ((cell.passByContourLines == null || cell.passByContourLines.isEmpty())
-                    && cell.getStatus() == 0) {
+            if ((cell.passByContourLines == null || cell.passByContourLines.isEmpty()) && cell.getStatus() == 0) {
                 inners.add(cell);
             }
         }
@@ -139,44 +138,44 @@ public class TriangleContourCellBoundaryUtil {
         for (Entry<Node, List<Line>> entry : conflictsMap.entrySet()) {
             List<Line> lines = entry.getValue();
             switch (lines.size()) {
-                case 2: {
-                    Line l = lines.get(0);
-                    Line lp = (Line) l.getPred();
-                    double dot = Segment2DUtils.chordVectorDot(l, lp);
-                    if (dot < 0) {
-                        continue;
-                    }
-                    Line ll = lines.get(1);
-                    Line llp = (Line) ll.getPred();
-                    Segment2DUtils.link(llp, l);
-                    Segment2DUtils.link(lp, ll);
-                    treated = true;
+            case 2: {
+                Line l = lines.get(0);
+                Line lp = (Line) l.getPred();
+                double dot = Segment2DUtils.chordVectorDot(l, lp);
+                if (dot < 0) {
+                    continue;
                 }
+                Line ll = lines.get(1);
+                Line llp = (Line) ll.getPred();
+                Segment2DUtils.link(llp, l);
+                Segment2DUtils.link(lp, ll);
+                treated = true;
+            }
                 break;
-                case 3: {
-                    Line[] preds = new Line[3];
-                    for (int i = 0; i < 3; i++) {
-                        Line l = lines.get(i);
-                        Line lp = (Line) l.getPred();
-                        if (Segment2DUtils.chordVectorDot(l, lp) < 0) {
-                            preds[i] = lp;
-                        } else {
-                            treated = true;
-                            for (int j = 1; j < 3; j++) {
-                                Line lpp = (Line) lines.get((i + j) % 3).getPred();
-                                if (Segment2DUtils.chordVectorDot(l, lpp) < 0) {
-                                    preds[i] = lpp;
-                                }
+            case 3: {
+                Line[] preds = new Line[3];
+                for (int i = 0; i < 3; i++) {
+                    Line l = lines.get(i);
+                    Line lp = (Line) l.getPred();
+                    if (Segment2DUtils.chordVectorDot(l, lp) < 0) {
+                        preds[i] = lp;
+                    } else {
+                        treated = true;
+                        for (int j = 1; j < 3; j++) {
+                            Line lpp = (Line) lines.get((i + j) % 3).getPred();
+                            if (Segment2DUtils.chordVectorDot(l, lpp) < 0) {
+                                preds[i] = lpp;
                             }
                         }
                     }
-                    for (int i = 0; i < 3; i++) {
-                        Segment2DUtils.link(preds[i], lines.get(i));
-                    }
                 }
+                for (int i = 0; i < 3; i++) {
+                    Segment2DUtils.link(preds[i], lines.get(i));
+                }
+            }
                 break;
-                default:
-                    throw new IllegalStateException();
+            default:
+                throw new IllegalStateException();
             }
         }
 

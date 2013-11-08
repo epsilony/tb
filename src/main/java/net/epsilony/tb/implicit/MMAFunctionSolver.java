@@ -25,7 +25,7 @@ import static net.epsilony.tb.nlopt.NloptLibrary.*;
 import org.bridj.IntValuedEnum;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MMAFunctionSolver implements ConstraintImplicitFunctionSolver {

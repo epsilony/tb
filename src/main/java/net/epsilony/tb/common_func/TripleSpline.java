@@ -22,15 +22,13 @@ import net.epsilony.tb.MiscellaneousUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TripleSpline implements RadialBasisCore {
 
     int diffOrder;
-    private static double[][] coefs = new double[][]{
-        {2 / 3.0, 0, -4, 4},
-        {4 / 3.0, -4, 4, -4 / 3.0}};
+    private static double[][] coefs = new double[][] { { 2 / 3.0, 0, -4, 4 }, { 4 / 3.0, -4, 4, -4 / 3.0 } };
     PolynomialFunction func1 = new PolynomialFunction(coefs[0]);
     PolynomialFunction func2 = new PolynomialFunction(coefs[1]);
     PolynomialFunction func1Diff = func1.polynomialDerivative();

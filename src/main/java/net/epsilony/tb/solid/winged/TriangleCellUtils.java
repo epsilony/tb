@@ -18,7 +18,7 @@
 package net.epsilony.tb.solid.winged;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleCellUtils {

@@ -50,128 +50,91 @@ public class NloptLibrary {
     static {
         BridJ.register();
     }
-    /// enum values
+
+    // / enum values
 
     public enum NloptAlgorithm implements IntValuedEnum<NloptAlgorithm> {
 
-        NLOPT_GN_DIRECT(0),
-        NLOPT_GN_DIRECT_L(1),
-        NLOPT_GN_DIRECT_L_RAND(2),
-        NLOPT_GN_DIRECT_NOSCAL(3),
-        NLOPT_GN_DIRECT_L_NOSCAL(4),
-        NLOPT_GN_DIRECT_L_RAND_NOSCAL(5),
-        NLOPT_GN_ORIG_DIRECT(6),
-        NLOPT_GN_ORIG_DIRECT_L(7),
-        NLOPT_GD_STOGO(8),
-        NLOPT_GD_STOGO_RAND(9),
-        NLOPT_LD_LBFGS_NOCEDAL(10),
-        NLOPT_LD_LBFGS(11),
-        NLOPT_LN_PRAXIS(12),
-        NLOPT_LD_VAR1(13),
-        NLOPT_LD_VAR2(14),
-        NLOPT_LD_TNEWTON(15),
-        NLOPT_LD_TNEWTON_RESTART(16),
-        NLOPT_LD_TNEWTON_PRECOND(17),
-        NLOPT_LD_TNEWTON_PRECOND_RESTART(18),
-        NLOPT_GN_CRS2_LM(19),
-        NLOPT_GN_MLSL(20),
-        NLOPT_GD_MLSL(21),
-        NLOPT_GN_MLSL_LDS(22),
-        NLOPT_GD_MLSL_LDS(23),
-        NLOPT_LD_MMA(24),
-        NLOPT_LN_COBYLA(25),
-        NLOPT_LN_NEWUOA(26),
-        NLOPT_LN_NEWUOA_BOUND(27),
-        NLOPT_LN_NELDERMEAD(28),
-        NLOPT_LN_SBPLX(29),
-        NLOPT_LN_AUGLAG(30),
-        NLOPT_LD_AUGLAG(31),
-        NLOPT_LN_AUGLAG_EQ(32),
-        NLOPT_LD_AUGLAG_EQ(33),
-        NLOPT_LN_BOBYQA(34),
-        NLOPT_GN_ISRES(35),
-        /**
-         * new variants that require local_optimizer to be set,<br>
-         * not with older constants for backwards compatibility
-         */
-        NLOPT_AUGLAG(36),
-        NLOPT_AUGLAG_EQ(37),
-        NLOPT_G_MLSL(38),
-        NLOPT_G_MLSL_LDS(39),
-        NLOPT_LD_SLSQP(40),
-        NLOPT_LD_CCSAQ(41),
-        /// not an algorithm, just the number of them
-        NLOPT_NUM_ALGORITHMS(42);
+    NLOPT_GN_DIRECT(0), NLOPT_GN_DIRECT_L(1), NLOPT_GN_DIRECT_L_RAND(2), NLOPT_GN_DIRECT_NOSCAL(3), NLOPT_GN_DIRECT_L_NOSCAL(
+            4), NLOPT_GN_DIRECT_L_RAND_NOSCAL(5), NLOPT_GN_ORIG_DIRECT(6), NLOPT_GN_ORIG_DIRECT_L(7), NLOPT_GD_STOGO(8), NLOPT_GD_STOGO_RAND(
+            9), NLOPT_LD_LBFGS_NOCEDAL(10), NLOPT_LD_LBFGS(11), NLOPT_LN_PRAXIS(12), NLOPT_LD_VAR1(13), NLOPT_LD_VAR2(
+            14), NLOPT_LD_TNEWTON(15), NLOPT_LD_TNEWTON_RESTART(16), NLOPT_LD_TNEWTON_PRECOND(17), NLOPT_LD_TNEWTON_PRECOND_RESTART(
+            18), NLOPT_GN_CRS2_LM(19), NLOPT_GN_MLSL(20), NLOPT_GD_MLSL(21), NLOPT_GN_MLSL_LDS(22), NLOPT_GD_MLSL_LDS(
+            23), NLOPT_LD_MMA(24), NLOPT_LN_COBYLA(25), NLOPT_LN_NEWUOA(26), NLOPT_LN_NEWUOA_BOUND(27), NLOPT_LN_NELDERMEAD(
+            28), NLOPT_LN_SBPLX(29), NLOPT_LN_AUGLAG(30), NLOPT_LD_AUGLAG(31), NLOPT_LN_AUGLAG_EQ(32), NLOPT_LD_AUGLAG_EQ(
+            33), NLOPT_LN_BOBYQA(34), NLOPT_GN_ISRES(35),
+    /**
+     * new variants that require local_optimizer to be set,<br>
+     * not with older constants for backwards compatibility
+     */
+    NLOPT_AUGLAG(36), NLOPT_AUGLAG_EQ(37), NLOPT_G_MLSL(38), NLOPT_G_MLSL_LDS(39), NLOPT_LD_SLSQP(40), NLOPT_LD_CCSAQ(
+            41),
+    // / not an algorithm, just the number of them
+    NLOPT_NUM_ALGORITHMS(42);
 
-        NloptAlgorithm(long value) {
-            this.value = value;
-        }
-        public final long value;
+    NloptAlgorithm(long value) {
+        this.value = value;
+    }
 
-        @Override
-        public long value() {
-            return this.value;
-        }
+    public final long value;
 
-        @Override
-        public Iterator<NloptAlgorithm> iterator() {
-            return Collections.singleton(this).iterator();
-        }
+    @Override
+    public long value() {
+        return this.value;
+    }
 
-        public static IntValuedEnum<NloptAlgorithm> fromValue(int value) {
-            return FlagSet.fromValue(value, values());
-        }
+    @Override
+    public Iterator<NloptAlgorithm> iterator() {
+        return Collections.singleton(this).iterator();
+    }
+
+    public static IntValuedEnum<NloptAlgorithm> fromValue(int value) {
+        return FlagSet.fromValue(value, values());
+    }
     };
-    /// enum values
+
+    // / enum values
 
     public enum NloptResult implements IntValuedEnum<NloptResult> {
-        /// generic failure code
+    // / generic failure code
 
-        NLOPT_FAILURE(-1),
-        NLOPT_INVALID_ARGS(-2),
-        NLOPT_OUT_OF_MEMORY(-3),
-        NLOPT_ROUNDOFF_LIMITED(-4),
-        NLOPT_FORCED_STOP(-5),
-        /// generic success code
-        NLOPT_SUCCESS(1),
-        NLOPT_STOPVAL_REACHED(2),
-        NLOPT_FTOL_REACHED(3),
-        NLOPT_XTOL_REACHED(4),
-        NLOPT_MAXEVAL_REACHED(5),
-        NLOPT_MAXTIME_REACHED(6);
+    NLOPT_FAILURE(-1), NLOPT_INVALID_ARGS(-2), NLOPT_OUT_OF_MEMORY(-3), NLOPT_ROUNDOFF_LIMITED(-4), NLOPT_FORCED_STOP(
+            -5),
+    // / generic success code
+    NLOPT_SUCCESS(1), NLOPT_STOPVAL_REACHED(2), NLOPT_FTOL_REACHED(3), NLOPT_XTOL_REACHED(4), NLOPT_MAXEVAL_REACHED(5), NLOPT_MAXTIME_REACHED(
+            6);
 
-        NloptResult(long value) {
-            this.value = value;
-        }
-        public final long value;
+    NloptResult(long value) {
+        this.value = value;
+    }
 
-        @Override
-        public long value() {
-            return this.value;
-        }
+    public final long value;
 
-        @Override
-        public Iterator<NloptResult> iterator() {
-            return Collections.singleton(this).iterator();
-        }
+    @Override
+    public long value() {
+        return this.value;
+    }
 
-        public static IntValuedEnum<NloptResult> fromValue(int value) {
-            return FlagSet.fromValue(value, values());
-        }
+    @Override
+    public Iterator<NloptResult> iterator() {
+        return Collections.singleton(this).iterator();
+    }
+
+    public static IntValuedEnum<NloptResult> fromValue(int value) {
+        return FlagSet.fromValue(value, values());
+    }
     };
 
     public static abstract class NloptFunc extends Callback<NloptFunc> {
-        /// @param gradient NULL if not needed
+        // / @param gradient NULL if not needed
 
         abstract public double apply(int n, Pointer<Double> x, Pointer<Double> gradient, Pointer<?> func_data);
     };
 
     public static abstract class NloptMfunc extends Callback<NloptMfunc> {
-        /// @param gradient NULL if not needed
+        // / @param gradient NULL if not needed
 
-        abstract public void apply(
-                int m, Pointer<Double> result,
-                int n, Pointer<Double> x, Pointer<Double> gradient,
+        abstract public void apply(int m, Pointer<Double> result, int n, Pointer<Double> x, Pointer<Double> gradient,
                 Pointer<?> func_data);
     };
 
@@ -208,7 +171,7 @@ public class NloptLibrary {
     };
 
     public static abstract class NloptFuncOld extends Callback<NloptFuncOld> {
-        /// @param gradient NULL if not needed
+        // / @param gradient NULL if not needed
 
         abstract public double apply(int n, Pointer<Double> x, Pointer<Double> gradient, Pointer<?> func_data);
     };
@@ -242,8 +205,7 @@ public class NloptLibrary {
     native public static void nloptSrandTime();
 
     /**
-     * Original signature :
-     * <code>void nlopt_version(int*, int*, int*)</code><br>
+     * Original signature : <code>void nlopt_version(int*, int*, int*)</code><br>
      * <i>native declaration : line 177</i>
      */
     @Name("nlopt_version")
@@ -255,8 +217,7 @@ public class NloptLibrary {
     protected native static void nloptVersion(@Ptr long major, @Ptr long minor, @Ptr long bugfix);
 
     /**
-     * the only immutable parameters of an optimization are the algorithm
-     * and<br>
+     * the only immutable parameters of an optimization are the algorithm and<br>
      * the dimension n of the problem, since changing either of these could<br>
      * have side-effects on lots of other parameters<br>
      * Original signature :
@@ -285,8 +246,7 @@ public class NloptLibrary {
     protected native static void nloptDestroy(@Ptr long opt);
 
     /**
-     * Original signature :
-     * <code>nlopt_opt nlopt_copy(const nlopt_opt)</code><br>
+     * Original signature : <code>nlopt_opt nlopt_copy(const nlopt_opt)</code><br>
      * <i>native declaration : line 195</i>
      */
     @Name("nlopt_copy")
@@ -304,10 +264,10 @@ public class NloptLibrary {
      * <i>native declaration : line 197</i>
      */
     @Name("nlopt_optimize")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptOptimize(
-            NloptLibrary.NloptOpt opt, Pointer<Double> x, Pointer<Double> opt_f) {
-        return FlagSet.fromValue(nloptOptimize(
-                Pointer.getPeer(opt), Pointer.getPeer(x), Pointer.getPeer(opt_f)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptOptimize(NloptLibrary.NloptOpt opt, Pointer<Double> x,
+            Pointer<Double> opt_f) {
+        return FlagSet.fromValue(nloptOptimize(Pointer.getPeer(opt), Pointer.getPeer(x), Pointer.getPeer(opt_f)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_optimize")
@@ -315,12 +275,13 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_min_objective(nlopt_opt, nlopt_func, void*)</code><br>
+     * <code>nlopt_result nlopt_set_min_objective(nlopt_opt, nlopt_func, void*)</code>
+     * <br>
      * <i>native declaration : line 200</i>
      */
     @Name("nlopt_set_min_objective")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetMinObjective(
-            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptFunc> f, Pointer<?> f_data) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetMinObjective(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> f, Pointer<?> f_data) {
         return FlagSet.fromValue(
                 nloptSetMinObjective(Pointer.getPeer(opt), Pointer.getPeer(f), Pointer.getPeer(f_data)),
                 NloptLibrary.NloptResult.class);
@@ -331,12 +292,13 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_max_objective(nlopt_opt, nlopt_func, void*)</code><br>
+     * <code>nlopt_result nlopt_set_max_objective(nlopt_opt, nlopt_func, void*)</code>
+     * <br>
      * <i>native declaration : line 202</i>
      */
     @Name("nlopt_set_max_objective")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetMaxObjective(
-            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptFunc> f, Pointer<?> f_data) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetMaxObjective(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> f, Pointer<?> f_data) {
         return FlagSet.fromValue(
                 nloptSetMaxObjective(Pointer.getPeer(opt), Pointer.getPeer(f), Pointer.getPeer(f_data)),
                 NloptLibrary.NloptResult.class);
@@ -347,45 +309,37 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_precond_min_objective(nlopt_opt, nlopt_func, nlopt_precond, void*)</code><br>
+     * <code>nlopt_result nlopt_set_precond_min_objective(nlopt_opt, nlopt_func, nlopt_precond, void*)</code>
+     * <br>
      * <i>native declaration : line 205</i>
      */
     @Name("nlopt_set_precond_min_objective")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetPrecondMinObjective(
-            NloptLibrary.NloptOpt opt,
-            Pointer<NloptLibrary.NloptFunc> f,
-            Pointer<NloptLibrary.NloptPrecond> pre,
-            Pointer<?> f_data) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetPrecondMinObjective(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> f, Pointer<NloptLibrary.NloptPrecond> pre, Pointer<?> f_data) {
         return FlagSet.fromValue(
-                nloptSetPrecondMinObjective(
-                        Pointer.getPeer(opt),
-                        Pointer.getPeer(f),
-                        Pointer.getPeer(pre),
-                        Pointer.getPeer(f_data)),
-                NloptLibrary.NloptResult.class);
+                nloptSetPrecondMinObjective(Pointer.getPeer(opt), Pointer.getPeer(f), Pointer.getPeer(pre),
+                        Pointer.getPeer(f_data)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_set_precond_min_objective")
-    protected native static int nloptSetPrecondMinObjective(
-            @Ptr long opt, @Ptr long f, @Ptr long pre, @Ptr long f_data);
+    protected native static int nloptSetPrecondMinObjective(@Ptr long opt, @Ptr long f, @Ptr long pre, @Ptr long f_data);
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_precond_max_objective(nlopt_opt, nlopt_func, nlopt_precond, void*)</code><br>
+     * <code>nlopt_result nlopt_set_precond_max_objective(nlopt_opt, nlopt_func, nlopt_precond, void*)</code>
+     * <br>
      * <i>native declaration : line 206</i>
      */
     @Name("nlopt_set_precond_max_objective")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetPrecondMaxObjective(
-            NloptLibrary.NloptOpt opt,
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetPrecondMaxObjective(NloptLibrary.NloptOpt opt,
             Pointer<NloptLibrary.NloptFunc> f, Pointer<NloptLibrary.NloptPrecond> pre, Pointer<?> f_data) {
         return FlagSet.fromValue(
-                nloptSetPrecondMaxObjective(Pointer.getPeer(opt),
-                        Pointer.getPeer(f), Pointer.getPeer(pre), Pointer.getPeer(f_data)), NloptLibrary.NloptResult.class);
+                nloptSetPrecondMaxObjective(Pointer.getPeer(opt), Pointer.getPeer(f), Pointer.getPeer(pre),
+                        Pointer.getPeer(f_data)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_set_precond_max_objective")
-    protected native static int nloptSetPrecondMaxObjective(
-            @Ptr long opt, @Ptr long f, @Ptr long pre, @Ptr long f_data);
+    protected native static int nloptSetPrecondMaxObjective(@Ptr long opt, @Ptr long f, @Ptr long pre, @Ptr long f_data);
 
     /**
      * Original signature :
@@ -415,14 +369,15 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_lower_bounds(nlopt_opt, const double*)</code><br>
+     * <code>nlopt_result nlopt_set_lower_bounds(nlopt_opt, const double*)</code>
+     * <br>
      * <i>native declaration : line 213</i>
      */
     @Name("nlopt_set_lower_bounds")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetLowerBounds(
-            NloptLibrary.NloptOpt opt, Pointer<Double> lb) {
-        return FlagSet.fromValue(
-                nloptSetLowerBounds(Pointer.getPeer(opt), Pointer.getPeer(lb)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetLowerBounds(NloptLibrary.NloptOpt opt,
+            Pointer<Double> lb) {
+        return FlagSet.fromValue(nloptSetLowerBounds(Pointer.getPeer(opt), Pointer.getPeer(lb)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_set_lower_bounds")
@@ -443,14 +398,15 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_get_lower_bounds(const nlopt_opt, double*)</code><br>
+     * <code>nlopt_result nlopt_get_lower_bounds(const nlopt_opt, double*)</code>
+     * <br>
      * <i>native declaration : line 216</i>
      */
     @Name("nlopt_get_lower_bounds")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetLowerBounds(
-            NloptLibrary.NloptOpt opt, Pointer<Double> lb) {
-        return FlagSet.fromValue(
-                nloptGetLowerBounds(Pointer.getPeer(opt), Pointer.getPeer(lb)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetLowerBounds(NloptLibrary.NloptOpt opt,
+            Pointer<Double> lb) {
+        return FlagSet.fromValue(nloptGetLowerBounds(Pointer.getPeer(opt), Pointer.getPeer(lb)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_get_lower_bounds")
@@ -458,14 +414,15 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_upper_bounds(nlopt_opt, const double*)</code><br>
+     * <code>nlopt_result nlopt_set_upper_bounds(nlopt_opt, const double*)</code>
+     * <br>
      * <i>native declaration : line 218</i>
      */
     @Name("nlopt_set_upper_bounds")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetUpperBounds(
-            NloptLibrary.NloptOpt opt, Pointer<Double> ub) {
-        return FlagSet.fromValue(
-                nloptSetUpperBounds(Pointer.getPeer(opt), Pointer.getPeer(ub)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetUpperBounds(NloptLibrary.NloptOpt opt,
+            Pointer<Double> ub) {
+        return FlagSet.fromValue(nloptSetUpperBounds(Pointer.getPeer(opt), Pointer.getPeer(ub)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_set_upper_bounds")
@@ -486,14 +443,15 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_get_upper_bounds(const nlopt_opt, double*)</code><br>
+     * <code>nlopt_result nlopt_get_upper_bounds(const nlopt_opt, double*)</code>
+     * <br>
      * <i>native declaration : line 221</i>
      */
     @Name("nlopt_get_upper_bounds")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetUpperBounds(
-            NloptLibrary.NloptOpt opt, Pointer<Double> ub) {
-        return FlagSet.fromValue(
-                nloptGetUpperBounds(Pointer.getPeer(opt), Pointer.getPeer(ub)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetUpperBounds(NloptLibrary.NloptOpt opt,
+            Pointer<Double> ub) {
+        return FlagSet.fromValue(nloptGetUpperBounds(Pointer.getPeer(opt), Pointer.getPeer(ub)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_get_upper_bounds")
@@ -506,8 +464,8 @@ public class NloptLibrary {
      */
     @Name("nlopt_remove_inequality_constraints")
     public static IntValuedEnum<NloptLibrary.NloptResult> nloptRemoveInequalityConstraints(NloptLibrary.NloptOpt opt) {
-        return FlagSet.fromValue(
-                nloptRemoveInequalityConstraints(Pointer.getPeer(opt)), NloptLibrary.NloptResult.class);
+        return FlagSet
+                .fromValue(nloptRemoveInequalityConstraints(Pointer.getPeer(opt)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_remove_inequality_constraints")
@@ -515,66 +473,57 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_add_inequality_constraint(nlopt_opt, nlopt_func, void*, double)</code><br>
+     * <code>nlopt_result nlopt_add_inequality_constraint(nlopt_opt, nlopt_func, void*, double)</code>
+     * <br>
      * <i>native declaration : line 225</i>
      */
     @Name("nlopt_add_inequality_constraint")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddInequalityConstraint(
-            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptFunc> fc, Pointer<?> fc_data, double tol) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddInequalityConstraint(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> fc, Pointer<?> fc_data, double tol) {
         return FlagSet.fromValue(
-                nloptAddInequalityConstraint(
-                        Pointer.getPeer(opt),
-                        Pointer.getPeer(fc),
-                        Pointer.getPeer(fc_data), tol),
+                nloptAddInequalityConstraint(Pointer.getPeer(opt), Pointer.getPeer(fc), Pointer.getPeer(fc_data), tol),
                 NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_inequality_constraint")
-    protected native static int nloptAddInequalityConstraint(
-            @Ptr long opt, @Ptr long fc, @Ptr long fc_data, double tol);
+    protected native static int nloptAddInequalityConstraint(@Ptr long opt, @Ptr long fc, @Ptr long fc_data, double tol);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_add_precond_inequality_constraint(nlopt_opt, nlopt_func, nlopt_precond, void*, double)
+     * Original signature :
+     * <code>nlopt_result nlopt_add_precond_inequality_constraint(nlopt_opt, nlopt_func, nlopt_precond, void*, double)
      * </code><br>
      * <i>native declaration : line 229</i>
      */
     @Name("nlopt_add_precond_inequality_constraint")
     public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddPrecondInequalityConstraint(
-            NloptLibrary.NloptOpt opt,
-            Pointer<NloptLibrary.NloptFunc> fc,
-            Pointer<NloptLibrary.NloptPrecond> pre,
+            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptFunc> fc, Pointer<NloptLibrary.NloptPrecond> pre,
             Pointer<?> fc_data, double tol) {
         return FlagSet.fromValue(
-                nloptAddPrecondInequalityConstraint(Pointer.getPeer(opt),
-                        Pointer.getPeer(fc),
-                        Pointer.getPeer(pre), Pointer.getPeer(fc_data), tol), NloptLibrary.NloptResult.class);
+                nloptAddPrecondInequalityConstraint(Pointer.getPeer(opt), Pointer.getPeer(fc), Pointer.getPeer(pre),
+                        Pointer.getPeer(fc_data), tol), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_precond_inequality_constraint")
-    protected native static int nloptAddPrecondInequalityConstraint(
-            @Ptr long opt, @Ptr long fc, @Ptr long pre, @Ptr long fc_data, double tol);
+    protected native static int nloptAddPrecondInequalityConstraint(@Ptr long opt, @Ptr long fc, @Ptr long pre,
+            @Ptr long fc_data, double tol);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_add_inequality_mconstraint(nlopt_opt,
+     * Original signature :
+     * <code>nlopt_result nlopt_add_inequality_mconstraint(nlopt_opt,
      * unsigned, nlopt_mfunc, void*, const double*)</code><br>
      * <i>native declaration : line 232</i>
      */
     @Name("nlopt_add_inequality_mconstraint")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddInequalityMconstraint(
-            NloptLibrary.NloptOpt opt,
-            int m,
-            Pointer<NloptLibrary.NloptMfunc> fc,
-            Pointer<?> fc_data, Pointer<Double> tol) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddInequalityMconstraint(NloptLibrary.NloptOpt opt,
+            int m, Pointer<NloptLibrary.NloptMfunc> fc, Pointer<?> fc_data, Pointer<Double> tol) {
         return FlagSet.fromValue(
-                nloptAddInequalityMconstraint(
-                        Pointer.getPeer(opt), m,
-                        Pointer.getPeer(fc), Pointer.getPeer(fc_data),
+                nloptAddInequalityMconstraint(Pointer.getPeer(opt), m, Pointer.getPeer(fc), Pointer.getPeer(fc_data),
                         Pointer.getPeer(tol)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_inequality_mconstraint")
-    protected native static int nloptAddInequalityMconstraint(
-            @Ptr long opt, int m, @Ptr long fc, @Ptr long fc_data, @Ptr long tol);
+    protected native static int nloptAddInequalityMconstraint(@Ptr long opt, int m, @Ptr long fc, @Ptr long fc_data,
+            @Ptr long tol);
 
     /**
      * Original signature :
@@ -582,11 +531,8 @@ public class NloptLibrary {
      * <i>native declaration : line 238</i>
      */
     @Name("nlopt_remove_equality_constraints")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptRemoveEqualityConstraints(
-            NloptLibrary.NloptOpt opt) {
-        return FlagSet.fromValue(
-                nloptRemoveEqualityConstraints(
-                        Pointer.getPeer(opt)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptRemoveEqualityConstraints(NloptLibrary.NloptOpt opt) {
+        return FlagSet.fromValue(nloptRemoveEqualityConstraints(Pointer.getPeer(opt)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_remove_equality_constraints")
@@ -594,64 +540,56 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_add_equality_constraint(nlopt_opt, nlopt_func, void*, double)</code><br>
+     * <code>nlopt_result nlopt_add_equality_constraint(nlopt_opt, nlopt_func, void*, double)</code>
+     * <br>
      * <i>native declaration : line 239</i>
      */
     @Name("nlopt_add_equality_constraint")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddEqualityConstraint(
-            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptFunc> h, Pointer<?> h_data, double tol) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddEqualityConstraint(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> h, Pointer<?> h_data, double tol) {
         return FlagSet.fromValue(
-                nloptAddEqualityConstraint(
-                        Pointer.getPeer(opt), Pointer.getPeer(h),
-                        Pointer.getPeer(h_data), tol),
+                nloptAddEqualityConstraint(Pointer.getPeer(opt), Pointer.getPeer(h), Pointer.getPeer(h_data), tol),
                 NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_equality_constraint")
-    protected native static int nloptAddEqualityConstraint(
-            @Ptr long opt, @Ptr long h, @Ptr long h_data, double tol);
+    protected native static int nloptAddEqualityConstraint(@Ptr long opt, @Ptr long h, @Ptr long h_data, double tol);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_add_precond_equality_constraint(nlopt_opt,
+     * Original signature :
+     * <code>nlopt_result nlopt_add_precond_equality_constraint(nlopt_opt,
      * nlopt_func, nlopt_precond, void*, double)</code><br>
      * <i>native declaration : line 243</i>
      */
     @Name("nlopt_add_precond_equality_constraint")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddPrecondEqualityConstraint(
-            NloptLibrary.NloptOpt opt,
-            Pointer<NloptLibrary.NloptFunc> h,
-            Pointer<NloptLibrary.NloptPrecond> pre,
-            Pointer<?> h_data, double tol) {
-        return FlagSet.fromValue(nloptAddPrecondEqualityConstraint(
-                Pointer.getPeer(opt), Pointer.getPeer(h),
-                Pointer.getPeer(pre), Pointer.getPeer(h_data), tol),
-                NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddPrecondEqualityConstraint(NloptLibrary.NloptOpt opt,
+            Pointer<NloptLibrary.NloptFunc> h, Pointer<NloptLibrary.NloptPrecond> pre, Pointer<?> h_data, double tol) {
+        return FlagSet.fromValue(
+                nloptAddPrecondEqualityConstraint(Pointer.getPeer(opt), Pointer.getPeer(h), Pointer.getPeer(pre),
+                        Pointer.getPeer(h_data), tol), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_precond_equality_constraint")
-    protected native static int nloptAddPrecondEqualityConstraint(
-            @Ptr long opt, @Ptr long h, @Ptr long pre, @Ptr long h_data, double tol);
+    protected native static int nloptAddPrecondEqualityConstraint(@Ptr long opt, @Ptr long h, @Ptr long pre,
+            @Ptr long h_data, double tol);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_add_equality_mconstraint(nlopt_opt, unsigned, nlopt_mfunc, void*, const double*)
+     * Original signature :
+     * <code>nlopt_result nlopt_add_equality_mconstraint(nlopt_opt, unsigned, nlopt_mfunc, void*, const double*)
      * </code><br>
      * <i>native declaration : line 246</i>
      */
     @Name("nlopt_add_equality_mconstraint")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddEqualityMconstraint(
-            NloptLibrary.NloptOpt opt,
-            int m,
-            Pointer<NloptLibrary.NloptMfunc> h,
-            Pointer<?> h_data, Pointer<Double> tol) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptAddEqualityMconstraint(NloptLibrary.NloptOpt opt, int m,
+            Pointer<NloptLibrary.NloptMfunc> h, Pointer<?> h_data, Pointer<Double> tol) {
         return FlagSet.fromValue(
-                nloptAddEqualityMconstraint(Pointer.getPeer(opt),
-                        m,
-                        Pointer.getPeer(h), Pointer.getPeer(h_data), Pointer.getPeer(tol)), NloptLibrary.NloptResult.class);
+                nloptAddEqualityMconstraint(Pointer.getPeer(opt), m, Pointer.getPeer(h), Pointer.getPeer(h_data),
+                        Pointer.getPeer(tol)), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_add_equality_mconstraint")
-    protected native static int nloptAddEqualityMconstraint(
-            @Ptr long opt, int m, @Ptr long h, @Ptr long h_data, @Ptr long tol);
+    protected native static int nloptAddEqualityMconstraint(@Ptr long opt, int m, @Ptr long h, @Ptr long h_data,
+            @Ptr long tol);
 
     /**
      * Original signature :
@@ -776,10 +714,9 @@ public class NloptLibrary {
      * <i>native declaration : line 265</i>
      */
     @Name("nlopt_set_xtol_abs")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetXtolAbs(
-            NloptLibrary.NloptOpt opt, Pointer<Double> tol) {
-        return FlagSet.fromValue(
-                nloptSetXtolAbs(Pointer.getPeer(opt), Pointer.getPeer(tol)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetXtolAbs(NloptLibrary.NloptOpt opt, Pointer<Double> tol) {
+        return FlagSet.fromValue(nloptSetXtolAbs(Pointer.getPeer(opt), Pointer.getPeer(tol)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_set_xtol_abs")
@@ -791,10 +728,9 @@ public class NloptLibrary {
      * <i>native declaration : line 266</i>
      */
     @Name("nlopt_get_xtol_abs")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetXtolAbs(
-            NloptLibrary.NloptOpt opt, Pointer<Double> tol) {
-        return FlagSet.fromValue(
-                nloptGetXtolAbs(Pointer.getPeer(opt), Pointer.getPeer(tol)), NloptLibrary.NloptResult.class);
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetXtolAbs(NloptLibrary.NloptOpt opt, Pointer<Double> tol) {
+        return FlagSet.fromValue(nloptGetXtolAbs(Pointer.getPeer(opt), Pointer.getPeer(tol)),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_get_xtol_abs")
@@ -814,8 +750,7 @@ public class NloptLibrary {
     protected native static int nloptSetMaxeval(@Ptr long opt, int maxeval);
 
     /**
-     * Original signature :
-     * <code>int nlopt_get_maxeval(const nlopt_opt)</code><br>
+     * Original signature : <code>int nlopt_get_maxeval(const nlopt_opt)</code><br>
      * <i>native declaration : line 270</i>
      */
     @Name("nlopt_get_maxeval")
@@ -893,14 +828,14 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_local_optimizer(nlopt_opt, const nlopt_opt)</code><br>
+     * <code>nlopt_result nlopt_set_local_optimizer(nlopt_opt, const nlopt_opt)</code>
+     * <br>
      * <i>native declaration : line 281</i>
      */
     @Name("nlopt_set_local_optimizer")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetLocalOptimizer(
-            NloptLibrary.NloptOpt opt, NloptLibrary.NloptOpt local_opt) {
-        return FlagSet.fromValue(
-                nloptSetLocalOptimizer(Pointer.getPeer(opt), Pointer.getPeer(local_opt)),
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetLocalOptimizer(NloptLibrary.NloptOpt opt,
+            NloptLibrary.NloptOpt local_opt) {
+        return FlagSet.fromValue(nloptSetLocalOptimizer(Pointer.getPeer(opt), Pointer.getPeer(local_opt)),
                 NloptLibrary.NloptResult.class);
     }
 
@@ -961,12 +896,13 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_default_initial_step(nlopt_opt, const double*)</code><br>
+     * <code>nlopt_result nlopt_set_default_initial_step(nlopt_opt, const double*)</code>
+     * <br>
      * <i>native declaration : line 290</i>
      */
     @Name("nlopt_set_default_initial_step")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetDefaultInitialStep(
-            NloptLibrary.NloptOpt opt, Pointer<Double> x) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetDefaultInitialStep(NloptLibrary.NloptOpt opt,
+            Pointer<Double> x) {
         return FlagSet.fromValue(nloptSetDefaultInitialStep(Pointer.getPeer(opt), Pointer.getPeer(x)),
                 NloptLibrary.NloptResult.class);
     }
@@ -976,12 +912,13 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_set_initial_step(nlopt_opt, const double*)</code><br>
+     * <code>nlopt_result nlopt_set_initial_step(nlopt_opt, const double*)</code>
+     * <br>
      * <i>native declaration : line 292</i>
      */
     @Name("nlopt_set_initial_step")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetInitialStep(
-            NloptLibrary.NloptOpt opt, Pointer<Double> dx) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptSetInitialStep(NloptLibrary.NloptOpt opt,
+            Pointer<Double> dx) {
         return FlagSet.fromValue(nloptSetInitialStep(Pointer.getPeer(opt), Pointer.getPeer(dx)),
                 NloptLibrary.NloptResult.class);
     }
@@ -1004,12 +941,13 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>nlopt_result nlopt_get_initial_step(const nlopt_opt, const double*, double*)</code><br>
+     * <code>nlopt_result nlopt_get_initial_step(const nlopt_opt, const double*, double*)</code>
+     * <br>
      * <i>native declaration : line 295</i>
      */
     @Name("nlopt_get_initial_step")
-    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetInitialStep(
-            NloptLibrary.NloptOpt opt, Pointer<Double> x, Pointer<Double> dx) {
+    public static IntValuedEnum<NloptLibrary.NloptResult> nloptGetInitialStep(NloptLibrary.NloptOpt opt,
+            Pointer<Double> x, Pointer<Double> dx) {
         return FlagSet.fromValue(nloptGetInitialStep(Pointer.getPeer(opt), Pointer.getPeer(x), Pointer.getPeer(dx)),
                 NloptLibrary.NloptResult.class);
     }
@@ -1023,8 +961,7 @@ public class NloptLibrary {
      * <i>native declaration : line 303</i>
      */
     @Name("nlopt_set_munge")
-    public static void nloptSetMunge(
-            NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptMunge> munge_on_destroy,
+    public static void nloptSetMunge(NloptLibrary.NloptOpt opt, Pointer<NloptLibrary.NloptMunge> munge_on_destroy,
             Pointer<NloptLibrary.NloptMunge> munge_on_copy) {
         nloptSetMunge(Pointer.getPeer(opt), Pointer.getPeer(munge_on_destroy), Pointer.getPeer(munge_on_copy));
     }
@@ -1033,122 +970,126 @@ public class NloptLibrary {
     protected native static void nloptSetMunge(@Ptr long opt, @Ptr long munge_on_destroy, @Ptr long munge_on_copy);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_minimize(
+     * Original signature : <code>nlopt_result nlopt_minimize(
      * nlopt_algorithm, int, nlopt_func_old, void*, const double*, const double*, double*, double*, double,
      * double, double, double, const double*, int, double)</code><br>
-     *
-     * @param lb bounds<br>
-     * @param ub bounds<br>
-     * @param x in: initial guess, out: minimizer<br>
-     * @param minf out: minimum<br>
-     * <i>native declaration : line 325</i>
+     * 
+     * @param lb
+     *            bounds<br>
+     * @param ub
+     *            bounds<br>
+     * @param x
+     *            in: initial guess, out: minimizer<br>
+     * @param minf
+     *            out: minimum<br>
+     *            <i>native declaration : line 325</i>
      */
     @Name("nlopt_minimize")
     public static IntValuedEnum<NloptLibrary.NloptResult> nloptMinimize(
             IntValuedEnum<NloptLibrary.NloptAlgorithm> algorithm, int n, Pointer<NloptLibrary.NloptFuncOld> f,
             Pointer<?> f_data, Pointer<Double> lb, Pointer<Double> ub, Pointer<Double> x, Pointer<Double> minf,
-            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs,
-            int maxeval, double maxtime) {
-        return FlagSet.fromValue(nloptMinimize((int) algorithm.value(), n, Pointer.getPeer(f),
-                Pointer.getPeer(f_data), Pointer.getPeer(lb), Pointer.getPeer(ub), Pointer.getPeer(x),
-                Pointer.getPeer(minf), minf_max, ftol_rel, ftol_abs, xtol_rel,
-                Pointer.getPeer(xtol_abs), maxeval, maxtime), NloptLibrary.NloptResult.class);
+            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs, int maxeval,
+            double maxtime) {
+        return FlagSet.fromValue(
+                nloptMinimize((int) algorithm.value(), n, Pointer.getPeer(f), Pointer.getPeer(f_data),
+                        Pointer.getPeer(lb), Pointer.getPeer(ub), Pointer.getPeer(x), Pointer.getPeer(minf), minf_max,
+                        ftol_rel, ftol_abs, xtol_rel, Pointer.getPeer(xtol_abs), maxeval, maxtime),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_minimize")
-    protected native static int nloptMinimize(
-            int algorithm, int n, @Ptr long f,
-            @Ptr long f_data, @Ptr long lb,
-            @Ptr long ub, @Ptr long x, @Ptr long minf,
-            double minf_max, double ftol_rel, double ftol_abs,
+    protected native static int nloptMinimize(int algorithm, int n, @Ptr long f, @Ptr long f_data, @Ptr long lb,
+            @Ptr long ub, @Ptr long x, @Ptr long minf, double minf_max, double ftol_rel, double ftol_abs,
             double xtol_rel, @Ptr long xtol_abs, int maxeval, double maxtime);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_minimize_constrained(nlopt_algorithm, int, nlopt_func_old, void*, int,
+     * Original signature :
+     * <code>nlopt_result nlopt_minimize_constrained(nlopt_algorithm, int, nlopt_func_old, void*, int,
      * nlopt_func_old, void*, ptrdiff_t, const double*, const double*, double*, double*, double,
      * double, double, double,
      * const double*, int, double)</code><br>
-     *
-     * @param lb bounds<br>
-     * @param ub bounds<br>
-     * @param x in: initial guess, out: minimizer<br>
-     * @param minf out: minimum<br>
-     * <i>native declaration : line 335</i>
+     * 
+     * @param lb
+     *            bounds<br>
+     * @param ub
+     *            bounds<br>
+     * @param x
+     *            in: initial guess, out: minimizer<br>
+     * @param minf
+     *            out: minimum<br>
+     *            <i>native declaration : line 335</i>
      */
     @Name("nlopt_minimize_constrained")
     public static IntValuedEnum<NloptLibrary.NloptResult> nloptMinimizeConstrained(
             IntValuedEnum<NloptLibrary.NloptAlgorithm> algorithm, int n, Pointer<NloptLibrary.NloptFuncOld> f,
             Pointer<?> f_data, int m, Pointer<NloptLibrary.NloptFuncOld> fc, Pointer<?> fc_data,
             @Ptr long fc_datum_size, Pointer<Double> lb, Pointer<Double> ub, Pointer<Double> x, Pointer<Double> minf,
-            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs,
-            int maxeval, double maxtime) {
-        return FlagSet.fromValue(nloptMinimizeConstrained((int) algorithm.value(), n, Pointer.getPeer(f),
-                Pointer.getPeer(f_data), m, Pointer.getPeer(fc), Pointer.getPeer(fc_data), fc_datum_size,
-                Pointer.getPeer(lb), Pointer.getPeer(ub), Pointer.getPeer(x), Pointer.getPeer(minf), minf_max,
-                ftol_rel, ftol_abs, xtol_rel, Pointer.getPeer(xtol_abs), maxeval, maxtime),
-                NloptLibrary.NloptResult.class);
+            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs, int maxeval,
+            double maxtime) {
+        return FlagSet.fromValue(
+                nloptMinimizeConstrained((int) algorithm.value(), n, Pointer.getPeer(f), Pointer.getPeer(f_data), m,
+                        Pointer.getPeer(fc), Pointer.getPeer(fc_data), fc_datum_size, Pointer.getPeer(lb),
+                        Pointer.getPeer(ub), Pointer.getPeer(x), Pointer.getPeer(minf), minf_max, ftol_rel, ftol_abs,
+                        xtol_rel, Pointer.getPeer(xtol_abs), maxeval, maxtime), NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_minimize_constrained")
-    protected native static int nloptMinimizeConstrained(
-            int algorithm, int n, @Ptr long f, @Ptr long f_data,
-            int m, @Ptr long fc, @Ptr long fc_data, @Ptr long fc_datum_size,
-            @Ptr long lb, @Ptr long ub, @Ptr long x, @Ptr long minf,
-            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel,
-            @Ptr long xtol_abs, int maxeval, double maxtime);
+    protected native static int nloptMinimizeConstrained(int algorithm, int n, @Ptr long f, @Ptr long f_data, int m,
+            @Ptr long fc, @Ptr long fc_data, @Ptr long fc_datum_size, @Ptr long lb, @Ptr long ub, @Ptr long x,
+            @Ptr long minf, double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, @Ptr long xtol_abs,
+            int maxeval, double maxtime);
 
     /**
-     * Original signature :      <code>nlopt_result nlopt_minimize_econstrained(
+     * Original signature : <code>nlopt_result nlopt_minimize_econstrained(
      * nlopt_algorithm, int, nlopt_func_old, void*, int, nlopt_func_old,
      * void*, ptrdiff_t, int, nlopt_func_old, void*, ptrdiff_t, const double*,
      * const double*, double*, double*, double, double, double, double, const double*,
      * double, double, int, double)</code><br>
-     *
-     * @param lb bounds<br>
-     * @param ub bounds<br>
-     * @param x in: initial guess, out: minimizer<br>
-     * @param minf out: minimum<br>
-     * <i>native declaration : line 346</i>
+     * 
+     * @param lb
+     *            bounds<br>
+     * @param ub
+     *            bounds<br>
+     * @param x
+     *            in: initial guess, out: minimizer<br>
+     * @param minf
+     *            out: minimum<br>
+     *            <i>native declaration : line 346</i>
      */
     @Name("nlopt_minimize_econstrained")
     public static IntValuedEnum<NloptLibrary.NloptResult> nloptMinimizeEconstrained(
-            IntValuedEnum<NloptLibrary.NloptAlgorithm> algorithm, int n,
-            Pointer<NloptLibrary.NloptFuncOld> f, Pointer<?> f_data, int m,
-            Pointer<NloptLibrary.NloptFuncOld> fc, Pointer<?> fc_data,
-            @Ptr long fc_datum_size, int p, Pointer<NloptLibrary.NloptFuncOld> h,
-            Pointer<?> h_data, @Ptr long h_datum_size, Pointer<Double> lb,
-            Pointer<Double> ub, Pointer<Double> x, Pointer<Double> minf, double minf_max,
-            double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs,
+            IntValuedEnum<NloptLibrary.NloptAlgorithm> algorithm, int n, Pointer<NloptLibrary.NloptFuncOld> f,
+            Pointer<?> f_data, int m, Pointer<NloptLibrary.NloptFuncOld> fc, Pointer<?> fc_data,
+            @Ptr long fc_datum_size, int p, Pointer<NloptLibrary.NloptFuncOld> h, Pointer<?> h_data,
+            @Ptr long h_datum_size, Pointer<Double> lb, Pointer<Double> ub, Pointer<Double> x, Pointer<Double> minf,
+            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, Pointer<Double> xtol_abs,
             double htol_rel, double htol_abs, int maxeval, double maxtime) {
         return FlagSet.fromValue(
-                nloptMinimizeEconstrained((int) algorithm.value(), n, Pointer.getPeer(f),
-                        Pointer.getPeer(f_data), m, Pointer.getPeer(fc), Pointer.getPeer(fc_data),
-                        fc_datum_size, p, Pointer.getPeer(h), Pointer.getPeer(h_data), h_datum_size,
-                        Pointer.getPeer(lb), Pointer.getPeer(ub), Pointer.getPeer(x), Pointer.getPeer(minf),
-                        minf_max, ftol_rel, ftol_abs, xtol_rel, Pointer.getPeer(xtol_abs), htol_rel, htol_abs,
-                        maxeval, maxtime), NloptLibrary.NloptResult.class);
+                nloptMinimizeEconstrained((int) algorithm.value(), n, Pointer.getPeer(f), Pointer.getPeer(f_data), m,
+                        Pointer.getPeer(fc), Pointer.getPeer(fc_data), fc_datum_size, p, Pointer.getPeer(h),
+                        Pointer.getPeer(h_data), h_datum_size, Pointer.getPeer(lb), Pointer.getPeer(ub),
+                        Pointer.getPeer(x), Pointer.getPeer(minf), minf_max, ftol_rel, ftol_abs, xtol_rel,
+                        Pointer.getPeer(xtol_abs), htol_rel, htol_abs, maxeval, maxtime),
+                NloptLibrary.NloptResult.class);
     }
 
     @Name("nlopt_minimize_econstrained")
-    protected native static int nloptMinimizeEconstrained(
-            int algorithm, int n, @Ptr long f, @Ptr long f_data, int m, @Ptr long fc,
-            @Ptr long fc_data, @Ptr long fc_datum_size, int p, @Ptr long h, @Ptr long h_data,
-            @Ptr long h_datum_size, @Ptr long lb, @Ptr long ub, @Ptr long x, @Ptr long minf,
-            double minf_max, double ftol_rel, double ftol_abs, double xtol_rel, @Ptr long xtol_abs,
-            double htol_rel, double htol_abs, int maxeval, double maxtime);
+    protected native static int nloptMinimizeEconstrained(int algorithm, int n, @Ptr long f, @Ptr long f_data, int m,
+            @Ptr long fc, @Ptr long fc_data, @Ptr long fc_datum_size, int p, @Ptr long h, @Ptr long h_data,
+            @Ptr long h_datum_size, @Ptr long lb, @Ptr long ub, @Ptr long x, @Ptr long minf, double minf_max,
+            double ftol_rel, double ftol_abs, double xtol_rel, @Ptr long xtol_abs, double htol_rel, double htol_abs,
+            int maxeval, double maxtime);
 
     /**
      * Original signature :
-     * <code>void nlopt_get_local_search_algorithm(nlopt_algorithm*, nlopt_algorithm*, int*)</code><br>
+     * <code>void nlopt_get_local_search_algorithm(nlopt_algorithm*, nlopt_algorithm*, int*)</code>
+     * <br>
      * <i>native declaration : line 359</i>
      */
     @Name("nlopt_get_local_search_algorithm")
-    public static void nloptGetLocalSearchAlgorithm(
-            Pointer<IntValuedEnum<NloptLibrary.NloptAlgorithm>> deriv,
-            Pointer<IntValuedEnum<NloptLibrary.NloptAlgorithm>> nonderiv,
-            Pointer<Integer> maxeval) {
-        nloptGetLocalSearchAlgorithm(
-                Pointer.getPeer(deriv), Pointer.getPeer(nonderiv), Pointer.getPeer(maxeval));
+    public static void nloptGetLocalSearchAlgorithm(Pointer<IntValuedEnum<NloptLibrary.NloptAlgorithm>> deriv,
+            Pointer<IntValuedEnum<NloptLibrary.NloptAlgorithm>> nonderiv, Pointer<Integer> maxeval) {
+        nloptGetLocalSearchAlgorithm(Pointer.getPeer(deriv), Pointer.getPeer(nonderiv), Pointer.getPeer(maxeval));
     }
 
     @Name("nlopt_get_local_search_algorithm")
@@ -1156,12 +1097,12 @@ public class NloptLibrary {
 
     /**
      * Original signature :
-     * <code>void nlopt_set_local_search_algorithm(nlopt_algorithm, nlopt_algorithm, int)</code><br>
+     * <code>void nlopt_set_local_search_algorithm(nlopt_algorithm, nlopt_algorithm, int)</code>
+     * <br>
      * <i>native declaration : line 362</i>
      */
     @Name("nlopt_set_local_search_algorithm")
-    public static void nloptSetLocalSearchAlgorithm(
-            IntValuedEnum<NloptLibrary.NloptAlgorithm> deriv,
+    public static void nloptSetLocalSearchAlgorithm(IntValuedEnum<NloptLibrary.NloptAlgorithm> deriv,
             IntValuedEnum<NloptLibrary.NloptAlgorithm> nonderiv, int maxeval) {
         nloptSetLocalSearchAlgorithm((int) deriv.value(), (int) nonderiv.value(), maxeval);
     }
@@ -1170,8 +1111,7 @@ public class NloptLibrary {
     protected native static void nloptSetLocalSearchAlgorithm(int deriv, int nonderiv, int maxeval);
 
     /**
-     * Original signature :
-     * <code>int nlopt_get_stochastic_population()</code><br>
+     * Original signature : <code>int nlopt_get_stochastic_population()</code><br>
      * <i>native declaration : line 366</i>
      */
     @Name("nlopt_get_stochastic_population")
@@ -1195,8 +1135,9 @@ public class NloptLibrary {
             super(address);
         }
     };
-    /// Undefined type
-    /// Undefined type
+
+    // / Undefined type
+    // / Undefined type
 
     public static interface nlopt_opt_s {
     };

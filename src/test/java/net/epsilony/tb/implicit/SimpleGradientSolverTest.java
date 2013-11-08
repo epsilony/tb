@@ -22,7 +22,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SimpleGradientSolverTest {
@@ -66,17 +66,17 @@ public class SimpleGradientSolverTest {
         }
     }
 
-    //@Test
+    // @Test
     public void test1DQuadric() {
         SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric1D());
-        solver.solve(new double[]{1000});
+        solver.solve(new double[] { 1000 });
         assertEquals(0, solver.getSolution()[0], 1e-6);
         assertTrue(solver.getSolutionStatus() == SimpleGradientSolver.SolutionStatus.GOOD);
         assertTrue(solver.getEvalTimes() <= 30);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < 1e-6);
 
-        solver.solve(new double[]{0});
+        solver.solve(new double[] { 0 });
     }
 
     public static class Quadric2D implements DifferentiableFunction {
@@ -125,7 +125,7 @@ public class SimpleGradientSolverTest {
     public void test2DQuadric() {
         SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric2D());
-        solver.solve(new double[]{1000, 1000});
+        solver.solve(new double[] { 1000, 1000 });
         solver.setMaxEval(50);
         assertEquals(1.5, solver.getSolution()[0], 1e-6);
         assertEquals(-2.3, solver.getSolution()[1], 1e-6);
@@ -173,10 +173,10 @@ public class SimpleGradientSolverTest {
     public void testQuadric1DLocalMini() {
         SimpleGradientSolver solver = new SimpleGradientSolver();
         solver.setFunction(new Quadric1DLocalMini());
-        solver.solve(new double[]{0.1});
+        solver.solve(new double[] { 0.1 });
         solver.setMaxEval(50);
         assertEquals(SimpleGradientSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
-        solver.solve(new double[]{0});
+        solver.solve(new double[] { 0 });
         assertEquals(SimpleGradientSolver.SolutionStatus.DIVERGENT, solver.getSolutionStatus());
     }
 }

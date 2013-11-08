@@ -17,16 +17,20 @@
 
 package net.epsilony.tb.adaptive;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import net.epsilony.tb.TestTool;
 import net.epsilony.tb.solid.Node;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCellFactoryTest {
@@ -56,9 +60,9 @@ public class QuadrangleAdaptiveCellFactoryTest {
                 if (edge.getOpposite() != null) {
                     assertEquals(edge.getOpposite().getOpposite(), edge);
                 }
-                double[] startCoord = edge.getStartCoord();
-                double x = startCoord[0];
-                double y = startCoord[1];
+                // double[] startCoord = edge.getStartCoord();
+                // double x = startCoord[0];
+                // double y = startCoord[1];
 
                 count++;
             }

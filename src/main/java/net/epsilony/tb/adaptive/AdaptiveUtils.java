@@ -23,7 +23,7 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.SegmentIterator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class AdaptiveUtils {
@@ -68,11 +68,8 @@ public class AdaptiveUtils {
             AdaptiveCellEdge edge = edgeIter.next();
             double[] startCoord = edge.getStart().getCoord();
             double[] endCoord = edge.getEnd().getCoord();
-            double cross = Math2D.cross(
-                    endCoord[0] - startCoord[0],
-                    endCoord[1] - startCoord[1],
-                    x - startCoord[0],
-                    y - startCoord[1]);
+            double cross = Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1], x - startCoord[0], y
+                    - startCoord[1]);
             if (cross <= 0) {
                 return false;
             }

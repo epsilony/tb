@@ -26,7 +26,7 @@ import net.epsilony.tb.nlopt.NloptLibrary;
 import org.bridj.IntValuedEnum;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptAdapterDemo {
@@ -63,7 +63,7 @@ public class NloptAdapterDemo {
         }
     };
     static DifferentiableFunction constraints = new AbstractDifferentiableFunction() {
-        double[][] abs = new double[][]{{2, 0}, {-1, 1}};
+        double[][] abs = new double[][] { { 2, 0 }, { -1, 1 } };
         int count;
 
         @Override
@@ -95,10 +95,10 @@ public class NloptAdapterDemo {
             return output;
         }
     };
-    static double[] constraintsTols = new double[]{1e-8, 1e-8};
-    static double[] lowerBounds = new double[]{Double.NEGATIVE_INFINITY, 0};
+    static double[] constraintsTols = new double[] { 1e-8, 1e-8 };
+    static double[] lowerBounds = new double[] { Double.NEGATIVE_INFINITY, 0 };
     static double RelativeXTolerence = 1e-4;
-    static double[] startPoint = new double[]{1.234, 5.768};
+    static double[] startPoint = new double[] { 1.234, 5.768 };
 
     public static void main(String[] args) {
         NloptAdapter nloptAdapter = new NloptAdapter(NloptLibrary.NloptAlgorithm.NLOPT_LD_MMA, 2);

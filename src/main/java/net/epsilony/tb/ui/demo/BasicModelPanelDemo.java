@@ -28,7 +28,7 @@ import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class BasicModelPanelDemo {

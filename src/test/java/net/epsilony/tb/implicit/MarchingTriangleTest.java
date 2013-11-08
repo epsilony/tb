@@ -28,7 +28,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MarchingTriangleTest {
@@ -48,7 +48,7 @@ public class MarchingTriangleTest {
             double holeValue = holeRad - Math2D.distance(holeX, holeY, input[0], input[1]);
             double value = Math.max(diskValue, holeValue);
             if (output == null) {
-                return new double[]{value};
+                return new double[] { value };
             } else {
                 output[0] = value;
                 return output;
@@ -118,8 +118,8 @@ public class MarchingTriangleTest {
             do {
                 double[] startCoord = seg.getStart().getCoord();
                 double[] endCoord = seg.getEnd().getCoord();
-                actArea += 0.5 * Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1],
-                        x0 - startCoord[0], y0 - startCoord[1]);
+                actArea += 0.5 * Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1], x0
+                        - startCoord[0], y0 - startCoord[1]);
                 seg = (Line) seg.getSucc();
             } while (seg != head);
             assertEquals(expArea, actArea, Math.abs(expArea) * errRatio);

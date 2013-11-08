@@ -22,7 +22,7 @@ import java.util.List;
 import net.epsilony.tb.solid.Node;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleArrayContainers {

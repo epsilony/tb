@@ -23,7 +23,7 @@ import net.epsilony.tb.solid.winged.RawWingedEdge;
 import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class AdaptiveCellEdge extends RawWingedEdge {

@@ -21,7 +21,7 @@ import java.io.Serializable;
 import net.epsilony.tb.analysis.WithDiffOrder;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public interface RadialBasisCore extends WithDiffOrder, Serializable {

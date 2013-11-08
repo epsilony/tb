@@ -23,12 +23,11 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.Timer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public abstract class AnimateModelDrawerAdapter
-        extends ModelDrawerAdapter
-        implements AnimateModelDrawer, ActionListener {
+public abstract class AnimateModelDrawerAdapter extends ModelDrawerAdapter implements AnimateModelDrawer,
+        ActionListener {
 
     public static final int DEFAULT_FRAME_GAP = 33;
     protected AnimationStatus status = AnimationStatus.INITIATE;
@@ -42,12 +41,12 @@ public abstract class AnimateModelDrawerAdapter
         this.statusToSwitch = statusToSwitch;
         if (status != statusToSwitch) {
             switch (statusToSwitch) {
-                case APPEARING:
-                case FADING:
-                    startTimer();
-                    break;
-                default:
-                    break;
+            case APPEARING:
+            case FADING:
+                startTimer();
+                break;
+            default:
+                break;
             }
         }
     }
@@ -63,31 +62,31 @@ public abstract class AnimateModelDrawerAdapter
         if (statusToSwitch != status) {
             status = statusToSwitch;
             switch (status) {
-                case INITIATE:
-                    frame[0] = 0;
-                    frame[1] = 0;
-                    timer.stop();
-                    return;
-                case OVER:
-                case FREEZING:
-                    timer.stop();
-                    return;
-                case APPEARING:
-                case FADING:
-                    break;
+            case INITIATE:
+                frame[0] = 0;
+                frame[1] = 0;
+                timer.stop();
+                return;
+            case OVER:
+            case FREEZING:
+                timer.stop();
+                return;
+            case APPEARING:
+            case FADING:
+                break;
             }
         }
         switch (status) {
-            case INITIATE:
-            case OVER:
-            case FREEZING:
-                return;
-            case APPEARING:
-                frame[AnimationStatus.APPEARING.ordinal()]++;
-                break;
-            case FADING:
-                frame[AnimationStatus.FADING.ordinal()]++;
-                break;
+        case INITIATE:
+        case OVER:
+        case FREEZING:
+            return;
+        case APPEARING:
+            frame[AnimationStatus.APPEARING.ordinal()]++;
+            break;
+        case FADING:
+            frame[AnimationStatus.FADING.ordinal()]++;
+            break;
         }
 
         callComponentToRepaint();

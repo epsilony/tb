@@ -27,7 +27,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ScaleIndicator extends ModelDrawerAdapter {
@@ -112,7 +112,7 @@ public class ScaleIndicator extends ModelDrawerAdapter {
             pow -= 1;
             num = (int) Math.floor(length / (Math.pow(10, pow)));
         }
-        return new int[]{num, pow};
+        return new int[] { num, pow };
     }
 
     private double lengthInModelSpace() {

@@ -24,7 +24,7 @@ import net.epsilony.tb.solid.SegmentIterator;
 import net.epsilony.tb.solid.winged.AbstractWingedCell;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class AbstractAdaptiveCell extends AbstractWingedCell implements AdaptiveCell {

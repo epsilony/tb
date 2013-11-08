@@ -18,10 +18,11 @@
 package net.epsilony.tb.solid;
 
 import java.util.Arrays;
+
 import net.epsilony.tb.Factory;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Node extends RawGeomUnit {
@@ -49,7 +50,7 @@ public class Node extends RawGeomUnit {
     }
 
     public Node(double x, double y) {
-        this.coord = new double[]{x, y};
+        this.coord = new double[] { x, y };
     }
 
     public Node() {
@@ -70,6 +71,7 @@ public class Node extends RawGeomUnit {
         };
     }
 
+    @SuppressWarnings("unchecked")
     public static <ND extends Node> ND instanceByClass(ND nd) {
         try {
             return (ND) nd.getClass().newInstance();

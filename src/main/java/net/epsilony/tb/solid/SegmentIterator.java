@@ -20,14 +20,15 @@ package net.epsilony.tb.solid;
 import java.util.Iterator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SegmentIterator<T extends Segment> implements Iterator<T> {
 
     T next;
     T start;
-    //T last;
+
+    // T last;
 
     public SegmentIterator(T start) {
         this.start = start;
@@ -43,6 +44,7 @@ public class SegmentIterator<T extends Segment> implements Iterator<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public T next() {
         T last = next;

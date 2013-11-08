@@ -29,7 +29,7 @@ import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleAdaptiveCell extends AbstractAdaptiveCell implements Triangle<Node> {

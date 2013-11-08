@@ -21,7 +21,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class LogicalHeavisideTest {
@@ -36,13 +36,8 @@ public class LogicalHeavisideTest {
 
         final double k = 11;
         lh.setK(k);
-        double[][] xsExps = new double[][]{
-            {0, 0.5, k / 2},
-            {-0.3, 0.0013585199504289591, 0.029846836227411404},
-            {0.4, 0.9998492896419403, 0.0033151281778500807},
-            {100, 1, 0},
-            {-100, 0, 0}
-        };
+        double[][] xsExps = new double[][] { { 0, 0.5, k / 2 }, { -0.3, 0.0013585199504289591, 0.029846836227411404 },
+                { 0.4, 0.9998492896419403, 0.0033151281778500807 }, { 100, 1, 0 }, { -100, 0, 0 } };
 
         for (double[] xExp : xsExps) {
             double x = xExp[0];

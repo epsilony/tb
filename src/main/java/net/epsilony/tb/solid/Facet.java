@@ -25,7 +25,7 @@ import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
@@ -57,7 +57,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         }
         Facet facet = new Facet();
         facet.setRings(new ArrayList<Chain>(nodeChains.size()));
-        for (List< ? extends Node> nodeChain : nodeChains) {
+        for (List<? extends Node> nodeChain : nodeChains) {
             Chain ring = Chain.byNodesChain(nodeChain);
             ring.setParent(facet);
             facet.rings.add(ring);
@@ -70,6 +70,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
         facet.setRings(Chain.byRingsHeads(heads));
         return facet;
     }
+
     public static final int DIM = 2;
     List<Chain> rings;
     private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
@@ -157,7 +158,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
     /**
      * Originate from:<\br> Joseph O'Rourke, Computational Geometry in C,2ed.
      * Page 244, Code 7.13
-     *
+     * 
      * @param x
      * @param y
      * @return 'i' : inside , 'o' : outside, 'e' on an edge, 'v' on a vertex

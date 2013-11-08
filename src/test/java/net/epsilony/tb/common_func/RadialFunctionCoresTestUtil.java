@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 @Ignore
@@ -46,6 +46,7 @@ public class RadialFunctionCoresTestUtil {
         double[] distanceSquareSamples;
         double[][] resultsByDistanceSquare;
     }
+
     String cmd;
     SampleData data;
     double errorLimit = 1e-7;

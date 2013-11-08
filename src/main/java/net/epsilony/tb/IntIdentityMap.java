@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
 public class IntIdentityMap<K extends IntIdentity, V> implements Iterable<V> {

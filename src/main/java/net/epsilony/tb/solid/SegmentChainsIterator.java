@@ -20,7 +20,7 @@ package net.epsilony.tb.solid;
 import java.util.Iterator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SegmentChainsIterator<T extends Segment> implements Iterator<T> {

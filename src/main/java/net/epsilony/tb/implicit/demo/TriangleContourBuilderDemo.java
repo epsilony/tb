@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -52,8 +53,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import net.epsilony.tb.implicit.TriangleContourCellFactory;
-import net.epsilony.tb.implicit.TriangleContourBuilder;
+
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.LogicalMaximum;
 import net.epsilony.tb.implicit.CircleLevelSet;
@@ -62,16 +62,19 @@ import net.epsilony.tb.implicit.MarchingTriangle;
 import net.epsilony.tb.implicit.SimpleBisectionSolver;
 import net.epsilony.tb.implicit.SimpleGradientSolver;
 import net.epsilony.tb.implicit.TrackContourBuilder;
+import net.epsilony.tb.implicit.TriangleContourBuilder;
+import net.epsilony.tb.implicit.TriangleContourCellFactory;
 import net.epsilony.tb.implicit.ui.TrackContourSpecificationPanel;
 import net.epsilony.tb.solid.winged.WingedCell;
 import net.epsilony.tb.ui.BasicModelPanel;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 import net.epsilony.tb.ui.ModelTransform;
-import org.slf4j.LoggerFactory;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleContourBuilderDemo extends MouseAdapter {
@@ -177,6 +180,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
         builderMap.put(trackingMMA, trackMMA);
     }
 
+    @SuppressWarnings("unchecked")
     private void genContourBuilder() {
         contourBuilder = builderMap.get(currentSelection);
         contourBuilder.setCells((List) cells);
@@ -272,8 +276,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
 
         BasicModelPanel panel = (BasicModelPanel) event.getComponent();
         ModelTransform modelToComponentTransform = panel.getModelToComponentTransform();
-        double[] oriVector = new double[]{dragX, dragY};
-        double[] dragedVector = new double[]{event.getX(), event.getY()};
+        double[] oriVector = new double[] { dragX, dragY };
+        double[] dragedVector = new double[] { event.getX(), event.getY() };
         try {
             modelToComponentTransform.inverseTransform(oriVector, 0, oriVector, 0, 1);
             modelToComponentTransform.inverseTransform(dragedVector, 0, dragedVector, 0, 1);
@@ -514,7 +518,7 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
                 centerX = holeX;
                 centerY = holeY;
             }
-            double[] centers = new double[]{centerX, centerY};
+            double[] centers = new double[] { centerX, centerY };
             modelToComponentTransform.transform(centers, 0, centers, 0, 1);
             Path2D path = new Path2D.Double();
             path.moveTo(centers[0], centers[1]);
@@ -532,7 +536,8 @@ public class TriangleContourBuilderDemo extends MouseAdapter {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                        | UnsupportedLookAndFeelException ex) {
                     logger.error("", ex);
                 }
                 TriangleContourBuilderDemo demo = new TriangleContourBuilderDemo();

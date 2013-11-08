@@ -21,18 +21,13 @@ import java.util.Iterator;
 import net.epsilony.tb.analysis.ArrvarFunction;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleQuadrature implements Iterable<QuadraturePoint> {
 
-    public static double[] uv2xy(
-            double x1, double y1,
-            double x2, double y2,
-            double x3, double y3,
-            double x4, double y4,
-            double u, double v,
-            double[] results) {
+    public static double[] uv2xy(double x1, double y1, double x2, double y2, double x3, double y3, double x4,
+            double y4, double u, double v, double[] results) {
         if (null == results) {
             results = new double[3];
         }
@@ -42,17 +37,18 @@ public class QuadrangleQuadrature implements Iterable<QuadraturePoint> {
         double uv = p * q;
         double tx = x1 - x2 + x3 - x4;
         double ty = y1 - y2 + y3 - y4;
-        results[0] = tx * uv + (x2 - x1) * p + (x4 - x1) * q + x1;     //x
-        results[1] = ty * uv + (y2 - y1) * p + (y4 - y1) * q + y1;    //y
+        results[0] = tx * uv + (x2 - x1) * p + (x4 - x1) * q + x1; // x
+        results[1] = ty * uv + (y2 - y1) * p + (y4 - y1) * q + y1; // y
         if (results.length > 2) {
             double dxdu = (tx * q + (x2 - x1)) / 2;
             double dxdv = (tx * p + (x4 - x1)) / 2;
             double dydu = (ty * q + (y2 - y1)) / 2;
             double dydv = (ty * p + (y4 - y1)) / 2;
-            results[2] = Math.abs(dxdu * dydv - dydu * dxdv);     //|Jacobi|
+            results[2] = Math.abs(dxdu * dydv - dydu * dxdv); // |Jacobi|
         }
         return results;
     }
+
     int degree;
     double x1, y1, x2, y2, x3, y3, x4, y4;
     double[] weights;

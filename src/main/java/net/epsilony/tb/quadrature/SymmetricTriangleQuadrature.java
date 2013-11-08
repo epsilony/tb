@@ -24,7 +24,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.winged.Triangle;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SymmetricTriangleQuadrature implements Iterable<QuadraturePoint> {
@@ -85,7 +85,16 @@ public class SymmetricTriangleQuadrature implements Iterable<QuadraturePoint> {
 
             @Override
             public void remove() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet."); // To
+                                                                               // change
+                                                                               // body
+                                                                               // of
+                                                                               // generated
+                                                                               // methods,
+                                                                               // choose
+                                                                               // Tools
+                                                                               // |
+                                                                               // Templates.
             }
         };
     }

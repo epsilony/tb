@@ -21,14 +21,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 import net.epsilony.tb.Factory;
 import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.winged.WingedUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAdaptiveCell>> {
@@ -36,7 +38,8 @@ public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAda
     public static Logger logger = LoggerFactory.getLogger(QuadrangleAdaptiveCellFactory.class);
     double[] xs;
     double[] ys;
-    Class<? extends Node> nodeClass;   //to ensure that ND has null constructor, so factory pattern is not a good choice
+    Class<? extends Node> nodeClass; // to ensure that ND has null constructor,
+                                     // so factory pattern is not a good choice
 
     public double[] getXs() {
         return xs;
@@ -54,11 +57,11 @@ public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAda
         this.ys = ys;
     }
 
-    public Class getNodeClass() {
+    public Class<? extends Node> getNodeClass() {
         return nodeClass;
     }
 
-    public void setNodeClass(Class nodeClass) {
+    public void setNodeClass(Class<? extends Node> nodeClass) {
         this.nodeClass = nodeClass;
     }
 
@@ -72,10 +75,8 @@ public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAda
             ArrayList<QuadrangleAdaptiveCell> resultRow = new ArrayList<>(numCol);
             result.add(resultRow);
             for (int colIndex = 0; colIndex < numCol; colIndex++) {
-                resultRow.add(newCell(Arrays.asList(
-                        nodeGrid.get(rowIndex + 1).get(colIndex),
-                        nodeGrid.get(rowIndex + 1).get(colIndex + 1),
-                        nodeGrid.get(rowIndex).get(colIndex + 1),
+                resultRow.add(newCell(Arrays.asList(nodeGrid.get(rowIndex + 1).get(colIndex), nodeGrid
+                        .get(rowIndex + 1).get(colIndex + 1), nodeGrid.get(rowIndex).get(colIndex + 1),
                         nodeGrid.get(rowIndex).get(colIndex))));
             }
         }
@@ -102,11 +103,11 @@ public class QuadrangleAdaptiveCellFactory implements Factory<List<QuadrangleAda
     private ArrayList<ArrayList<Node>> xysToNodes() {
         ArrayList<ArrayList<Node>> result = new ArrayList<>(ys.length);
         for (int i = 0; i < ys.length; i++) {
-            ArrayList row = new ArrayList<>(xs.length);
+            ArrayList<Node> row = new ArrayList<>(xs.length);
             result.add(row);
             for (int j = 0; j < xs.length; j++) {
                 Node newNode = newNode();
-                newNode.setCoord(new double[]{xs[j], ys[i]});
+                newNode.setCoord(new double[] { xs[j], ys[i] });
                 row.add(newNode);
             }
         }

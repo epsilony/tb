@@ -18,7 +18,7 @@
 package net.epsilony.tb.quadrature;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
 public class QuadraturePoint {
@@ -28,7 +28,7 @@ public class QuadraturePoint {
 
     QuadraturePoint(double weight, double x, double y) {
         this.weight = weight;
-        coord = new double[]{x, y};
+        coord = new double[] { x, y };
     }
 
     public QuadraturePoint() {

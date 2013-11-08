@@ -26,7 +26,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.winged.WingedCell;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCellDemo extends AbstractAdaptiveCellDemo {

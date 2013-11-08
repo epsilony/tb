@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class FlexCompRowNeiboursIteratorTest {
@@ -35,17 +35,12 @@ public class FlexCompRowNeiboursIteratorTest {
 
     @Test
     public void testTheWholeIterator() {
-        DenseMatrix denseMatrix = new DenseMatrix(new double[][]{
-            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 11, 00, 11, 00, 11, 00, 11},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},});
+        DenseMatrix denseMatrix = new DenseMatrix(new double[][] { { 00, 00, 00, 11, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 11, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 11, 00, 11, 00, 11, 00, 11 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, });
 
         FlexCompRowMatrix flexMat = new FlexCompRowMatrix(denseMatrix.numRows(), denseMatrix.numColumns());
         for (MatrixEntry me : denseMatrix) {
@@ -58,7 +53,7 @@ public class FlexCompRowNeiboursIteratorTest {
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        int[] exp = new int[]{0, 2, 5, 7, 9};
+        int[] exp = new int[] { 0, 2, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
 
         flexMat.set(3, 1, 11);
@@ -67,7 +62,7 @@ public class FlexCompRowNeiboursIteratorTest {
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        exp = new int[]{1, 5, 7, 9};
+        exp = new int[] { 1, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
 
         flexMat.set(3, 1, 11);
@@ -76,7 +71,7 @@ public class FlexCompRowNeiboursIteratorTest {
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        exp = new int[]{0, 2, 5, 7, 9};
+        exp = new int[] { 0, 2, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
     }
 }

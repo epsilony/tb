@@ -31,7 +31,7 @@ import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.ModelDrawer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class CirclesAnimateDrawerDemo {

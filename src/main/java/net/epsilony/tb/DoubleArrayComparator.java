@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class DoubleArrayComparator implements Comparator<double[]> {

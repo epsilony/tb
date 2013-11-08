@@ -21,7 +21,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class CommonFrame extends JFrame {

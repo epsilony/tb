@@ -31,7 +31,7 @@ import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TrackContourBuilder extends AbstractTriangleContourBuilder {
@@ -100,7 +100,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         double[] roughPoint = Math2D.pointOnSegment(sourceEdgePoint, destEdgePoint, 0.5, destEdgePoint);
         double[] vec = Math2D.subs(destEdgePoint, sourceEdgePoint, sourceEdgePoint);
         double[] roughUnitContourDirection = Math2D.normalize(vec, vec);
-        return new double[][]{roughPoint, roughUnitContourDirection};
+        return new double[][] { roughPoint, roughUnitContourDirection };
 
     }
 
@@ -134,6 +134,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
         return true;
     }
+
     private static final double ROUGH_DISTANCE_SHRINK = 0.8;
     private static final double SEARCH_DISTANCE_ENLARGE = 1.6;
 
@@ -163,7 +164,8 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
                     contourHeads.remove((Line) seg.getSucc());
                 }
                 openRingsHeads.remove((Line) seg.getSucc());
-                //TODO here: divide seg.getSucc() if seg.length *1.5<seg.getSucc().length
+                // TODO here: divide seg.getSucc() if seg.length
+                // *1.5<seg.getSucc().length
                 break;
             }
             seg = nextNew;
@@ -173,8 +175,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     private ContourNode genHeadSuccNode(ContourNode headNode) {
         ContourNode headSucc = trackNextNode(
-                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2,
-                headNode);
+                (specification.getMaxSegmentLength() + specification.getMinSegmentLength()) / 2, headNode);
         return headSucc;
     }
 
@@ -222,8 +223,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             }
             next.setCoord(implicitFunctionSolver.getSolution());
             next.setFunctionValue(implicitFunctionSolver.getFunctionValue());
-            if (Math.abs(next.getFunctionValue()[0]) <= 1e-3
-                    && specification.isSegmentEligible(preNode, next)) {
+            if (Math.abs(next.getFunctionValue()[0]) <= 1e-3 && specification.isSegmentEligible(preNode, next)) {
                 return next;
             }
             roughDistance *= ROUGH_DISTANCE_SHRINK;
@@ -291,9 +291,9 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
                     double ds = Math2D.distance(startCoord, pointCoord);
                     double de = Math2D.distance(endCoord, pointCoord);
                     double l = Segment2DUtils.chordLength(line);
-                    double d = Math2D.cross(
-                            endCoord[0] - startCoord[0], endCoord[1] - startCoord[1],
-                            pointCoord[0] - startCoord[0], pointCoord[1] - startCoord[1]) / l;
+                    double d = Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1], pointCoord[0]
+                            - startCoord[0], pointCoord[1] - startCoord[1])
+                            / l;
                     double t = l * l + d * d;
                     if (t > ds * ds || t > de * de) {
                         pointIter.remove();
@@ -325,7 +325,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
 
     public ContourNode searchPointOnSegment(double[] start, double[] end) {
         onLineFunction.prepareToSolve(start, end);
-        onLineSolver.solve(new double[]{0.5});
+        onLineSolver.solve(new double[] { 0.5 });
         double t = onLineSolver.getSolution()[0];
         double[] coord = Math2D.pointOnSegment(start, end, t, null);
         levelSetFunction.setDiffOrder(1);
@@ -379,18 +379,14 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         return cell;
     }
 
-    public static WingedEdge getCellEdgeIntersectingSegment(
-            TriangleContourCell cell,
-            WingedEdge except,
-            Line seg) {
+    public static WingedEdge getCellEdgeIntersectingSegment(TriangleContourCell cell, WingedEdge except, Line seg) {
         WingedEdge result = null;
         for (int i = 0; i < cell.getNumberOfVertes(); i++) {
             WingedEdge edge = cell.getVertexEdge(i);
             if (edge == except) {
                 continue;
             }
-            if (Math2D.isSegmentsIntersecting(
-                    edge.getStart().getCoord(), edge.getEnd().getCoord(),
+            if (Math2D.isSegmentsIntersecting(edge.getStart().getCoord(), edge.getEnd().getCoord(),
                     seg.getStartCoord(), seg.getEndCoord())) {
                 result = edge;
                 break;
@@ -404,7 +400,7 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
         double gradX = functionValue[1];
         double gradY = functionValue[2];
 
-        double[] result = new double[]{-gradY, gradX};
+        double[] result = new double[] { -gradY, gradX };
         Math2D.normalize(result, result);
         Math2D.scale(result, distance, result);
         double[] coord = node.getCoord();
@@ -434,8 +430,8 @@ public class TrackContourBuilder extends AbstractTriangleContourBuilder {
             implicitFunctionSolver.setFunction(levelSetFunction);
             onLineSolver.setFunctionAbsoluteTolerence(implicitFunctionSolver.getFunctionAbsoluteTolerence());
             onLineSolver.setFunction(onLineFunction);
-            onLineSolver.setLowerBounds(new double[]{0});
-            onLineSolver.setUpperBounds(new double[]{1});
+            onLineSolver.setLowerBounds(new double[] { 0 });
+            onLineSolver.setUpperBounds(new double[] { 1 });
             onLineSolver.setMaxEval(200);
         }
     }

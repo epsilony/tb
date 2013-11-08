@@ -22,7 +22,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class GeneralTriangleCellFactory implements Factory<WingedCell> {
@@ -32,7 +32,8 @@ public class GeneralTriangleCellFactory implements Factory<WingedCell> {
     Factory<? extends Node> nodeFactory;
     boolean genVertes = true;
 
-    public GeneralTriangleCellFactory(Factory<? extends TriangleCell> cellFactory, Factory<? extends WingedEdge> edgeFactory, Factory<? extends Node> nodeFactory) {
+    public GeneralTriangleCellFactory(Factory<? extends TriangleCell> cellFactory,
+            Factory<? extends WingedEdge> edgeFactory, Factory<? extends Node> nodeFactory) {
         this.cellFactory = cellFactory;
         this.edgeFactory = edgeFactory;
         this.nodeFactory = nodeFactory;

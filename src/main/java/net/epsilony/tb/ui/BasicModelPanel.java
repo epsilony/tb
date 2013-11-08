@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class BasicModelPanel extends JPanel {
@@ -100,8 +100,8 @@ public class BasicModelPanel extends JPanel {
                     Rectangle2D bounds = md.getBoundsInModelSpace();
                     if (null != bounds) {
                         if (null == boundsOnComponent) {
-                            boundsOnComponent = new Rectangle2D.Double(
-                                    bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+                            boundsOnComponent = new Rectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(),
+                                    bounds.getHeight());
                         } else {
                             Rectangle2D.union(boundsOnComponent, bounds, boundsOnComponent);
                         }

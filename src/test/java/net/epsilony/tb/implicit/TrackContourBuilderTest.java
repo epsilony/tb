@@ -29,13 +29,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TrackContourBuilderTest {
 
     public TrackContourBuilderTest() {
     }
+
     double diskCenterX = 10;
     double diskCenterY = -20;
     double diskRadius = 50;
@@ -91,9 +92,8 @@ public class TrackContourBuilderTest {
         int expChainsSize = 2;
         double errRatio = 0.05;
 
-        Rectangle2D range = new Rectangle2D.Double(
-                diskCenterX - diskRadius - edgeLength * 2, diskCenterY - diskRadius - edgeLength * 2,
-                diskRadius * 2 + edgeLength * 4, diskRadius * 2 + edgeLength * 4);
+        Rectangle2D range = new Rectangle2D.Double(diskCenterX - diskRadius - edgeLength * 2, diskCenterY - diskRadius
+                - edgeLength * 2, diskRadius * 2 + edgeLength * 4, diskRadius * 2 + edgeLength * 4);
 
         SampleOneDiskWithAHole levelsetFunction = new SampleOneDiskWithAHole();
         factory.setRectangle(range);
@@ -128,12 +128,12 @@ public class TrackContourBuilderTest {
 
             Line seg = head;
             double actArea = 0;
-            double[] center = new double[]{x0, y0};
+            double[] center = new double[] { x0, y0 };
             do {
                 double[] startCoord = seg.getStart().getCoord();
                 double[] endCoord = seg.getEnd().getCoord();
-                actArea += 0.5 * Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1],
-                        x0 - startCoord[0], y0 - startCoord[1]);
+                actArea += 0.5 * Math2D.cross(endCoord[0] - startCoord[0], endCoord[1] - startCoord[1], x0
+                        - startCoord[0], y0 - startCoord[1]);
                 seg = (Line) seg.getSucc();
                 double actRadius = Math2D.distance(startCoord, center);
                 assertEquals(rad, actRadius, 1e-5);

@@ -45,11 +45,7 @@ public class PolygonQuadratureTest {
 
     @Test
     public void testIterable() {
-        double[][][] points = new double[][][]{
-            {
-                {-1, -1}, {2, 0}, {0, 2}
-            }
-        };
+        double[][][] points = new double[][][] { { { -1, -1 }, { 2, 0 }, { 0, 2 } } };
 
         double expLen = Math.sqrt(10) * 2 + Math.sqrt(8);
         Facet polygon = Facet.byCoordChains(points);

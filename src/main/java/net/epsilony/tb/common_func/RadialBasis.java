@@ -26,7 +26,7 @@ import net.epsilony.tb.analysis.WithDiffOrder;
 import net.epsilony.tb.analysis.WithDiffOrderUtil;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class RadialBasis implements IntIdentity, Dimensional, WithDiffOrder, Serializable {

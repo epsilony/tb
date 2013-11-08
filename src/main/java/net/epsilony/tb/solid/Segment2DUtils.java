@@ -22,7 +22,7 @@ import java.util.Collection;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a> St-Pierre</a>
  */
 public class Segment2DUtils {

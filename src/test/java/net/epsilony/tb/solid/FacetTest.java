@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class FacetTest {
@@ -37,8 +37,9 @@ public class FacetTest {
     @Test
     public void testDistanceFuncSimp() {
         Facet pg = samplePolygon();
-        double[][] testCoords = new double[][]{{0.5, 0.5}, {0.1, 0.1}, {-0.1, -0.1}, {0.5, 0.4}, {0.5, 0.25}};
-        double[] exps = new double[]{0, 0.1, -0.1 * Math.sqrt(2), 0.1, 0.25};
+        double[][] testCoords = new double[][] { { 0.5, 0.5 }, { 0.1, 0.1 }, { -0.1, -0.1 }, { 0.5, 0.4 },
+                { 0.5, 0.25 } };
+        double[] exps = new double[] { 0, 0.1, -0.1 * Math.sqrt(2), 0.1, 0.25 };
         for (int i = 0; i < exps.length; i++) {
             double exp = exps[i];
             double act = pg.distanceFunc(testCoords[i][0], testCoords[i][1]);
@@ -50,14 +51,8 @@ public class FacetTest {
     public void testDistanceFuncComp() {
         ArrayList<double[][][]> coords = new ArrayList<>(1);
         Facet pg = TestTool.samplePolygon(coords);
-        double[][] testCoordsExps = new double[][]{{
-            3, 6.5, Math.sqrt(2) / 4},
-        {7, 5.5, -Math.sqrt(5) / 10},
-        {-1, -1, -Math.sqrt(2)},
-        {1, 2.5, 0},
-        {6.25, 6, 0.25},
-        {2.9, 3, -0.1}
-        };
+        double[][] testCoordsExps = new double[][] { { 3, 6.5, Math.sqrt(2) / 4 }, { 7, 5.5, -Math.sqrt(5) / 10 },
+                { -1, -1, -Math.sqrt(2) }, { 1, 2.5, 0 }, { 6.25, 6, 0.25 }, { 2.9, 3, -0.1 } };
         for (double[] xy_exp : testCoordsExps) {
             double exp = xy_exp[2];
             double x = xy_exp[0];
@@ -107,24 +102,17 @@ public class FacetTest {
 
     @Test
     public void testFractionize() {
-        double[][][] coordChains = new double[][][]{
-            {{-1, -1}, {1, -1}, {1, 1}, {-1, 1}},
-            {{-0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5}, {0.5, -0.5}}
-        };
+        double[][][] coordChains = new double[][][] { { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 } },
+                { { -0.5, -0.5 }, { -0.5, 0.5 }, { 0.5, 0.5 }, { 0.5, -0.5 } } };
 
         Facet pg = Facet.byCoordChains(coordChains);
         Facet fPg = pg.fractionize(0.67);
         ArrayList<LinkedList<Node>> pVertes = fPg.getVertes();
-        double[][][] exps = new double[][][]{
-            {{-1, -1}, {-0.5, -1}, {0, -1}, {0.5, -1},
-            {1, -1}, {1, -0.5}, {1, 0}, {1, 0.5},
-            {1, 1}, {0.5, 1}, {0, 1}, {-0.5, 1},
-            {-1, 1}, {-1, 0.5}, {-1, 0}, {-1, -0.5},},
-            {{-0.5, -0.5}, {-0.5, 0},
-            {-0.5, 0.5}, {0, 0.5},
-            {0.5, 0.5}, {0.5, 0},
-            {0.5, -0.5}, {0, -0.5}}
-        };
+        double[][][] exps = new double[][][] {
+                { { -1, -1 }, { -0.5, -1 }, { 0, -1 }, { 0.5, -1 }, { 1, -1 }, { 1, -0.5 }, { 1, 0 }, { 1, 0.5 },
+                        { 1, 1 }, { 0.5, 1 }, { 0, 1 }, { -0.5, 1 }, { -1, 1 }, { -1, 0.5 }, { -1, 0 }, { -1, -0.5 }, },
+                { { -0.5, -0.5 }, { -0.5, 0 }, { -0.5, 0.5 }, { 0, 0.5 }, { 0.5, 0.5 }, { 0.5, 0 }, { 0.5, -0.5 },
+                        { 0, -0.5 } } };
         int i = 0;
         for (LinkedList<Node> cs : pVertes) {
             int j = 0;
@@ -139,7 +127,7 @@ public class FacetTest {
     }
 
     public Facet samplePolygon() {
-        double[][][] coordChains = new double[][][]{{{0, 0}, {1, 0}, {1, 1}, {0.5, 0.5}, {0, 1}}};
+        double[][][] coordChains = new double[][][] { { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 0.5, 0.5 }, { 0, 1 } } };
         return Facet.byCoordChains(coordChains);
     }
 }

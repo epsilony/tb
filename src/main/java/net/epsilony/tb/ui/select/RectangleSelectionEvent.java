@@ -21,7 +21,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.EventObject;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class RectangleSelectionEvent extends EventObject {

@@ -18,7 +18,7 @@
 package net.epsilony.tb.analysis;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class AbstractLogicalMinMax implements DifferentiableFunction {
@@ -30,7 +30,8 @@ public abstract class AbstractLogicalMinMax implements DifferentiableFunction {
     @Override
     public int getDiffOrder() {
         if (funA.getDiffOrder() != funB.getDiffOrder() || funA.getDiffOrder() != heaviside.getDiffOrder()) {
-            throw new IllegalStateException("the upstream function is with different diff order, funA: " + funA.getDiffOrder() + " funB: " + funB.getDiffOrder());
+            throw new IllegalStateException("the upstream function is with different diff order, funA: "
+                    + funA.getDiffOrder() + " funB: " + funB.getDiffOrder());
         }
         return heaviside.getDiffOrder();
     }

@@ -20,7 +20,7 @@ package net.epsilony.tb;
 import java.util.Comparator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class IntIdentityComparator<T extends IntIdentity> implements Comparator<T> {

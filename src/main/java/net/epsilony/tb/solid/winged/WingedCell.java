@@ -20,7 +20,7 @@ package net.epsilony.tb.solid.winged;
 import net.epsilony.tb.solid.Node;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public interface WingedCell extends Triangle<Node> {

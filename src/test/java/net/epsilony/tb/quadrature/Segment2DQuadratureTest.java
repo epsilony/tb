@@ -25,7 +25,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Segment2DQuadratureTest {
@@ -117,10 +117,7 @@ public class Segment2DQuadratureTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setStart(new Node(xTrans + radius * Math.cos(startAngle), yTrans + radius * Math.sin(startAngle)));
         arc.setRadius(radius);
-        arc.setSucc(new Line(
-                new Node(
-                        xTrans + radius * Math.cos(endAngle),
-                        yTrans + radius * Math.sin(endAngle))));
+        arc.setSucc(new Line(new Node(xTrans + radius * Math.cos(endAngle), yTrans + radius * Math.sin(endAngle))));
         Segment2DQuadrature sq = new Segment2DQuadrature();
         sq.setDegree(1);
         boolean beenHere = false;

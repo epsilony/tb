@@ -22,7 +22,7 @@ import net.epsilony.tb.solid.winged.RawWingedEdge;
 import net.epsilony.tb.solid.winged.RectangleCoverTriangleCellsFactory;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleContourCellFactory extends RectangleCoverTriangleCellsFactory {

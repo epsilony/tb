@@ -20,19 +20,38 @@ package net.epsilony.tb.common_func;
 import java.util.Arrays;
 import net.epsilony.tb.MiscellaneousUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
+
 //***** with python script to generate some code at the end of this file<----------------------
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Wendland implements RadialBasisCore {
 
-    private static final double[] WENDLAND_3_1 = new double[]{1, 0, -10, 20, -15, 4};//(-r + 1)**4*(4*r + 1)
-    private static final double[] WENDLAND_3_2 = new double[]{3, 0, -28, 0, 210, -448, 420, -192, 35};//(-r + 1)**6*(35*r**2 + 18*r + 3)
-    private static final double[] WENDLAND_3_3 = new double[]{1, 0, -11, 0, 66, 0, -462, 1056, -1155, 704, -231, 32};//(-r + 1)**8*(32*r**3 + 25*r**2 + 8*r + 1)
-    private static final double[][] WENDLAND_COEFFS_ARRAY = new double[][]{WENDLAND_3_1, WENDLAND_3_2, WENDLAND_3_3};
-    private static final int[] LEGAL_CONTINUOUS_ORDERS = new int[]{2, 4, 6};
+    private static final double[] WENDLAND_3_1 = new double[] { 1, 0, -10, 20, -15, 4 };// (-r
+                                                                                        // +
+                                                                                        // 1)**4*(4*r
+                                                                                        // +
+                                                                                        // 1)
+    private static final double[] WENDLAND_3_2 = new double[] { 3, 0, -28, 0, 210, -448, 420, -192, 35 };// (-r
+                                                                                                         // +
+                                                                                                         // 1)**6*(35*r**2
+                                                                                                         // +
+                                                                                                         // 18*r
+                                                                                                         // +
+                                                                                                         // 3)
+    private static final double[] WENDLAND_3_3 = new double[] { 1, 0, -11, 0, 66, 0, -462, 1056, -1155, 704, -231, 32 };// (-r
+                                                                                                                        // +
+                                                                                                                        // 1)**8*(32*r**3
+                                                                                                                        // +
+                                                                                                                        // 25*r**2
+                                                                                                                        // +
+                                                                                                                        // 8*r
+                                                                                                                        // +
+                                                                                                                        // 1)
+    private static final double[][] WENDLAND_COEFFS_ARRAY = new double[][] { WENDLAND_3_1, WENDLAND_3_2, WENDLAND_3_3 };
+    private static final int[] LEGAL_CONTINUOUS_ORDERS = new int[] { 2, 4, 6 };
     int diffOrder;
     PolynomialFunction pFunc;
     PolynomialFunction pFuncDiff;
@@ -57,8 +76,7 @@ public class Wendland implements RadialBasisCore {
             }
         }
         if (index < 0) {
-            throw new IllegalArgumentException(
-                    "The legal continuous order should be one of "
+            throw new IllegalArgumentException("The legal continuous order should be one of "
                     + Arrays.toString(LEGAL_CONTINUOUS_ORDERS) + " , not " + continuous);
         }
 
@@ -114,48 +132,49 @@ public class Wendland implements RadialBasisCore {
         return MiscellaneousUtils.simpleToString(this) + '{' + "continuous=" + continuous + '}';
     }
 }
-//python script:
-//# -*- coding: utf-8 -*-
-//'''
-//Created on 2013年8月13日
+// python script:
+// # -*- coding: utf-8 -*-
+// '''
+// Created on 2013年8月13日
 //
-//@author: epsilonyuan@gmail.com
-//'''
+// @author: epsilonyuan@gmail.com
+// '''
 //
-//from __future__ import print_function
-//from sympy import *
+// from __future__ import print_function
+// from sympy import *
 //
-//if __name__ == "__main__":
-//    r, u = symbols("r,u")
-//    
-//    prefix = "private static final"
-//    if prefix is not None and len(prefix)>0 and prefix[-1] != " ":
-//        prefix += " "
-//    
-//    wendlands = {
-//    "wendland_3_1" : (1 - r) ** 4 * (4 * r + 1),
-//    "wendland_3_2" : (1 - r) ** 6 * (35 * r ** 2 + 18 * r + 3),
-//    "wendland_3_3" : (1 - r) ** 8 * (32 * r ** 3 + 25 * r ** 2 + 8 * r + 1)
-//    }
-//    
-//    wend_polys = {}
-//    for k, v in wendlands.items():
-//        wend_polys[k] = v.as_poly()
-//        
-//    pairs = [(k, v) for k, v in wend_polys.items()]
-//    pairs.sort(key=lambda s:s[0])
-//    
-//    for k, v in pairs:
-//        java_coefs = v.all_coeffs()
-//        java_coefs.reverse()
-//        c = str(java_coefs)
-//        c = "{" + c[1:-1] + "}"
-//        print(prefix, "double[] ", k.upper(), " = new double[]", c, ";//", wendlands[k], sep="")
-//    
-//    s = prefix + "double[][] WENDLAND_COEFFS_ARRAY = new double[][]{"
-//    for k, v in pairs:
-//        s +=k.upper() + ", "
-//    s = s[:-2]
-//    s += "};"
-//    print(s)
+// if __name__ == "__main__":
+// r, u = symbols("r,u")
+//
+// prefix = "private static final"
+// if prefix is not None and len(prefix)>0 and prefix[-1] != " ":
+// prefix += " "
+//
+// wendlands = {
+// "wendland_3_1" : (1 - r) ** 4 * (4 * r + 1),
+// "wendland_3_2" : (1 - r) ** 6 * (35 * r ** 2 + 18 * r + 3),
+// "wendland_3_3" : (1 - r) ** 8 * (32 * r ** 3 + 25 * r ** 2 + 8 * r + 1)
+// }
+//
+// wend_polys = {}
+// for k, v in wendlands.items():
+// wend_polys[k] = v.as_poly()
+//
+// pairs = [(k, v) for k, v in wend_polys.items()]
+// pairs.sort(key=lambda s:s[0])
+//
+// for k, v in pairs:
+// java_coefs = v.all_coeffs()
+// java_coefs.reverse()
+// c = str(java_coefs)
+// c = "{" + c[1:-1] + "}"
+// print(prefix, "double[] ", k.upper(), " = new double[]", c, ";//",
+// wendlands[k], sep="")
+//
+// s = prefix + "double[][] WENDLAND_COEFFS_ARRAY = new double[][]{"
+// for k, v in pairs:
+// s +=k.upper() + ", "
+// s = s[:-2]
+// s += "};"
+// print(s)
 

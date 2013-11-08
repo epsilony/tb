@@ -30,7 +30,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class CircleLevelSet implements ArrvarFunction, DifferentiableFunction {

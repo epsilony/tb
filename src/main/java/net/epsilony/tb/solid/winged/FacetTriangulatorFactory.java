@@ -35,7 +35,7 @@ import net.epsilony.tb.solid.Facet;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers> {
@@ -123,7 +123,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
         triangulate(Pointer.pointerToCString(sw), Pointer.pointerTo(triIn), Pointer.pointerTo(triOut), Pointer.NULL);
         extractNodes();
         extractTriangles();
-        //TODO: move to dispose
+        // TODO: move to dispose
         TriangleLibraryUtils.freeOut(triOut);
     }
 
@@ -240,7 +240,7 @@ public class FacetTriangulatorFactory implements Factory<TriangleArrayContainers
         spaceNodes = new LinkedList<>();
         for (int i = 0; i < numberOfPoints; i++) {
             Node nd = generalCellFactory.nodeFactory.produce();
-            nd.setCoord(new double[]{points[i * 2], points[i * 2 + 1]});
+            nd.setCoord(new double[] { points[i * 2], points[i * 2 + 1] });
             nodes.add(nd);
             if (pointsMarkers[i] == 0) {
                 spaceNodes.add(nd);

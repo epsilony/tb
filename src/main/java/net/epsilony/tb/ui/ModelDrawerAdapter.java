@@ -21,7 +21,7 @@ import java.awt.Component;
 import java.awt.geom.AffineTransform;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class ModelDrawerAdapter implements ModelDrawer {

@@ -28,7 +28,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NodeDrawer extends ModelDrawerAdapter {

@@ -28,33 +28,27 @@ import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.Segment2DUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class UIUtils {
 
-    private static final double[] ZERO2D = new double[]{0, 0};
+    private static final double[] ZERO2D = new double[] { 0, 0 };
 
     public static Rectangle2D transformAndTidyRectangle(AffineTransform transform, Rectangle2D src, Rectangle2D dst) {
         if (null == dst) {
             dst = new Rectangle2D.Double();
         }
-        double[] points = new double[]{
-            src.getMinX(), src.getMinY(), src.getMaxX(), src.getMaxY()};
+        double[] points = new double[] { src.getMinX(), src.getMinY(), src.getMaxX(), src.getMaxY() };
         transform.transform(points, 0, points, 0, 2);
-        dst.setRect(
-                points[0], points[1],
-                points[2] - points[0], points[3] - points[1]);
+        dst.setRect(points[0], points[1], points[2] - points[0], points[3] - points[1]);
         tidyRectangle2D(dst, dst);
         return dst;
     }
 
     public static void repaintRectangle2D(Component c, Rectangle2D rect) {
         tidyRectangle2D(rect, rect);
-        c.repaint(
-                (int) Math.floor(rect.getX()),
-                (int) Math.floor(rect.getY()),
-                (int) Math.ceil(rect.getWidth()) + 1,
+        c.repaint((int) Math.floor(rect.getX()), (int) Math.floor(rect.getY()), (int) Math.ceil(rect.getWidth()) + 1,
                 (int) Math.ceil(rect.getHeight()) + 1);
     }
 
@@ -72,7 +66,7 @@ public class UIUtils {
 
     public static double[] transformVector(AffineTransform transform, double[] vec, double[] result) {
         if (null == result) {
-            result = new double[]{2};
+            result = new double[] { 2 };
         }
         transform.transform(vec, 0, result, 0, 1);
         double[] transformedOrigin = new double[2];
@@ -90,26 +84,26 @@ public class UIUtils {
         while (!pathIterator.isDone()) {
             int type = pathIterator.currentSegment(coords);
             switch (type) {
-                case PathIterator.SEG_MOVETO:
-                    if (null != start) {
-                        result.add(start);
-                    }
-                    start = new Line(new Node(coords[0], coords[1]));
-                    current = start;
-                    break;
-                case PathIterator.SEG_LINETO:
-                    Line newSeg = new Line(new Node(coords[0], coords[1]));
-                    Segment2DUtils.link(current, newSeg);
-                    current = newSeg;
-                    break;
-                case PathIterator.SEG_CLOSE:
-                    Segment2DUtils.link(current, start);
+            case PathIterator.SEG_MOVETO:
+                if (null != start) {
                     result.add(start);
-                    start = null;
-                    current = null;
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Only Supports SEG_MOVETO, SEG_LINETO and SEG_CLOSE");
+                }
+                start = new Line(new Node(coords[0], coords[1]));
+                current = start;
+                break;
+            case PathIterator.SEG_LINETO:
+                Line newSeg = new Line(new Node(coords[0], coords[1]));
+                Segment2DUtils.link(current, newSeg);
+                current = newSeg;
+                break;
+            case PathIterator.SEG_CLOSE:
+                Segment2DUtils.link(current, start);
+                result.add(start);
+                start = null;
+                current = null;
+                break;
+            default:
+                throw new UnsupportedOperationException("Only Supports SEG_MOVETO, SEG_LINETO and SEG_CLOSE");
             }
             pathIterator.next();
         }

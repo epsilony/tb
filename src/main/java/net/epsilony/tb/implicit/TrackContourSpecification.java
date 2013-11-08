@@ -24,7 +24,7 @@ import java.util.Arrays;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TrackContourSpecification implements Serializable {
@@ -84,10 +84,7 @@ public class TrackContourSpecification implements Serializable {
         return result;
     }
 
-    public boolean isOtherHeadInCandidateDirection(
-            ContourNode otherHead,
-            double[] nodeCoord,
-            double[] nodeUnitNormal) {
+    public boolean isOtherHeadInCandidateDirection(ContourNode otherHead, double[] nodeCoord, double[] nodeUnitNormal) {
 
         double[] headCoord = otherHead.getCoord();
 
@@ -166,9 +163,7 @@ public class TrackContourSpecification implements Serializable {
         closeHeadSearchLowerLimit = Math.cos(closeHeadSearchAngle);
         double old = this.closeHeadSearchAngle;
         this.closeHeadSearchAngle = closeHeadSearchAngle;
-        propertyChangeSupport.firePropertyChange(
-                "closeHeadSearchAngle",
-                old, closeHeadSearchAngle);
+        propertyChangeSupport.firePropertyChange("closeHeadSearchAngle", old, closeHeadSearchAngle);
     }
 
     public double getExpectSegmentCurve() {
@@ -196,9 +191,7 @@ public class TrackContourSpecification implements Serializable {
         double old = this.headPerpendicularTolerence;
         this.headPerpendicularTolerence = headPerpendicularTolerence;
         this.headPerpendicularLowerLimit = Math.cos(headPerpendicularTolerence);
-        propertyChangeSupport.firePropertyChange(
-                "headaPerpendicualrTolerence",
-                old, headPerpendicularTolerence);
+        propertyChangeSupport.firePropertyChange("headaPerpendicualrTolerence", old, headPerpendicularTolerence);
     }
 
     public void setMaxSegmentLength(double maxSegmentLength) {

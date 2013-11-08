@@ -21,7 +21,7 @@ import gnu.trove.list.array.TDoubleArrayList;
 import net.epsilony.tb.analysis.WithDiffOrderUtil;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MonomialBases2D implements BasesFunction {
@@ -116,7 +116,8 @@ public class MonomialBases2D implements BasesFunction {
     public double[][] values(double[] vec, double[][] output) {
         TDoubleArrayList[] result = values(vec, initOutput(null));
         if (null == output) {
-            output = new double[WithDiffOrderUtil.outputLength2D(diffOrder)][WithDiffOrderUtil.outputLength2D(getDegree())];
+            output = new double[WithDiffOrderUtil.outputLength2D(diffOrder)][WithDiffOrderUtil
+                    .outputLength2D(getDegree())];
         }
         for (int i = 0; i < result.length; i++) {
             TDoubleArrayList res = result[i];

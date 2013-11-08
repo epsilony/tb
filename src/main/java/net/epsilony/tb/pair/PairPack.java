@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class PairPack<K, V> implements WithPair<K, V> {
@@ -44,11 +44,11 @@ public class PairPack<K, V> implements WithPair<K, V> {
         return value;
     }
 
-    public static <K, V> List<WithPair<K, V>> pack(
-            List<? extends K> ks, List<? extends V> vs, List<WithPair<K, V>> result) {
+    public static <K, V> List<WithPair<K, V>> pack(List<? extends K> ks, List<? extends V> vs,
+            List<WithPair<K, V>> result) {
         if (ks.size() != vs.size()) {
-            throw new IllegalArgumentException(
-                    "ks.size() and vs.size() is different (" + ks.size() + " and " + vs.size());
+            throw new IllegalArgumentException("ks.size() and vs.size() is different (" + ks.size() + " and "
+                    + vs.size());
         }
 
         result.clear();

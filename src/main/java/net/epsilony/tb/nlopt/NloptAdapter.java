@@ -26,7 +26,7 @@ import org.bridj.IntValuedEnum;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptAdapter {
@@ -49,7 +49,8 @@ public class NloptAdapter {
         try {
             nloptDestroy(opt);
         } finally {
-            super.finalize(); //To change body of generated methods, choose Tools | Templates.
+            super.finalize(); // To change body of generated methods, choose
+                              // Tools | Templates.
         }
     }
 
@@ -70,9 +71,7 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         minObjectFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(
-                opt,
-                Pointer.pointerTo(minObjectFunction),
+        IntValuedEnum<NloptResult> nloptResult = nloptSetMinObjective(opt, Pointer.pointerTo(minObjectFunction),
                 Pointer.NULL);
         checkNloptResult(nloptResult);
     }
@@ -118,8 +117,8 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityConstraint(
-                opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
+        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityConstraint(opt, Pointer.pointerTo(nloptFunction),
+                Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
         inequalConstraintsHolder.add(nloptFunction);
     }
@@ -129,8 +128,8 @@ public class NloptAdapter {
             throw new IllegalArgumentException("dimension mismatch");
         }
         NloptFunc nloptFunction = new NloptFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityConstraint(
-                opt, Pointer.pointerTo(nloptFunction), Pointer.NULL, tolerence);
+        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityConstraint(opt, Pointer.pointerTo(nloptFunction),
+                Pointer.NULL, tolerence);
         checkNloptResult(nloptResult);
         equalConstraintsHolder.add(nloptFunction);
     }
@@ -155,11 +154,8 @@ public class NloptAdapter {
         }
         int m = function.getOutputDimension();
         NloptMfunc nloptMfunc = new NloptMFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityMconstraint(
-                opt,
-                m, Pointer.pointerTo(nloptMfunc),
-                Pointer.NULL,
-                Pointer.pointerToDoubles(tols));
+        IntValuedEnum<NloptResult> nloptResult = nloptAddInequalityMconstraint(opt, m, Pointer.pointerTo(nloptMfunc),
+                Pointer.NULL, Pointer.pointerToDoubles(tols));
         checkNloptResult(nloptResult);
         inequalMconstraintsHolder.add(nloptMfunc);
     }
@@ -170,11 +166,8 @@ public class NloptAdapter {
         }
         int m = function.getOutputDimension();
         NloptMfunc nloptMfunc = new NloptMFunctionAdapter(function);
-        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityMconstraint(
-                opt,
-                m, Pointer.pointerTo(nloptMfunc),
-                Pointer.NULL,
-                Pointer.pointerToDoubles(tols));
+        IntValuedEnum<NloptResult> nloptResult = nloptAddEqualityMconstraint(opt, m, Pointer.pointerTo(nloptMfunc),
+                Pointer.NULL, Pointer.pointerToDoubles(tols));
         checkNloptResult(nloptResult);
         equalMconstraintsHolder.add(nloptMfunc);
     }
@@ -249,7 +242,8 @@ public class NloptAdapter {
         return nloptGetMaxtime(opt);
     }
 
-    //TODO: let argument be only one and let the object contains the gradient information
+    // TODO: let argument be only one and let the object contains the gradient
+    // information
     public IntValuedEnum<NloptResult> optimize(double[] startPoint, double[] objectVal) {
         Pointer<Double> objectValPointer = Pointer.allocateDouble();
         final Pointer<Double> startPointer = Pointer.pointerToDoubles(startPoint);

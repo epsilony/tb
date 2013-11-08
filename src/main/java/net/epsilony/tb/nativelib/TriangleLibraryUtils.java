@@ -27,7 +27,7 @@ import org.bridj.Pointer;
 import static net.epsilony.tb.nativelib.TriangleLibrary.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleLibraryUtils {
@@ -155,7 +155,8 @@ public class TriangleLibraryUtils {
         }
         triangulateIO.setRegionList(Pointer.pointerToDoubles(regions));
     }
-    private static final List<String> doNotFree = Arrays.asList(new String[]{"Number", "Hole", "Region"});
+
+    private static final List<String> doNotFree = Arrays.asList(new String[] { "Number", "Hole", "Region" });
 
     public static void freeOut(TriangulateIO out) {
         Method[] methods = TriangulateIO.class.getDeclaredMethods();

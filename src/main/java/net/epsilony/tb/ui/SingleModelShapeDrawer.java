@@ -28,7 +28,7 @@ import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SingleModelShapeDrawer extends ModelDrawerAdapter {
@@ -87,11 +87,8 @@ public class SingleModelShapeDrawer extends ModelDrawerAdapter {
         g2.setComposite(AlphaComposite.SrcOver);
         Shape polygonShape = getModelToComponentTransform().createTransformedShape(getShape());
         if (isFilling()) {
-            g2.setColor(
-                    new Color(fillingColor.getRed(),
-                            fillingColor.getGreen(),
-                            fillingColor.getBlue(),
-                            (int) (fillingColor.getAlpha() * fillingAlpha)));
+            g2.setColor(new Color(fillingColor.getRed(), fillingColor.getGreen(), fillingColor.getBlue(),
+                    (int) (fillingColor.getAlpha() * fillingAlpha)));
             g2.fill(polygonShape);
         }
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

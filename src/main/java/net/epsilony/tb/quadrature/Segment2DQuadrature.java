@@ -22,7 +22,7 @@ import net.epsilony.tb.solid.Segment;
 import net.epsilony.tb.analysis.ArrvarFunction;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
@@ -99,9 +99,9 @@ public class Segment2DQuadrature implements Iterable<Segment2DQuadraturePoint> {
             double y = coordAndDifferential[1];
             nextIdx++;
             Segment2DQuadraturePoint result = new Segment2DQuadraturePoint();
-            result.coord = new double[]{x, y};
+            result.coord = new double[] { x, y };
             result.weight = weight;
-            result.outerNormal = new double[]{-dy / segLen, dx / segLen};
+            result.outerNormal = new double[] { -dy / segLen, dx / segLen };
             result.segment = segment;
             result.segmentParameter = t;
             return result;

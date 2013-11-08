@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import net.epsilony.tb.solid.winged.WingedCell;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public interface AdaptiveCell extends Iterable<AdaptiveCellEdge>, WingedCell {

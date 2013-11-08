@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
@@ -33,18 +33,14 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public static Chain byNodesChain(List<? extends Node> nodesChain, boolean closed) {
         if (closed && nodesChain.size() < 3) {
-            throw new IllegalArgumentException(
-                    String.format(
-                            "Each closed chain must contains at least 3 nodes as vertes! "
-                            + "this nodes chain has only %d nodes",
-                            nodesChain.size()));
+            throw new IllegalArgumentException(String.format(
+                    "Each closed chain must contains at least 3 nodes as vertes! "
+                            + "this nodes chain has only %d nodes", nodesChain.size()));
         }
         if (!closed && nodesChain.size() < 2) {
             throw new IllegalArgumentException(
-                    String.format(
-                            "Each open chain must contains at least 2 nodes as vertes! "
-                            + "this nodes chain has only %d nodes",
-                            nodesChain.size()));
+                    String.format("Each open chain must contains at least 2 nodes as vertes! "
+                            + "this nodes chain has only %d nodes", nodesChain.size()));
         }
 
         Iterator<? extends Node> nodeIter = nodesChain.iterator();
@@ -82,6 +78,7 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
     public Chain(Segment head) {
         this.head = head;
     }
+
     Segment head;
 
     public void setParent(Facet parent) {

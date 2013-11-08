@@ -30,7 +30,7 @@ import net.epsilony.tb.ui.select.RectangleSelectionEvent;
 import net.epsilony.tb.ui.select.RectangleSelectionListener;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class RectangleMouseSelectorDemo {

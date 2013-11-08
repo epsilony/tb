@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class LayeredRangeTreeTest {
@@ -44,7 +44,7 @@ public class LayeredRangeTreeTest {
     public void testRangeSearch2D() {
         System.out.println("rangeSearch2D");
         List<double[]> samples = new LinkedList<>();
-        double[][] lim = new double[][]{{-1.1, 1.1}, {-1.1, 1.1}};
+        double[][] lim = new double[][] { { -1.1, 1.1 }, { -1.1, 1.1 } };
         int numPerDim = 40;
         int washRatio = 1;
         final int dim = 2;
@@ -60,7 +60,7 @@ public class LayeredRangeTreeTest {
         }
         for (double d1 : samplePosByDim.get(0)) {
             for (double d2 : samplePosByDim.get(1)) {
-                samples.add(new double[]{d1, d2});
+                samples.add(new double[] { d1, d2 });
             }
         }
 
@@ -73,8 +73,8 @@ public class LayeredRangeTreeTest {
 
         LayeredRangeTree<double[], double[]> lrTree = LayeredRangeTree.factory(samples, comps);
 
-        double[] from = new double[]{-0.1, 0.1};
-        double[] to = new double[]{0.45, 0.54};
+        double[] from = new double[] { -0.1, 0.1 };
+        double[] to = new double[] { 0.45, 0.54 };
 
         ArrayList<double[]> acts = new ArrayList<>();
         for (int i = 0; i < testTime; i++) {
@@ -84,7 +84,8 @@ public class LayeredRangeTreeTest {
                 DictComparator<double[]> dComp = new DictComparator<>(comps, 0);
                 Collections.sort(acts, dComp);
                 Collections.sort(exps, dComp);
-                //System.out.println("acts.size(), exps.size() = " + acts.size() + ", " + exps.size());
+                // System.out.println("acts.size(), exps.size() = " +
+                // acts.size() + ", " + exps.size());
 
                 // just for debug
                 if (acts.size() != exps.size()) {
@@ -118,7 +119,7 @@ public class LayeredRangeTreeTest {
     public void testRangeSearch3D() {
         System.out.println("rangeSearch3D");
         List<double[]> samples = new LinkedList<>();
-        double[][] lim = new double[][]{{-1.0, 1.0}, {-2.0, 2.0}, {-3.0, 3.0}};
+        double[][] lim = new double[][] { { -1.0, 1.0 }, { -2.0, 2.0 }, { -3.0, 3.0 } };
         int numPerDim = 13;
         int washRatio = 1;
         final int dim = 3;
@@ -136,7 +137,7 @@ public class LayeredRangeTreeTest {
         for (double d1 : samplePosByDim.get(0)) {
             for (double d2 : samplePosByDim.get(1)) {
                 for (double d3 : samplePosByDim.get(2)) {
-                    samples.add(new double[]{d1, d2, d3});
+                    samples.add(new double[] { d1, d2, d3 });
                 }
             }
         }
@@ -150,8 +151,8 @@ public class LayeredRangeTreeTest {
 
         LayeredRangeTree<double[], double[]> lrTree = LayeredRangeTree.factory(samples, comps);
 
-        double[] from = new double[]{-0.1, -1.1, 0.0};
-        double[] to = new double[]{0.5, 0.5, 0.6};
+        double[] from = new double[] { -0.1, -1.1, 0.0 };
+        double[] to = new double[] { 0.5, 0.5, 0.6 };
 
         ArrayList<double[]> acts = new ArrayList<>();
         for (int i = 0; i < testTime; i++) {
@@ -160,7 +161,8 @@ public class LayeredRangeTreeTest {
             DictComparator<double[]> dComp = new DictComparator<>(comps, 0);
             Collections.sort(acts, dComp);
             Collections.sort(exps, dComp);
-            //System.out.println("acts.size(), exps.size() = " + acts.size() + ", " + exps.size());
+            // System.out.println("acts.size(), exps.size() = " + acts.size() +
+            // ", " + exps.size());
             for (double[] act : acts) {
                 double[] exp = exps.pollFirst();
                 assertArrayEquals(exp, act, 1e-14);
@@ -214,7 +216,7 @@ public class LayeredRangeTreeTest {
                 to[i] = d1;
             }
         }
-        return new double[][]{from, to};
+        return new double[][] { from, to };
     }
 
     public List<double[]> shakeSamples(double radius, List<double[]> sample) {

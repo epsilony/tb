@@ -23,7 +23,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class CircleLevelSetTest {
@@ -33,7 +33,7 @@ public class CircleLevelSetTest {
 
     @Test
     public void testToArcs() {
-        double[] center = new double[]{-11.2, 2.3};
+        double[] center = new double[] { -11.2, 2.3 };
         double radius = 4;
         int expArcNum = 8;
         CircleLevelSet circle = new CircleLevelSet(center[0], center[1], radius);
@@ -68,10 +68,8 @@ public class CircleLevelSetTest {
         circle.setRadius(radius);
         circle.setDiffOrder(1);
 
-        double[][] testDatas = new double[][]{
-            {centerX, centerY - radius, 0, 0, -2 * radius},
-            {centerX + 2, centerY + 1, -11, 4, 2}
-        };
+        double[][] testDatas = new double[][] { { centerX, centerY - radius, 0, 0, -2 * radius },
+                { centerX + 2, centerY + 1, -11, 4, 2 } };
 
         for (double[] data : testDatas) {
             double[] coord = Arrays.copyOfRange(data, 0, 2);

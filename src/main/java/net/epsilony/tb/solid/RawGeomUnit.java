@@ -18,7 +18,7 @@
 package net.epsilony.tb.solid;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class RawGeomUnit implements GeomUnit {

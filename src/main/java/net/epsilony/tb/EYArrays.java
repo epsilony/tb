@@ -18,7 +18,7 @@
 package net.epsilony.tb;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class EYArrays {

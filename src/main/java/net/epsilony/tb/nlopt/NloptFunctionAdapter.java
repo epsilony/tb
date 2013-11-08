@@ -22,7 +22,7 @@ import static net.epsilony.tb.nlopt.NloptLibrary.*;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptFunctionAdapter extends NloptFunc {

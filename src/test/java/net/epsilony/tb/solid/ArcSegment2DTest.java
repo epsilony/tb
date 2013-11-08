@@ -23,7 +23,7 @@ import static java.lang.Math.*;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ArcSegment2DTest {
@@ -39,17 +39,15 @@ public class ArcSegment2DTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
         arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
-        arc.setSucc(new Line(new Node(
-                radius * cos(PI / 3) + xTrans,
-                radius * sin(PI / 3) + yTrans)));
+        arc.setSucc(new Line(new Node(radius * cos(PI / 3) + xTrans, radius * sin(PI / 3) + yTrans)));
         double[] center = arc.calcCenter(null);
-        double[] exp = new double[]{xTrans, yTrans};
+        double[] exp = new double[] { xTrans, yTrans };
         assertArrayEquals(exp, center, 1e-14);
 
         arc.setCenterOnChordLeft(false);
         center = arc.calcCenter(null);
-        exp = new double[]{xTrans + 2 * radius * cos(PI / 12) * cos(PI / 4),
-            yTrans + 2 * radius * cos(PI / 12) * sin(PI / 4)};
+        exp = new double[] { xTrans + 2 * radius * cos(PI / 12) * cos(PI / 4),
+                yTrans + 2 * radius * cos(PI / 12) * sin(PI / 4) };
         assertArrayEquals(exp, center, 1e-14);
     }
 
@@ -58,7 +56,7 @@ public class ArcSegment2DTest {
         double radius = 3;
         double xTrans = -3.1;
         double yTrans = 2.2;
-        for (boolean onChordLeft : new boolean[]{true, false}) {
+        for (boolean onChordLeft : new boolean[] { true, false }) {
             double startAngle = PI / 6;
             double endAngle = PI / 3;
             if (!onChordLeft) {
@@ -69,18 +67,15 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(onChordLeft);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAngle) + xTrans, radius * sin(startAngle) + yTrans));
-            arc.setSucc(new Line(new Node(
-                    radius * cos(endAngle) + xTrans,
-                    radius * sin(endAngle) + yTrans)));
-            double[] samples = new double[]{0, 1, 0.5, 0.35};
-            double[][] exps = new double[][]{
-                {arc.getStart().getCoord()[0], arc.getStart().getCoord()[1]},
-                {arc.getEnd().getCoord()[0], arc.getEnd().getCoord()[1]},
-                {radius * cos((startAngle + endAngle) / 2) + xTrans,
-                    radius * sin((startAngle + endAngle) / 2) + yTrans},
-                {radius * cos(startAngle * (1 - 0.35) + endAngle * 0.35) + xTrans,
-                    radius * sin(startAngle * (1 - 0.35) + endAngle * 0.35) + yTrans}
-            };
+            arc.setSucc(new Line(new Node(radius * cos(endAngle) + xTrans, radius * sin(endAngle) + yTrans)));
+            double[] samples = new double[] { 0, 1, 0.5, 0.35 };
+            double[][] exps = new double[][] {
+                    { arc.getStart().getCoord()[0], arc.getStart().getCoord()[1] },
+                    { arc.getEnd().getCoord()[0], arc.getEnd().getCoord()[1] },
+                    { radius * cos((startAngle + endAngle) / 2) + xTrans,
+                            radius * sin((startAngle + endAngle) / 2) + yTrans },
+                    { radius * cos(startAngle * (1 - 0.35) + endAngle * 0.35) + xTrans,
+                            radius * sin(startAngle * (1 - 0.35) + endAngle * 0.35) + yTrans } };
 
             for (int i = 0; i < samples.length; i++) {
                 double t = samples[i];
@@ -96,7 +91,7 @@ public class ArcSegment2DTest {
         double radius = 3;
         double xTrans = -3.1;
         double yTrans = 2.2;
-        for (boolean onChordLeft : new boolean[]{true, false}) {
+        for (boolean onChordLeft : new boolean[] { true, false }) {
             double startAngle = PI / 6;
             double endAngle = PI / 3;
             if (!onChordLeft) {
@@ -107,19 +102,13 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(false);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAngle) + xTrans, radius * sin(startAngle) + yTrans));
-            arc.setSucc(new Line(new Node(
-                    radius * cos(endAngle) + xTrans,
-                    radius * sin(endAngle) + yTrans)));
+            arc.setSucc(new Line(new Node(radius * cos(endAngle) + xTrans, radius * sin(endAngle) + yTrans)));
             arc.setCenterOnChordLeft(onChordLeft);
             arc.setDiffOrder(1);
             double sample = 0.33;
             double angle = startAngle * (1 - sample) + endAngle * sample;
-            double[] exp = new double[]{
-                radius * cos(angle) + xTrans,
-                radius * sin(angle) + yTrans,
-                -radius * sin(angle) * (endAngle - startAngle),
-                radius * cos(angle) * (endAngle - startAngle)
-            };
+            double[] exp = new double[] { radius * cos(angle) + xTrans, radius * sin(angle) + yTrans,
+                    -radius * sin(angle) * (endAngle - startAngle), radius * cos(angle) * (endAngle - startAngle) };
             double[] act = arc.values(sample, null);
             assertArrayEquals(act, exp, 1e-14);
         }
@@ -133,9 +122,7 @@ public class ArcSegment2DTest {
         ArcSegment2D arc = new ArcSegment2D();
         arc.setRadius(radius);
         arc.setStart(new Node(radius * cos(PI / 6) + xTrans, radius * sin(PI / 6) + yTrans));
-        arc.setSucc(new Line(new Node(
-                radius * cos(PI / 3) + xTrans,
-                radius * sin(PI / 3) + yTrans)));
+        arc.setSucc(new Line(new Node(radius * cos(PI / 3) + xTrans, radius * sin(PI / 3) + yTrans)));
 
         double sampleRad = 2;
         double sampleAmpAngles = PI / 6 * 1.32;
@@ -159,7 +146,7 @@ public class ArcSegment2DTest {
         double xTrans = -3.1;
         double yTrans = 2.2;
 
-        for (boolean centerOnChordLeft : new boolean[]{true, false}) {
+        for (boolean centerOnChordLeft : new boolean[] { true, false }) {
             double startAmpAngle = PI / 6;
             double endAmpAngle = PI * 2 / 3;
             if (!centerOnChordLeft) {
@@ -171,9 +158,7 @@ public class ArcSegment2DTest {
             arc.setCenterOnChordLeft(centerOnChordLeft);
             arc.setRadius(radius);
             arc.setStart(new Node(radius * cos(startAmpAngle) + xTrans, radius * sin(startAmpAngle) + yTrans));
-            arc.setSucc(new Line(new Node(
-                    radius * cos(endAmpAngle) + xTrans,
-                    radius * sin(endAmpAngle) + yTrans)));
+            arc.setSucc(new Line(new Node(radius * cos(endAmpAngle) + xTrans, radius * sin(endAmpAngle) + yTrans)));
             Segment rawTail = arc.getSucc();
             arc.bisect();
             ArcSegment2D newSucc = (ArcSegment2D) arc.getSucc();
@@ -184,7 +169,7 @@ public class ArcSegment2DTest {
             assertTrue(rawTail.getPred() == newSucc);
 
             double[] arcCenter = arc.calcCenter(null);
-            double[] expCenter = new double[]{xTrans, yTrans};
+            double[] expCenter = new double[] { xTrans, yTrans };
             assertArrayEquals(expCenter, arcCenter, 1e-14);
 
             arcCenter = newSucc.calcCenter(null);

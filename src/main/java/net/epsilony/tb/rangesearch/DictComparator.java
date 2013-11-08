@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class DictComparator<T> implements Comparator<T> {

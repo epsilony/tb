@@ -20,7 +20,7 @@ package net.epsilony.tb.solid;
 import net.epsilony.tb.analysis.UnivarArrayFunction;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public interface Segment extends GeomUnit, UnivarArrayFunction {

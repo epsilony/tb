@@ -33,7 +33,7 @@ import no.uib.cipr.matrix.Vector;
 import no.uib.cipr.matrix.sparse.FlexCompRowMatrix;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ReverseCuthillMcKeeSolver {
@@ -216,8 +216,7 @@ public class ReverseCuthillMcKeeSolver {
 
         if (upperSymmetric) {
 
-            if (mat instanceof UpperSPDBandMatrix
-                    || mat instanceof UpperSPDDenseMatrix
+            if (mat instanceof UpperSPDBandMatrix || mat instanceof UpperSPDDenseMatrix
                     || mat instanceof UpperSPDPackMatrix) {
                 optMatrix = new UpperSPDBandMatrix(size(), optBandWidth);
             } else {

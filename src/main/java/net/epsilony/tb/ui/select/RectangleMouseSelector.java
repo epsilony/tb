@@ -23,7 +23,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class RectangleMouseSelector extends MouseAdapter {
@@ -78,10 +78,10 @@ public class RectangleMouseSelector extends MouseAdapter {
     }
 
     private RectangleSelectionEvent genRectangleSelectionEvent(MouseEvent e) {
-        Rectangle2D rectangle = new Rectangle2D.Double(
-                rectangleSelectStartX, rectangleSelectStartY,
+        Rectangle2D rectangle = new Rectangle2D.Double(rectangleSelectStartX, rectangleSelectStartY,
                 -rectangleSelectStartX + e.getX(), -rectangleSelectStartY + e.getY());
-        RectangleSelectionEvent rectangleSelectionEvent = new RectangleSelectionEvent(this, rectangle, isKeepFormerSelections(e));
+        RectangleSelectionEvent rectangleSelectionEvent = new RectangleSelectionEvent(this, rectangle,
+                isKeepFormerSelections(e));
         return rectangleSelectionEvent;
     }
 

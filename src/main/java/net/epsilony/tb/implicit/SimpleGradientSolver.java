@@ -22,7 +22,7 @@ import java.util.Random;
 import net.epsilony.tb.analysis.DifferentiableFunction;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SimpleGradientSolver implements ImplicitFunctionSolver {
@@ -31,8 +31,9 @@ public class SimpleGradientSolver implements ImplicitFunctionSolver {
 
     public enum SolutionStatus {
 
-        GOOD, DIVERGENT
+    GOOD, DIVERGENT
     };
+
     public static double DEFAULT_SOLUTION_ABSOLUTE_TOLERENCE = 1E-6;
     public static int DEFAULT_MAX_EVAL = 10000;
     public static double DEFAULT_ABSOLUTE_FUNCTION_TOLERENCE = -1;

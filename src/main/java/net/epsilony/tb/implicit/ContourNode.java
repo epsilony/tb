@@ -22,7 +22,7 @@ import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.Node;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ContourNode extends Node {

@@ -21,7 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class SynchronizedIterator<T> {
@@ -38,6 +38,7 @@ public class SynchronizedIterator<T> {
         this.iterator = iterator;
         this.estimatedSize = estimatedSize;
     }
+
     Iterator<? extends T> iterator;
     int estimatedSize = -1;
     int count = 0;

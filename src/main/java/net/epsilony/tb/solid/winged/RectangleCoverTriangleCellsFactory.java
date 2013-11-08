@@ -26,11 +26,10 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.ui.UIUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class RectangleCoverTriangleCellsFactory
-        implements Factory<List<WingedCell>> {
+public class RectangleCoverTriangleCellsFactory implements Factory<List<WingedCell>> {
 
     GeneralTriangleCellFactory generalTriangleCellFactory = new GeneralTriangleCellFactory();
     Rectangle2D rectangle;
@@ -131,7 +130,7 @@ public class RectangleCoverTriangleCellsFactory
             double startX = x0 - 0.5 * edgeLength * (i % 2);
             double y = y0 + i * edgeLength * SQRT_3 / 2;
             for (int j = 0; j < numCols; j++) {
-                double[] coord = new double[]{startX + edgeLength * j, y};
+                double[] coord = new double[] { startX + edgeLength * j, y };
                 row[j] = coord;
             }
         }
@@ -181,7 +180,8 @@ public class RectangleCoverTriangleCellsFactory
             ArrayList<WingedCell> row = triangles.get(i);
             ArrayList<WingedCell> nextRow = triangles.get(i + 1);
             for (int j = 0; j < row.size(); j += 2) {
-                WingedUtils.linkAsOpposite(row.get(j + startJ).getVertexEdge(1), nextRow.get(j + startJ).getVertexEdge(1));
+                WingedUtils.linkAsOpposite(row.get(j + startJ).getVertexEdge(1),
+                        nextRow.get(j + startJ).getVertexEdge(1));
             }
         }
     }

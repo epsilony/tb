@@ -25,7 +25,7 @@ import org.bridj.IntValuedEnum;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptLibraryDemo {

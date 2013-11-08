@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
 public class SymmetricTriangleQuadratureTest {
@@ -113,6 +113,7 @@ public class SymmetricTriangleQuadratureTest {
             }
             return result;
         }
+
         double[] pars;
         MonomialBases2D bases;
 
@@ -136,12 +137,13 @@ public class SymmetricTriangleQuadratureTest {
             UnivariateFunction f = new UnivariateFunction() {
                 @Override
                 public double value(double y) {
-                    return func.value(new double[]{x, y});
+                    return func.value(new double[] { x, y });
 
                 }
             };
             return simpIntegrator.integrate(10000, f, low, up);
         }
+
         final ArrvarFunction func;
         double x1, y1, x2, y2;
         SimpsonIntegrator simpIntegrator = new SimpsonIntegrator();

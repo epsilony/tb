@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class GeneralNeiboursIteratorTest {
@@ -33,23 +33,18 @@ public class GeneralNeiboursIteratorTest {
 
     @Test
     public void testTheWholeIterator() {
-        DenseMatrix denseMatrix = new DenseMatrix(new double[][]{
-            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 11, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 11, 00, 11, 00, 11, 00, 11},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},
-            {00, 00, 00, 00, 00, 00, 00, 00, 00, 00},});
+        DenseMatrix denseMatrix = new DenseMatrix(new double[][] { { 00, 00, 00, 11, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 11, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 11, 00, 11, 00, 11, 00, 11 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 },
+                { 00, 00, 00, 00, 00, 00, 00, 00, 00, 00 }, });
         GeneralNeiboursIterator iter = new GeneralNeiboursIterator(denseMatrix, 3, true);
         TIntArrayList acts = new TIntArrayList();
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        int[] exp = new int[]{0, 2, 5, 7, 9};
+        int[] exp = new int[] { 0, 2, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
 
         acts = new TIntArrayList();
@@ -58,7 +53,7 @@ public class GeneralNeiboursIteratorTest {
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        exp = new int[]{1, 5, 7, 9};
+        exp = new int[] { 1, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
 
         acts = new TIntArrayList();
@@ -67,7 +62,7 @@ public class GeneralNeiboursIteratorTest {
         while (iter.hasNext()) {
             acts.add(iter.next());
         }
-        exp = new int[]{0, 2, 5, 7, 9};
+        exp = new int[] { 0, 2, 5, 7, 9 };
         assertArrayEquals(exp, acts.toArray());
     }
 }

@@ -24,7 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MMAFunctionSolverTest {
@@ -73,12 +73,12 @@ public class MMAFunctionSolverTest {
         solver.setFunction(func);
         solver.setMaxEval(200);
         solver.setFunctionAbsoluteTolerence(tol);
-        solver.solve(new double[]{1});
+        solver.solve(new double[] { 1 });
         double[] functionValue = solver.getFunctionValue();
         double[] solution = solver.getSolution();
         final double exp = -Linear1D.y0 / Linear1D.k + Linear1D.x0;
         assertEquals(exp, solution[0], tol);
-        assertArrayEquals(functionValue, func.value(new double[]{exp}, null), tol);
+        assertArrayEquals(functionValue, func.value(new double[] { exp }, null), tol);
     }
 
     public static class Quadric2D implements DifferentiableFunction {
@@ -134,12 +134,12 @@ public class MMAFunctionSolverTest {
         final double tol = 1e-6;
         solver.setFunctionAbsoluteTolerence(-1);
         solver.setSolutionAbsoluteTolerence(tol);
-        assertTrue(solver.solve(new double[]{1000, 1000}));
+        assertTrue(solver.solve(new double[] { 1000, 1000 }));
         assertEquals(1.5, solver.getSolution()[0], tol * 10);
         assertEquals(-2.3, solver.getSolution()[1], tol * 10);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < tol);
 
-        assertTrue(solver.solve(new double[]{20, -30}));
+        assertTrue(solver.solve(new double[] { 20, -30 }));
         assertEquals(1.5, solver.getSolution()[0], tol * 10);
         assertEquals(-2.3, solver.getSolution()[1], tol * 10);
         assertTrue(Math.abs(solver.getFunctionValue()[0]) < tol);

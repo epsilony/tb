@@ -26,7 +26,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class AdaptiveCellEdgeTest {
@@ -41,16 +41,16 @@ public class AdaptiveCellEdgeTest {
         edge.setSucc(new AdaptiveCellEdge());
         edge.getSucc().setStart(new Node(3, 4));
         edge.bisect();
-        assertArrayEquals(edge.getEnd().getCoord(), new double[]{2, 1.5}, 1e-13);
+        assertArrayEquals(edge.getEnd().getCoord(), new double[] { 2, 1.5 }, 1e-13);
         assertTrue(edge.getSucc().getPred() == edge);
-        assertArrayEquals(edge.getSucc().getEnd().getCoord(), new double[]{3, 4}, 1e-14);
+        assertArrayEquals(edge.getSucc().getEnd().getCoord(), new double[] { 3, 4 }, 1e-14);
         assertTrue(edge.getSucc().getSucc().getPred() == edge.getSucc());
     }
 
     @Test
     public void testBisect() {
-        double[][] coordsA = new double[][]{{-1, 1}, {0, 1}, {0, -1}, {-1, -1}};
-        double[][] coordsB = new double[][]{{1, -1}, {0, -1}, {0, 1}, {1, 1}};
+        double[][] coordsA = new double[][] { { -1, 1 }, { 0, 1 }, { 0, -1 }, { -1, -1 } };
+        double[][] coordsB = new double[][] { { 1, -1 }, { 0, -1 }, { 0, 1 }, { 1, 1 } };
         List<AdaptiveCellEdge> chainA = genEdgeChain(coordsA);
         List<AdaptiveCellEdge> chainB = genEdgeChain(coordsB);
 
@@ -86,7 +86,7 @@ public class AdaptiveCellEdgeTest {
         assertTrue(b.getCell() == cellB);
         assertTrue(((WingedEdge) b.getSucc()).getCell() == cellB);
 
-        assertArrayEquals(b.getEnd().getCoord(), new double[]{0, 0}, 1e-14);
+        assertArrayEquals(b.getEnd().getCoord(), new double[] { 0, 0 }, 1e-14);
     }
 
     public static List<AdaptiveCellEdge> genEdgeChain(double[][] coords) {

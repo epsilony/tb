@@ -34,7 +34,7 @@ import net.epsilony.tb.ui.SingleModelShapeDrawer;
 import net.epsilony.tb.ui.UIUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
@@ -99,7 +99,7 @@ public class AdaptiveCellDemoDrawer extends SingleModelShapeDrawer {
         double[] midPoint = Math2D.pointOnSegment(startCoord, endCoord, 0.25, null);
         modelToComponentTransform.transform(midPoint, 0, midPoint, 0, 1);
         double[] edgeVec = Math2D.subs(endCoord, startCoord, null);
-        double[] markVec = new double[]{-edgeVec[1], edgeVec[0]};
+        double[] markVec = new double[] { -edgeVec[1], edgeVec[0] };
         UIUtils.transformVector(modelToComponentTransform, markVec, markVec);
         Math2D.normalize(markVec, markVec);
         Math2D.scale(markVec, oppositeMarkLength, markVec);

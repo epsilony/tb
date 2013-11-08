@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NormalFunctionTest {

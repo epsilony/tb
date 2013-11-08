@@ -22,7 +22,7 @@ import net.epsilony.tb.solid.Facet;
 import net.epsilony.tb.solid.Segment;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
 public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
@@ -71,6 +71,7 @@ public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
                 iter = segmentQuadrature.iterator();
             }
         }
+
         Iterator<Segment2DQuadraturePoint> iter = null;
         Segment2DQuadrature segmentQuadrature = new Segment2DQuadrature();
         Iterator<? extends Segment> segIter;
@@ -96,7 +97,16 @@ public class PolygonQuadrature implements Quadrature<Segment2DQuadraturePoint> {
 
         @Override
         public void remove() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported yet."); // To
+                                                                           // change
+                                                                           // body
+                                                                           // of
+                                                                           // generated
+                                                                           // methods,
+                                                                           // choose
+                                                                           // Tools
+                                                                           // |
+                                                                           // Templates.
         }
     }
 }

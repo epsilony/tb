@@ -24,13 +24,13 @@ import net.epsilony.tb.solid.winged.TriangleCell;
 import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleContourCell extends TriangleCell implements Iterable<WingedEdge> {
 
-    private static final int[] STATUS_CONTOUR_DEST_EDGE_INDEX_MAP = new int[]{-1, 0, 1, 1, 2, 0, 2, -1};
-    private static final int[] STATUS_CONTOUR_SRC_EDGE_INDEX_MAP = new int[]{-1, 2, 0, 2, 1, 1, 0, -1};
+    private static final int[] STATUS_CONTOUR_DEST_EDGE_INDEX_MAP = new int[] { -1, 0, 1, 1, 2, 0, 2, -1 };
+    private static final int[] STATUS_CONTOUR_SRC_EDGE_INDEX_MAP = new int[] { -1, 2, 0, 2, 1, 1, 0, -1 };
     boolean visited = false;
     private int status = -1;
     List<Line> passByContourLines;
@@ -122,7 +122,16 @@ public class TriangleContourCell extends TriangleCell implements Iterable<Winged
 
             @Override
             public void remove() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet."); // To
+                                                                               // change
+                                                                               // body
+                                                                               // of
+                                                                               // generated
+                                                                               // methods,
+                                                                               // choose
+                                                                               // Tools
+                                                                               // |
+                                                                               // Templates.
             }
         };
     }

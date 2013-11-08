@@ -27,7 +27,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptAdapterTest {
@@ -38,7 +38,7 @@ public class NloptAdapterTest {
     @Test
     public void testStandardCase() {
         DifferentiableFunction objFunc = new AbstractDifferentiableFunction() {
-//            int count = 0;
+            // int count = 0;
             @Override
             public int getInputDimension() {
                 return 2;
@@ -63,13 +63,15 @@ public class NloptAdapterTest {
                     output[1] = 0;
                     output[2] = 0.5 / sqrt(input[1]);
                 }
-//                System.out.println(count++ + ": " + Arrays.toString(input) + ", " + Arrays.toString(output));
+                // System.out.println(count++ + ": " + Arrays.toString(input) +
+                // ", " + Arrays.toString(output));
                 return output;
             }
         };
         DifferentiableFunction constraints = new AbstractDifferentiableFunction() {
-            double[][] abs = new double[][]{{2, 0}, {-1, 1}};
-//            int count;
+            double[][] abs = new double[][] { { 2, 0 }, { -1, 1 } };
+
+            // int count;
 
             @Override
             public int getInputDimension() {
@@ -84,7 +86,8 @@ public class NloptAdapterTest {
             @Override
             public double[] value(double[] input, double[] output) {
                 if (output == null) {
-                    output = new double[getDiffOrder() * getOutputDimension() * getInputDimension() + getOutputDimension()];
+                    output = new double[getDiffOrder() * getOutputDimension() * getInputDimension()
+                            + getOutputDimension()];
                 }
                 double x = input[0];
                 double y = input[1];
@@ -96,14 +99,15 @@ public class NloptAdapterTest {
                     output[getOutputDimension() * (i + 1)] = 3 * a * t * t;
                     output[getOutputDimension() * (i + 1) + 1] = -1;
                 }
-//                System.out.println("M" + count++ + ": " + Arrays.toString(input) + ", " + Arrays.toString(output));
+                // System.out.println("M" + count++ + ": " +
+                // Arrays.toString(input) + ", " + Arrays.toString(output));
                 return output;
             }
         };
-        double[] constraintsTols = new double[]{1e-8, 1e-8};
-        double[] lowerBounds = new double[]{Double.NEGATIVE_INFINITY, 0};
+        double[] constraintsTols = new double[] { 1e-8, 1e-8 };
+        double[] lowerBounds = new double[] { Double.NEGATIVE_INFINITY, 0 };
         double RelativeXTolerence = 1e-4;
-        double[] startPoint = new double[]{1.234, 5.768};
+        double[] startPoint = new double[] { 1.234, 5.768 };
 
         NloptAdapter nloptAdapter = new NloptAdapter(NloptLibrary.NloptAlgorithm.NLOPT_LD_MMA, 2);
         nloptAdapter.setMinObjective(objFunc);
@@ -132,13 +136,13 @@ public class NloptAdapterTest {
         Arrays.fill(exps, lowerBounds1);
         assertArrayEquals(exps, nloptAdapter.getLowerBounds(), 0);
 
-        exps = new double[]{1, 2, 3, 4,};
+        exps = new double[] { 1, 2, 3, 4, };
         nloptAdapter.setLowerBounds(exps);
         assertArrayEquals(exps, nloptAdapter.getLowerBounds(), 0);
         double[] pfexps = new double[dimension];
         Arrays.fill(pfexps, Double.POSITIVE_INFINITY);
         assertArrayEquals(pfexps, nloptAdapter.getUpperBounds(), 0);
-        double[] upexps = new double[]{1, 3, 4, 7};
+        double[] upexps = new double[] { 1, 3, 4, 7 };
         nloptAdapter.setUpperBounds(exps);
         assertArrayEquals(exps, nloptAdapter.getUpperBounds(), 0);
 
@@ -160,6 +164,6 @@ public class NloptAdapterTest {
         nloptAdapter.setAbsoluteFunctionTolerence(fAbsTol);
         assertEquals(fAbsTol, nloptAdapter.getAbsoluteFunctionTolerence(), 0);
 
-        //uncomplete
+        // uncomplete
     }
 }

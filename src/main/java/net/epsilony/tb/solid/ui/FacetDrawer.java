@@ -31,7 +31,7 @@ import net.epsilony.tb.ui.CommonFrame;
 import net.epsilony.tb.ui.SingleModelShapeDrawer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class FacetDrawer extends SingleModelShapeDrawer {

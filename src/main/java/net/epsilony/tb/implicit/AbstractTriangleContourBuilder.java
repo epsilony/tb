@@ -26,7 +26,7 @@ import net.epsilony.tb.solid.Line;
 import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class AbstractTriangleContourBuilder implements TriangleContourBuilder {

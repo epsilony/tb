@@ -25,7 +25,7 @@ import net.epsilony.tb.solid.Segment2DUtils;
 import net.epsilony.tb.solid.winged.WingedEdge;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
@@ -163,8 +163,8 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
 
         public OnEdge() {
             solver.setFunction(onEdgeFunction);
-            solver.setLowerBounds(new double[]{0});
-            solver.setUpperBounds(new double[]{1});
+            solver.setLowerBounds(new double[] { 0 });
+            solver.setUpperBounds(new double[] { 1 });
             solver.setMaxEval(200);
             solver.setFunctionAbsoluteTolerence(1e-5);
         }
@@ -175,15 +175,17 @@ public abstract class MarchingTriangle extends AbstractTriangleContourBuilder {
 
         public void setSolver(BoundedImplicitFunctionSolver solver) {
             this.solver = solver;
-            solver.setLowerBounds(new double[]{0});
-            solver.setUpperBounds(new double[]{1});
+            solver.setLowerBounds(new double[] { 0 });
+            solver.setUpperBounds(new double[] { 1 });
             solver.setFunction(onEdgeFunction);
         }
-        private final double[] solveStart = new double[]{0.5};
+
+        private final double[] solveStart = new double[] { 0.5 };
 
         @Override
         protected ContourNode genContourNode(WingedEdge contourSourceEdge) {
-            onEdgeFunction.prepareToSolve(contourSourceEdge.getStart().getCoord(), contourSourceEdge.getEnd().getCoord());
+            onEdgeFunction.prepareToSolve(contourSourceEdge.getStart().getCoord(), contourSourceEdge.getEnd()
+                    .getCoord());
             solveStart[0] = genLinearInterpolateParameter(contourSourceEdge);
             if (!solver.solve(solveStart)) {
                 solver.solve(solveStart);

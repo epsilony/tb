@@ -25,7 +25,7 @@ import net.epsilony.tb.solid.winged.WingedEdge;
 import net.epsilony.tb.solid.winged.WingedUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class QuadrangleAdaptiveCell extends AbstractAdaptiveCell {
@@ -57,9 +57,8 @@ public class QuadrangleAdaptiveCell extends AbstractAdaptiveCell {
             Segment2DUtils.link(child.getVertexEdge((side + 1) % sideNum), child.getVertexEdge((side + 2) % sideNum));
             Segment2DUtils.link(child.getVertexEdge((side + 2) % sideNum), child.getVertexEdge((side + 3) % sideNum));
 
-            WingedUtils.linkAsOpposite(
-                    child.getVertexEdge((side + 1) % sideNum),
-                    children.get((side + 1) % sideNum).getVertexEdge((side + 3) % sideNum));
+            WingedUtils.linkAsOpposite(child.getVertexEdge((side + 1) % sideNum), children.get((side + 1) % sideNum)
+                    .getVertexEdge((side + 3) % sideNum));
         }
 
         for (int i = 0; i < children.size(); i++) {
@@ -70,8 +69,7 @@ public class QuadrangleAdaptiveCell extends AbstractAdaptiveCell {
 
     private Node genCenterNode(ArrayList<AdaptiveCellEdge> midEdges) {
         Node newNode = Node.instanceByClass(midEdges.get(0).getStart());
-        newNode.setCoord(Math2D.intersectionPoint(
-                midEdges.get(0).getEndCoord(), midEdges.get(2).getEndCoord(),
+        newNode.setCoord(Math2D.intersectionPoint(midEdges.get(0).getEndCoord(), midEdges.get(2).getEndCoord(),
                 midEdges.get(1).getEndCoord(), midEdges.get(3).getEndCoord(), null));
         return newNode;
     }

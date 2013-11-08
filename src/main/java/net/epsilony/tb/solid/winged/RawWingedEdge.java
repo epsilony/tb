@@ -20,7 +20,7 @@ package net.epsilony.tb.solid.winged;
 import net.epsilony.tb.solid.RawSegment;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class RawWingedEdge extends RawSegment implements WingedEdge {

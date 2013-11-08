@@ -20,13 +20,14 @@ package net.epsilony.tb.solid;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ArcSegment2D extends RawSegment {
 
     double radius;
-    boolean centerOnChordLeft = true;//chord is a linear segment start from start node and end at end node
+    boolean centerOnChordLeft = true;// chord is a linear segment start from
+                                     // start node and end at end node
 
     public double[] calcCenter(double[] result) {
         if (null == result) {
@@ -68,8 +69,7 @@ public class ArcSegment2D extends RawSegment {
         if (betwean) {
             return radius - Math.sqrt(vecX * vecX + vecY * vecY);
         } else {
-            return Math.min(
-                    Math2D.distance(x, y, startCoord[0], startCoord[1]),
+            return Math.min(Math2D.distance(x, y, startCoord[0], startCoord[1]),
                     Math2D.distance(x, y, endCoord[0], endCoord[1]));
         }
     }
@@ -125,9 +125,7 @@ public class ArcSegment2D extends RawSegment {
         double chordLengthSquare = Math2D.distanceSquare(startCoord, endCoord);
         double centerAngleCosine = (2 * radius * radius - chordLengthSquare) / 2 / (radius * radius);
         if (Math.abs(centerAngleCosine) > 1) {
-            throw new IllegalStateException(
-                    "Radius too small, chord length: "
-                    + Math.sqrt(chordLengthSquare)
+            throw new IllegalStateException("Radius too small, chord length: " + Math.sqrt(chordLengthSquare)
                     + "radius:" + radius);
         }
         double centerAngle = Math.acos(centerAngleCosine);
@@ -157,7 +155,7 @@ public class ArcSegment2D extends RawSegment {
 
     /**
      * chord is a linear segment start from start node and end at end node
-     *
+     * 
      * @return
      */
     public boolean isCenterOnChordLeft() {
@@ -166,7 +164,7 @@ public class ArcSegment2D extends RawSegment {
 
     /**
      * chord is a linear segment start from start node and end at end node
-     *
+     * 
      * @return
      */
     public void setCenterOnChordLeft(boolean centerOnTheLeft) {

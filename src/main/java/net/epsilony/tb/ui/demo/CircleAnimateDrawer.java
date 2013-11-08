@@ -26,7 +26,7 @@ import net.epsilony.tb.ui.AnimateModelDrawerAdapter;
 import static net.epsilony.tb.ui.AnimationStatus.*;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
@@ -36,6 +36,7 @@ public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
         this.y0 = y0;
         this.maxRad = maxRad;
     }
+
     private static final double INITIAL_RADIUS_RATIO = 0.1;
     Color freezingColor = Color.BLUE;
     Color appearingColor = Color.RED;
@@ -71,10 +72,7 @@ public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
             double colorRatio = frame / (double) appearStartEnd;
             int alpha = (int) (appearingColor.getAlpha() * colorRatio);
             try {
-                color = new Color(
-                        appearingColor.getRed(),
-                        appearingColor.getGreen(),
-                        appearingColor.getBlue(), alpha);
+                color = new Color(appearingColor.getRed(), appearingColor.getGreen(), appearingColor.getBlue(), alpha);
             } catch (Throwable e) {
                 System.out.println("here = ");
             }
@@ -101,8 +99,7 @@ public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
         if (frame < appearStartEnd) {
             rad = INITIAL_RADIUS_RATIO * maxRad;
         } else if (frame < appearEnlargeEnd) {
-            double radRatio = INITIAL_RADIUS_RATIO
-                    + (1 - INITIAL_RADIUS_RATIO) * (frame - appearStartEnd + 1)
+            double radRatio = INITIAL_RADIUS_RATIO + (1 - INITIAL_RADIUS_RATIO) * (frame - appearStartEnd + 1)
                     / ((double) (appearEnlargeEnd - appearStartEnd));
             rad = maxRad * radRatio;
         } else {
@@ -128,10 +125,7 @@ public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
             switchStatus(OVER);
             return;
         }
-        Color color = new Color(
-                colorToFade.getRed(),
-                colorToFade.getGreen(),
-                colorToFade.getBlue(),
+        Color color = new Color(colorToFade.getRed(), colorToFade.getGreen(), colorToFade.getBlue(),
                 (int) (colorToFade.getAlpha() * ratio));
         g2.setColor(color);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -149,18 +143,18 @@ public class CircleAnimateDrawer extends AnimateModelDrawerAdapter {
     @Override
     public void drawModel(Graphics2D g2) {
         switch (getStatus()) {
-            case OVER:
-            case INITIATE:
-                return;
-            case FREEZING:
-                drawWhenFreezing(g2);
-                break;
-            case APPEARING:
-                drawWhenAppearing(g2);
-                break;
-            case FADING:
-                drawWhenFading(g2);
-                break;
+        case OVER:
+        case INITIATE:
+            return;
+        case FREEZING:
+            drawWhenFreezing(g2);
+            break;
+        case APPEARING:
+            drawWhenAppearing(g2);
+            break;
+        case FADING:
+            drawWhenFading(g2);
+            break;
         }
     }
 }

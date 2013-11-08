@@ -23,18 +23,16 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class DifferentiableFunctionUtils {
 
-    public static DifferentiableFunction max(
-            Collection<? extends DifferentiableFunction> functions) {
+    public static DifferentiableFunction max(Collection<? extends DifferentiableFunction> functions) {
         return new Max(new ArrayList<>(functions));
     }
 
-    public static DifferentiableFunction min(
-            Collection<? extends DifferentiableFunction> functions) {
+    public static DifferentiableFunction min(Collection<? extends DifferentiableFunction> functions) {
         return new Min(new ArrayList<>(functions));
     }
 
@@ -103,6 +101,7 @@ public class DifferentiableFunctionUtils {
                 }
             }
         }
+
         protected List<DifferentiableFunction> functions;
         protected int inputDimension;
         protected int outputDimension;

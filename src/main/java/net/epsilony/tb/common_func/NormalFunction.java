@@ -21,7 +21,7 @@ import static java.lang.Math.*;
 import net.epsilony.tb.MiscellaneousUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NormalFunction implements RadialBasisCore {
@@ -47,7 +47,7 @@ public class NormalFunction implements RadialBasisCore {
             throw new IllegalArgumentException("distance should be >= 0, not" + distance);
         }
         if (null == results) {
-            results = new double[]{diffOrder + 1};
+            results = new double[] { diffOrder + 1 };
         }
         double t = distance / sigma;
         final double v = coef * exp(-0.5 * t * t);

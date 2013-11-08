@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import net.epsilony.tb.solid.Node;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ArrayTriangle<ND extends Node> implements Triangle<ND> {

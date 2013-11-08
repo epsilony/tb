@@ -22,7 +22,7 @@ import static net.epsilony.tb.nlopt.NloptLibrary.*;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class NloptMFunctionAdapter extends NloptMfunc {
@@ -32,8 +32,7 @@ public class NloptMFunctionAdapter extends NloptMfunc {
     private final double[] funcValues;
 
     @Override
-    public void apply(int m, Pointer<Double> result,
-            int n, Pointer<Double> x, Pointer<Double> gradient,
+    public void apply(int m, Pointer<Double> result, int n, Pointer<Double> x, Pointer<Double> gradient,
             Pointer<?> func_data) {
         if (function.getOutputDimension() != m) {
             throw new IllegalArgumentException("output dimension mismatch");

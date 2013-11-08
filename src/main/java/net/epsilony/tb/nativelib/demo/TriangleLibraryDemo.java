@@ -25,7 +25,7 @@ import static net.epsilony.tb.nativelib.TriangleLibraryUtils.readPoly;
 import org.bridj.Pointer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleLibraryDemo {

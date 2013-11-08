@@ -34,7 +34,7 @@ import net.epsilony.tb.ui.ModelDrawer;
 import net.epsilony.tb.ui.ModelDrawerAdapter;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class TriangleContourBuilderDemoDrawer extends ModelDrawerAdapter {

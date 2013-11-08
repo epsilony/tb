@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class MiscellaneousUtils {

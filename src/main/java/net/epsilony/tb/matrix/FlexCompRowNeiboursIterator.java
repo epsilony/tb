@@ -20,15 +20,17 @@ package net.epsilony.tb.matrix;
 import gnu.trove.iterator.TIntIterator;
 import no.uib.cipr.matrix.sparse.FlexCompRowMatrix;
 import no.uib.cipr.matrix.sparse.SparseVector;
+
 //import org.apache.log4j.Logger;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class FlexCompRowNeiboursIterator implements TIntIterator {
 
-//    static Logger logger = Logger.getLogger(FlexCompRowNeiboursIterator.class);
+    // static Logger logger =
+    // Logger.getLogger(FlexCompRowNeiboursIterator.class);
     FlexCompRowMatrix mat;
     boolean upperSymmetric;
     int node;
@@ -76,8 +78,7 @@ public class FlexCompRowNeiboursIterator implements TIntIterator {
             do {
                 nextNeighborSparceIndex++;
             } while (nextNeighborSparceIndex < rowIndes.length
-                    && (nextNeighborSparceIndex == nodeSparseIndex
-                    || rowData[nextNeighborSparceIndex] == 0));
+                    && (nextNeighborSparceIndex == nodeSparseIndex || rowData[nextNeighborSparceIndex] == 0));
             if (nextNeighborSparceIndex < rowIndes.length) {
                 nextNeighbor = rowIndes[nextNeighborSparceIndex];
             }

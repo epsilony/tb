@@ -21,7 +21,7 @@ import net.epsilony.tb.Factory;
 import net.epsilony.tb.analysis.Math2D;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class Line extends RawSegment {

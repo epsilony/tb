@@ -19,10 +19,11 @@ package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
 import net.epsilony.tb.solid.winged.Triangle;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsionyuan@gmail.com">Man YUAN</a>
  */
 public class Math2D {
@@ -102,7 +103,7 @@ public class Math2D {
 
     public static double[] subs(double[] v1, double[] v2, double[] results) {
         if (results == null) {
-            results = new double[]{v1[0] - v2[0], v1[1] - v2[1]};
+            results = new double[] { v1[0] - v2[0], v1[1] - v2[1] };
         } else {
             results[0] = v1[0] - v2[0];
             results[1] = v1[1] - v2[1];
@@ -112,7 +113,7 @@ public class Math2D {
 
     public static double[] adds(double[] v1, double[] v2, double[] results) {
         if (results == null) {
-            results = new double[]{v1[0] + v2[0], v1[1] + v2[1]};
+            results = new double[] { v1[0] + v2[0], v1[1] + v2[1] };
         } else {
             results[0] = v1[0] + v2[0];
             results[1] = v1[1] + v2[1];
@@ -122,7 +123,7 @@ public class Math2D {
 
     public static double[] adds(double[] v1, double scale1, double[] v2, double scale2, double[] results) {
         if (results == null) {
-            results = new double[]{v1[0] * scale1 + v2[0] * scale2, v1[1] * scale1 + v2[1] * scale2};
+            results = new double[] { v1[0] * scale1 + v2[0] * scale2, v1[1] * scale1 + v2[1] * scale2 };
         } else {
             results[0] = v1[0] * scale1 + v2[0] * scale2;
             results[1] = v1[1] * scale1 + v2[1] * scale2;
@@ -134,7 +135,7 @@ public class Math2D {
         return 0.5 * (x1 * y2 - y1 * x2 + x2 * y3 - y2 * x3 + x3 * y1 - y3 * x1);
     }
 
-    public static double triangleArea(Triangle tri) {
+    public static double triangleArea(Triangle<?> tri) {
         double[] c1 = tri.getVertex(0).getCoord();
         double[] c2 = tri.getVertex(1).getCoord();
         double[] c3 = tri.getVertex(2).getCoord();
@@ -145,11 +146,8 @@ public class Math2D {
         return isSegmentsIntersecting(start1[0], start1[1], end1[0], end1[1], start2[0], start2[1], end2[0], end2[1]);
     }
 
-    public static boolean isSegmentsIntersecting(
-            double h1x, double h1y,
-            double r1x, double r1y,
-            double h2x, double h2y,
-            double r2x, double r2y) {
+    public static boolean isSegmentsIntersecting(double h1x, double h1y, double r1x, double r1y, double h2x,
+            double h2y, double r2x, double r2y) {
         double u1 = r1x - h1x;
         double u2 = r1y - h1y;
         double v1 = r2x - h2x;
@@ -157,7 +155,7 @@ public class Math2D {
         double w1 = h2x - h1x;
         double w2 = h2y - h1y;
         double denorm = v1 * u2 - v2 * u1;
-        if (0 == denorm) {// coincident or just parrel  
+        if (0 == denorm) {// coincident or just parrel
             if (w1 * u2 - w2 * u1 != 0) {
                 return false;
             }
@@ -200,9 +198,7 @@ public class Math2D {
         return result;
     }
 
-    public static double[] intersectionPoint(
-            double[] startA, double[] endA,
-            double[] startB, double[] endB,
+    public static double[] intersectionPoint(double[] startA, double[] endA, double[] startB, double[] endB,
             double[] result) {
         double deltaAx = endA[0] - startA[0];
         double deltaAy = endA[1] - startA[1];
@@ -212,9 +208,9 @@ public class Math2D {
         double crossDelta = cross(deltaAx, deltaAy, deltaBx, deltaBy);
         if (crossDelta == 0) {
             throw new IllegalArgumentException(
-                    "the two segments are colinear or parrallel or one of them has zero length: "
-                    + "SegA :" + Arrays.toString(startA) + "-" + Arrays.toString(endA) + " "
-                    + "SegB :" + Arrays.toString(startB) + "-" + Arrays.toString(endB));
+                    "the two segments are colinear or parrallel or one of them has zero length: " + "SegA :"
+                            + Arrays.toString(startA) + "-" + Arrays.toString(endA) + " " + "SegB :"
+                            + Arrays.toString(startB) + "-" + Arrays.toString(endB));
         }
 
         double uA = cross(startB[0] - startA[0], startB[1] - startA[1], deltaBx, deltaBy) / crossDelta;
@@ -318,7 +314,7 @@ public class Math2D {
         c_x /= 6 * area;
         c_y /= 6 * area;
         if (result == null) {
-            return new double[]{c_x, c_y};
+            return new double[] { c_x, c_y };
         } else {
             result[0] = c_x;
             result[1] = c_y;

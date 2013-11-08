@@ -30,7 +30,7 @@ import net.epsilony.tb.solid.Node;
 import net.epsilony.tb.solid.ui.NodeDrawer;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class ContourNodeDrawer extends NodeDrawer {
@@ -75,9 +75,8 @@ public class ContourNodeDrawer extends NodeDrawer {
         if (unitGradient) {
             Math2D.normalize(gradient, gradient);
             Math2D.scale(gradient, unitGradientLength, gradient);
-            line = new Line2D.Double(
-                    nodePosition[0], nodePosition[1],
-                    nodePosition[0] + gradient[0], nodePosition[1] - gradient[1]);
+            line = new Line2D.Double(nodePosition[0], nodePosition[1], nodePosition[0] + gradient[0], nodePosition[1]
+                    - gradient[1]);
 
         } else {
             Math2D.scale(gradient, gradientScale, gradient);

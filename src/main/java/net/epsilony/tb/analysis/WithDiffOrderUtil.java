@@ -21,28 +21,29 @@ import gnu.trove.list.array.TDoubleArrayList;
 import org.apache.commons.math3.util.ArithmeticUtils;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class WithDiffOrderUtil {
 
     public static int outputLength(int dim, int diffOrder) {
         switch (dim) {
-            case 1:
-                return diffOrder + 1;
-            case 2:
-                return outputLength2D(diffOrder);
-            case 3:
-                return outputLength3D(diffOrder);
-            default:
-                throw new IllegalArgumentException("The dim should be 1 or 2, not " + dim);
+        case 1:
+            return diffOrder + 1;
+        case 2:
+            return outputLength2D(diffOrder);
+        case 3:
+            return outputLength3D(diffOrder);
+        default:
+            throw new IllegalArgumentException("The dim should be 1 or 2, not " + dim);
         }
     }
 
     public static int outputLength2D(int diffOrder) {
         return (diffOrder + 2) * (diffOrder + 1) / 2;
     }
-    private static final int[] OUTPUT_LENGTH_3D = new int[]{1, 4, 10, 20};
+
+    private static final int[] OUTPUT_LENGTH_3D = new int[] { 1, 4, 10, 20 };
 
     public static int outputLength3D(int diffOrder) {
         if (diffOrder < OUTPUT_LENGTH_3D.length) {

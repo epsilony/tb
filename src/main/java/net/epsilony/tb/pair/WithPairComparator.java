@@ -20,7 +20,7 @@ package net.epsilony.tb.pair;
 import java.util.Comparator;
 
 /**
- *
+ * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
 public class WithPairComparator<K, V> implements Comparator<WithPair<K, V>> {
