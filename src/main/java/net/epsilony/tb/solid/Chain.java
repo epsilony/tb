@@ -77,6 +77,9 @@ public class Chain extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public Chain(Segment head) {
         this.head = head;
+        for (Segment segment : this) {
+            segment.setParent(this);
+        }
     }
 
     Segment head;
