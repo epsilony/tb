@@ -21,7 +21,7 @@ package net.epsilony.tb.analysis;
  * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public class LogicalHeaviside implements UnivarDifferentiableDoubleFunction, UnivarArrayFunction {
+public class LogicalHeaviside implements UnivarDiffFunction, UnivarArrayFunction {
 
     double k = 8;
     int diffOrder;

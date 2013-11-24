@@ -21,7 +21,6 @@ package net.epsilony.tb.analysis;
  * 
  * @author <a href="mailto:epsilonyuan@gmail.com">Man YUAN</a>
  */
-public interface UnivarDifferentiableDoubleFunction extends WithDiffOrder {
+public interface UnivarDiffFunction extends UnivarFunction,WithDiffOrder {
 
-    double value(double x);
 }
