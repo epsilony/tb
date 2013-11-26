@@ -19,6 +19,7 @@ package net.epsilony.tb.solid;
 
 import java.awt.geom.Path2D;
 import java.util.Collection;
+
 import net.epsilony.tb.analysis.Math2D;
 
 /**
@@ -33,6 +34,10 @@ public class Segment2DUtils {
 
     public static double[] chordMidPoint(Segment seg, double[] result) {
         return Math2D.pointOnSegment(seg.getStart().getCoord(), seg.getEnd().getCoord(), 0.5, result);
+    }
+
+    public static double[] chordPoint(Segment seg, double parameter, double[] result) {
+        return Math2D.pointOnSegment(seg.getStart().getCoord(), seg.getEnd().getCoord(), parameter, result);
     }
 
     public static boolean isPointStrictlyAtChordLeft(Segment seg, double[] xy) {
