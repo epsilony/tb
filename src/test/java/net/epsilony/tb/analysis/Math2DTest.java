@@ -17,8 +17,11 @@
 
 package net.epsilony.tb.analysis;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
-import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 /**
@@ -83,10 +86,15 @@ public class Math2DTest {
 
     @Test
     public void testArea() {
-        double[][] vertes = new double[][] { { -1, -2 }, { 3, 2 }, { 2, 4 } };
-        double expArea = 6;
-        double actArea = Math2D.area(vertes);
-        assertEquals(expArea, actArea, 1e-14);
+        double[][][] vertess = new double[][][] { { { -1, -2 }, { 3, 2 }, { 2, 4 } },
+                { { -1, -2 }, { 2, 4 }, { 3, 2 } }, { { 0, 0 }, { 2, 0 }, { 2, 2 }, { 1, 1 }, { 0, 2 } } };
+        double[] expAreas = { 6, -6, 3 };
+        for (int i = 0; i < expAreas.length; i++) {
+            double[][] vertes = vertess[i];
+            double expArea = expAreas[i];
+            double actArea = Math2D.area(vertes);
+            assertEquals(expArea, actArea, 1e-14);
+        }
     }
 
     @Test

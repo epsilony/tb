@@ -286,9 +286,12 @@ public class Math2D {
 
     public static double area(double[][] vertes) {
         double area = 0;
+        double[] start;
+        double[] end = vertes[vertes.length - 1];
         for (int i = 0; i < vertes.length; i++) {
-            int i_p = (i + 1) % vertes.length;
-            area += vertes[i][0] * vertes[i_p][1] - vertes[i][1] * vertes[i_p][0];
+            start = end;
+            end = vertes[i];
+            area += start[0] * end[1] - start[1] * end[0];
         }
         area /= 2;
         return area;
