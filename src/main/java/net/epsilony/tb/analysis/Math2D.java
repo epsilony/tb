@@ -324,4 +324,16 @@ public class Math2D {
             return result;
         }
     }
+
+    public static double[] vectorUnitOutNormal(double[] vector, double[] result) {
+        if (null == result) {
+            result = new double[2];
+        }
+        double dx = vector[0];
+        double dy = vector[1];
+        double length = measureLength(vector);
+        result[0] = dy / length;
+        result[1] = -dx / length;
+        return result;
+    }
 }
