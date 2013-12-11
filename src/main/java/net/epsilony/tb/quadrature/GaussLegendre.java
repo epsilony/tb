@@ -18,6 +18,7 @@
 package net.epsilony.tb.quadrature;
 
 import static java.lang.Math.sqrt;
+
 import java.util.Arrays;
 
 /**
@@ -92,5 +93,9 @@ public class GaussLegendre {
     public static int pointsNum(int degree) {
         int num = (int) Math.ceil((degree + 1) / 2.0);
         return num;
+    }
+
+    public static int pointsNum2Degree(int pointsNum) {
+        return 2 * pointsNum - 1;
     }
 }
