@@ -18,6 +18,7 @@
 package net.epsilony.tb.quadrature;
 
 import java.util.Iterator;
+
 import net.epsilony.tb.analysis.ArrvarFunction;
 
 /**
@@ -74,6 +75,10 @@ public class QuadrangleQuadrature implements Iterable<QuadraturePoint> {
         double[][] pointsWeightsByDegree = GaussLegendre.pointsWeightsByDegree(degree);
         us_or_vs = pointsWeightsByDegree[0];
         weights = pointsWeightsByDegree[1];
+    }
+
+    public int numQuadraturePoints() {
+        return weights.length;
     }
 
     public int getDegree() {
