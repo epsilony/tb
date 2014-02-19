@@ -26,18 +26,18 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class RudeFactory<T> implements Factory<T> {
 
-    Class<? extends T> objectClass;
-    private Constructor<? extends T> constructor;
+    Class<T> objectClass;
+    private Constructor<T> constructor;
 
     public Class<? extends T> getObjectClass() {
         return objectClass;
     }
 
-    public void setObjectClass(Class<? extends T> objectClass) {
+    public void setObjectClass(Class<T> objectClass) {
         _setObjectClass(objectClass);
     }
 
-    private void _setObjectClass(Class<? extends T> objectClass) {
+    private void _setObjectClass(Class<T> objectClass) {
         this.objectClass = objectClass;
         try {
             constructor = objectClass.getConstructor();
@@ -49,7 +49,7 @@ public class RudeFactory<T> implements Factory<T> {
     public RudeFactory() {
     }
 
-    public RudeFactory(Class<? extends T> objectClass) {
+    public RudeFactory(Class<T> objectClass) {
         _setObjectClass(objectClass);
     }
 
