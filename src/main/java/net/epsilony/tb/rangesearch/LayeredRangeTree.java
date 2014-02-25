@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+
 import net.epsilony.tb.pair.PairPack;
 import net.epsilony.tb.pair.WithPair;
 import net.epsilony.tb.pair.WithPairComparator;
@@ -30,7 +31,7 @@ import net.epsilony.tb.pair.WithPairComparator;
 /**
  * <p>
  * A Layered Range Tree, a fractional cascading Range Tree. </br> the build time
- * is \(O(log^d(n)n)\) </br> the search time is \(O(log^{d-1}(n)\) </br> holdind
+ * is \(O(log^d(n)n)\) </br> the search time is \(O(log^{d-1}(n)\) </br> holding
  * a Layered Rang Tree need \(O(log^d(n)n)\) memory</br> in fact it's about \(72
  * log^d_2(n)n+32 log^{d-1}_2 n+72 log_2(n)n\)dataMemory (bytes) where d means
  * dimension;</br>
@@ -49,16 +50,20 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
     private TreeNode root;
     private ArrayList<DictComparator<K>> dictComparators;
 
-    public LayeredRangeTree(Collection<? extends WithPair<K, V>> datas, List<? extends Comparator<K>> comparators) {
+    public LayeredRangeTree(Collection<? extends WithPair<? extends K, ? extends V>> datas,
+            List<? extends Comparator<? super K>> comparators) {
         buildTree(comparators, datas);
     }
 
-    public LayeredRangeTree(List<? extends K> keys, List<? extends V> values, List<? extends Comparator<K>> comparators) {
-        List<WithPair<K, V>> pairs = PairPack.pack(keys, values, new LinkedList<WithPair<K, V>>());
+    public LayeredRangeTree(List<? extends K> keys, List<? extends V> values,
+            List<? extends Comparator<? super K>> comparators) {
+        List<WithPair<? extends K, ? extends V>> pairs = PairPack.pack(keys, values,
+                new LinkedList<WithPair<? extends K, ? extends V>>());
         buildTree(comparators, pairs);
     }
 
-    public static <T> LayeredRangeTree<T, T> factory(List<? extends T> keys, List<? extends Comparator<T>> comparators) {
+    public static <T> LayeredRangeTree<T, T> factory(List<? extends T> keys,
+            List<? extends Comparator<? super T>> comparators) {
         return new LayeredRangeTree<>(keys, keys, comparators);
     }
 
@@ -74,10 +79,11 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         return result;
     }
 
-    private void buildTree(List<? extends Comparator<K>> comparators, Collection<? extends WithPair<K, V>> datas) {
+    private void buildTree(List<? extends Comparator<? super K>> comparators,
+            Collection<? extends WithPair<? extends K, ? extends V>> datas) {
         dictComparators = new ArrayList<>(comparators.size());
         buildDictComparators(comparators);
-        ArrayList<ArrayList<WithPair<K, V>>> sortedDatasByDimension = sortedListsByDimensions(datas);
+        ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> sortedDatasByDimension = sortedListsByDimensions(datas);
         if (isContainingDuplicates(sortedDatasByDimension.get(0), 0)) {
             throw new IllegalArgumentException(
                     "The input datas contains two elements which are indistinguishable for each other.");
@@ -85,26 +91,30 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         root = new TreeNode(sortedDatasByDimension, 0);
     }
 
-    private void buildDictComparators(List<? extends Comparator<K>> comparators) {
+    private void buildDictComparators(List<? extends Comparator<? super K>> comparators) {
         for (int i = 0; i < comparators.size(); i++) {
             DictComparator<K> dictComparator = new DictComparator<>(comparators, i);
             dictComparators.add(dictComparator);
         }
     }
 
-    private ArrayList<ArrayList<WithPair<K, V>>> sortedListsByDimensions(Collection<? extends WithPair<K, V>> pairs) {
-        ArrayList<ArrayList<WithPair<K, V>>> sortedPairLists = new ArrayList<>(numDimensions());
+    private ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> sortedListsByDimensions(
+            Collection<? extends WithPair<? extends K, ? extends V>> pairs) {
+        ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> sortedPairLists = new ArrayList<>(numDimensions());
         for (int dimensionIndex = 0; dimensionIndex < numDimensions(); dimensionIndex++) {
-            ArrayList<WithPair<K, V>> sortedPair = new ArrayList<>(pairs);
-            Comparator<WithPair<K, V>> pairComp = new WithPairComparator<>(dictComparators.get(dimensionIndex));
+            ArrayList<WithPair<? extends K, ? extends V>> sortedPair = new ArrayList<>(pairs);
+            Comparator<WithPair<? extends K, ? extends V>> pairComp = new WithPairComparator<>(
+                    dictComparators.get(dimensionIndex));
             Collections.sort(sortedPair, pairComp);
             sortedPairLists.add(sortedPair);
         }
         return sortedPairLists;
     }
 
-    private boolean isContainingDuplicates(ArrayList<WithPair<K, V>> sorteds, int primeDictCompareIndex) {
-        Comparator<WithPair<K, V>> pairComp = new WithPairComparator<>(dictComparators.get(primeDictCompareIndex));
+    private boolean isContainingDuplicates(ArrayList<WithPair<? extends K, ? extends V>> sorteds,
+            int primeDictCompareIndex) {
+        Comparator<WithPair<? extends K, ? extends V>> pairComp = new WithPairComparator<>(
+                dictComparators.get(primeDictCompareIndex));
         for (int i = 1; i < sorteds.size(); i++) {
             if (0 == pairComp.compare(sorteds.get(i - 1), sorteds.get(i))) {
                 return true;
@@ -113,16 +123,17 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         return false;
     }
 
-    private WithPair<K, V> getMidPair(List<? extends WithPair<K, V>> sortedPairs) {
+    private WithPair<? extends K, ? extends V> getMidPair(List<? extends WithPair<? extends K, ? extends V>> sortedPairs) {
         int midIndex = (sortedPairs.size() - 1) / 2;
-        WithPair<K, V> midPair = sortedPairs.get(midIndex);
+        WithPair<? extends K, ? extends V> midPair = sortedPairs.get(midIndex);
         return midPair;
     }
 
-    private void subDivide(List<? extends WithPair<K, V>> pairs, List<WithPair<K, V>> lessEqualTos,
-            List<WithPair<K, V>> greaterThans, K divideKey, int dictComparatorIndex) {
+    private void subDivide(List<? extends WithPair<? extends K, ? extends V>> pairs,
+            List<WithPair<? extends K, ? extends V>> lessEqualTos,
+            List<WithPair<? extends K, ? extends V>> greaterThans, K divideKey, int dictComparatorIndex) {
         DictComparator<K> comparator = dictComparators.get(dictComparatorIndex);
-        for (WithPair<K, V> p : pairs) {
+        for (WithPair<? extends K, ? extends V> p : pairs) {
             if (comparator.compare(p.getKey(), divideKey) <= 0) {
                 lessEqualTos.add(p);
             } else {
@@ -145,11 +156,11 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         private final TreeNode left; // <=key
         private final TreeNode right; // >key
 
-        private TreeNode(List<ArrayList<WithPair<K, V>>> sortedDataLists, int primeDimension) {
+        private TreeNode(List<ArrayList<WithPair<? extends K, ? extends V>>> sortedDataLists, int primeDimension) {
             this.primeDimension = primeDimension;
-            ArrayList<WithPair<K, V>> treeDatas = sortedDataLists.get(0);
+            ArrayList<WithPair<? extends K, ? extends V>> treeDatas = sortedDataLists.get(0);
 
-            WithPair<K, V> midPair = getMidPair(treeDatas);
+            WithPair<? extends K, ? extends V> midPair = getMidPair(treeDatas);
             key = midPair.getKey();
             value = midPair.getValue();
 
@@ -159,8 +170,10 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
                 return;
             }
 
-            ArrayList<ArrayList<WithPair<K, V>>> leftSortedDataLists = new ArrayList<>(sortedDataLists.size());
-            ArrayList<ArrayList<WithPair<K, V>>> rightSortedDataLists = new ArrayList<>(sortedDataLists.size());
+            ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> leftSortedDataLists = new ArrayList<>(
+                    sortedDataLists.size());
+            ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> rightSortedDataLists = new ArrayList<>(
+                    sortedDataLists.size());
             subDivideLists(sortedDataLists, leftSortedDataLists, rightSortedDataLists);
 
             buildAssociates(primeDimension, sortedDataLists, leftSortedDataLists, rightSortedDataLists);
@@ -177,14 +190,15 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
             return dictComparators.get(primeDimension);
         }
 
-        private void subDivideLists(List<? extends List<? extends WithPair<K, V>>> lists,
-                List<ArrayList<WithPair<K, V>>> leftLists, List<ArrayList<WithPair<K, V>>> rightLists) {
+        private void subDivideLists(List<? extends List<? extends WithPair<? extends K, ? extends V>>> lists,
+                List<ArrayList<WithPair<? extends K, ? extends V>>> leftLists,
+                List<ArrayList<WithPair<? extends K, ? extends V>>> rightLists) {
             int listsLength = lists.get(0).size();
             int leftListsLength = (listsLength - 1) / 2 + 1;
             int rightListsLength = listsLength - leftListsLength;
             for (int i = 0; i < lists.size(); i++) {
-                ArrayList<WithPair<K, V>> leftSorteds, rightSorteds;
-                List<? extends WithPair<K, V>> sortedPairs = lists.get(i);
+                ArrayList<WithPair<? extends K, ? extends V>> leftSorteds, rightSorteds;
+                List<? extends WithPair<? extends K, ? extends V>> sortedPairs = lists.get(i);
                 leftSorteds = new ArrayList<>(leftListsLength);
                 rightSorteds = new ArrayList<>(rightListsLength);
                 subDivide(sortedPairs, leftSorteds, rightSorteds, key, primeDimension);
@@ -194,9 +208,10 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
             }
         }
 
-        private void buildAssociates(int primeDimension, List<ArrayList<WithPair<K, V>>> sortedDataLists,
-                ArrayList<ArrayList<WithPair<K, V>>> leftSortedDataLists,
-                ArrayList<ArrayList<WithPair<K, V>>> rightSortedDataLists) {
+        private void buildAssociates(int primeDimension,
+                List<ArrayList<WithPair<? extends K, ? extends V>>> sortedDataLists,
+                ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> leftSortedDataLists,
+                ArrayList<ArrayList<WithPair<? extends K, ? extends V>>> rightSortedDataLists) {
             if (isOnLastTwoDimension()) {
                 fraCasAssociate = new FraCasTree(sortedDataLists.get(1), leftSortedDataLists.get(1),
                         rightSortedDataLists.get(1));
@@ -289,7 +304,7 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         }
 
         private void checkTo(K from, K to, Collection<? super V> results) {
-            List<? extends Comparator<K>> comparators = dictComparator().getComparators();
+            List<? extends Comparator<? super K>> comparators = dictComparator().getComparators();
             boolean b = true;
             for (int i = primeDimension; i < comparators.size(); i++) {
                 if (comparators.get(i).compare(from, key) > 0 || comparators.get(i).compare(key, to) > 0) {
@@ -318,11 +333,12 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
          * @param leftDatas
          * @param rightDatas
          */
-        private FraCasTree(ArrayList<WithPair<K, V>> sortedDatas, ArrayList<WithPair<K, V>> leftDatas,
-                ArrayList<WithPair<K, V>> rightDatas) {
+        private FraCasTree(ArrayList<WithPair<? extends K, ? extends V>> sortedDatas,
+                ArrayList<WithPair<? extends K, ? extends V>> leftDatas,
+                ArrayList<WithPair<? extends K, ? extends V>> rightDatas) {
             this.keys = new ArrayList<>(sortedDatas.size());
             this.values = new ArrayList<>(sortedDatas.size());
-            for (WithPair<K, V> pair : sortedDatas) {
+            for (WithPair<? extends K, ? extends V> pair : sortedDatas) {
                 keys.add(pair.getKey());
                 values.add(pair.getValue());
             }
@@ -346,13 +362,13 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
             return dictComparators.get(dictComparators.size() - 1);
         }
 
-        private ArrayList<K> keys;
-        private ArrayList<V> values;
+        private final ArrayList<K> keys;
+        private final ArrayList<V> values;
         // fractional cascading keys:
-        private int[] leftCas; // leftCase[i] is the smallest one that
-                               // left.associate.keys[leftCas[i]]>=keys[i],
+        private final int[] leftCas; // leftCase[i] is the smallest one that
+        // left.associate.keys[leftCas[i]]>=keys[i],
         // if leftCas[i]>left.associate.data it should be -1
-        private int[] rightCas; // like leftCase
+        private final int[] rightCas; // like leftCase
 
         private int searchCasIndex(K from) {
             int fromIndex = Collections.binarySearch(keys, from, dictComparator());
@@ -363,7 +379,7 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         }
 
         private void checkTo(Collection<? super V> results, int fromIndex, K to) {
-            Comparator<K> comp = dictComparator().comparators.get(dictComparator().getPrimeComparatorIndex());
+            Comparator<? super K> comp = dictComparator().comparators.get(dictComparator().getPrimeComparatorIndex());
             for (int i = fromIndex; i < keys.size(); i++) {
                 K key = keys.get(i);
                 if (comp.compare(key, to) > 0) {

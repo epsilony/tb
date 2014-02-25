@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class DictComparator<T> implements Comparator<T> {
 
-    ArrayList<Comparator<T>> comparators;
+    ArrayList<Comparator<? super T>> comparators;
     private final int primeComparatorIndex;
 
     @Override
@@ -42,7 +42,7 @@ public class DictComparator<T> implements Comparator<T> {
         return 0;
     }
 
-    public DictComparator(List<? extends Comparator<T>> comparators, int primeComparatorIndex) {
+    public DictComparator(List<? extends Comparator<? super T>> comparators, int primeComparatorIndex) {
         this.comparators = new ArrayList<>(comparators);
         this.primeComparatorIndex = primeComparatorIndex;
     }
@@ -55,7 +55,7 @@ public class DictComparator<T> implements Comparator<T> {
         return primeComparatorIndex;
     }
 
-    public ArrayList<Comparator<T>> getComparators() {
+    public ArrayList<Comparator<? super T>> getComparators() {
         return comparators;
     }
 
