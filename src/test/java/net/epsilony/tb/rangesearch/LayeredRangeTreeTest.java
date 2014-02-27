@@ -17,15 +17,18 @@
 
 package net.epsilony.tb.rangesearch;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import net.epsilony.tb.DoubleArrayComparator;
 import net.epsilony.tb.TestTool;
-import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 /**
@@ -79,7 +82,7 @@ public class LayeredRangeTreeTest {
         ArrayList<double[]> acts = new ArrayList<>();
         for (int i = 0; i < testTime; i++) {
             try {
-                lrTree.rangeSearch(acts, from, to);
+                lrTree.rangeSearch(from, to, acts);
                 LinkedList<double[]> exps = rangeSearch(samples, from, to);
                 DictComparator<double[]> dComp = new DictComparator<>(comps, 0);
                 Collections.sort(acts, dComp);
@@ -89,7 +92,7 @@ public class LayeredRangeTreeTest {
 
                 // just for debug
                 if (acts.size() != exps.size()) {
-                    lrTree.rangeSearch(acts, from, to);
+                    lrTree.rangeSearch(from, to, acts);
                 }
                 for (double[] act : acts) {
                     double[] exp = exps.pollFirst();
@@ -106,7 +109,7 @@ public class LayeredRangeTreeTest {
                 LinkedList<double[]> exps = rangeSearch(samples, from, to);
                 DictComparator<double[]> dComp = new DictComparator<>(comps, 0);
                 Collections.sort(exps, dComp);
-                lrTree.rangeSearch(acts, from, to);
+                lrTree.rangeSearch(from, to, acts);
                 throw t;
             }
         }
@@ -156,7 +159,7 @@ public class LayeredRangeTreeTest {
 
         ArrayList<double[]> acts = new ArrayList<>();
         for (int i = 0; i < testTime; i++) {
-            lrTree.rangeSearch(acts, from, to);
+            lrTree.rangeSearch(from, to, acts);
             LinkedList<double[]> exps = rangeSearch(samples, from, to);
             DictComparator<double[]> dComp = new DictComparator<>(comps, 0);
             Collections.sort(acts, dComp);

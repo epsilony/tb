@@ -49,17 +49,38 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
 
     private TreeNode root;
     private ArrayList<DictComparator<K>> dictComparators;
+    private Collection<? extends WithPair<? extends K, ? extends V>> tDatas;
+    private List<? extends Comparator<? super K>> tComparators;
+
+    public void setComparators(List<? extends Comparator<? super K>> tComparators) {
+        this.tComparators = tComparators;
+    }
+
+    public void setDatas(Collection<? extends WithPair<? extends K, ? extends V>> datas) {
+        this.tDatas = datas;
+    }
+
+    public void prepareTree() {
+        buildTree(tComparators, tDatas);
+    }
 
     public LayeredRangeTree(Collection<? extends WithPair<? extends K, ? extends V>> datas,
             List<? extends Comparator<? super K>> comparators) {
-        buildTree(comparators, datas);
+        setComparators(comparators);
+        setDatas(datas);
+        prepareTree();
     }
 
     public LayeredRangeTree(List<? extends K> keys, List<? extends V> values,
             List<? extends Comparator<? super K>> comparators) {
         List<WithPair<? extends K, ? extends V>> pairs = PairPack.pack(keys, values,
                 new LinkedList<WithPair<? extends K, ? extends V>>());
-        buildTree(comparators, pairs);
+        setComparators(comparators);
+        setDatas(pairs);
+        prepareTree();
+    }
+
+    public LayeredRangeTree() {
     }
 
     public static <T> LayeredRangeTree<T, T> factory(List<? extends T> keys,
@@ -67,15 +88,15 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         return new LayeredRangeTree<>(keys, keys, comparators);
     }
 
-    public void rangeSearch(Collection<? super V> results, K from, K to) {
+    @Override
+    public void rangeSearch(K from, K to, Collection<? super V> results) {
         results.clear();
         root.rangeSearch(results, from, to);
     }
 
-    @Override
     public LinkedList<V> rangeSearch(K from, K to) {
         LinkedList<V> result = new LinkedList<>();
-        rangeSearch(result, from, to);
+        rangeSearch(from, to, result);
         return result;
     }
 

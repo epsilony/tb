@@ -17,7 +17,7 @@
 
 package net.epsilony.tb.rangesearch;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 
@@ -25,5 +25,5 @@ import java.util.List;
  */
 public interface RangeSearcher<K, V> {
 
-    List<V> rangeSearch(K from, K to);
+    void rangeSearch(K from, K to, Collection<? super V> output);
 }
