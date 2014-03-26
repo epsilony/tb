@@ -180,7 +180,13 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
         private TreeNode(List<ArrayList<WithPair<? extends K, ? extends V>>> sortedDataLists, int primeDimension) {
             this.primeDimension = primeDimension;
             ArrayList<WithPair<? extends K, ? extends V>> treeDatas = sortedDataLists.get(0);
-
+            if (treeDatas.isEmpty()) {
+                key = null;
+                value = null;
+                left = null;
+                right = null;
+                return;
+            }
             WithPair<? extends K, ? extends V> midPair = getMidPair(treeDatas);
             key = midPair.getKey();
             value = midPair.getValue();
