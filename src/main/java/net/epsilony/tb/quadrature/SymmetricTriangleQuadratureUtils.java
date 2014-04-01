@@ -19,6 +19,7 @@ package net.epsilony.tb.quadrature;
 
 import java.util.Arrays;
 import java.util.Iterator;
+
 import net.epsilony.tb.analysis.Math2D;
 import net.epsilony.tb.solid.winged.Triangle;
 
@@ -148,7 +149,7 @@ public class SymmetricTriangleQuadratureUtils {
         public QuadraturePoint next() {
             QuadraturePoint result = new QuadraturePoint();
             result.weight = area * getWeight(degree, nextIndex);
-            cartesianCoordinate(x1, y1, x2, y2, x3, y3, degree, nextIndex, result.coord);
+            result.coord = cartesianCoordinate(x1, y1, x2, y2, x3, y3, degree, nextIndex, null);
             nextIndex++;
             return result;
         }
