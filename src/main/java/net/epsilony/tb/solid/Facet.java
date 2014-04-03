@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Supplier;
+
 import net.epsilony.tb.analysis.DifferentiableFunction;
 import net.epsilony.tb.analysis.Math2D;
 
@@ -30,7 +32,7 @@ import net.epsilony.tb.analysis.Math2D;
  */
 public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
-    public static Facet byCoordChains(double[][][] coordChains, Node nd) {
+    public static Facet byCoordChains(double[][][] coordChains, Supplier<? extends Node> nodeFactory) {
         ArrayList<ArrayList<Node>> nodeChains = new ArrayList<>(coordChains.length);
         for (double[][] coords : coordChains) {
             ArrayList<Node> nodes = new ArrayList<>(coords.length);
@@ -39,7 +41,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
                 if (coords.length < 2) {
                     throw new IllegalArgumentException();
                 }
-                Node newNode = Node.instanceByClass(nd);
+                Node newNode = nodeFactory.get();
                 newNode.setCoord(coord);
                 nodes.add(newNode);
             }
@@ -48,7 +50,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
     }
 
     public static Facet byCoordChains(double[][][] coordChains) {
-        return byCoordChains(coordChains, new Node());
+        return byCoordChains(coordChains, Node::new);
     }
 
     public static Facet byNodesChains(List<? extends List<? extends Node>> nodeChains) {
@@ -73,7 +75,7 @@ public class Facet extends RawGeomUnit implements GeomUnit, Iterable<Segment> {
 
     public static final int DIM = 2;
     List<Chain> rings;
-    private DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
+    private final DifferentiableFunction levelSetFunction = new DifferentiableFunction() {
         @Override
         public int getInputDimension() {
             return 2;
