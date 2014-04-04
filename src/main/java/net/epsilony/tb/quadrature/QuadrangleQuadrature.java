@@ -50,7 +50,7 @@ public class QuadrangleQuadrature implements Iterable<QuadraturePoint> {
         return results;
     }
 
-    int degree;
+    int degree = -1;
     double x1, y1, x2, y2, x3, y3, x4, y4;
     double[] weights;
     double[] us_or_vs;
