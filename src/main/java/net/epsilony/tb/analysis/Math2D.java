@@ -19,6 +19,7 @@ package net.epsilony.tb.analysis;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.function.Function;
 
 import net.epsilony.tb.solid.winged.Triangle;
 
@@ -227,9 +228,17 @@ public class Math2D {
         return isAnticlockwise(iter);
     }
 
+    public static <T> boolean isAnticlockwise(Iterable<T> iterable, Function<T, double[]> coordGetter) {
+        return isAnticlockwise(iterable.iterator(), coordGetter);
+    }
+
     public static boolean isAnticlockwise(Iterator<double[]> iter) {
-        double[] firstSegmentStart = iter.next();
-        double[] firstSegmentEnd = iter.next();
+        return isAnticlockwise(iter, Function.identity());
+    }
+
+    public static <T> boolean isAnticlockwise(Iterator<T> iter, Function<T, double[]> coordGetter) {
+        double[] firstSegmentStart = coordGetter.apply(iter.next());
+        double[] firstSegmentEnd = coordGetter.apply(iter.next());
         double[] p1;
         double[] p2 = firstSegmentStart;
         double[] p3 = firstSegmentEnd;
@@ -239,7 +248,7 @@ public class Math2D {
             p1 = p2;
             p2 = p3;
             if (iter.hasNext()) {
-                p3 = iter.next();
+                p3 = coordGetter.apply(iter.next());
             } else {
                 if (tailRun <= 0) {
                     break;
