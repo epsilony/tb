@@ -91,6 +91,9 @@ public class LayeredRangeTree<K, V> implements RangeSearcher<K, V> {
     @Override
     public void rangeSearch(K from, K to, Collection<? super V> results) {
         results.clear();
+        if (null == root.key) {
+            return;
+        }
         root.rangeSearch(results, from, to);
     }
 
