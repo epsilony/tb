@@ -18,7 +18,9 @@
 package net.epsilony.tb.common_func;
 
 import java.util.Arrays;
+
 import net.epsilony.tb.MiscellaneousUtils;
+
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 
 /**
@@ -51,17 +53,37 @@ public class TripleSpline implements RadialBasisCore {
 
         double x = distance;
         if (x <= 0.5) {
-            results[0] = func1.value(x);
+            results[0] = func1(x);
             if (diffOrder > 0) {
-                results[1] = func1Diff.value(x);
+                results[1] = func1Diff(x);
             }
         } else {
-            results[0] = func2.value(x);
+            results[0] = func2(x);
             if (diffOrder > 0) {
-                results[1] = func2Diff.value(x);
+                results[1] = func2Diff(x);
             }
         }
         return results;
+    }
+
+    public static double func1(double x) {
+        // coefs:
+        // 2 / 3.0, 0, -4, 4
+        return 2 / 3.0 + (-4 + 4 * x) * x * x;
+    }
+
+    public static double func1Diff(double x) {
+        return x * (-8 + 12 * x);
+    }
+
+    public static double func2(double x) {
+        // coefs:
+        // 4 / 3.0, -4, 4, -4 / 3.0
+        return 4 / 3.0 + x * (-4 + x * (4 - 4 / 3.0 * x));
+    }
+
+    public static double func2Diff(double x) {
+        return -4 + x * (8 - 4 * x);
     }
 
     @Override
