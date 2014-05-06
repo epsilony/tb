@@ -58,7 +58,7 @@ public class RudeFactory<T> implements Factory<T> {
         try {
             return constructor.newInstance();
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new IllegalArgumentException("must be a class with null constructor!");
+            throw new IllegalStateException(ex);
         }
     }
 }
