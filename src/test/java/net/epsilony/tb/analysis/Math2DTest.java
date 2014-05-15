@@ -93,7 +93,9 @@ public class Math2DTest {
             double[][] vertes = vertess[i];
             double expArea = expAreas[i];
             double actArea = Math2D.area(vertes);
+            double actArea2 = Math2D.area(Arrays.asList(vertes));
             assertEquals(expArea, actArea, 1e-14);
+            assertEquals(expArea, actArea2, 1e-14);
         }
     }
 

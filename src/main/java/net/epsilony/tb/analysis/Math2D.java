@@ -306,6 +306,51 @@ public class Math2D {
         return area;
     }
 
+    public static double area(Iterable<double[]> iter) {
+        return area(iter.iterator(), Function.identity());
+    }
+
+    public static double area(Iterator<double[]> iter) {
+        return area(iter, Function.identity());
+    }
+
+    public static <T> double area(Iterable<T> iter, Function<? super T, double[]> coordGetter) {
+        return area(iter.iterator(), coordGetter);
+    }
+
+    public static <T> double area(Iterator<T> iter, Function<? super T, double[]> coordGetter) {
+        double area = 0;
+        double[] start;
+        double[] end;
+        double[] first;
+        if (iter.hasNext()) {
+            start = coordGetter.apply(iter.next());
+            first = start;
+        } else {
+            throw new IllegalArgumentException();
+        }
+        if (iter.hasNext()) {
+            end = coordGetter.apply(iter.next());
+        } else {
+            throw new IllegalArgumentException();
+        }
+
+        if (!iter.hasNext()) {
+            throw new IllegalArgumentException();
+        }
+        do {
+            area += start[0] * end[1] - start[1] * end[0];
+            if (!iter.hasNext()) {
+                break;
+            }
+            start = end;
+            end = coordGetter.apply(iter.next());
+        } while (true);
+        area += end[0] * first[1] - end[1] * first[0];
+        area /= 2;
+        return area;
+    }
+
     public static double[] centroid(double[][] vertes, double[] result) {
 
         double c_x = 0;
